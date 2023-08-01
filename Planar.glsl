@@ -9,17 +9,17 @@ vec4 texture_(sampler3D s, vec3 tc) { return texture(s, tc); }
 //@implements: sampler2D
 struct Planar {
 	sampler2D sampler;
-	//@ label: "Position X", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 0
+	//@ label: "Position X", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 0, ui_name:"Eye", ui_role:"xPos"
 	float posX;
-	//@ label: "Position Y", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 0
+	//@ label: "Position Y", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 0, ui_name:"Eye", ui_role:"yPos"
 	float posY;
-	//@ label: "Position Z", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 10
+	//@ label: "Position Z", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 10, ui_name:"Eye", ui_role:"zPos"
 	float posZ;
-	//@ label: "Rotation X", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0
+	//@ label: "Rotation X", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0, ui_name:"Eye", ui_role:"xRot"
 	float rotX;
-	//@ label: "Rotation Y", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0
+	//@ label: "Rotation Y", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0, ui_name:"Eye", ui_role:"yRot"
 	float rotY;
-	//@ label: "Rotation Z", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0
+	//@ label: "Rotation Z", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0, ui_name:"Eye", ui_role:"zRot"
 	float rotZ;
 	//@ label: "Size", editor: range, min: 0.01, max: 180, range_min: 0.01, range_max: 180, range_default: 1
 	float size;
@@ -135,14 +135,29 @@ vec4 texture(Planar s,vec2 tex_coords) {
 		index = 0;
 	}
 	
-	vec2 shiftedTexCoords = tex_coords;
+	float texCoordScale = (texSize.x - 2.0)/ texSize.x;
 	float vertRange = 1.0 / ct;
-	shiftedTexCoords.y = index * vertRange + (1.0 - tex_coords.y) * vertRange;
+	float scaleShift = index * vertRange + 0.5 / ct;
+	
+	vec2 shiftedTexCoords;
+	shiftedTexCoords.x = (tex_coords.x - 0.5) * texCoordScale + 0.5;
+	shiftedTexCoords.y = ((index * vertRange + (1.0 - tex_coords.y) * vertRange) - scaleShift) * texCoordScale + scaleShift;
 	
 	vec4 pxlWorldPos = texture(s.samplerScreenPxlPos, shiftedTexCoords);
 	pxlWorldPos.w = 1.0;
 	
-	mat4x4 matViewProj = getOrtho(s.size, s.ar, 0.1, 1000.0) * getViewMatrix(vec3(s.posX, s.posY, s.posZ), vec3(radians(s.rotX), radians(s.rotY), radians(s.rotZ)));
+	mat4x4 matTranslate = getTranslationMatrix(vec3(-s.posX, -s.posY, -s.posZ));
+	mat4x4 matRotate = getRotationMatrix4x4(vec3(radians(s.rotX), radians(s.rotY), radians(s.rotZ)));
+	mat4x4 matView = transpose(matRotate) * matTranslate;
+	
+	vec3 viewVec = vec3(matRotate * vec4(0.0,0.0,-1.0,0.0));
+	float distance = dot(viewVec, vec3(pxlWorldPos)) - dot(vec3(s.posX, s.posY, s.posZ), viewVec);
+    if(distance <= 0.0)
+    {
+      discard;
+    }
+	
+	mat4x4 matViewProj = getOrtho(s.size, s.ar, 0.1, 1000.0) * matView;
 	
 	vec4 ptProjected = matViewProj * pxlWorldPos;
 	if(ptProjected.x > 1.0){discard;}

@@ -7,7 +7,7 @@ vec4 texture_(sampler3D s, vec3 tc) { return texture(s, tc); }
 #endif
 
 //@implements: sampler2D
-struct Equirectangular {
+struct Equirectangular_RotYXZ {
 	sampler2D sampler;
 	//@ label: "Position X", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 0, ui_name:"Eye", ui_role:"xPos"
 	float posX;
@@ -52,6 +52,64 @@ mat3x3 getRotationMatrix3x3(vec3 rotEuler)
     return Result;
 }
 
+mat3x3 rotate(float angle,vec3 v)
+{
+	float a = angle;
+	float c = cos(a);
+	float s = sin(a);
+
+	vec3 axis = normalize(v);
+	vec3 temp = (1.0 - c) * axis;
+
+	mat3x3 Rotate;
+	Rotate[0][0] = c + temp[0] * axis[0];
+	Rotate[0][1] = temp[0] * axis[1] + s * axis[2];
+	Rotate[0][2] = temp[0] * axis[2] - s * axis[1];
+
+	Rotate[1][0] = temp[1] * axis[0] - s * axis[2];
+	Rotate[1][1] = c + temp[1] * axis[1];
+	Rotate[1][2] = temp[1] * axis[2] + s * axis[0];
+
+	Rotate[2][0] = temp[2] * axis[0] + s * axis[1];
+	Rotate[2][1] = temp[2] * axis[1] - s * axis[0];
+	Rotate[2][2] = c + temp[2] * axis[2];
+
+	return Rotate;
+}
+
+vec3 rotateX(vec3 v,float angle)
+{
+	vec3 Result = v;
+	float Cos = cos(angle);
+	float Sin = sin(angle);
+
+	Result.y = v.y * Cos - v.z * Sin;
+	Result.z = v.y * Sin + v.z * Cos;
+	return Result;
+}
+
+vec3 rotateY(vec3 v,float angle)
+{
+	vec3 Result = v;
+	float Cos = cos(angle);
+	float Sin = sin(angle);
+
+	Result.x =  v.x * Cos + v.z * Sin;
+	Result.z = -v.x * Sin + v.z * Cos;
+	return Result;
+}
+
+vec3 rotateZ(vec3 v,float angle)
+{
+	vec3 Result = v;
+	float Cos = cos(angle);
+	float Sin = sin(angle);
+
+	Result.x = v.x * Cos - v.y * Sin;
+	Result.y = v.x * Sin + v.y * Cos;
+	return Result;
+}
+
 #define PI 3.141592653589793
 vec2 RadialCoords(vec3 n)
 {
@@ -61,7 +119,7 @@ vec2 RadialCoords(vec3 n)
     return vec2(sphereCoords.x * 0.5 + 0.5, 1 - sphereCoords.y);
 }
 
-vec4 texture(Equirectangular s,vec2 tex_coords) {
+vec4 texture(Equirectangular_RotYXZ s,vec2 tex_coords) {
 	
 	ivec2 texSize = textureSize(s.samplerScreenPxlPos, 0);
 	float ct = float(texSize.y / texSize.x);
@@ -80,12 +138,20 @@ vec4 texture(Equirectangular s,vec2 tex_coords) {
 	shiftedTexCoords.y = ((index * vertRange + (1.0 - tex_coords.y) * vertRange) - scaleShift) * texCoordScale + scaleShift;
 	
 	vec3 pxlWorldPos = texture(s.samplerScreenPxlPos, shiftedTexCoords).xyz;
-	vec3 normal = getRotationMatrix3x3(vec3(radians(s.rotX), radians(s.rotY), radians(s.rotZ))) * normalize(pxlWorldPos - vec3(s.posX, s.posY, s.posZ));
+	// vec3 normal = getRotationMatrix3x3(vec3(radians(s.rotX), radians(s.rotY), radians(s.rotZ))) * normalize(pxlWorldPos - vec3(s.posX, s.posY, s.posZ));
+	
+	vec3 normal = normalize(pxlWorldPos - vec3(s.posX, s.posY, s.posZ));
+	
+	normal = rotateZ(normal, radians(s.rotZ));
+	normal = rotateX(normal, radians(s.rotX));
+	normal = rotateY(normal, radians(s.rotY));
+
+	// normal = rotate(radians(s.rotX), cross(normal,vec3(0.0,1.0,0.0))) * normal;
 	
 	vec4 color = texture(s.sampler, RadialCoords(normal.xyz));	
 	return color;
 }
 
-ivec2 textureSize(Equirectangular s, int level) {
+ivec2 textureSize(Equirectangular_RotYXZ s, int level) {
   return ivec2(1);
 }

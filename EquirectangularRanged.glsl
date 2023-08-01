@@ -7,7 +7,7 @@ vec4 texture_(sampler3D s, vec3 tc) { return texture(s, tc); }
 #endif
 
 //@implements: sampler2D
-struct Equirectangular {
+struct EquirectangularRanged {
 	sampler2D sampler;
 	//@ label: "Position X", editor: range, min: -100, max: 100, range_min: -100, range_max: 100, range_default: 0, ui_name:"Eye", ui_role:"xPos"
 	float posX;
@@ -21,6 +21,10 @@ struct Equirectangular {
 	float rotY;
 	//@ label: "Rotation Z", editor: range, min: -360, max: 360, range_min: -360, range_max: 360, range_default: 0, ui_name:"Eye", ui_role:"zRot"
 	float rotZ;
+	//@ label: "Range Start", editor: range, min: 0, max: 360, range_min: 0, range_max: 360, range_default: 0
+	float rangeStart;
+	//@ label: "Range End", editor: range, min: 0, max: 360, range_min: 0, range_max: 360, range_default: 360
+	float rangeEnd;
 	//@ label: "Sampler", editor: sampler
 	sampler2D samplerScreenPxlPos;
 };
@@ -52,16 +56,9 @@ mat3x3 getRotationMatrix3x3(vec3 rotEuler)
     return Result;
 }
 
-#define PI 3.141592653589793
-vec2 RadialCoords(vec3 n)
-{
-    float lon = atan(n.z, n.x);
-    float lat = acos(n.y);
-    vec2 sphereCoords = vec2(lon, lat) * (1.0 / PI);
-    return vec2(sphereCoords.x * 0.5 + 0.5, 1 - sphereCoords.y);
-}
-
-vec4 texture(Equirectangular s,vec2 tex_coords) {
+#define PI 3.1415926535897932384626433832795
+#define halfPI 1.5707963267948966192313216916398
+vec4 texture(EquirectangularRanged s,vec2 tex_coords) {
 	
 	ivec2 texSize = textureSize(s.samplerScreenPxlPos, 0);
 	float ct = float(texSize.y / texSize.x);
@@ -82,10 +79,23 @@ vec4 texture(Equirectangular s,vec2 tex_coords) {
 	vec3 pxlWorldPos = texture(s.samplerScreenPxlPos, shiftedTexCoords).xyz;
 	vec3 normal = getRotationMatrix3x3(vec3(radians(s.rotX), radians(s.rotY), radians(s.rotZ))) * normalize(pxlWorldPos - vec3(s.posX, s.posY, s.posZ));
 	
-	vec4 color = texture(s.sampler, RadialCoords(normal.xyz));	
+	// Calculate radial coordinates.
+	float lon = atan(normal.z, normal.x);
+    
+    vec2 range = vec2(-PI + s.rangeStart/180.0 * PI, -PI + s.rangeEnd/180.0 * PI);
+    
+    if(lon < range.x || lon > range.y)
+    {
+    	    discard;
+    }
+    float lat = acos(normal.y);
+    vec2 sphereCoords = vec2(lon, lat) * (1.0 / PI);
+    vec2 radialCoords = vec2((-s.rangeStart/360.0 + (sphereCoords.x * 0.5 + 0.5)) * (360.0 / (s.rangeEnd - s.rangeStart)), 1 - sphereCoords.y);
+	
+	vec4 color = texture(s.sampler, radialCoords);
 	return color;
 }
 
-ivec2 textureSize(Equirectangular s, int level) {
+ivec2 textureSize(EquirectangularRanged s, int level) {
   return ivec2(1);
 }
