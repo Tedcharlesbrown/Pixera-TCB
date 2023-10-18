@@ -8,20 +8,19 @@ def generate_effect_overview(directory):
         for file in sorted(files):
             if file.endswith(".glsl"):
                 base_name = os.path.splitext(file)[0]  # Get the name without extension
-                glsl_path = os.path.join(root, file)
-                png_path = os.path.join(root, base_name + ".png")
+                png_file = base_name + ".png"
 
                 # If the corresponding .png file exists, add to content
-                if os.path.exists(png_path):
+                if png_file in files:
                     content += f"## {base_name}\n"
-                    content += f"![{base_name}]({png_path})\n\n"
+                    content += f"![{base_name}]({png_file})\n\n"
 
     # Write to the file
-    with open('effect_overview.md', 'w') as file:
+    with open(os.path.join(directory, 'effect_overview.md'), 'w') as file:
         file.write(content)
 
-    print("File 'effect_overview.md' has been generated!")
+    print(f"File 'effect_overview.md' has been generated in {directory}!")
 
 if __name__ == "__main__":
-    directory = r"../Pixera/Shaders/v1.9.149"  # Replace with your directory path
+    directory = '../'  # Directory path relative to the __scripts__ folder
     generate_effect_overview(directory)
