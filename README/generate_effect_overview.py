@@ -23,5 +23,5 @@ def generate_effect_overview(directory):
     print("File 'effect_overview.md' has been generated!")
 
 if __name__ == "__main__":
-    directory = "../Pixera/Shaders/v1.9.149"  # Replace with your directory path
+    directory = r"../Pixera/Shaders/v1.9.149"  # Replace with your directory path
     generate_effect_overview(directory)
