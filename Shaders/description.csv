@@ -1,0 +1,4 @@
+shader,description,notes
+BoxBlur_Mix,Applies a box blur effect over content,Added in use of Mix%
+LEDEffect_AspectRatio,Applies an LED screen effect,Added aspect ratio and option for square pixels
+Vignette_AspectRatio, Applies a vignette effect to the image corners,Added aspect ratio
