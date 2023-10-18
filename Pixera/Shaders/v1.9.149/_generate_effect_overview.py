@@ -3,6 +3,16 @@ import re
 
 image_size = 500
 
+def rename_png_files(directory):
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.lower().endswith('.png') and not file.endswith('.png'):
+                old_path = os.path.join(root, file)
+                new_path = os.path.join(root, file[:-4] + '.png')
+                os.rename(old_path, new_path)
+                print(f"Renamed: {old_path} -> {new_path}")
+
+
 def extract_labels(file_path):
     labels = []
 
@@ -48,4 +58,5 @@ def generate_effect_overview(directory):
 
 if __name__ == "__main__":
     directory = './'  # Directory path relative to the __scripts__ folder
+    rename_png_files(directory)
     generate_effect_overview(directory)
