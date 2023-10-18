@@ -1,5 +1,6 @@
 import os
 import re
+import csv
 
 image_size = 500
 
@@ -12,7 +13,6 @@ def rename_png_files(directory):
                 os.rename(old_path, new_path)
                 print(f"Renamed: {old_path} -> {new_path}")
 
-
 def extract_labels(file_path):
     labels = []
 
@@ -20,44 +20,61 @@ def extract_labels(file_path):
         for line in file:
             match = re.search(r'//@ label: "(.+?)"', line)
             if match:
-                labels.append(f'`{match.group(1)}`')  # Wrap each label in `
+                labels.append(f'`{match.group(1)}`')
 
-    return '\n'.join(labels)  # Return labels separated by new lines
+    return '\n'.join(labels)
 
-def generate_effect_overview(directory):
+def get_shader_descriptions(directory):
+    descriptions = {}
+    csv_path = os.path.join(directory, 'description.csv')
+    with open(csv_path, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            shader = row['shader']
+            description = row['description']
+            notes = row['notes']
+            descriptions[shader] = (description, notes)
+    return descriptions
+
+def generate_effect_overview(version_directory, description_directory):
     content = "# Effect Overview\n\n"
-    placeholder_img = "_noeffect.png"  # Placeholder image filename
+    placeholder_img = "_noeffect.png"
 
-    # Traverse the directory for .glsl files
-    for root, _, files in os.walk(directory):
-        # Convert filenames to lowercase for case-insensitive comparison
+    shader_descriptions = get_shader_descriptions(description_directory)
+
+    for root, _, files in os.walk(version_directory):
         files_lower = [f.lower() for f in files]
 
         for file in sorted(files):
             if file.lower().endswith(".glsl") and file.lower() != "blank.glsl":
-                base_name = os.path.splitext(file)[0]  # Get the name without extension
+                base_name = os.path.splitext(file)[0]
                 png_file = base_name + ".png"
-                
+
                 label_str = extract_labels(os.path.join(root, file))
 
-                # Linking the header to the GLSL file
                 content += f"## [{base_name}]({file})\n"
                 
                 if png_file.lower() in files_lower:
                     content += f'<img src="{png_file}" alt="{base_name}" width="{image_size}"/>\n\n'
-                    content += f"**Variables:**\n\n{label_str}\n"  # Each label on a new line
                 else:
                     content += f'<img src="{placeholder_img}" alt="Placeholder Image" width="{image_size}"/>\n\n'
-                    content += f"**Variables:**\n\n{label_str}\n"
 
-    # Use an absolute path to ensure the file is written to the correct directory
-    output_path = os.path.abspath(os.path.join(directory, '_effect_overview.md'))
+                # Add description and notes from the CSV
+                if base_name in shader_descriptions:
+                    description, notes = shader_descriptions[base_name]
+                    content += f"- {description}\n\n"
+                    content += f"> {notes}\n\n"
+
+                content += f"**Variables:**\n\n{label_str}\n"
+
+    output_path = os.path.abspath(os.path.join(version_directory, '_effect_overview.md'))
     with open(output_path, 'w') as file:
         file.write(content)
 
     print(f"File 'effect_overview.md' has been generated at {output_path}!")
 
 if __name__ == "__main__":
-    directory = './'  # Current directory
-    rename_png_files(directory)
-    generate_effect_overview(directory)
+    version_directory = './'
+    description_directory = '../'
+    rename_png_files(version_directory)
+    generate_effect_overview(version_directory, description_directory)

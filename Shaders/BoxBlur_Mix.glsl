@@ -3,7 +3,7 @@
 // Version: 1.1
 
 //@implements: sampler2D
-struct BoxBlur{
+struct BoxBlur_Mix{
   sampler2D sampler;
   //@ label: "Mix[%]", editor: range, min: 0, max: 1, range_min: 0, range_max: 1, range_default: 0
   float mix;
@@ -15,12 +15,12 @@ struct BoxBlur{
   float height;
 };
 
-vec4 bb_texel(BoxBlur s,vec2 dim,vec2 abs_coords){
+vec4 bb_texel(BoxBlur_Mix s,vec2 dim,vec2 abs_coords){
   vec2 tex_coords=abs_coords/dim;
   return texture(s.sampler,tex_coords);
 }
 
-vec4 texture(BoxBlur s,vec2 tex_coords){
+vec4 texture(BoxBlur_Mix s,vec2 tex_coords){
   // Original colour
   vec4 orig=texture(s.sampler,tex_coords);
   
