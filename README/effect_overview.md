@@ -1,7 +1,8 @@
 # Effect Overview
 
 ## AbstractCubes
-![AbstractCubes]((https://github.com/Tedcharlesbrown/Pixera-TCB/blob/Pixera/Shaders/v1.9.149/AbstractCubes.png))
+![AbstractCubes](../Pixera/Shaders/v1.9.149/AbstractCubes.png)
+
 
 ## AbstractPlane
 ![AbstractPlane](../Pixera/Shaders/v1.9.149\AbstractPlane.png)
