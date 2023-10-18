@@ -40,14 +40,15 @@ def generate_effect_overview(directory):
                 
                 label_str = extract_labels(os.path.join(root, file))
 
+                # Linking the header to the GLSL file
+                content += f"## [{base_name}]({file})\n"
+                
                 if png_file.lower() in files_lower:
-                    content += f"## {base_name}\n"
                     content += f'<img src="{png_file}" alt="{base_name}" width="{image_size}"/>\n\n'
-                    content += f"**Labels:**\n\n{label_str}\n"  # Each label on a new line
+                    content += f"**Variables:**\n\n{label_str}\n"  # Each label on a new line
                 else:
-                    content += f"## {base_name}\n"
                     content += f'<img src="{placeholder_img}" alt="Placeholder Image" width="{image_size}"/>\n\n'
-                    content += f"**Labels:**\n\n{label_str}\n"
+                    content += f"**Variables:**\n\n{label_str}\n"
 
     # Use an absolute path to ensure the file is written to the correct directory
     output_path = os.path.abspath(os.path.join(directory, '_effect_overview.md'))
@@ -57,6 +58,6 @@ def generate_effect_overview(directory):
     print(f"File 'effect_overview.md' has been generated at {output_path}!")
 
 if __name__ == "__main__":
-    directory = './'  # Directory path relative to the __scripts__ folder
+    directory = './'  # Current directory
     rename_png_files(directory)
     generate_effect_overview(directory)

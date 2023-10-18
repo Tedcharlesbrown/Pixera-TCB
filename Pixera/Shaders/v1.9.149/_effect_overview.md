@@ -1,9 +1,9 @@
 # Effect Overview
 
-## AbstractCubes
+## [AbstractCubes](AbstractCubes.glsl)
 <img src="AbstractCubes.png" alt="AbstractCubes" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `time`
 `Spacing`
@@ -13,10 +13,10 @@
 `Red`
 `Green`
 `Blue`
-## AbstractPlane
+## [AbstractPlane](AbstractPlane.glsl)
 <img src="AbstractPlane.png" alt="AbstractPlane" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `time`
 `Foreground Red`
@@ -25,30 +25,30 @@
 `Background Red`
 `Background Green`
 `Background Blue`
-## AddColor
+## [AddColor](AddColor.glsl)
 <img src="AddColor.png" alt="AddColor" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Red`
 `Green`
 `Blue`
 `Alpha`
-## AlphaWipe
+## [AlphaWipe](AlphaWipe.glsl)
 <img src="AlphaWipe.png" alt="AlphaWipe" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Direction[deg]`
 `Position[%]`
 `Width[%]`
 `Inverse`
-## BlackWhiteColor
+## [BlackWhiteColor](BlackWhiteColor.glsl)
 <img src="BlackWhiteColor.png" alt="BlackWhiteColor" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Exclude from red`
@@ -57,44 +57,44 @@
 `to green`
 `Exclude from blue`
 `to blue`
-## Blank
+## [Blank](Blank.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Dummy`
-## BoxBlur
+## [BoxBlur](BoxBlur.glsl)
 <img src="BoxBlur.png" alt="BoxBlur" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Strength`
 `Width[px]`
 `Height[px]`
-## BoxBlurSep
+## [BoxBlurSep](BoxBlurSep.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Strength`
 `Horizontal`
 `Width[px]`
 `Height[px]`
-## BrightnessContrast
+## [BrightnessContrast](BrightnessContrast.glsl)
 <img src="BrightnessContrast.png" alt="BrightnessContrast" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Brightness[%]`
 `Contrast[%]`
 `Offset[%]`
-## Checkerboard
+## [Checkerboard](Checkerboard.glsl)
 <img src="Checkerboard.png" alt="Checkerboard" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Rows`
 `Mix[%]`
@@ -109,10 +109,10 @@
 `WhiteColor Blue`
 `WhiteColor Alpha`
 `NonSquareAllowed`
-## ChromaKey
+## [ChromaKey](ChromaKey.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Red`
@@ -120,10 +120,10 @@
 `Blue`
 `HueTolerance`
 `LightnessTolerance`
-## ClampColors
+## [ClampColors](ClampColors.glsl)
 <img src="ClampColors.png" alt="ClampColors" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
 `RedMin`
@@ -132,10 +132,10 @@
 `GreenMax`
 `BlueMin`
 `BlueMax`
-## ColorBorder
+## [ColorBorder](ColorBorder.glsl)
 <img src="ColorBorder.png" alt="ColorBorder" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Thickness`
@@ -143,18 +143,18 @@
 `Color Green`
 `Color Blue`
 `Color Alpha`
-## ColorChange
+## [ColorChange](ColorChange.glsl)
 <img src="ColorChange.png" alt="ColorChange" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Time`
 `Speed`
-## ColorChannels
+## [ColorChannels](ColorChannels.glsl)
 <img src="ColorChannels.png" alt="ColorChannels" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Red`
 `RedMix[%]`
@@ -162,19 +162,19 @@
 `GreenMix[%]`
 `Blue`
 `BlueMix[%]`
-## ColorStripes
+## [ColorStripes](ColorStripes.glsl)
 <img src="ColorStripes.png" alt="ColorStripes" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Amount`
 `Seed`
 `Vertical`
-## Cropping
+## [Cropping](Cropping.glsl)
 <img src="Cropping.png" alt="Cropping" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Left`
@@ -186,35 +186,35 @@
 `Bottom`
 `Bottom Softness[%]`
 `Angle[deg]`
-## CroppingHardEdge
+## [CroppingHardEdge](CroppingHardEdge.glsl)
 <img src="CroppingHardEdge.png" alt="CroppingHardEdge" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Left`
 `Top`
 `Right`
 `Bottom`
 `Angle[deg]`
-## DirectionalBlur
+## [DirectionalBlur](DirectionalBlur.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Strength`
 `Angle`
 `Samples`
-## Dissolve
+## [Dissolve](Dissolve.glsl)
 <img src="Dissolve.png" alt="Dissolve" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Strength[%]`
-## DropShadow
+## [DropShadow](DropShadow.glsl)
 <img src="DropShadow.png" alt="DropShadow" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Width[px]`
@@ -223,10 +223,10 @@
 `Performance`
 `Optimize`
 `Angle[deg]`
-## DropShadowRect
+## [DropShadowRect](DropShadowRect.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Width[px]`
@@ -234,37 +234,37 @@
 `ShadowWidth[%]`
 `Strength[%]`
 `Angle[deg]`
-## Edges
+## [Edges](Edges.glsl)
 <img src="Edges.png" alt="Edges" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Mode`
 `Width[px]`
 `Height[px]`
 `Edge Width[px]`
-## Flip
+## [Flip](Flip.glsl)
 <img src="Flip.png" alt="Flip" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Horizontal`
 `Vertical`
-## FlipColors
+## [FlipColors](FlipColors.glsl)
 <img src="FlipColors.png" alt="FlipColors" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `FlipRedGreen`
 `FlipRedBlue`
 `FlipGreenBlue`
-## Fog
+## [Fog](Fog.glsl)
 <img src="Fog.png" alt="Fog" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Time`
@@ -274,27 +274,27 @@
 `Red`
 `Green`
 `Blue`
-## GainGradientCorner
+## [GainGradientCorner](GainGradientCorner.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
 `Width X`
 `Width Y`
 `Strength[%]`
-## Gamma
+## [Gamma](Gamma.glsl)
 <img src="Gamma.png" alt="Gamma" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Gamma[%]`
-## GaussianBlur
+## [GaussianBlur](GaussianBlur.glsl)
 <img src="GaussianBlur.png" alt="GaussianBlur" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Directions`
@@ -302,29 +302,29 @@
 `Size`
 `Width[px]`
 `Height[px]`
-## GaussianSep
+## [GaussianSep](GaussianSep.glsl)
 <img src="GaussianSep.png" alt="GaussianSep" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Strength`
 `Horizontal`
 `Width[px]`
 `Height[px]`
-## Glitch
+## [Glitch](Glitch.glsl)
 <img src="Glitch.png" alt="Glitch" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
 `time`
 `Wave`
 `Noise`
-## Gradient
+## [Gradient](Gradient.glsl)
 <img src="Gradient.png" alt="Gradient" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Left color Red`
 `Left color Green`
@@ -338,19 +338,19 @@
 `Width`
 `Strength[%]`
 `Angle`
-## HueSaturationValue
+## [HueSaturationValue](HueSaturationValue.glsl)
 <img src="HueSaturationValue.png" alt="HueSaturationValue" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Hue[deg]`
 `Saturation[%]`
 `Value[%]`
-## Iris
+## [Iris](Iris.glsl)
 <img src="Iris.png" alt="Iris" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `xRadius`
@@ -366,19 +366,19 @@
 `Invert`
 `Width[px]`
 `Height[px]`
-## Kaleidoscope
+## [Kaleidoscope](Kaleidoscope.glsl)
 <img src="Kaleidoscope.png" alt="Kaleidoscope" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `time`
 `Rotation speed`
 `Amount`
-## Keystoning
+## [Keystoning](Keystoning.glsl)
 <img src="Keystoning.png" alt="Keystoning" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `LeftUpperX`
 `LeftUpperY`
@@ -388,10 +388,10 @@
 `LeftLowerY`
 `RightLowerX`
 `RightLowerY`
-## LavaLamp
+## [LavaLamp](LavaLamp.glsl)
 <img src="LavaLamp.png" alt="LavaLamp" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `time`
@@ -404,10 +404,10 @@
 `Background Red`
 `Background Green`
 `Background Blue`
-## LedEffect
+## [LedEffect](LedEffect.glsl)
 <img src="LedEffect.png" alt="LedEffect" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Amount`
@@ -417,29 +417,29 @@
 `Gap Green`
 `Gap Blue`
 `Gap Alpha`
-## LumaKey
+## [LumaKey](LumaKey.glsl)
 <img src="LumaKey.png" alt="LumaKey" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `MinLuma`
 `MaxLuma`
 `Softness`
-## MagnifyingGlass
+## [MagnifyingGlass](MagnifyingGlass.glsl)
 <img src="MagnifyingGlass.png" alt="MagnifyingGlass" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Radius`
 `xPosition`
 `yPosition`
 `Scale[%]`
-## Mask
+## [Mask](Mask.glsl)
 <img src="Mask.png" alt="Mask" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Sampler`
@@ -452,57 +452,57 @@
 `Aspect Ratio`
 `Scale X`
 `Scale Y`
-## MaskRGB
+## [MaskRGB](MaskRGB.glsl)
 <img src="MaskRGB.png" alt="MaskRGB" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Sampler`
-## Mirror
+## [Mirror](Mirror.glsl)
 <img src="Mirror.png" alt="Mirror" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `MirrorPosition[%]`
 `Offset`
-## Movement
+## [Movement](Movement.glsl)
 <img src="Movement.png" alt="Movement" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Time`
 `Speed`
 `Vertical`
-## MultiplyAlpha
+## [MultiplyAlpha](MultiplyAlpha.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Alpha[%]`
-## MultiplyColor
+## [MultiplyColor](MultiplyColor.glsl)
 <img src="MultiplyColor.png" alt="MultiplyColor" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Red`
 `Green`
 `Blue`
 `Alpha`
-## Negative
+## [Negative](Negative.glsl)
 <img src="Negative.png" alt="Negative" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
-## Noise
+## [Noise](Noise.glsl)
 <img src="Noise.png" alt="Noise" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Size`
 `Strength[%]`
@@ -517,34 +517,34 @@
 `WhiteColor Green`
 `WhiteColor Blue`
 `WhiteColor Alpha`
-## Opacity
+## [Opacity](Opacity.glsl)
 <img src="Opacity.png" alt="Opacity" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Alpha[%]`
-## Pixelate
+## [Pixelate](Pixelate.glsl)
 <img src="Pixelate.png" alt="Pixelate" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Width[px]`
 `Height[px]`
 `Pixels`
-## PolarCoordinates
+## [PolarCoordinates](PolarCoordinates.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `X Pos`
 `Y Pos`
 `X Scale`
 `Y Scale`
 `Rotate`
-## RaymarchClouds
+## [RaymarchClouds](RaymarchClouds.glsl)
 <img src="RaymarchClouds.png" alt="RaymarchClouds" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `time`
@@ -556,10 +556,10 @@
 `Background Red`
 `Background Green`
 `Background Blue`
-## RectMaskSoft
+## [RectMaskSoft](RectMaskSoft.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Top Left X`
@@ -572,93 +572,93 @@
 `Bottom Right Y`
 `Smoothness`
 `Invert`
-## ReduceColors
+## [ReduceColors](ReduceColors.glsl)
 <img src="ReduceColors.png" alt="ReduceColors" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `RedValues`
 `GreenValues`
 `BlueValues`
-## Reflection
+## [Reflection](Reflection.glsl)
 <img src="Reflection.png" alt="Reflection" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Strength`
 `PositionY`
-## Relief
+## [Relief](Relief.glsl)
 <img src="Relief.png" alt="Relief" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Direction`
 `Width[px]`
 `Height[px]`
-## RotateCenter
+## [RotateCenter](RotateCenter.glsl)
 <img src="RotateCenter.png" alt="RotateCenter" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Angle`
 `Speed`
-## Rotation
+## [Rotation](Rotation.glsl)
 <img src="Rotation.png" alt="Rotation" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Angle`
 `Speed`
-## Sepia
+## [Sepia](Sepia.glsl)
 <img src="Sepia.png" alt="Sepia" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
-## Sharpening
+## [Sharpening](Sharpening.glsl)
 <img src="Sharpening.png" alt="Sharpening" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Width[px]`
 `Height[px]`
 `Strength`
-## Shockwave
+## [Shockwave](Shockwave.glsl)
 <img src="Shockwave.png" alt="Shockwave" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Time`
 `TimeMultiplier`
-## Solarize
+## [Solarize](Solarize.glsl)
 <img src="Solarize.png" alt="Solarize" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
 `Threshold`
 `Below`
-## SolidColor
+## [SolidColor](SolidColor.glsl)
 <img src="SolidColor.png" alt="SolidColor" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
 `Red`
 `Green`
 `Blue`
 `Alpha`
-## Spill
+## [Spill](Spill.glsl)
 <img src="Spill.png" alt="Spill" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Red`
@@ -668,18 +668,18 @@
 `Saturation`
 `HueTolerance`
 `LightnessTolerance`
-## SplitColors
+## [SplitColors](SplitColors.glsl)
 <img src="SplitColors.png" alt="SplitColors" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Strength`
 `Angle[deg]`
 `Mix[%]`
-## Swirl
+## [Swirl](Swirl.glsl)
 <img src="Swirl.png" alt="Swirl" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
 `PositionX`
@@ -687,17 +687,17 @@
 `Radius`
 `Twist`
 `Time`
-## Tiling
+## [Tiling](Tiling.glsl)
 <img src="Tiling.png" alt="Tiling" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Factor`
-## TriGradient
+## [TriGradient](TriGradient.glsl)
 <img src="TriGradient.png" alt="TriGradient" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix`
 `Position1[%]`
@@ -717,60 +717,60 @@
 `Color 3 Green`
 `Color 3 Blue`
 `Color 3 Alpha`
-## TriNoise2
+## [TriNoise2](TriNoise2.glsl)
 <img src="TriNoise2.png" alt="TriNoise2" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `time`
 `amount`
 `Mix`
-## UVPositionAndScale
+## [UVPositionAndScale](UVPositionAndScale.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `X Pos`
 `Y Pos`
 `X Scale`
 `Y Scale`
-## UVPositionAndScale_Unclamped
+## [UVPositionAndScale_Unclamped](UVPositionAndScale_Unclamped.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `X Pos`
 `Y Pos`
 `X Scale`
 `Y Scale`
-## Vignette
+## [Vignette](Vignette.glsl)
 <img src="Vignette.png" alt="Vignette" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `Width[%]`
-## Wipe
+## [Wipe](Wipe.glsl)
 <img src="Wipe.png" alt="Wipe" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `X`
 `Y`
-## Zoom
+## [Zoom](Zoom.glsl)
 <img src="Zoom.png" alt="Zoom" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Mix[%]`
 `xPosition`
 `yPosition`
 `Scale[%]`
-## DrivingPlates
+## [DrivingPlates](DrivingPlates.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Sampler2`
 `Sampler3`
@@ -792,10 +792,10 @@
 `FOV Ceiling`
 `AspectRatio Ceiling`
 `Sampler`
-## Equirectangular
+## [Equirectangular](Equirectangular.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
@@ -804,10 +804,10 @@
 `Rotation Y`
 `Rotation Z`
 `Sampler`
-## EquirectangularRanged
+## [EquirectangularRanged](EquirectangularRanged.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
@@ -818,10 +818,10 @@
 `Range Start`
 `Range End`
 `Sampler`
-## EquirectangularRangedBidirectional
+## [EquirectangularRangedBidirectional](EquirectangularRangedBidirectional.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
@@ -834,10 +834,10 @@
 `Ver Range Start`
 `Ver Range End`
 `Sampler`
-## Equirectangular_RotYXZ
+## [Equirectangular_RotYXZ](Equirectangular_RotYXZ.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
@@ -846,10 +846,10 @@
 `Rotation Y`
 `Rotation Z`
 `Sampler`
-## Perspective
+## [Perspective](Perspective.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
@@ -860,10 +860,10 @@
 `FOV`
 `AspectRatio`
 `Sampler`
-## Planar
+## [Planar](Planar.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
-**Labels:**
+**Variables:**
 
 `Position X`
 `Position Y`
