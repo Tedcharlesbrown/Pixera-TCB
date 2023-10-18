@@ -34,7 +34,7 @@ def generate_effect_overview(directory):
         files_lower = [f.lower() for f in files]
 
         for file in sorted(files):
-            if file.lower().endswith(".glsl"):
+            if file.lower().endswith(".glsl") and file.lower() != "blank.glsl":
                 base_name = os.path.splitext(file)[0]  # Get the name without extension
                 png_file = base_name + ".png"
                 

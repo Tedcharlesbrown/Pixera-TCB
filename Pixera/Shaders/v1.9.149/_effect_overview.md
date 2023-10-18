@@ -57,12 +57,6 @@
 `to green`
 `Exclude from blue`
 `to blue`
-## [Blank](Blank.glsl)
-<img src="_noeffect.png" alt="Placeholder Image" width="500"/>
-
-**Variables:**
-
-`Dummy`
 ## [BoxBlur](BoxBlur.glsl)
 <img src="BoxBlur.png" alt="BoxBlur" width="500"/>
 
