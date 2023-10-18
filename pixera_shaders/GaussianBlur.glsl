@@ -2,7 +2,7 @@
 // Version: 1.0
 
 //@implements: sampler2D
-struct TestBlur {
+struct GaussianBlur {
    sampler2D sampler;
    //@ label: "Mix[%]", editor: range, min: 0, max: 1, range_min: 0, range_max: 255, range_default: 0
    float mix;
@@ -18,7 +18,7 @@ struct TestBlur {
    float height;
 };
 
-vec4 texture(TestBlur s, vec2 tex_coords) {
+vec4 texture(GaussianBlur s, vec2 tex_coords) {
    float Pi = 6.28318530718; // Pi*2
 	
    //GAUSSIAN BLUR SETTINGS
