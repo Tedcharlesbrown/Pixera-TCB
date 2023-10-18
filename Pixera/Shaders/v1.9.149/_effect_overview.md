@@ -259,7 +259,7 @@
 `Bottom`
 `Angle[deg]`
 ## [DirectionalBlur](DirectionalBlur.glsl)
-<img src="_noeffect.png" alt="Placeholder Image" width="500"/>
+<img src="DirectionalBlur.png" alt="DirectionalBlur" width="500"/>
 
 - Blurs content in a specified direction
 
