@@ -1,0 +1,98 @@
+local deviceID = "00";
+local commandFormat = "10";
+local timelineName = "Timeline 1"
+local timeline = Pixera.Timelines.getTimelineFromName(timelineName)
+
+--Guard statements
+--confirm the message we received is a SysEx
+if ( data[1] ~= "f0" or data [2] ~= "7f") 
+then 
+	return
+end
+--check if the message ends with a valid SysEx terminator
+if(data[#data]~= "f7") 
+then
+	return
+end
+
+--get device id (byte 3)
+--get command format (byte 5) (lighting, video, etc)
+messageDeviceID = data[3];
+messageCommandFormat = data[5];
+
+--check if the deviceID matches or is a broadcast
+if(messageDeviceID ~= "7f") 
+then
+	if(messageDeviceID ~= deviceID) 
+	then
+		return
+	end
+end
+
+--check if this is an MSC command (byte 4)
+if(data[4] ~= "02") 
+then
+	return
+end
+
+--check if the commandFormat matches ours or is all
+if(messageCommandFormat ~= "7f") 
+then
+	if(data[5] ~= commandFormat) 
+	then
+		return
+	end
+end
+
+--check commands
+
+--command values
+--01 = go
+--02 = stop
+
+--go command
+if(data[6] == "01") 
+then
+	local cueString = "";
+	local cueNumber = 0;
+	local delimiter = 0;
+	
+	--check if we have extra parameters
+	if(#data > 7 and data[7]~= "00") 
+	then
+	
+		--find delimiter or 7f
+		for i=8,#data,1
+		do
+			if(data[i] == "00" or data[i]=="f7") 
+			then
+				delimiter = i;
+				break;
+			end
+		end
+		--if we found a delimiter, parse the data from 7 to delimiter
+		if(delimiter ~= 0) 
+		then
+			for i=7,delimiter-1,1
+			do
+				cueString = cueString .. string.char(tonumber(data[i],16))
+			end
+			--send go cue command
+			--find the cue
+			cueNumber = tonumber(cueString)
+			local cue = timeline.getCueFromNumber(cueNumber)
+			pixc.log(cue)
+			if(cue ~= nil) 
+			then
+				cue.apply()
+				if(cue.getOperation()==2)
+				then
+					timeline.play()
+				end
+			end
+		end
+	else
+		timeline.play()
+	end
+end
+
