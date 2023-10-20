@@ -12,4 +12,4 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 [Edited](01-Custom/02-Shaders/Pixera-Edited/_effect_overview.md)
 
 ## Control
-*future site for custom control modules*
+[Script - MIDI MSC SysEx Parsing](01-Custom/01-Control/scripts/MIDI_MSC_SysEx.lua)
