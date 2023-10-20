@@ -3,12 +3,13 @@ Made by: Ted Charles Brown
 Version 1.0.0
 
 HOW TO USE:
- - Add a MIDI module to Control
- - Add a "NewModule" to Control
- - Right click in the "newModule" and select "add action" (or add a new action to the MIDI module to get around node counts)
- - Name the module "mscIn(data)" - data is the variable name and must be included
+ - Add a MIDI module to Control.
+ - Add a "NewModule" to Control.
+ - Right click in the "newModule" and select "add action" (or add a new action to the MIDI module to get around node counts).
+ - Name the module "mscIn(data)" - data is the variable name and must be included.
+ - Copy and paste this code into the code section of that new action.
  - In the MIDI module, under Receive, SysEx, drag the output to the input of the new action.
- - Edit the deviceID, cueList, and timelineName variables to match your setup
+ - Edit the deviceID, cueList, and timelineName variables to match your setup.
 
 NOTES:
  - Currently does not support pause, resume, fader, or macro commands.
