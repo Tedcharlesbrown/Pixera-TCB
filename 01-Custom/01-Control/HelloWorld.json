@@ -1,0 +1,36 @@
+{
+    "api": [
+        {
+            "body": "pixc.log(\"Hello world\")",
+            "kind": "func",
+            "name": "helloWorld"
+        }
+    ],
+    "cjv": {
+        "h": 200.0,
+        "w": 200.0,
+        "x": 196.09090909090912,
+        "y": 60.09090909090909
+    },
+    "definedExternally": false,
+    "hostInfo": {
+        "systemType": ""
+    },
+    "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/HelloWorld.json",
+    "license": "1GNTlyr7sewU1l3S6nhV4toMisgld/UomZKAlQZ9diOAxuShSjfOD3qcPHBNH5kv59BCgebiP23lbL/UGW2XitJqdeHW1wzdbTQdR7BS5tE28jRSuGXxKqldRjs4xJ34q0WlZZFXnp7aCtOAKQ8Ucmj9hRBD2ZTuaa9JGR3Iy74=",
+    "name": "HelloWorld",
+    "properties": [
+        {
+            "cont": "Simple proof of concept control node that prints \"Hello world\" to the Pixera log.",
+            "name": "Description",
+            "readOnly": true,
+            "typeHint": "string"
+        },
+        {
+            "cont": "Ted Charles Brown",
+            "name": "Author",
+            "readOnly": true,
+            "typeHint": "string"
+        }
+    ]
+}
