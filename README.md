@@ -7,9 +7,9 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 
 ## Shaders
 ### Pixera Built In Effects Overview
-[v1.9.149](/Pixera/Shaders/v1.9.149/_effect_overview.md)
+[v1.9.149](00-Pixera/02-Shaders/v1.9.149_effect_overview.md)
 ### Edited Effects Overview
-[Edited](/Shaders/Pixera-Edited/_effect_overview.md)
+[Edited](01-Custom/02-Shaders/Pixera-Edited/_effect_overview.md)
 
 ## Control
 *future site for custom control modules*
