@@ -1,0 +1,501 @@
+{
+ "api": [
+  {
+   "body": "\r\nif self.isInit ~= nil and self.isInit == true then \r\n\treturn\r\nend\r\nrequire \"pixcHelper\"\r\nrequire \"pixcNetwork\"\r\nself.avCall = require(\"pixcCall\")\r\nif self.helper == nil then\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nif self.network == nil then\r\n\tself.network = createPixcNetwork()\r\nend\r\n\r\nself.isInit = true;\r\nself.ipLocal =pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"Any\"))\r\nself.ip = self.helper:getProperty(\"Broadcast IP\",\"255.255.255.255\")\r\nself.autoClose = self.helper:getProperty(\"Auto Close Socket\",\"true\")\r\nif self.autoClose == \"true\" then\r\n\tself.autoClose = true\r\nelse \r\n\tself.autoClose = false\r\nend\r\nself.port = tonumber(self.helper:getProperty(\"Wol Port\",\"9\"))\r\nself.IsOpen(false, true)\r\nself.loadFromProperty();\r\n\r\nself.network:configureUdp(\r\n\tself.ip,\r\n\tself.port,\r\n\tself.ipLocal,\r\n\tself.portLocal,\r\n\tfunction (handle, data) end,\r\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\r\nself.network:enableBroadcast();\r\nself.network:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\n\r\nif self.autoClose == false then\r\n\tself.network:start()\r\nend\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.isInit ~= nil and self.isInit == true then \r\n\tself.network:close()\r\n\tself.isInit = false;\r\nend\r\nif self.helper ~= nil then\r\n\tself.helper = nil\r\nend\r\nif self.network ~= nil then\r\n\tself.network = nil\r\nend\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "\tif self.dat == nil then\r\n\t\tself.dat = {}\r\n\tend\r\n\tif ip == \"\" then\r\n\t\tip = nil\r\n\tend\r\n\tself.dat[\"ip\"..math.tointeger(idx)] = ip\r\n",
+   "kind": "func",
+   "name": "setIp",
+   "params": [
+    {
+     "name": "ip",
+     "type": "string"
+    },
+    {
+     "name": "idx",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "\tif self.dat == nil then\r\n\t\tself.dat = {}\r\n\tend\r\n\tif mac == \"\" then\r\n\t\tmac = nil\r\n\tend\r\n\tself.dat[\"mac\"..math.tointeger(idx)] = mac\r\n",
+   "kind": "func",
+   "name": "setMac",
+   "params": [
+    {
+     "name": "mac",
+     "type": "string"
+    },
+    {
+     "name": "idx",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "\tif self.jsonlib == nil then\r\n\t\tself.jsonlib = require \"json\" \r\n\tend\r\n\tif self.dat ~= nil then\r\n\t\tself.jsonCfg = self.jsonlib.encode(self.dat)\r\n\t\tself().setProperty(\"Config\",self.jsonCfg)\r\n\tend\r\n",
+   "kind": "func",
+   "name": "saveToProperty",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if self.jsonlib == nil then\r\n\tself.jsonlib = require \"json\" \r\nend\r\nif self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nself.jsonCfg = self.helper:getProperty(\"Config\",\"{}\")\r\nif self.jsonCfg ~= nil then\r\n\tself.dat = self.jsonlib.decode(self.jsonCfg)\r\nend\r\n\r\n",
+   "kind": "func",
+   "name": "loadFromProperty",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "self.LoadSignals.statusMsg(\"\")\r\nlocal tag = \"ip\"..math.tointeger(idx)\r\nif self.network == nil then\r\n\trequire \"pixcNetwork\"\r\n\tself.network = createPixcNetwork()\r\nend\r\nlocal data = self.network:getMacByArp(self.dat[tag])\r\nlocal tagMac = \"mac\"..math.tointeger(idx)\r\nif data ~= nil then\r\n\tpixc.log(tag,tagMac,data)\r\n\tself.dat[tagMac] = data\r\n\tself.LoadSignals[tagMac](data)\r\nelse\r\n\tself.LoadSignals.statusMsg(\"Resolve failed\")\r\nend\r\n",
+   "kind": "func",
+   "name": "resolveMac",
+   "params": [
+    {
+     "name": "idx",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "\tif self.network == nil then\r\n\t\tself.LoadSignals.statusMsg(\"Try Wol error, init required\")\r\n\t\tpixc.log(\"TryWol error, init required\")\r\n\t\treturn\r\n\tend\r\n\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac\"..math.tointeger(idx)])\r\n\tif iOpened == true then\r\n\t\tself.network:close()\r\n\tend\r\n\tself.LoadSignals.statusMsg(\"\")\r\n",
+   "kind": "func",
+   "name": "tryWol",
+   "params": [
+    {
+     "name": "idx",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if self.jsonlib == nil then\n\tself.jsonlib = require \"json\" \nend\nself.loadFromProperty()\nfor i=1,10,1 do \n\tlocal tag = \"ip\"..math.tointeger(i)\n\tif self.dat[tag] ~= nil then\n\t\tself.LoadSignals[tag](self.dat[tag])\n\telse\n\t\tself.LoadSignals[tag](\"\")\n\tend\n\tlocal tag = \"mac\"..math.tointeger(i)\n\tif self.dat[tag] ~= nil then\n\t\tself.LoadSignals[tag](self.dat[tag])\n\telse\n\t\tself.LoadSignals[tag](\"\")\n\tend\nend\n",
+   "kind": "func",
+   "name": "loadValues",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "--\r\n\r\nif mac == nil then\r\n\tpixc.log(\"Mac was nil\")\r\n\treturn\r\nend\r\n\r\nif type(mac)~= 'string' then\r\n\tpixc.log(\"mac has invalid type\")\r\n\treturn\r\nend \nlocal bytes = {string.match(mac, '(%x+)[-:](%x+)[-:](%x+)[-:](%x+)[-:](%x+)[-:](%x+)')}\nif bytes == nil then\n\tpixc.log(\"invalid  Mac format\")\n\treturn\nend\nfor i = 1, 6 do\n\tif bytes[i] == nil then\n\t\tpixc.log(\"invalid  Mac format, had nil\")\n\tend\n\tbytes[i] = tonumber(bytes[i], 16)\n\tif  bytes[i] < 0 or bytes[i] > 0xFF then\n\t\tpixc.log(\"invalid  Mac format, byte invalid\")\n\tend\nend\nlocal magicPacket = {};\nlocal count = 1;\nfor i = 1, 6, 1 do\n\tmagicPacket[count] = 0xFF;\n\tcount = count + 1\nend\nfor i = 1, 16, 1 do\n\tfor j = 1, 6, 1 do\n\t\tmagicPacket[count] = bytes[j];\n\t\tcount = count + 1\n\tend\nend\r\n\r\nif self.network == nil then return end\r\nself.network:send(magicPacket)\r\n",
+   "kind": "func",
+   "name": "sendWol",
+   "params": [
+    {
+     "name": "mac",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "local iOpened = false;\r\nif self.network:getSocket() == nil then\r\n\tself.network:start()\r\n\tiOpened = true;\r\nend\r\n\tfor i = 1, 10,1 do\r\n\t\tlocal tag = \"mac\"..math.tointeger(i)\r\n\t\tif self.dat[tag] ~= nil then\r\n\t\t\tself.sendWol(self.dat[tag])\r\n\t\tend\r\n\tend\r\nif iOpened == true then\r\n\tself.network:close()\r\nend\r\n",
+   "kind": "func",
+   "name": "sendWolAll",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac1\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol1",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac2\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol2",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac3\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol3",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac4\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol4",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac5\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol5",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac6\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol6",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac7\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol7",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac8\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol8",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac9\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol9",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "\tlocal iOpened = false;\r\n\tif self.network:getSocket() == nil then\r\n\t\tself.network:start()\r\n\t\tiOpened = true;\r\n\tend\r\n\tself.sendWol(self.dat[\"mac10\"])\r\n\tif iOpened == true then\r\n\tself.network:close()\r\n\tend\r\n",
+   "kind": "func",
+   "name": "sendWol10",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\r\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip1",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip2",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip3",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip4",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip5",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip6",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip7",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip8",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip9",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "ip10",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac1",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac2",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac3",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac4",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac5",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac6",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac7",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac8",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac9",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "mac10",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "statusMsg",
+     "params": [
+      {
+       "name": "txt",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "hidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "LoadSignals"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 1355.0,
+  "y": 1282.5
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Protocols/WakeOnLan.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4i5CJYdlNU4igAkEp6/x4K9f369sRBSvgT5Fxd/CpIKW6ri1uexm3tVia0+AAUVCBlQ8oU2R+E8DFC5uU1EabxIyGSzfvEgV5cpcH76ix9sguQX6zU6CCLNIwrJ21x5TMw==",
+ "name": "WakeOnLan",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "UI Is Editable"
+  },
+  {
+   "cont": "",
+   "name": "Auth Source"
+  },
+  {
+   "cont": "",
+   "name": "Permissions"
+  },
+  {
+   "cont": "[]",
+   "name": "Config"
+  },
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "Any",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  },
+  {
+   "cont": "255.255.255.255",
+   "name": "Broadcast IP"
+  },
+  {
+   "cont": "9",
+   "name": "Wol Port"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Close Socket",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "{\"isInEditMode\":true,\"pages\":[{\"name\":\"Page1\",\"bgColor\":\"#383838\",\"components\":[{\"componentId\":\"Component_1614336083334_57469\",\"label\":\"Load Values\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":40,\"y\":50,\"width\":120,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"loadValues\"}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":170,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\",\"value\":\"\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":1}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac1\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614449168837_99043\",\"label\":\"IP\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":100,\"y\":100,\"width\":170,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449199243_79830\",\"label\":\"MAC\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":380,\"y\":100,\"width\":190,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":170,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":1}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":170,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":1}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449416238_9713\",\"label\":\"Save\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":180,\"y\":50,\"width\":110,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"saveToProperty\"}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":220,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\",\"value\":\"\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":2}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip2\",\"params\":[{\"type\":\"string\",\"name\":\"txt\",\"value\":\"\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":270,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":3}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip3\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":320,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":4}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip4\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":370,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":5}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip5\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":420,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":6}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip6\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":470,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":7}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip7\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":520,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":8}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip8\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":570,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":9}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip9\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337409356_55934\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":620,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":10}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip10\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":220,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":2}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":270,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":3}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":320,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":4}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":370,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":5}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":420,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":6}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":470,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":7}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":520,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":8}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":570,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":9}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449216523_6772\",\"label\":\"->\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":300,\"y\":620,\"width\":50,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"resolveMac\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":10}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":220,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":2}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac2\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":270,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":3}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac3\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":320,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\",\"value\":\"\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":4}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac4\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":370,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\",\"value\":\"\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":5}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac5\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":420,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":6}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac6\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":470,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":7}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac7\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":520,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":8}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac8\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":570,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":9}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac9\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614337817472_50897\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":380,\"y\":620,\"width\":190,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setMac\",\"params\":[{\"type\":\"string\",\"name\":\"mac\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":10}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"mac10\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":220,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":2}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":270,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":2}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":320,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":4}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":370,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":5}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":420,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":6}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":470,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":7}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":520,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":8}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":570,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":9}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614449361580_10419\",\"label\":\"Send Wol\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":610,\"y\":620,\"width\":100,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"tryWol\",\"params\":[{\"type\":\"undefined\",\"name\":\"idx\",\"value\":10}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614460683747_12821\",\"label\":\"\",\"type\":\"UbControlTextbox\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":170,\"width\":170,\"height\":30},\"invoc\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"setIp\",\"params\":[{\"type\":\"string\",\"name\":\"ip\",\"value\":\"\"},{\"type\":\"undefined\",\"name\":\"idx\",\"value\":1}]}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"ip1\"}]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"1\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":170,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"2\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":220,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"3\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":270,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"4\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":320,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"5\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":370,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"6\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":420,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"7\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":470,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"8\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":520,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"9\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":570,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1614537258354_2407\",\"label\":\"10\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":40,\"y\":620,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[]]}},{\"componentId\":\"Component_1615975354938_41756\",\"label\":\"\",\"type\":\"UbControlLabel\",\"bgColor\":\"eeeeee\",\"dims\":{\"x\":100,\"y\":130,\"width\":610,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"ns\",\"name\":\"LoadSignals\"},{\"kind\":\"func\",\"name\":\"statusMsg\",\"params\":[{\"type\":\"string\",\"name\":\"txt\"}]}]]}}],\"styleClasses\":[\"\"]}],\"settings\":{\"onLoad\":[{\"kind\":\"interface\",\"name\":\"WakeOnLan\"},{\"kind\":\"func\",\"name\":\"loadValues\"}]},\"themeAndDesign\":{\"design\":\"Default\",\"theme\":\"Dark\",\"themes\":{}}}",
+   "name": "uib"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}

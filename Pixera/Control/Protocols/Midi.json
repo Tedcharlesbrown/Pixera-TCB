@@ -1,0 +1,843 @@
+{
+ "api": [
+  {
+   "body": "return self()\r\n",
+   "kind": "func",
+   "name": "ref"
+  },
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcProtocolMidi\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nif self.protocol == nil then\n\tself.protocol = createPixcProtocolMidi()\nend\nself.token = 0\nself.freshMode = 0\nself.ready = true\nself.running = false\nself.midiInDev = self.helper:getProperty(\"Midi In Device\",\"\")\nself.midiOutDev = self.helper:getProperty(\"Midi Out Device\",\"\")\nself.disableLog = self.helper.toBool(self.helper:getProperty(\"Disable Logs\",\"true\"))\nself.learn = self.helper.toBool(self.helper:getProperty(\"Learn\"))\nself._learnNote = self.helper.toBool(self.helper:getProperty(\"Learn Note\"))\n\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\nif self.midiOutDev ~= nil and self.midiOutDev ~= \"\" then\n\tself.protocol:openMidiOutDevice(self.midiOutDev)\nend\nself.MidiInCallbacks = {}\nself.MidiInCallbacks[\"note\"] = self.Receive.Note.recvNote\nself.MidiInCallbacks[\"polymorphicAftertouch\"] = self.Receive.Polymorphic.recvPolymorphicAftertouch\nself.MidiInCallbacks[\"controlChange\"] = self.Receive.ControlChange.recvControlChange\nself.MidiInCallbacks[\"programChange\"] = self.Receive.ProgramChange.recvProgramChange\nself.MidiInCallbacks[\"channelAfterTouch\"] = self.Receive.ChannelAftertouch.recvChannelAftertouch\nself.MidiInCallbacks[\"pitchBlend\"] = self.Receive.PitchBlend.recvPitchBlend\nself.MidiInCallbacks[\"sysEx\"] = self.Receive.SysEx.recvSysEx\nself.MidiInCallbacks[\"mtc\"] = self.Timecode.Internal.timecodeFunction\nif self.midiInDev ~= nil and self.midiInDev ~= \"\" then\n\tself.protocol:openMidiInDevice(self.midiInDev,self.MidiInCallbacks)\nend\nif self.interval == nil then\n\tself.interval = pixc.getRoot().Utils.Timer.setInterval(\n\t\tfunction()\n\t\t\tself.Timecode.Internal.checkInput()\n\t  \tend, 50)\nend\nif self.intervalExecuteTimecode == nil then\n\tself.intervalExecuteTimecode = pixc.getRoot().Utils.Timer.setInterval(\n\t\tfunction()\n\t\t\tself.Timecode.timecodeToTimeline()\n\t  \tend, 1000)\nend\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "self.Timecode.Timecode(nil)\r\nself.running = false\r\nself.ready = true\r\nself.freshMode = 2\r\nself.Timecode.timecodeToTimeline()\r\n\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval)\r\n\tself.interval = nil\r\nend\r\nif self.intervalExecuteTimecode ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.intervalExecuteTimecode)\r\n\tself.intervalExecuteTimecode = nil\r\nend\r\n\r\nif self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendNote(channel,note,on,velocity)\n",
+     "kind": "func",
+     "name": "sendNote",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "note",
+       "type": "int"
+      },
+      {
+       "name": "on",
+       "type": "bool"
+      },
+      {
+       "name": "velocity",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendNote(channel,note,value)\r\n",
+     "kind": "func",
+     "name": "sendPolymorphicAfterTouch",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "note",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendControlChange(channel,controller, value)\r\n",
+     "kind": "func",
+     "name": "sendControlChange",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "controller",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendProgramChange(channel, device)\r\n",
+     "kind": "func",
+     "name": "sendProgramChange",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "device",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendChannelAftertouch(channel, value)\r\n",
+     "kind": "func",
+     "name": "sendChannelAftertouch",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendPitchBlend(channel, value)\r\n",
+     "kind": "func",
+     "name": "sendPitchBlend",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "attKind": "standard",
+     "body": "self.protocol:sendSysEx(channel, data)\r\n",
+     "kind": "func",
+     "name": "sendSysEx",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "data",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    }
+   ],
+   "kind": "ns",
+   "name": "Send"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "body": "if error then \r\n\tif not self.disableLog  then pixc.log(error) end\r\nelse \r\n\tif on == true then\r\n\t\tif not self.disableLog then\r\n\t\t\tpixc.log( \"Note(\"..note..\") On: channel(\"..channel..\") velocity(\"..velocity..\")\") \r\n\t\tend\r\n\telse\r\n\t\tif not self.disableLog then\r\n\t\t\tpixc.log( \"Note(\"..note..\") Off: channel(\"..channel..\") velocity(\"..velocity..\")\") \r\n\t\tend\r\n\tend\r\nend\r\nif self._learnNote then\r\n\tself.learnNote()\r\n\tself.helper:setProperty(\"Last Received Note\",\"Channel: \" .. math.floor(math.abs(channel+1)) .. \" Note: \" .. self.midiNoteList(note-20) .. \" Value: \" .. velocity)\r\n\tself.helper:setProperty(\"Note Action Name\",\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_Note_\" .. string.gsub(self.midiNoteList(note-20),\"#\",\"Sharp\"))\r\nelse\r\n\tif self.Receive.Note[\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_Note_\" .. string.gsub(self.midiNoteList(note-20),\"#\",\"Sharp\")] ~= nil then\r\n\t\tself.Receive.Note[\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_Note_\" .. string.gsub(self.midiNoteList(note-20),\"#\",\"Sharp\")](velocity)\r\n\tend\r\nend\r\n--pixc.log(\"Channel: \" .. channel .. \" Note: \" .. self.midiNoteList(note-20) .. \" Value: \" .. velocity)",
+       "kind": "func",
+       "name": "recvNote",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "channel",
+         "type": ""
+        },
+        {
+         "name": "on",
+         "type": ""
+        },
+        {
+         "name": "note",
+         "type": ""
+        },
+        {
+         "name": "velocity",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Note"
+    },
+    {
+     "elems": [
+      {
+       "body": "if error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then\r\n\t\tpixc.log( \"PolyMophicAfterTouch(\"..note..\"): channel(\"..channel..\") value(\"..value..\")\") \r\n\tend\r\nend\r\n",
+       "kind": "func",
+       "name": "recvPolymorphicAftertouch",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "channel",
+         "type": ""
+        },
+        {
+         "name": "note",
+         "type": ""
+        },
+        {
+         "name": "value",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Polymorphic"
+    },
+    {
+     "elems": [
+      {
+       "body": "if error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then pixc.log( \"ControlChange: channel(\"..channel..\") controller(\"..controller..\") value(\"..value..\")\") end\r\nend\r\nif self._learnCC then\r\n\tself.learnCC()\r\n\tself.helper:setProperty(\"Last Received CC\",\"Channel: \" .. math.floor(math.abs(channel+1)) .. \" CC: \" .. math.floor(math.abs(controller)) .. \" Value: \" .. value)\r\n\tself.helper:setProperty(\"CC Action Name\",\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_CC_\" .. math.floor(math.abs(controller)))\r\nelse\r\n\tif self.Receive.ControlChange[\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_CC_\" .. math.floor(math.abs(controller))] ~= nil then\r\n\t\tself.Receive.ControlChange[\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_CC_\" .. math.floor(math.abs(controller))](value)\r\n\tend\r\nend",
+       "kind": "func",
+       "name": "recvControlChange",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "channel",
+         "type": ""
+        },
+        {
+         "name": "controller",
+         "type": ""
+        },
+        {
+         "name": "value",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "ControlChange"
+    },
+    {
+     "elems": [
+      {
+       "body": "if error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then pixc.log( \"ProgramChange: channel(\"..channel..\") device(\"..device..\")\") end\r\nend\r\nif self._learnPC then\r\n\tself.learnPC()\r\n\tself.helper:setProperty(\"Last Received PC\",\"Channel: \" .. math.floor(math.abs(channel+1)) .. \" PC: \" .. math.floor(math.abs(device)))\r\n\tself.helper:setProperty(\"PC Action Name\",\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_PC_\" .. math.floor(math.abs(device)))\r\nelse\r\n\tif self.Receive.ProgramChange[\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_PC_\" .. math.floor(math.abs(device))] ~= nil then\r\n\t\tself.Receive.ProgramChange[\"Ch\" .. math.floor(math.abs(channel+1)) .. \"_PC_\" .. math.floor(math.abs(device))]()\r\n\tend\r\nend",
+       "kind": "func",
+       "name": "recvProgramChange",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "channel",
+         "type": ""
+        },
+        {
+         "name": "device",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "ProgramChange"
+    },
+    {
+     "elems": [
+      {
+       "body": "if error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then pixc.log( \"ChannelAftertouch: channel(\"..channel..\") value(\"..value..\")\") end\r\nend\r\n",
+       "kind": "func",
+       "name": "recvChannelAftertouch",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "channel",
+         "type": ""
+        },
+        {
+         "name": "value",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "ChannelAftertouch"
+    },
+    {
+     "elems": [
+      {
+       "body": "if error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then pixc.log( \"PitchBlend: channel(\"..channel..\") value(\"..value..\")\") end\r\nend\r\n",
+       "kind": "func",
+       "name": "recvPitchBlend",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "channel",
+         "type": ""
+        },
+        {
+         "name": "value",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "PitchBlend"
+    },
+    {
+     "elems": [
+      {
+       "body": "local msg = \"\"\r\nlocal msgTable = {}\r\nif dataTable ~= nil and type(dataTable) == \"table\" then\r\n\tfor i,_ in pairs(dataTable) do\r\n\t\tlocal hex = string.format(\"%x\", _)\r\n\t\tif string.len(hex) == 1 then\r\n\t\t\thex = \"0\" .. hex\r\n\t\tend\r\n\t\tmsg = msg .. hex\r\n\t\ttable.insert(msgTable,hex)\r\n\tend\r\nend\r\n\r\nif error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then pixc.log( \"SysEx: Data(\".. msg\t..\")\") end\r\nend\r\n\r\nif msg ~= \"\" then\r\n\t--Send table to next Module\r\n\t--pixc.callRefs(msgTable)\r\n\t--Send string to next Module\r\n\tpixc.callRefs(msg)\r\nelse\r\n\t--if nothing is comming in don't call next Module\r\n\tpixc.suppressCallRefs()\r\nend\r\n",
+       "kind": "func",
+       "name": "recvSysEx",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "dataTable",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "SysEx"
+    }
+   ],
+   "kind": "ns",
+   "name": "Receive"
+  },
+  {
+   "body": "require \"pixcProtocolMidi\"\nif self.protocol == nil then\n\tself.protocol = createPixcProtocolMidi()\nend\nreturn self.protocol:listMidiInDevices();\r\n",
+   "kind": "func",
+   "name": "getInDevices",
+   "slotStyle": "leftNone;rightNone;hidden"
+  },
+  {
+   "body": "require \"pixcProtocolMidi\"\nif self.protocol == nil then\n\tself.protocol = createPixcProtocolMidi()\nend\nreturn self.protocol:listMidiOutDevices();\r\n",
+   "kind": "func",
+   "name": "getOutDevices",
+   "slotStyle": "leftNone;rightNone;hidden"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "body": "\r\nlocal mtcList = self.helper.stringSplit(mtc,\":\")\r\n\r\nself.fps = fps\r\nif fps == 24 then self.Timecode.TimecodeMode(\"24 FPS\") self.mode = 1\r\nelseif fps == 25 then self.Timecode.TimecodeMode(\"25 FPS\") self.mode = 2\r\nelseif fps == 29.97 then self.Timecode.TimecodeMode(\"30 FPS - Drop Frames\") self.fps = 30 self.mode = 3\r\nelseif fps == 30 then self.Timecode.TimecodeMode(\"30 FPS\") self.mode = 5 end\r\n\r\nself.Timecode.Timecode(mtc)\r\n\r\nself.totalFrame = mtcList[4] + mtcList[3] * self.fps + mtcList[2] *60* self.fps + mtcList[1]*60*60* self.fps\r\n\r\nif self.running == false then\r\n\tself.freshMode = 1\r\n\tself.token = self.token+1\r\nend\r\nself.running = true\r\nself.ready = true\r\n\r\n",
+       "kind": "func",
+       "name": "timecodeFunction",
+       "params": [
+        {
+         "name": "error",
+         "type": ""
+        },
+        {
+         "name": "time",
+         "type": ""
+        },
+        {
+         "name": "mtc",
+         "type": ""
+        },
+        {
+         "name": "fps",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftNone;rightNone;triggerHidden"
+      },
+      {
+       "body": "if self.ready ~= true and self.running == true then\r\n\tself.running = false\r\n\tself.ready = true\r\n\tself.freshMode = 2\r\n\tself.token = self.token+1\r\n\tself.Timecode.timecodeToTimeline()\r\nelse\r\n\tself.ready = false\r\nend\r\n",
+       "kind": "func",
+       "name": "checkInput",
+       "slotStyle": "leftNone;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Internal"
+    },
+    {
+     "attKind": "internal",
+     "body": "if self.fps == nil then return end\r\nif val == nil then\r\n\tif self.timecode ~= nil then\r\n\t\tpixc.callRefs(tonumber(self.timecode[1]),tonumber(self.timecode[2]),tonumber(self.timecode[3]),tonumber(self.timecode[4]),false,self.mode)\r\n\t\tpixc.report(self.timecode[1] .. \":\" .. self.timecode[2] .. \":\" .. self.timecode[3] .. \":\" .. self.timecode[4])\r\n\tend\r\n\treturn\r\nend\r\nlocal timecode = self.helper.stringSplit(val,\":\")\r\npixc.report(val)\r\n\r\nif timecode == nil or timecode[1] == nil or timecode[2] == nil or timecode[3] == nil or timecode[4] == nil or self.fps == nil then\r\n\treturn\r\nend\r\n\r\nlocal totalFrames = tonumber(timecode[1])*60*60*self.fps + tonumber(timecode[2])*60*self.fps + tonumber(timecode[3]) * self.fps + tonumber(timecode[4])\r\n\r\nif self.totalFrame ~= nil and totalFrames ~= self.totalFrame+1 then\r\n\t\tpixc.warn(\"Incoming Timecode Jumped!\")\r\n\t\tself.freshMode = 2\r\n\t\tself.token = self.token+1\r\n\t\tself.timecode = timecode\r\n\t\tself.Timecode.timecodeToTimeline()\r\n\treturn\r\nend\r\n\r\nif self.timecode ~= nil and (\r\n\tself.timecode[1] ~= timecode[1] or\r\n\tself.timecode[2] ~= timecode[2] or\r\n\tself.timecode[3] ~= timecode[3] or\r\n\tself.timecode[4] ~= timecode[4]) then\r\n\r\nelse\r\n\tself.freshMode = 2\r\nend\r\n\t\r\nself.timecode = timecode\r\n\r\nreturn val\r\n",
+     "kind": "func",
+     "name": "Timecode",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._TimecodeMode = pixcCommon.execAttribute(0, self._TimecodeMode, val, doSet)\r\nreturn self._TimecodeMode\r\n",
+     "kind": "func",
+     "name": "TimecodeMode",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "body": "if self.timecode ~= nil and\r\n\tself.running ~= nil and\r\n\tself.freshMode ~= nil and\r\n\tself.mode ~= nil then\r\n\r\n\tif self._muteState == true then \r\n\t\treturn \r\n\tend\r\n\r\n\tlocal rxTimeFreshStart = pixc.callRefs(tonumber(self.timecode[1]),tonumber(self.timecode[2]),tonumber(self.timecode[3]),tonumber(self.timecode[4]),self.rxTimeFreshStart,self.running, self.freshMode, self.token,self.mode)\r\n\r\n\tif rxTimeFreshStart == nil or rxTimeFreshStart[1] == nil or rxTimeFreshStart[1][1] == nil then\r\n\t\treturn\r\n\tend\r\n\t\r\n\tif self.freshMode == 1 or self.freshMode == 2 then\r\n\t\tif self.freshMode == 1 then\r\n\t\t\tself.rxTimeFreshStart = rxTimeFreshStart[1][1]\r\n\t\telse\r\n\t\t\tself.rxTimeFreshStart = 0\r\n\t\tend\r\n\t\tif rxTimeFreshStart[1][1] == -1 then\r\n\t\t\treturn \r\n\t\tend\r\n\t\tself.freshMode = 0\r\n\telse\r\n\t\tif rxTimeFreshStart[1][1] == -1 then\r\n\t\t\tself.freshMode = 2\r\n\t\tend\r\n\tend\r\nend\r\n",
+     "documentation": "Connect this function to the Timeline setTimecodeInput function or Compound setTimecodeInput and set the Timeline SMPTE Mode to receive.",
+     "kind": "func",
+     "name": "timecodeToTimeline",
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Timecode"
+  },
+  {
+   "body": "if self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\n\r\nself.disableLog = self.helper.toBool(state)",
+   "kind": "func",
+   "name": "disableLog",
+   "params": [
+    {
+     "name": "state",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if note == nil then return t end\r\nlocal t = {\r\n\t\"A0\", \"A#0\",\"B0\",\r\n\t\"C1\",\"C#1\",\"D1\",\"D#1\",\"E1\",\"F1\",\"F#1\",\"G1\",\"G#1\",\"A1\",\"A#1\",\"B1\",\r\n\t\"C2\",\"C#2\",\"D2\",\"D#2\",\"E2\",\"F2\",\"F#2\",\"G2\",\"G#2\",\"A2\",\"A#2\",\"B2\",\r\n\t\"C3\",\"C#3\",\"D3\",\"D#3\",\"E3\",\"F3\",\"F#3\",\"G3\",\"G#3\",\"A3\",\"A#3\",\"B3\",\r\n\t\"C4\",\"C#4\",\"D4\",\"D#4\",\"E4\",\"F4\",\"F#4\",\"G4\",\"G#4\",\"A4\",\"A#4\",\"B4\",\r\n\t\"C5\",\"C#5\",\"D5\",\"D#5\",\"E5\",\"F5\",\"F#5\",\"G5\",\"G#5\",\"A5\",\"A#5\",\"B5\",\r\n\t\"C6\",\"C#6\",\"D6\",\"D#6\",\"E6\",\"F6\",\"F#6\",\"G6\",\"G#6\",\"A6\",\"A#6\",\"B6\",\r\n\t\"C7\",\"C#7\",\"D7\",\"D#7\",\"E7\",\"F7\",\"F#7\",\"G7\",\"G#7\",\"A7\",\"A#7\",\"B7\",\r\n\t\"C8\",\"C#8\",\"D8\",\"D#8\",\"E8\",\"F8\",\"F#8\",\"G8\",\"G#8\",\"A8\",\"A#8\",\"B8\",\r\n\t\"C9\",\"C#9\",\"D9\",\"D#9\",\"E9\",\"F9\",\"F#9\",\"G9\",\"G#9\"\r\n}\r\nreturn t[note]",
+   "kind": "func",
+   "name": "midiNoteList",
+   "params": [
+    {
+     "name": "note",
+     "type": ""
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\n\r\nif state == nil then \r\n\tself.helper:setProperty(\"Learn Note\",\"false\")\r\nend\r\n\r\nself._learnNote = self.helper.toBool(self.helper:getProperty(\"Learn Note\"))",
+   "kind": "func",
+   "name": "learnNote",
+   "params": [
+    {
+     "name": "state",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "local _name = self.helper:getProperty(\"Note Action Name\")\r\nlocal _min = tonumber(self.helper:getProperty(\"Note Min Out\"))\r\nlocal _max = tonumber(self.helper:getProperty(\"Note Max Out\"))\r\n\r\nif _name == nil then return end\r\nlocal json = require \"json\"\r\nif self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nlocal module = {{cont=\"true\", name=\"recvNote\"}}\r\n\r\nfor i,n in pairs(self.Receive.Note) do\r\n\tif type(n) == \"function\" then\r\n\t\tif i ~= _name and i ~= \"recvNote\" then\r\n\t\t\ttable.insert(module,{cont=\"true\", name=i})\r\n\t\tend\r\n\tend\r\nend\r\n\tlocal temp = {}\r\n\ttemp.kind = \"func\"\r\n\ttemp.slotStyle = \"leftNone;rightOut;triggerHidden\"\r\n\ttemp.params = {{name=\"val\"}}\r\n\ttemp.name = _name\r\n\tif _min == 0 and _max == 127 then\r\n\t\ttemp.body = \"pixc.callRefs(val,true)\"\r\n\telse\r\n\t\ttemp.body = \"local res = self.range(0,127,\".. _min ..\",\" .. _max .. \",val)\\npixc.callRefs(res,true)\"\r\n\tend\r\n\ttable.insert(module,temp)\r\n\r\nself().dynamicRebuildFromDescriptions(json.encode(module), \"Receive.Note\", \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "buildNote",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "local out = 0\r\n\r\nif val ~= nil and minIn ~= nil and maxIn ~= nil and minOut ~= nil and maxOut ~= nil then\r\n\tlocal rangeSizeIn = maxIn - minIn\r\n\tif rangeSizeIn ~= 0 then\r\n\t\tout = (val - minIn)/rangeSizeIn * (maxOut - minOut) + minOut\r\n\tend\r\nend\r\n\r\nreturn out\r\n",
+   "kind": "func",
+   "name": "range",
+   "params": [
+    {
+     "name": "minIn",
+     "type": ""
+    },
+    {
+     "name": "maxIn",
+     "type": ""
+    },
+    {
+     "name": "minOut",
+     "type": ""
+    },
+    {
+     "name": "maxOut",
+     "type": ""
+    },
+    {
+     "name": "val",
+     "type": ""
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "local _name = self.helper:getProperty(\"CC Action Name\")\r\nlocal _min = tonumber(self.helper:getProperty(\"CC Min Out\"))\r\nlocal _max = tonumber(self.helper:getProperty(\"CC Max Out\"))\r\nlocal _minI = tonumber(self.helper:getProperty(\"CC Min In\"))\r\nlocal _maxI = tonumber(self.helper:getProperty(\"CC Max In\"))\r\n\r\nif _name == nil then return end\r\nlocal json = require \"json\"\r\nif self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nlocal module = {{cont=\"true\", name=\"recvControlChange\"}}\r\n\r\nfor i,n in pairs(self.Receive.ControlChange) do\r\n\tif type(n) == \"function\" then\r\n\t\tif i ~= _name and i ~= \"recvControlChange\" then\r\n\t\t\ttable.insert(module,{cont=\"true\", name=i})\r\n\t\tend\r\n\tend\r\nend\r\n\tlocal temp = {}\r\n\ttemp.kind = \"func\"\r\n\ttemp.slotStyle = \"leftNone;rightOut;triggerHidden\"\r\n\ttemp.params = {{name=\"val\"}}\r\n\ttemp.name = _name\r\n\tif _min == _minI and _max == _maxI then\r\n\t\ttemp.body = \"pixc.callRefs(val,true)\"\r\n\telse\r\n\t\ttemp.body = \"local res = self.range(\" .. _minI .. \",\" .. _maxI .. \",\".. _min ..\",\" .. _max .. \",val)\\npixc.callRefs(res,true)\"\r\n\tend\r\n\ttable.insert(module,temp)\r\n\r\nself().dynamicRebuildFromDescriptions(json.encode(module), \"Receive.ControlChange\", \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "buildControlChange",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\n\r\nif state == nil then \r\n\tself.helper:setProperty(\"Learn CC\",\"false\")\r\nend\r\n\r\nself._learnCC = self.helper.toBool(self.helper:getProperty(\"Learn CC\"))",
+   "kind": "func",
+   "name": "learnCC",
+   "params": [
+    {
+     "name": "state",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "local _name = self.helper:getProperty(\"PC Action Name\")\r\n\r\nif _name == nil then return end\r\nlocal json = require \"json\"\r\nif self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nlocal module = {{cont=\"true\", name=\"recvProgramChange\"}}\r\n\r\nfor i,n in pairs(self.Receive.ProgramChange) do\r\n\tif type(n) == \"function\" then\r\n\t\tif i ~= _name and i ~= \"recvProgramChange\" then\r\n\t\t\ttable.insert(module,{cont=\"true\", name=i})\r\n\t\tend\r\n\tend\r\nend\r\n\tlocal temp = {}\r\n\ttemp.kind = \"func\"\r\n\ttemp.slotStyle = \"leftNone;rightOut;triggerHidden\"\r\n\ttemp.params = {{name=\"val\"}}\r\n\ttemp.name = _name\r\n\ttable.insert(module,temp)\r\n\r\nself().dynamicRebuildFromDescriptions(json.encode(module), \"Receive.ProgramChange\", \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "buildPC",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\n\r\nif state == nil then \r\n\tself.helper:setProperty(\"Learn PC\",\"false\")\r\nend\r\n\r\nself._learnPC = self.helper.toBool(self.helper:getProperty(\"Learn PC\"))",
+   "kind": "func",
+   "name": "learnPC",
+   "params": [
+    {
+     "name": "state",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "local json = require \"json\"\r\nif self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nlocal str = \"\"\r\nif folder == \"ChannelAftertouch\" then\r\n\tstr = \"recvChannelAftertouch\"\r\nelseif folder == \"Note\" then\r\n\tstr = \"recvNote\"\r\nelseif folder == \"Polymorphic\" then\r\n\tstr = \"recvPolymorphicAftertouch\"\r\nelseif folder == \"ControlChange\" then\r\n\tstr = \"recvControlChange\"\r\nelseif folder == \"ProgramChange\" then\r\n\tstr = \"recvProgramChange\"\r\nelseif folder == \"PitchBlend\" then\r\n\tstr = \"recvPitchBlend\"\r\nelseif folder == \"SysEx\" then\r\n\tstr = \"recvSysEx\"\r\nelse\r\n\treturn\r\nend\r\nlocal module = {{cont=\"true\", name=str}}\r\n\r\nself().dynamicRebuildFromDescriptions(json.encode(module), \"Receive.\" .. folder, \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "resetActions",
+   "params": [
+    {
+     "name": "folder",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "hidden"
+  }
+ ],
+ "cjv": {
+  "h": 662.263868065967,
+  "w": 543.9730134932533,
+  "x": 701.0885756711529,
+  "y": 1769.4635202895543
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Protocols/Midi.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4qlcQin05641vrM3wU25wGHeFaaisAYHp6ae2ksH/briU3pv7OJzBM8j7siCEeql/B30bKY8vciXfefzIRP2aaPToHExqelIeS5LniQAbEZQbL/5oloVUlh3OZy69JWleA==",
+ "name": "Midi",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "loopMIDI Port 2",
+   "name": "Midi In Device",
+   "optionsSourceFunc": "Utils.Midi.In.list",
+   "typeHint": "string"
+  },
+  {
+   "cont": "loopMIDI Port 3",
+   "name": "Midi Out Device",
+   "optionsSourceFunc": "Utils.Midi.Out.list",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Disable Logs",
+   "optionsAction": "self.disableLog",
+   "typeHint": "bool"
+  },
+  {
+   "area": "Note",
+   "cont": "false",
+   "name": "Learn Note",
+   "optionsAction": "self.learnNote",
+   "typeHint": "bool"
+  },
+  {
+   "area": "Note",
+   "cont": "",
+   "name": "Last Received Note",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "area": "Note",
+   "cont": "0",
+   "name": "Note Min Out",
+   "typeHint": "number"
+  },
+  {
+   "area": "Note",
+   "cont": "127",
+   "name": "Note Max Out",
+   "typeHint": "number"
+  },
+  {
+   "area": "Note",
+   "cont": "",
+   "name": "Note Action Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "area": "Note",
+   "cont": "create action",
+   "name": "createNote",
+   "optionsAction": "self.buildNote",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Control Change",
+   "cont": "false",
+   "name": "Learn CC",
+   "optionsAction": "self.learnCC",
+   "typeHint": "bool"
+  },
+  {
+   "area": "Control Change",
+   "cont": "",
+   "name": "Last Received CC",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "area": "Control Change",
+   "cont": "0",
+   "name": "CC Min In"
+  },
+  {
+   "area": "Control Change",
+   "cont": "127",
+   "name": "CC Max In"
+  },
+  {
+   "area": "Control Change",
+   "cont": "0",
+   "name": "CC Min Out",
+   "typeHint": "number"
+  },
+  {
+   "area": "Control Change",
+   "cont": "127",
+   "name": "CC Max Out",
+   "typeHint": "number"
+  },
+  {
+   "area": "Control Change",
+   "cont": "",
+   "name": "CC Action Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "area": "Control Change",
+   "cont": "create action",
+   "name": "createCC",
+   "optionsAction": "self.buildControlChange",
+   "typeHint": "button"
+  },
+  {
+   "area": "Program Change",
+   "cont": "false",
+   "name": "Learn PC",
+   "optionsAction": "self.learnPC",
+   "typeHint": "bool"
+  },
+  {
+   "area": "Program Change",
+   "cont": "",
+   "name": "Last Received PC",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "area": "Program Change",
+   "cont": "",
+   "name": "PC Action Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "area": "Program Change",
+   "cont": "create action",
+   "name": "createPC",
+   "optionsAction": "self.buildPC",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Reset",
+   "cont": "Reset Note Receive Actions",
+   "name": "resetNote",
+   "optionsAction": "self.resetActions(\"Note\")",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Reset",
+   "cont": "Reset Control Change Actions",
+   "name": "resetCC",
+   "optionsAction": "self.resetActions(\"ControlChange\")",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Reset",
+   "cont": "Reset Program Change Actions",
+   "name": "resetPC",
+   "optionsAction": "self.resetActions(\"ProgramChange\")",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Reset",
+   "cont": "Reset Polymorphic Actions",
+   "name": "resetPoly",
+   "optionsAction": "self.resetActions(\"Polymorphic\")",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Reset",
+   "cont": "Reset PitchBlend Actions",
+   "name": "resetPitch",
+   "optionsAction": "self.resetActions(\"PitchBlend\")",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "area": "Reset",
+   "cont": "Reset SysEx Actions",
+   "name": "resetSysex",
+   "optionsAction": "self.resetActions(\"SysEx\")",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "cont": "AV Stumpfl GmbH",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "1.3",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "To use Midi SysEx messages as Table comment out the string message and in the Table Massege.  To Use Midi Timecode connect timcodeToTimeline function with Timeline setTimecodeInput function and set the Timeline to receive",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,179 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nself.pixcHelper = createPixcHelper(pixc,self())\r\n\r\nlocal _reset = self.pixcHelper:getProperty(\"Auto Reset\")\r\nself._single = self.pixcHelper:getProperty(\"Single Run\")\r\n\r\nif _reset == \"true\" then\r\n\tself.reset()\r\nend\r\nif self._res == nil then\r\n\tself.reset()\r\nend\r\n\r\n\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\n\r\nif self._min == nil then\r\n\tself.From(nil)\r\nend\r\nif self._max == nil then\r\n\tself.To(nil)\r\nend\r\nif self._offset == nil then\r\n\tself.Offset(nil)\r\nend\r\nif self._speed == nil then\r\n\tself.Speed_Sec(nil)\r\nend\r\n\r\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\r\n\tfunction()\r\n\t\tlocal div = 0\r\n\t\tif self._max < self._min then\r\n\t\t\tdiv = self._min\r\n\t\telse\r\n\t\t\tdiv = self._max\r\n\t\tend\r\n\r\n\t\tlocal times = (div / (self._speed / 0.02)/ (math.pi/2))\r\n\t\tself.Result(times)\r\n\t  end, 20)\r\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\n\r\n",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "if self._min == nil then\n\tself.From(nil)\nend\nif self._max == nil then\n\tself.To(nil)\nend\nif self._offset == nil then\n\tself.Offset(nil)\nend\nif self._speed == nil then\n\tself.Speed_Sec(nil)\nend\nif self._min > self._max then\n\tself._invert = true\nelse\n\tself._invert = false\nend\nif self._invert == true then\n\tself._res = self._min\nend\nif self._invert == false then\n\tself._res = self._min\nend\n\nself.Result(0)",
+   "kind": "func",
+   "name": "reset",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "if value == nil then\n\tself._min = 0\nelse\n\tself._min = value\nend\npixc.report(self._min)",
+   "kind": "func",
+   "name": "From",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "100.00"
+   },
+   "body": "if value == nil then\n\tself._max = 100\nelse\n\tself._max = value\nend\npixc.report(self._max)",
+   "kind": "func",
+   "name": "To",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "if value == nil then\n\tself._offset = 0\nelse\n\tself._offset = value\nend\npixc.report(self._offset)",
+   "kind": "func",
+   "name": "Offset",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "1.00"
+   },
+   "body": "self._speed = value\nif self._speed == nil then\n\tself._speed = 1\nend\nif self._speed < 0.1 then\n\tself._speed = 0.1\nend\npixc.report(self._speed)\n",
+   "kind": "func",
+   "name": "Speed_Sec",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "if self._min == nil then\n\tself.From(nil)\nend\nif self._max == nil then\n\tself.To(nil)\nend\nif self._min > self._max then\n\tself._invert = true\nend\nif self._res == nil and self._invert == true then\n\tself._res = self._min\nend\nif self._res == nil and self._invert == false then\n\tself._res = self._max\nend\n\nif self._invert == true then\n\tif (self._res - value) > self._max then\n\t\tself._res = self._res - value\n\telse\n\t\tif self._single == \"false\" then\n\t\t\tself._res = self._min\n\t\telse\n\t\t\tself._res = self._max\n\t\t\tself.uninit()\n\t\tend\n\tend\nelse\n\tif (self._res + value) < self._max then\n\t\tself._res = self._res + value\n\telse\n\t\tif self._single == \"false\" then\n\t\t\tself._res = self._min\n\t\telse\n\t\t\tself._res = self._max\n\t\t\tself.uninit()\n\t\tend\n\tend\nend\n\n\npixc.report(self._res + self._offset)\npixc.callRefs(self._res + self._offset)",
+   "kind": "func",
+   "name": "Result",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 382.0,
+  "y": 241.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/Generator/Linear.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4ndGmcqZg2Z4hzdSWTb4GVGSsvRr+VzYo6zTSMCeK1l7KbGAc9LV0a6Rubxlk0PH23MGt6RP9LNaJLVQJWFiULyWDlxwHrPFo+OptvP1G6bA8W99Rjnr/hv+r13UlU4O1w==",
+ "name": "Linear",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Reset",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Single Run",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "",
+   "imageBase64": "iVBORw0KGgoAAAANSUhEUgAAAEYAAAAoCAYAAABD0IyuAAACU0lEQVRoge3aP0hVURzA8W8mSuAg5OKQGDgFCW4NCdbQ1iA56Bo5lA5uDtUQNUYN5dDYkA1FqzRU4FKTUOAkEjUEkuAgiGL6i1/8Dvx4XOw9vd57z7kOd3nv/uPDOfd777sPgZMF2gRuCvwSEIG9ExS4JPDFQHT5LDBUZ5BegZcC+waio2VC4JR+X0eQDoFZgU0D2RZ4JNDl16sbynWBFTdt3gkMZK1bF5ALAgsOZFng2kHbpA7SLfBYYMdANgRmBNr/t22qICG/ayG/Ai8EeprdR4oomt8lN20WNb+t7iclEM3vvMvvD5/fOsJ0Ctx1+d3Kym/dYEYz8tufx75jBdH8vm/I75U8jxEbiOb3qcCuy+9UM/lNFUbzOynw20D+CMy1kt8UYYYb8vvpMPlNCaYvI7/jRR2/iiBnMvL7wD4v7DyqhqL5/e6mzRsbOYWfS1VANL8fHchXgZEyz6lsEM3vc5dfrc6d48hvLDCnDSDkd9fye7ZskDJhRjLye7EqIGXA6EX0tQPR/N6oGkiRMJrZ+5bdkN97Ree3ajBjNjLCKJkvK79VgRm0a0cAWSo7v2XD9FhdfH5v20NgNCh5wrRbftddfp/ZfUpUIHnC6BT55qbNB7uTjRIkDxi9iL51IKv2rBM1yFFgNLMPXX437Wm40vk9bpgJl999y++5lEBahRnKyO/lFEGahQn53XP5vRVjfvOC0fxO26/wIb9PYs5vHjBX7T1NmDYLKeT3KDDn7U1eAFlJKb+Hgemyd72N+e2oK0qA+eny+8r+NVBbkH8L8BfS24NZLbA8PAAAAABJRU5ErkJggg==",
+   "name": "Linear",
+   "typeHint": "image"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#Generator-Linear",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "05.02.2022",
+   "name": "Date",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

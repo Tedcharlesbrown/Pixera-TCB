@@ -1,0 +1,143 @@
+{
+ "api": [
+  {
+   "body": "-- Initialize fade if not happened yet\nif self._Fade == nil then\n\tself._Fade = 0\nend\nlocal fades = tonumber(self().getProperty(\"Fades\"))\nlocal duration = Utils.Timer.timeToNumber(math.max(self.Duration(nil, false) or 0), 1)\nlocal fps = math.max(self.StepsPerSecond(nil, false) or 0, 1)\nlocal min = self.Min(nil, false) or 0\nlocal max = self.Max(nil, false) or 1\nlocal counts = duration / fps;\nlocal xAsNumber = tonumber(x) or 0\n\nif  xAsNumber == 0 then\n\t-- Increase fade if no number is given\n\tself._Fade = self._Fade + 1\n\tif self._Fade > math.max(fades, 2) then\n\t\tself._Fade = 1\n\tend\nelse\n\tself._Fade = xAsNumber\nend\n\nlocal step = (max - min) / counts\nif step <= 0 then\n\tstep = 1\nend\n\nlocal interval = nil\nlocal count = 0\ninterval = Utils.Timer.setInterval(function()\n\tfor i=1, fades, 1 do\n\t\tlocal originalVal = self.Fades['Fade'..i](nil, false)\n\t\tlocal val = originalVal\n\t\tif i == self._Fade then\n\t\t\tval = val + step\n\t\telse\n\t\t\tval = val - step\n\t\tend\n\t\tif val < min then\n\t\t\tval = min\n\t\tend\n\t\tif val > max then\n\t\t\tval = max\n\t\tend\n\t\tif val ~= originalVal then\n\t\t\tself.Fades['Fade'..i](val, true)\n\t\tend\n\tend\n\tcount = count + 1\n\tif count > counts then\n\t\tUtils.Timer.clearInterval(interval)\n\tend\nend, math.max(fps, 10))\n\n",
+   "kind": "func",
+   "name": "fade",
+   "params": [
+    {
+     "name": "x",
+     "type": ""
+    }
+   ]
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "self._Duration =  pixcCommon.execAttribute(0, self._Duration, duration, doSet)\nreturn self._Duration\n",
+   "kind": "func",
+   "name": "Duration",
+   "params": [
+    {
+     "name": "duration",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "vlxo:120"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._StepsPerSecond =  pixcCommon.execAttribute(0, self._StepsPerSecond, steps, doSet)\nreturn self._StepsPerSecond\n",
+   "kind": "func",
+   "name": "StepsPerSecond",
+   "params": [
+    {
+     "name": "steps",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "vlxo:120"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "self._Min =  pixcCommon.execAttribute(0, self._Min, min, doSet)\nreturn self._Min\n",
+   "kind": "func",
+   "name": "Min",
+   "params": [
+    {
+     "name": "min",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "vlxo:120"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._Max =  pixcCommon.execAttribute(0, self._Max, max, doSet)\nreturn self._Max\n",
+   "kind": "func",
+   "name": "Max",
+   "params": [
+    {
+     "name": "max",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "vlxo:120"
+  },
+  {
+   "body": "self().dynamicRebuildFromDescriptions(self.Fades.getDescription(), \"Fades\", \"Fade([0-9]+)\")\r\n",
+   "kind": "func",
+   "name": "updateFadeCount",
+   "slotStyle": "leftNone;rightNone"
+  },
+  {
+   "elems": [
+    {
+     "body": "local count = tonumber(self().getProperty(\"Fades\"))\n\nif(count == nil) then count = 0 end\nlocal template = [[\n\t{\n\t\t\"name\": \"Fade##IDX##\",\n\t\t\"kind\": \"fn\",\n\t\t\"params\": [\n\t\t\t{\n\t\t\t\t\"name\": \"value\",\n\t\t\t\t\"type\": \"double\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"doSet\",\n\t\t\t\t\"type\": \"bool\"\n\t\t\t}\n\t\t],\n\t\t\"result\": {},\n\t\t\"body\": \"-- attKind:standard\\r\\n-- slotStyle:leftNone;rightOut;triggerHidden\\r\\nself._Fade##IDX## = pixcCommon.execAttribute(0, self._Fade##IDX##, value, doSet)\\r\\nreturn self._Fade##IDX##\"\n\t}\n]]\nlocal res = '[';\nfor i= 1, count, 1 do\n\tlocal tmod = template;\n\tlocal s = tostring(i);\n\tlocal c;\n\n\ttmod, c = string.gsub(tmod,\"##IDX##\", s)\n\tres = res..tmod;\n\tif i ~= count then\n\t\tres = res..','\n\tend\nend\nres = res..']'\nreturn res;\n",
+     "kind": "func",
+     "name": "getDescription"
+    }
+   ],
+   "kind": "ns",
+   "name": "Fades"
+  }
+ ],
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "license": "1GNTlyr7sewU1l3S6nhV4lE4vbulis7LES8pIwyn2ILbTKXrh0fusXX3qrAnKyifnqAPyXTlBw+Wk+7n/htLVKzGurttWlFJM66QlDkzNnw=",
+ "name": "Crossfade",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true
+  },
+  {
+   "cont": "2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "Increases the value of one fade to maximum while decreasing all others to minimum in a certain duration. Calling fade without parameter goes to the next fade while offering a number as parameter steps to a specific one.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "2",
+   "name": "Fades",
+   "typeHint": "number"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

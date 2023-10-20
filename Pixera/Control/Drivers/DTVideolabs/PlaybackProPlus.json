@@ -1,0 +1,576 @@
+{
+ "api": [
+  {
+   "body": "",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then -- already init called\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.connected = false\nself.IsConnected(false)\nself.ip = self.helper:getProperty(\"IP\",\"192.168.254.254\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"7000\"))\nself.network:configureTcp(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self().State.receive(data) end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isConnected) self().IsConnected(isConnected) end)\nself.network:start()\nself.receiveNumber = 1\nself._interval = pixc.getRoot().Utils.Timer.setInterval(\n\tfunction()\n\t\tif self.network == nil then\n\t\t\treturn\n\t\tend\n\t\tself.network:send(\"GN\")\n\t  end,150)\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "if self._interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self._interval);\n\tself._interval = nil\nend\nif self.network == nil then return end\nself.network:close()\nself.network = nil\nself.helper = nil\n",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "internal",
+   "body": "if result == true then\n\tpixc.report(\"connected\")\nelse\n\tpixc.report(\"disconnected\")\n\tself.State.receive(\"\")\nend\n",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "result",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "if self.receiveNumber == 1 then\n\tself.State.ProgramClipName(msg)\n\tself.receiveNumber = 2\n\tself.network:send(\"GU\")\n\treturn\nend\nif self.receiveNumber == 2 then\n\tself.State.ProgramClipNumber(msg)\n\tself.receiveNumber = 3\n\tself.network:send(\"GD\")\n\treturn\nend\nif self.receiveNumber == 3 then\n\tself.State.ProgramClipDuration(msg)\n\tself.receiveNumber = 4\n\tself.network:send(\"VN\")\n\treturn\nend\nif self.receiveNumber == 4 then\n\tself.State.PreviewClipName(msg)\n\tself.receiveNumber = 5\n\tself.network:send(\"VU\")\n\treturn\nend\nif self.receiveNumber == 5 then\n\tself.State.PreviewClipNumber(msg)\n\tself.receiveNumber = 6\n\tself.network:send(\"VD\")\n\treturn\nend\nif self.receiveNumber == 6 then\n\tself.State.PreviewClipDuration(msg)\n\tself.receiveNumber = 7\n\tself.network:send(\"TE\")\n\treturn\nend\nif self.receiveNumber == 7 then\n\tself.State.ProgramTimeElapsed(msg)\n\tself.receiveNumber = 8\n\tself.network:send(\"TR\")\n\treturn\nend\nif self.receiveNumber == 8 then\n\tself.State.ProgramTimeRemaining(msg)\n\tself.receiveNumber = 9\n\tself.network:send(\"LS\")\n\treturn\nend\nif self.receiveNumber == 9 then\n\tself.State.Loop(msg)\n\tself.receiveNumber = 1\n\treturn\nend\n",
+     "kind": "func",
+     "name": "receive",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Name)\npixc.callRefs(Name)\nreturn Name\n",
+     "kind": "func",
+     "name": "ProgramClipName",
+     "params": [
+      {
+       "name": "Name",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Number)\npixc.callRefs(Number)\nreturn Number\r\n",
+     "kind": "func",
+     "name": "ProgramClipNumber",
+     "params": [
+      {
+       "name": "Number",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Duration)\npixc.callRefs(Duration)\nreturn Duration\r\n",
+     "kind": "func",
+     "name": "ProgramClipDuration",
+     "params": [
+      {
+       "name": "Duration",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Name)\npixc.callRefs(Name)\nreturn Name\r\n",
+     "kind": "func",
+     "name": "PreviewClipName",
+     "params": [
+      {
+       "name": "Name",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Number)\npixc.callRefs(Number)\nreturn Number\r\n",
+     "kind": "func",
+     "name": "PreviewClipNumber",
+     "params": [
+      {
+       "name": "Number",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Duration)\npixc.callRefs(Duration)\nreturn Duration\n",
+     "kind": "func",
+     "name": "PreviewClipDuration",
+     "params": [
+      {
+       "name": "Duration",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Time)\npixc.callRefs(Time)\nreturn Time\n",
+     "kind": "func",
+     "name": "ProgramTimeElapsed",
+     "params": [
+      {
+       "name": "Time",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Time)\npixc.callRefs(Time)\nreturn Time\r\n",
+     "kind": "func",
+     "name": "ProgramTimeRemaining",
+     "params": [
+      {
+       "name": "Time",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Loop)\npixc.callRefs(Loop)\nreturn Loop\n",
+     "kind": "func",
+     "name": "Loop",
+     "params": [
+      {
+       "name": "Loop",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(Name)\npixc.callRefs(Name)\nreturn Name\n",
+     "kind": "func",
+     "name": "ShowFileName",
+     "params": [
+      {
+       "name": "Name",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "State"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"PR\")\n",
+     "kind": "func",
+     "name": "PrevClip",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"NX\")\n",
+     "kind": "func",
+     "name": "NextClip",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"CL\")\n",
+     "kind": "func",
+     "name": "ClearPreview",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tpixc.report(nil)\n\treturn\nend\nif ID == nil or type(ID) ~= \"number\" then\n\tpixc.report(nil)\n\treturn\nend\nlocal id = math.floor(math.abs(ID))\nif ID < 10 then\n\tid = \"\" .. id\nend\nif ID < 100 and ID > 9 then\n\tid = \"\" .. id\nend\npixc.report(id)\npixc.log(id)\nself.network:send(\"GO\" .. id)\n",
+     "kind": "func",
+     "name": "LoadClipIntoPrev",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tpixc.report(nil)\n\treturn\nend\nif ID == nil or type(ID) ~= \"number\" then\n\tpixc.report(nil)\n\treturn\nend\nlocal id = math.floor(math.abs(ID))\nif ID < 10 then\n\tid = \"\" .. id\nend\nif ID < 100 and ID > 9 then\n\tid = \"\" .. id\nend\npixc.report(id)\nself.network:send(\"GT\" .. id)\n",
+     "kind": "func",
+     "name": "LoadClipAndTake",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightOut;triggerHidden"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"TA\")\n",
+     "kind": "func",
+     "name": "Take",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"KL\")\n",
+     "kind": "func",
+     "name": "Kill",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"10\")\n",
+     "kind": "func",
+     "name": "Goto10",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"20\")\n",
+     "kind": "func",
+     "name": "Goto20",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"30\")\n",
+     "kind": "func",
+     "name": "Goto30",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"SL\")\n",
+     "kind": "func",
+     "name": "LoopProgram",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"EL\")\n",
+     "kind": "func",
+     "name": "UnloopProgram",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"PA\")\n",
+     "kind": "func",
+     "name": "Pause",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"PL\")\r\n",
+     "kind": "func",
+     "name": "PlayFromCurrentLocation",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OI\")\r\n",
+       "kind": "func",
+       "name": "GotoIn",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OO\")\r\n",
+       "kind": "func",
+       "name": "GotoOut",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OR\")\r\n",
+       "kind": "func",
+       "name": "FastReverse",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OF\")\r\n",
+       "kind": "func",
+       "name": "FastForword",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"O-\")\r\n",
+       "kind": "func",
+       "name": "StepBack",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"O+\")\r\n",
+       "kind": "func",
+       "name": "StepForward",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OS\")\r\n",
+       "kind": "func",
+       "name": "MarkIn",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OE\")\r\n",
+       "kind": "func",
+       "name": "MarkOut",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"OP\")\r\n",
+       "kind": "func",
+       "name": "PlayPause",
+       "slotStyle": "leftIn;rightOut"
+      }
+     ],
+     "kind": "ns",
+     "name": "Program"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"EI\")\r\n",
+       "kind": "func",
+       "name": "GotoIn",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"EO\")\r\n",
+       "kind": "func",
+       "name": "GotoOut",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"ER\")\r\n",
+       "kind": "func",
+       "name": "FastReverse",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"EF\")\r\n",
+       "kind": "func",
+       "name": "FastForword",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"E-\")\r\n",
+       "kind": "func",
+       "name": "StepBack",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"E+\")\r\n",
+       "kind": "func",
+       "name": "StepForward",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"ES\")\r\n",
+       "kind": "func",
+       "name": "MarkIn",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"EE\")\r\n",
+       "kind": "func",
+       "name": "MarkOut",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\n\r\nself.network:send(\"EP\")\r\n",
+       "kind": "func",
+       "name": "PlayPause",
+       "slotStyle": "leftIn;rightOut"
+      }
+     ],
+     "kind": "ns",
+     "name": "Preview"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"i-\")\n",
+       "kind": "func",
+       "name": "LinkMinus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"i+\")\n",
+       "kind": "func",
+       "name": "LinkPlus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"l-\")\n",
+       "kind": "func",
+       "name": "LoopMinus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"l+\")\n",
+       "kind": "func",
+       "name": "LoopPlus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"t-\")\n",
+       "kind": "func",
+       "name": "TakeMinus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"t+\")\n",
+       "kind": "func",
+       "name": "TakePlus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"k-\")\n",
+       "kind": "func",
+       "name": "EndAllMinus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"k+\")\n",
+       "kind": "func",
+       "name": "EndAllPlus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"f-\")\n",
+       "kind": "func",
+       "name": "TakeFadeMinus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"f+\")\n",
+       "kind": "func",
+       "name": "TakeFadePlus",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"sa\")\n",
+       "kind": "func",
+       "name": "Save",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"it\")\n",
+       "kind": "func",
+       "name": "LinkTemp",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"lt\")\n",
+       "kind": "func",
+       "name": "LoopTemp",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"ft\")\n",
+       "kind": "func",
+       "name": "FreezeTemp",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"BF\")\r\n",
+       "kind": "func",
+       "name": "WindowToFront",
+       "slotStyle": "leftIn;rightOut"
+      }
+     ],
+     "kind": "ns",
+     "name": "Functions"
+    }
+   ],
+   "kind": "ns",
+   "name": "Send"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 267.0,
+  "y": 122.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/DTVideolabs/PlaybackProPlus.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4pH7JUsF3vm6EWWyJBRpPdo4t2nO8VJpowvtzQMlrUVrxMgO5J8cqVjXj14W9NumH9/SkYjBj/VduJW3kihL5h7VkEoVEECvfOav4F2KT2JyV/JsmP1YIUXSVySn5nLezw==",
+ "name": "PlaybackProPlus",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "192.168.0.2",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "4647",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "iVBORw0KGgoAAAANSUhEUgAAAEYAAAAoCAYAAABD0IyuAAAH7klEQVRoge2ZD2zVVxXHP69/aOlKxwA7RBosSCkdG6MDkY1sCBtRYtEtZEI2pgPCJkrEGKNugInMLc6QTZl/RkRkkb8laYlDW+Y2GbYbyCwidBBooX+AUlkL8s/2tf2au3daf319r++9poUs6UlO7u937/2de+/3d86559xLP/VTP/VTH5IPlAp8DcgBvgv8N8JwcUA8kAAkAgOANqA1IK/jucW49eP4A93iioF77X0M8CEwEEgGkqz0PreXiR5wFAYYB/L1IPZbWzPwH+AscAk4B/wbuApcBs5bW8vNAuaCTcwt6n5blJt0k/E1W1iDle3v7RNWkEyflU6TnDamGHjx9n6rcYqBHN/N/GqBagPtNFBh747rbO7B4/cK+UzuJ21BzfZH/fbcV39roHGixxzTgOFAJjAKGGHz+hRwOzAkSIbfAPoAKAH+AZwAanpj3r4+Ary3yWnXJ4AMYKSZfLb5xfEGcjvVGEh/8wDWFOt8bggwaWkwcyYsWwZVVbBpE/h8kJQEKSkBdu+XLsG5cwGuq4ta/BADazQw0fxlLjDM2p057gH+DLwD1EcjtFeASU2FYcNgxAiYMAEyMyEjA267DdLTA/WOo6XGRigthRdegJKSHk0pJTWVrJEjmXbsGI8AD1q92wx2A+uBNyL4J0XN48eLOXPE8uVi7VqRny/27xe1teLKFSFF5C9IuidMv1slpXjrWlrEhg1i4kSRkNB1nunpIiOjc11Kili9WlRWKtnv186CAuUkJ2sU6AnQ6yAZHwA9CUoMvf4ogJkxQxQVBSYaxeK74zWSXpf0iKQfSnpF0i5JRyRdkHReUpmkFyWNapfT3CzKy0VBgXjuOZGXJ9asEXV1oqFBrFwZAMSBtG9fx/hjFKD569Z1Wk826DcgvwH0LmhGTMBMnSqKi3sMQpykTEmPS9om6QNJjZJaJB2VtFPSjyU9aUA9JGm2pAWSqiS9E8t4DriKik516ZIuSbrXvc+d22V9nwG94tGgn0QEZvJksWNH4E/FMLl4SdmSFkvaIqlS0hVJZyX9UdIKSV+294xu5NwuqULSyijGTO1GlgPmsqTPu3dn7mPHhlSA6aBSA+dXIF8XYJwP2bxZ+P1RgzFM0lxJv5V0WlKzgbFf0vOSpkga6Onvk1RrmhFKntOuUiu9gMeH6f+MpENh2iaZKT3RXldWJtLSQoKTBHrNwPlRBzB33CHWrxdXr0YEYqCpvPMB70qql3TcNOSbkqZKGhJBxluSng36s98weW2S8iWtl7RP0gkzqyozP/ftavvGfbtK0lXTxOBxlhgwP/DWb9nSrT/dDWoFTUjYswfuuy8QS0QgF0jtsLih3La9t4EDFoVGS38FpgOPA3nG7QGay52mWI5UZUHaWcu/fBYJu4T3MWAycNSCv7uBXUHj51o51lu5YAG8/z6sXRtytitM5opYfMhgSZMlDeqBI3YmdKek70gq1/+pxhyz05jPShouKSGCrFcltdr27kzVL2lCiH5/N19VGtzW1iZmzgyrNTtBl2NdYKzsVP57th23U52kD83PRALByw60rSZjsdXPsl3urqC+42z7Xy7pjKS0YHnbtoUF5llQW1wMJhArOdnbgRctKdxtJpBlptgUQ7I3DzhsZrcE2GD1d1p2Pi+of54dn7xmZnhPsMDsbEhICDuer681xkW5D9ju5a13u9jLkhIjfH+3OWFHuy1oCzYr57BPBsk6ajuWe94s6RehzGnatJAa8ydQbV8DE47nm594OUx7jqQ/GCAuMHwsTD8XFhQYME9b3dclXZQ01N4X2q7WxWxnz+4CSq5t2StvFjCZtuiDQfXOAW+0tmpz1klBfX5qGpdi/uPbkr5o27YD87qkZZ7+LgBssH5vmQZ/1BakMS6WOQiqBw29GaAkW/kzm6xzjEstjmkHa2FwQunh7ZKKLF5y9Ki15UlaJ2leiG+czGJJpyQ96OpWreqUmA4B/cU5XdCsj+puEBgTJX3fJldkCeIMC+TOWvK4SdL9Mch0udgij8l0x29L+rWkAZWV4uGHO2mKSyDLzYQe7ajvQzDcH/+qpL2erfqc/bVq40JJX4kUGzU1RT9ua6vYuFFs397pNGCHM9HqajF6dAcgnwb90gA5AfpcJ3/Th8B8ywOIi1tKbBdxfmO6JYBhv29sFLt2iaVLxbhxYtasQGLr8jh31HD8eKDf3r2BtvnzxaJFgQS4fXHuHMcdSZSVaXB+vm6xs5spoN+BWjy5UVrw7uQi0j4KYxhkh9h+C/UbvY319XDmTKDMygqkJEeOwHvvBU7tDh8OtAdTTg5cuwbnz0NuLhw4AP4ICUlcHGPa2ngIWGhHnxcsFvo9cCzUN30JTCdqbobiYigshEOH4NSpwBGmIwfKgAFw8WKvDJVgNwuTgDnAAxZUOjoI/BwoBK50K+VGON+tW8WkSdEfocbAbovNAn0JtApUCKryHD5dBr0BetoOpqKW3SONcaocidraAgfaL70ERUUdne+ycD3X/mqCXaQtCJOhx1n2PNgy65GWXrgbgXEmb7invzORf9q1SYll/j3Sw5iAOX0aliyBiorIfVtboaamU9Vi4NUwN4/PW/1w80vu6uMWO44Yav7KS812LfIvYJ+VJ+3G8nrUC+qGwqdRIeipp+DNN3s81iC7/g0FzDNWttq9dYP9/ZN221hjZa3dC9WbJtwYB9lP/dRP/dRP/XTzCPgfc3PRa2WuzMQAAAAASUVORK5CYII=",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#DTVideolabs-PlaybackProPlus",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "13.04.2021",
+   "name": "Date",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

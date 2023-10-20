@@ -1,0 +1,75 @@
+{
+ "api": [
+  {
+   "body": "",
+   "kind": "func",
+   "name": "setChannel8Bit",
+   "params": [
+    {
+     "name": "val",
+     "type": "int"
+    },
+    {
+     "name": "address",
+     "type": "int"
+    }
+   ]
+  },
+  {
+   "body": "",
+   "kind": "func",
+   "name": "setChannel16Bit",
+   "params": [
+    {
+     "name": "val",
+     "type": "int"
+    },
+    {
+     "name": "address",
+     "type": "int"
+    }
+   ]
+  },
+  {
+   "body": "self.setChannel8Bit(r, startAddress)\nself.setChannel8Bit(g, startAddress + 1)\nself.setChannel8Bit(b, startAddress + 2)\n",
+   "kind": "func",
+   "name": "setColor",
+   "params": [
+    {
+     "name": "r",
+     "type": "int"
+    },
+    {
+     "name": "g",
+     "type": "int"
+    },
+    {
+     "name": "b",
+     "type": "int"
+    },
+    {
+     "name": "startAddress",
+     "type": "int"
+    }
+   ]
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 110.0,
+  "y": 295.0
+ },
+ "definedExternally": false,
+ "libraryExportPath": "C:\\env\\nui\\data\\control_library_standard\\Tools\\DmxFixtureBase.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4o6gT9rO6/qTbXEA/uBmTuzQz4nbiPA2PCo2fqvjicShgss54Gq4qUlMBJ4fAsfafvpClme/994S2KMhGRCcEdU=",
+ "name": "DmxFixtureBase",
+ "properties": [
+  {
+   "cont": "{\"isInEditMode\":true,\"pages\":[{\"name\":\"Page1\",\"bgColor\":\"1c1c1c\",\"components\":[]}]}",
+   "name": "uib"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}

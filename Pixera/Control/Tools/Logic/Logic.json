@@ -1,0 +1,224 @@
+{
+ "api": [
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "AND"
+   },
+   "body": "self._Operation = pixcCommon.execAttribute(\"\", self._Operation, val, doSet)\r\nif doSet then\r\n    self().setProperty(\"Operation\", self._Operation)\r\n    self.Internal.calc()\r\nend\r\nreturn self._Operation\r\n",
+   "kind": "func",
+   "name": "Operation",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "string"
+   }
+  },
+  {
+   "body": "self.Operation(self().getProperty('Operation'), true)\r\nlocal desc = self.Internal.description()\r\n--pixc.log(desc)\r\nself().dynamicRebuildFromDescriptions(desc, \"Inputs\", \"Input([0-9]+)\", \"Inputs\", \".*\")\r\n",
+   "kind": "func",
+   "name": "refresh"
+  },
+  {
+   "elems": [
+    {
+     "body": "return {\r\n    'AND',\r\n    'OR',\r\n    'NOT AND',\r\n    'NOT OR'\r\n    --'EXCLUSIVE OR'\r\n}\r\n",
+     "kind": "func",
+     "name": "operations"
+    },
+    {
+     "body": "local json = require 'json'\r\nlocal count = self.Internal.getCount()\r\n\r\nlocal body = [[\r\n\tlocal compareInputValue = self.Internal.boolify(self().getProperty('Compare Input Value'))\r\n\tif compareInputValue then\r\n\t\tlocal val = value\r\n\t\tif doSet then\r\n\t\t\tself._${name}_targetValue = val\r\n\t\telseif doSet == nil then\r\n\t\t\tself._${name}_actualValue = val\r\n\t\tend\r\n\t\tlocal strTargetValue = tostring(self._${name}_targetValue)\r\n\t\tif strTargetValue == 'nil' then\r\n\t\t\tstrTargetValue = 'null'\r\n\t\tend\r\n\t\tlocal strActualValue = tostring(self._${name}_actualValue)\r\n\t\tif strActualValue == 'nil' then\r\n\t\t\tstrActualValue = 'null'\r\n\t\tend\r\n\r\n\t\tlocal boolVal = self.Internal.compare(strTargetValue, strActualValue)\r\n\t\tself._${name}_boolValue = boolVal\r\n\t\tpixc.report(strTargetValue)\r\n\t\tpixc.callRefs(boolVal)\r\n\t\tself.Internal.calc()\r\n\t\treturn boolVal\r\n\telse\r\n\t\tvalue = self.Internal.boolify(value)\r\n\t\tself._${name}_boolValue = pixcCommon.execAttribute(false, self._${name}, value, doSet)\r\n\t\tif doSet then\r\n\t\t\tself.Internal.calc()\r\n\t\tend\r\n\t\treturn self._${name}_boolValue\r\n\tend\r\n]]\r\nlocal template =  [[\r\n\t{\r\n\t\t\"name\": \"${name}\",\r\n\t\t\"kind\": \"fn\",\r\n        \"attKind\": \"standard\",\r\n        \"slotStyle\": \"leftIn;rightDefault;triggerHidden\",\r\n\t\t\"params\": [\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"value\",\r\n\t\t\t\t\"type\": \"string\"\r\n\t\t\t},\r\n            {\r\n                \"name\": \"doSet\",\r\n                \"type\": \"bool\"\r\n            }\r\n\t\t],\r\n        \"subPath\": \"Inputs\",\r\n\t\t\"result\": {\r\n\t\t},\r\n\t\t\"body\": ]] .. json.encode(body) .. [[\r\n\t}\r\n]]\r\n\r\nlocal res = ''\r\n\r\nres = res .. string.gsub(template, \"${name}\", \"\")\r\nfor i=1,count do\r\n    local tmp = template\r\n    tmp = string.gsub(tmp, \"${name}\", 'Input' .. i)\r\n    res = res .. ', '\r\n    res = res .. tmp\r\nend\r\nreturn '[' .. res .. ']'\r\n\r\n",
+     "kind": "func",
+     "name": "description"
+    },
+    {
+     "body": "local count = self.Internal.getCount()\r\n\r\nlocal res = nil\r\n\r\nlocal values = {}\r\nfor i=1,count do\r\n    local val = self['_Input' .. i .. '_boolValue']\r\n    table.insert(values, not not val)\r\nend\r\n\r\nlocal operation = self().getProperty('Operation')\r\nlocal detectedOperation = 'UNKNOWN'\r\n\r\nlocal ans = false\r\nif operation == 'AND' then\r\n    ans = self.Internal.calcAnd(values)\r\n\tdetectedOperation = 'AND'\r\nelseif operation == 'OR' then\r\n    ans = self.Internal.calcOr(values)\r\n\tdetectedOperation = 'OR'\r\nelseif operation == 'NOT AND' then\r\n    ans = not self.Internal.calcAnd(values)\r\n\tdetectedOperation = 'NOT AND'\r\nelseif operation == 'NOT OR' then\r\n    ans = not self.Internal.calcAnd(values)\r\n\tdetectedOperation = 'NOT OR'\r\nend\r\n\r\npixc.log(self()..': ', detectedOperation, table.unpack(values))\r\n\r\nself.Outputs.Output(ans, true)\r\nreturn ans\r\n",
+     "kind": "func",
+     "name": "calc"
+    },
+    {
+     "body": "local count = nil\r\npcall(function()\r\n    count = tonumber(self().getProperty('Inputs'))\r\nend)\r\nif count == nil then\r\n    pixc.warn('Invalid value for input in ' .. self() .. '! Only valid integer numbers are allowed!')\r\n    count = 2\r\nend\r\nreturn count\r\n",
+     "kind": "func",
+     "name": "getCount"
+    },
+    {
+     "body": "for _, val in ipairs(values) do\r\n    if val == false then\r\n        return false\r\n    end\r\nend\r\nreturn true\r\n",
+     "kind": "func",
+     "name": "calcAnd",
+     "params": [
+      {
+       "name": "values",
+       "type": ""
+      }
+     ]
+    },
+    {
+     "body": "for _, val in ipairs(values) do\r\n    if val == true then\r\n        return true\r\n    end\r\nend\r\nreturn false\r\n",
+     "kind": "func",
+     "name": "calcOr",
+     "params": [
+      {
+       "name": "values",
+       "type": ""
+      }
+     ]
+    },
+    {
+     "body": "if a == b then\r\n\treturn true\r\nend\r\nif tonumber(a) ~= nil and tonumber(a) == tonumber(b) then\r\n\treturn true\r\nend\r\nreturn false\r\n",
+     "kind": "func",
+     "name": "compare",
+     "params": [
+      {
+       "name": "a",
+       "type": "string"
+      },
+      {
+       "name": "b",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "body": "if val == false then\r\n    return false\r\nend\r\nif val == nil then\r\n    return false\r\nend\r\nif val == 0 then\r\n    return false\r\nend\r\nif val == '' then\r\n    return false\r\nend\r\nif val == 'false' then\r\n    return false\r\nend\r\nif val == 'nil' then\r\n    return false\r\nend\r\nif val == '0' then\r\n    return false\r\nend\r\nif val == '0.0' then\r\n    return false\r\nend\r\nif val == 'null' then\r\n    return false\r\nend\r\nreturn true\r\n",
+     "kind": "func",
+     "name": "boolify",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  },
+  {
+   "kind": "ns",
+   "name": "Inputs"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "local changed = self._Output ~= val\r\nself._Output = pixcCommon.execAttribute(false, self._Output, val, doSet)\r\nif val == true then\r\n\tself.Outputs.onTrue()\r\nelse\r\n\tself.Outputs.onFalse()\r\nend\r\n\r\nif changed then\r\n\tself.Outputs.onChange(val)\r\nend\r\n\r\nreturn self._Output\r\n",
+     "kind": "func",
+     "name": "Output",
+     "params": [
+      {
+       "name": "val",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "bool"
+     },
+     "slotStyle": "leftOut;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "onTrue",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "onFalse",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "if value then\r\n\tself.Outputs.onChangeToTrue()\r\nelse\r\n\tself.Outputs.onChangeToFalse()\r\nend\r\n",
+     "kind": "func",
+     "name": "onChange",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "onChangeToTrue",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "onChangeToFalse",
+     "slotStyle": "leftNone;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "Outputs"
+  }
+ ],
+ "cjv": {
+  "h": 0.0,
+  "w": 0.0,
+  "x": 0.0,
+  "y": 0.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "/home/cf/Logic.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4mfGxuBxTR22UZMitUzaTy2zlhPVfBRhTZLAJQFSFoPf6j0dV0AUL1ODI2r2RbMRkoSvO4jRfa3yt9CM3RLLMHZmXKX0pd2Ed6t61IkBQXpmv7RCdrtv6S5ZSJ9IT6dZuA==",
+ "name": "Logic",
+ "properties": [
+  {
+   "cont": "Module for logic operations like OR, AND, NOT OR (NOR) or NOT AND (NAND).  Set the number of inputs in the properties and run refresh(). After refreshing you can set your inputs and the output will be generated on the fly.    With \"Compare Input Value\" disabled, every value is converted in its boolean representation and used for the logical operation.  With \"Compare Input Value\" enabled, you can set the comparison value through its property input field (second parameter is true). Afterwards a call of the value function with only one value will lead to a string (and additional numeric) comparison of the comparision value and the input value.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "3",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "2",
+   "name": "Inputs",
+   "typeHint": "number"
+  },
+  {
+   "cont": "AND",
+   "name": "Operation",
+   "optionsSourceFunc": "self.Internal.operations",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Compare Input Value",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

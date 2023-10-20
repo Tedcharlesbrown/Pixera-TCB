@@ -1,0 +1,87 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\npixc.log(self.helper)\npixc.log(self.network)\nself.open = false\nself.ip = self.helper:getProperty(\"Multicast IP\",\"239.255.255.250\")\nself.port = tonumber(self.helper:getProperty(\"Port Send\",\"6451\"))\nself.ipLocal =pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.portLocal= tonumber(self.helper:getProperty(\"Port Multicast Receive\",\"1900\"))\nself.IsOpen(false, true)\nself.network:configureUdp(\n\tself.ip,\n\tself.port,\n\tself.ipLocal,\n\tself.portLocal,\n\tfunction (handle, data) self().receive(data) end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\nself.network:joinMulticast(ip)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:send(msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "pixc.log(\"got data\")\r\npixc.log(msg)\r\nself.send(\"Echo: \"..msg)\r\n",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\n-- slotStyle:leftNone;rightOut;triggerHidden\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 177.0,
+  "y": 456.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Protocols/Multicast.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4mupPKhQr3cIs/4w/m4bkszdG3N9cF8M1gRJ4pqaEiMD58YVWYw8tVLDXf84F9UufPOHi0o6ibGnFK+SoRG515k=",
+ "name": "Multicast",
+ "properties": [
+  {
+   "cont": "239.255.255.250",
+   "name": "Multicast IP"
+  },
+  {
+   "cont": "6451",
+   "name": "Port Send"
+  },
+  {
+   "cont": "1900",
+   "name": "Port Multicast Receive"
+  },
+  {
+   "cont": "Default",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

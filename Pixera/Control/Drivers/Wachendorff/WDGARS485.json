@@ -1,0 +1,171 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolSerial\"\r\nrequire \"pixcProtocolDriver\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.serial = createPixcProtocolSerial()\r\nself.protocol = createPixcProtocolDriver()\r\nself.protocol:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end)\r\npixc.log(self.helper)\r\nself.open = false\r\nself.port = self.helper:getProperty(\"Port\",\"\")\r\nself.baud = self.helper:getProperty(\"Baudrate\",\"9600\")\r\nself.stopBits = self.helper:getProperty(\"Stopbits\",\"1\")\r\nself.bits = self.helper:getProperty(\"Bits\",\"8\")\r\nself.parity = self.helper:getProperty(\"Parity\",\"None\")\r\nself.flowControl = self.helper:getProperty(\"Flowcontrol\",\"None\")\r\nself.timeout = {0,0,0,0,0}\r\nself.IsOpen(false, true)\r\nself.protocol:configure(\"stream\")\r\nself.protocol:create()\r\nself.protocol:addMatcher(\"test\", '0xAB 0xCD uint32(&1,BE) uint16(&2)',\r\n    true, self.receive ,true)\r\nself.serial:configure(\r\n\tself.port,\r\n\tself.baud,\r\n\tself.parity,\r\n\tself.stopBits,\r\n\tself.bits,\r\n\tself.flowControl,\r\n\tself.timeout,\r\n\tfunction ( data) self().receive(data) end,\r\n\tfunction( error) pixc.log(\"closeCallback: \"..error) end,\r\n\t\"addInputData\",\r\n\tself.protocol:getInstance()\r\n)\r\nself.serial:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\nself.serial:start()\r\n\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.serial == nil then return end\r\nself.serial:close()\r\nself.serial = nil\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "\tif self.serial == nil then return end\r\nself.serial:send(msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "--pixc.log(msg)\r\n\r\nlocal singleData = data % 0x4000;\r\nlocal d360 = 360/0x4000 * singleData\r\nlocal diff = math.abs(d360 - (self.oldD360 or -1))\r\nif(diff > 1 and diff < 360) then\r\n\tpixc.log(d360)\r\n\tself.oldD360 = d360\r\nend\r\n\r\n--if math.floor(d360) - math.floor(oldD360 or -1) > 1 then\r\n--\tpixc.log(d360)\r\n--\tself.oldD360 = d360\r\n--end\r\n",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "data",
+     "type": "uint32"
+    },
+    {
+     "name": "crc",
+     "type": "uint16"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\r\n\r\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcProtocolSerial\"\r\nif self.protocol == nil then\r\n\tself.protocol = createPixcProtocolSerial()\r\nend\r\nreturn self.protocol:listSerialDevices();\r\n",
+   "kind": "func",
+   "name": "listCom",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "return {\"1\",\"1.5\",\"2\"}\r\n",
+   "kind": "func",
+   "name": "stopBits",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "return {\"8\",\"7\",\"6\",\"5\"}\r\n",
+   "kind": "func",
+   "name": "bits",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "return {\"None\",\"Odd\",\"Event\",\"Mark\",\"Space\"}\r\n",
+   "kind": "func",
+   "name": "parity",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "return {\"None\",\"Software\",\"Hardware\"}\r\n",
+   "kind": "func",
+   "name": "flowcontrol",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "return {\"110\",\"300\",\"600\",\"1200\",\"2400\",\"4800\",\"9600\",\"14400\",\"19200\",\"38400\",\"56000\",\"57600\",\"115200\",\"128000\",\"256000\"}\r\n",
+   "kind": "func",
+   "name": "baudrate",
+   "slotStyle": "hidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 430.7692307692308,
+  "y": 358.46153846153845
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/Wachendorff/WDGARS485.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4rsDdECHesZqoqzf/V+znDRU5XWK/xDt7DWiwrAuZngCLrNc9LRdRxRUsUQ3QXF1joxaWWL8cPweKQ5W3s49XuRAlOEAltI4Ho7I1pFOIhrB17inqQygNeIoosk5nfq9xw==",
+ "name": "WDGARS485",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (ME)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "COM4",
+   "name": "Port",
+   "optionsSourceFunc": "self.listCom",
+   "typeHint": "string"
+  },
+  {
+   "cont": "9600",
+   "name": "Baudrate",
+   "optionsSourceFunc": "self.baudrate",
+   "typeHint": "string"
+  },
+  {
+   "cont": "None",
+   "name": "Parity",
+   "optionsSourceFunc": "self.parity",
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Stopbits",
+   "optionsSourceFunc": "self.stopBits",
+   "typeHint": "string"
+  },
+  {
+   "cont": "8",
+   "name": "Bits",
+   "optionsSourceFunc": "self.bits",
+   "typeHint": "string"
+  },
+  {
+   "cont": "None",
+   "name": "Flowcontrol",
+   "optionsSourceFunc": "self.flowcontrol",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,138 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcDriver\"\r\nif self.pixcHelper ~= nil then\r\n\treturn \r\nend\r\nself.pixcHelper = createPixcHelper(pixc,self())\r\nself.driver = createPixcDriver()\r\nself.driver:enableBroadcast()\r\n\r\nself.adapter = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.pixcHelper:getProperty(\"Local Adapter\",\"Any\"))\r\n\r\nself.token = 0\r\n\r\nself.data = nil\r\nself.driver:createParser()\r\n\r\nself.Internal.setRecFunction()\r\n\r\nself.driver:setLogFunction(function (...) pixc.log(...) end)\r\nself.driver:set(\"udp\", 0, 0, self.adapter, 6454, nil);\r\nself.IsConnected(true)\r\nself.rxTimeFreshStart = 0\r\nself.freshMode = 0\r\nself.driver:connectAsync();\r\nself.ready = true\r\nself.running = false\r\nif self.interval == nil then\r\n\tself.interval = pixc.getRoot().Utils.Timer.setInterval(\r\n\t\tfunction()\r\n\t\t\tself.Internal.checkInput()\r\n\t  \tend, 50)\r\nend\r\nif self.intervalExecuteTimecode == nil then\r\n\tself.intervalExecuteTimecode = pixc.getRoot().Utils.Timer.setInterval(\r\n\t\tfunction()\r\n\t\t\tself.timecodeToTimeline()\r\n\t  \tend, 1000)\r\nend",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval)\r\n\tself.interval = nil\r\nend\r\nif self.intervalExecuteTimecode ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.intervalExecuteTimecode)\r\n\tself.intervalExecuteTimecode = nil\r\nend\r\n\r\nself.IsConnected(false)\r\nif self.driver == nil then\r\n\treturn\r\nend\r\nself.driver:removeParser()\r\nself.driver:close()\r\nself.driver = nil\r\nself.pixcHelper = nil\r\nself._OverridenReceiveCallback = nil\r\nself.Timecode(nil)\r\nself.running = false\r\nself.ready = true\r\nself.freshMode = 2\r\nself.timecodeToTimeline()",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.connected = pixcCommon.execAttribute(0, self.connected, val, doSet)\r\nreturn self.connected\r\n",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "pixc.log(data)\r\nself.driver:overrrideReceiveCallbackFunction(\r\nfunction (data)\r\nlocal bytes = { string.byte(data, 1,-1) }\r\n\r\nif self.data == nil or self.connected == nil or self.connected == false then\r\n\tself.data = {}\r\n\treturn\r\nend\r\nlocal header = {string.byte(\"Art-Net\",1,-1)}\r\nheader[8] = 0x00\r\nheaderTimcode = {0x00,0x97}\r\n\r\n\r\nif bytes[1] == header[1] and bytes[2] == header[2] and bytes[3] == header[3] and bytes[4] == header[4] and bytes[5] == header[5] and bytes[6] == header[6] and bytes[7] == header[7] and bytes[8] == header[8] then\r\n\r\nif bytes[9] == headerTimcode[1] and bytes[10] == headerTimcode[2] then\r\n--Timecode\r\nlocal frames = bytes[15]\r\nlocal seconds = bytes[16]\r\nlocal minutes = bytes[17]\r\nlocal hours = bytes[18]\r\nlocal todoublenumber = function(data) if data < 10 then return \"0\" .. data else return tostring(data) end end\r\n\r\nif bytes[19] == 0x00 then self.TimecodeMode(\"24 FPS\") self.mode = 1 self.fps = 24\r\nelseif bytes[19] == 0x01 then self.TimecodeMode(\"25 FPS\") self.mode = 2 self.fps = 25\r\nelseif bytes[19] == 0x02 then self.TimecodeMode(\"30 FPS - Drop Frames\") self.mode = 3 self.fps = 30\r\nelseif bytes[19] == 0x03 then self.TimecodeMode(\"30 FPS\") self.mode = 5 self.fps = 30 end\r\n\r\nself.Timecode(\r\n\ttodoublenumber(hours) .. \":\" ..\r\n\ttodoublenumber(minutes) .. \":\" ..\r\n\ttodoublenumber(seconds) .. \":\" ..\r\n\ttodoublenumber(frames) \r\n\t)\r\nself.totalFrame = frames + seconds* self.fps + minutes *60*self.fps + hours*60*60*self.fps\r\n--pixc.log(self.totalFrame)\r\nif self.running == false then\r\n\tself.freshMode = 1\r\n\tself.token = self.token+1\r\nend\r\nself.running = true\r\nself.ready = true\r\n\r\nend\r\nend\r\n\r\nend, true) \r\n",
+     "kind": "func",
+     "name": "setRecFunction",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.ready ~= true and self.running == true then\r\n\tself.running = false\r\n\tself.ready = true\r\n\tself.freshMode = 2\r\n\tself.token = self.token+1\r\n\tself.timecodeToTimeline()\r\nelse\r\n\tself.ready = false\r\nend\r\n",
+     "kind": "func",
+     "name": "checkInput",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  },
+  {
+   "attKind": "internal",
+   "body": "\r\n--self._Timecode = pixcCommon.execAttribute(0, self._Timecode, val, doSet)\r\nif val == nil then\r\n\tif self.timecode ~= nil then\r\n\t\tpixc.callRefs(tonumber(self.timecode[1]),tonumber(self.timecode[2]),tonumber(self.timecode[3]),tonumber(self.timecode[4]),false,self.mode)\r\n\t\tpixc.report(self.timecode[1] .. \":\" .. self.timecode[2] .. \":\" .. self.timecode[3] .. \":\" .. self.timecode[4])\r\n\tend\r\n\treturn\r\nend\r\nlocal timecode = self.pixcHelper.stringSplit(val,\":\")\r\npixc.report(val)\r\n\r\nlocal totalFrames = tonumber(timecode[1])*60*60*self.fps + tonumber(timecode[2])*60*self.fps + tonumber(timecode[3]) * self.fps + tonumber(timecode[4])\r\n\r\nif self.totalFrame ~= nil and totalFrames ~= self.totalFrame+1 then\r\n\t\tpixc.warn(\"Incoming Timecode Jumped!\")\r\n\t\tself.freshMode = 2\r\n\t\tself.token = self.token+1\r\n\t\tself.timecode = timecode\r\n\t\tself.timecodeToTimeline()\r\n\t\t--pixc.callRefs(tonumber(self.timecode[1]),tonumber(self.timecode[2]),tonumber(self.timecode[3]),tonumber(self.timecode[4]),false,self.mode)\r\n\treturn\r\nend\r\n\r\nif self.timecode ~= nil and (\r\n\tself.timecode[1] ~= timecode[1] or\r\n\tself.timecode[2] ~= timecode[2] or\r\n\tself.timecode[3] ~= timecode[3] or\r\n\tself.timecode[4] ~= timecode[4]) then\r\n\t--pixc.callRefs(tonumber(timecode[1]),tonumber(timecode[2]),tonumber(timecode[3]),tonumber(timecode[4]),true,self.mode)\r\n\r\nelse\r\n\tself.freshMode = 2\r\n\t--pixc.callRefs(tonumber(timecode[1]),tonumber(timecode[2]),tonumber(timecode[3]),tonumber(timecode[4]),false,self.mode)\r\nend\r\n\t\r\nself.timecode = timecode\r\n--pixc.callRefs(tonumber(timecode[1]),tonumber(timecode[2]),tonumber(timecode[3]),tonumber(timecode[4]))\r\n\r\nreturn val\r\n",
+   "kind": "func",
+   "name": "Timecode",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._TimecodeMode = pixcCommon.execAttribute(0, self._TimecodeMode, val, doSet)\r\nreturn self._TimecodeMode\r\n",
+   "kind": "func",
+   "name": "TimecodeMode",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "body": "if self.timecode ~= nil and\r\n\tself.running ~= nil and\r\n\tself.freshMode ~= nil and\r\n\tself.mode ~= nil then\r\n\t\r\n\tlocal rxTimeFreshStart = pixc.callRefs(tonumber(self.timecode[1]),tonumber(self.timecode[2]),tonumber(self.timecode[3]),tonumber(self.timecode[4]),self.rxTimeFreshStart,self.running, self.freshMode, self.token,self.mode)\r\n\r\n\tif rxTimeFreshStart == nil or rxTimeFreshStart[1] == nil or rxTimeFreshStart[1][1] == nil then\r\n\t\treturn\r\n\tend\r\n\t\r\n\tif self.freshMode == 1 or self.freshMode == 2 then\r\n\t\tif self.freshMode == 1 then\r\n\t\t\tself.rxTimeFreshStart = rxTimeFreshStart[1][1]\r\n\t\telse\r\n\t\t\tself.rxTimeFreshStart = 0\r\n\t\tend\r\n\t\tif rxTimeFreshStart[1][1] == -1 then\r\n\t\t\treturn \r\n\t\tend\r\n\t\tself.freshMode = 0\r\n\telse\r\n\t\tif rxTimeFreshStart[1][1] == -1 then\r\n\t\t\tself.freshMode = 2\r\n\t\tend\r\n\tend\r\nend\r\n",
+   "kind": "func",
+   "name": "timecodeToTimeline",
+   "slotStyle": "leftNone;rightOut"
+  }
+ ],
+ "cjv": {
+  "h": 221.0,
+  "w": 224.0,
+  "x": 229.0,
+  "y": 466.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Protocols/Timecode/ArtnetTimecode/ArtnetTimecodeIn.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4k+5Mlwc9qN7wN9finhYrffIC21zRbqGC/o0e7vRQ5ezCzOgjT5/nrZ0mQN3tOnlWGBy9XQq8we1zHE5xETyqmFEL+QjOMhS4HjhIzw0JDUJv9FM7wrsl8L2E5uUbhdamg==",
+ "name": "ArtnetTimecodeIn",
+ "properties": [
+  {
+   "cont": "AVStumpfl GmbH (Benni M.)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.pixera.one",
+   "name": "URL",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "url"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "192.168.0.67",
+   "name": "Local Adapter",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

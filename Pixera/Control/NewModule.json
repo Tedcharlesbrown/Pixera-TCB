@@ -1,0 +1,24 @@
+{
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 121.0,
+  "y": 65.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/NewModule.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4tjhlxxzmJGzlUG/oscI4Bnxl7OcseBp01YsLnqRTkExSsudUlYzKMCYO5ZTRBu4kNgy8W918WUEsH+qVSHHH9E=",
+ "name": "NewModule",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

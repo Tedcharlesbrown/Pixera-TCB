@@ -1,0 +1,84 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolAds\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.ads = createPixcProtocolAds()\r\npixc.log(self.helper)\r\nself.open = false\r\nself.ip = self.helper:getProperty(\"IP\",\"\")\r\nself.remoteNetId = self.helper:getProperty(\"RemoteNetId\",\"\")\r\nself.IsOpen(false, true)\r\nself.ads:configure(\r\n\tself.ip,\r\n\tself.remoteNetId)\r\nself.ads:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\nself.ads:start()\r\n\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.ads == nil then return end\r\nself.ads:close()\r\nself.ads = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\n-- slotStyle:leftNone;rightOut;triggerHidden\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "--\nlocal arr = {10,15,3}\nself.ads:write(\"MAIN.InArray\",\"int\",3,arr)",
+   "kind": "func",
+   "name": "writeTest1",
+   "params": [
+    {
+     "name": "val",
+     "type": "int"
+    }
+   ]
+  },
+  {
+   "body": "--\nself.ads:read(\"MAIN.OutArray\",\"int\",5,function( val) pixc.log(val[1]) end)",
+   "kind": "func",
+   "name": "readTest"
+  },
+  {
+   "body": "--\nself.ads:addNotification(\"MAIN.Output2\",\"int\",0,function(val) pixc.log(val) end,true,100,100)",
+   "kind": "func",
+   "name": "addNotificationTest"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 445.0,
+  "y": 89.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "O:/Repos/nui/data/control_library_standard/Protocols/Ads.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4iFM7tzyylqKSkof8n+XsMNKNlh1h+9pX+jBk6g4fjAOJRaYDbjULvIc+jovrzgv3JgSWTViVcCYiGp+4CpsHus=",
+ "name": "Ads",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "192.168.1.95",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "name": "RemoteNetId",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,86 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nif self.pixcHelper == nil then\r\n\tself.pixcHelper = createPixcHelper(pixc, self())\r\nend\r\n\r\nself.Internal.stopTransferCheck()\r\n\r\nself.addedResources = {}\r\nlocal folder = self.Internal.getFolderResource()\r\nif folder == nil then\r\n\treturn\r\nend\r\n\r\nlocal path = self.pixcHelper:getProperty(\"Source Path\", \"\")\r\nself.addedResources = folder.addResourcesFromDirectory(path, true, true)\r\nself.Internal.startTransferCheck()\r\n",
+   "kind": "func",
+   "name": "addResources"
+  },
+  {
+   "body": "self.Internal.stopTransferCheck()\r\nself.transferComplete()\r\n",
+   "kind": "func",
+   "name": "overrideTransferCheck"
+  },
+  {
+   "body": "if action == nil then\r\n\treturn pixc.callRefs()\r\nend\r\n",
+   "kind": "func",
+   "name": "toFolderResource",
+   "params": [
+    {
+     "name": "action",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "self.Internal.stopTransferCheck()\r\npixc.callRefs()\r\n",
+   "kind": "func",
+   "name": "transferComplete"
+  },
+  {
+   "elems": [
+    {
+     "body": "self.Internal.stopTransferCheck()\r\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\r\n\tfunction()\r\n\t\tself.Internal.checkTransfer()\r\n\tend, 500)\r\n",
+     "kind": "func",
+     "name": "startTransferCheck"
+    },
+    {
+     "body": "if self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\nself.addResources = {}\r\n",
+     "kind": "func",
+     "name": "stopTransferCheck"
+    },
+    {
+     "body": "if self.addedResources ~= nil and # self.addedResources > 0 then\r\n\tfor _, res in ipairs(self.addedResources) do\r\n\t\tif res.getHasPendingTransfer() then\r\n\t\t\treturn\r\n\t\tend\r\n\tend\r\nend\r\nself.Internal.stopTransferCheck()\r\nself.transferComplete()\r\n",
+     "kind": "func",
+     "name": "checkTransfer",
+     "result": {
+      "name": "result",
+      "type": "bool"
+     }
+    },
+    {
+     "body": "local folder = nil\r\nlocal crRes = self.toFolderResource()\r\nfor _, v in ipairs(crRes) do\r\n\tfor __, k in ipairs(v) do\r\n\t\tif k ~= nil then\r\n\t\t\tfolder = k\r\n\t\t\tbreak\r\n\t\tend\r\n\tend\r\nend\r\nif folder == nil or folder.getHandleInt() == 0 then\r\n\tfolder = pixc.getRoot().Pixera.Resources.getResourceFolderWithNamePath(\"Media/Standard Content\")\r\n\tif folder == nil or folder.getHandleInt() == 0 then\r\n\t\treturn nil\r\n\tend\r\nend\r\nreturn folder\r\n",
+     "kind": "func",
+     "name": "getFolderResource"
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  }
+ ],
+ "cjv": {
+  "h": 340.0,
+  "w": 306.0,
+  "x": 49.0,
+  "y": 381.0
+ },
+ "definedExternally": false,
+ "libraryExportPath": "C:\\env\\nui\\data\\control_library_standard\\Tools\\ResourceAdder.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4jkJwr8Wmd2lBiKCxbZHb0+kF1CGC9zuLJYA0RhDNsPf8xhQfZJQtvt3si2YoStbDsUbmvuscgSQMU5BTDHORmQ=",
+ "name": "ResourceAdder",
+ "properties": [
+  {
+   "cont": "C:/env/test_content",
+   "name": "Source Path"
+  },
+  {
+   "cont": "AV Stumpfl",
+   "name": "Creator Name"
+  },
+  {
+   "cont": "www.avstumpfl.com",
+   "name": "Creator URL"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}
