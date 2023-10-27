@@ -33,6 +33,32 @@
 `Square`
 `Width[px]`
 `Height[px]`
+## [Perspective_Mix](Perspective_Mix.glsl)
+<img src="_noeffect.png" alt="Placeholder Image" width="500"/>
+
+**Variables:**
+
+`Mix[%]`
+`Position X`
+`Position Y`
+`Position Z`
+`Rotation X`
+`Rotation Y`
+`Rotation Z`
+`FOV`
+`AspectRatio`
+`Sampler`
+## [UVPositionAndScale_Mix](UVPositionAndScale_Mix.glsl)
+<img src="_noeffect.png" alt="Placeholder Image" width="500"/>
+
+**Variables:**
+
+`Mix[%]`
+`X Pos`
+`Y Pos`
+`X Scale`
+`Y Scale`
+`Scale`
 ## [Vignette_AspectRatio](Vignette_AspectRatio.glsl)
 <img src="Vignette_AspectRatio.png" alt="Vignette_AspectRatio" width="500"/>
 
