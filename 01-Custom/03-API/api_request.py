@@ -99,10 +99,12 @@ if __name__ == "__main__":
     ip = "127.0.0.1"  # Replace with your Pixera system's IP address
     port = 1401  # Replace with your Pixera system's port if different
     # result = send_JSON_TCP()
-    result = send_JSON_TCP(method="getApiRevision")
+    # result = send_JSON_TCP(method="getApiRevision")
     # result = send_JSON_TCP(method=GET_API_REVISION)
     # result = send_JSON_TCP(method=TOGGLE_TRANSPORT, params=["timelineName"], message=["Timeline 1"])
     # result = send_JSON_TCP(method=getTimelinesSelected)
+    result = send_JSON_TCP(method="Pixera.Timelines.getTimelineAtIndex", params=["index"], message=[6334283394240457]) #Timeline 1
+    # result = send_JSON_TCP(method="Pixera.Timelines.getTimelineAtIndex", params=["index"], message=[6207985371032950]) #Pre-Show Check
     # result = send_JSON_TCP(method=setCurrentTimeOfTimelineInSeconds, params=["timelineName","time"], message=["6334283394240457",1])
     # result = send_JSON_TCP(method=setCurrentTimeOfTimelineInSeconds, params=["timelineName","time"], message=["Timeline 1",1])
     if result:

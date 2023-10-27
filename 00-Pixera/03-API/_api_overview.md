@@ -6,6 +6,8 @@ The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) pr
 
 Pixera API test application by Benni Müller can be found [here](http://www.benni-m.de/index.html#projects).
 
+Descriptions pulled from [pixera_api_examples_rev349.txt](00-Pixera/03-API/docs/pixera_api_examples_rev349.txt)
+
 ## Protocols
 
  - JSON/TCP
@@ -26,8 +28,12 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.getApiRevision`
 
-- **Return Values**:
-  - `int` : *int*
+-  All class methods imply a handle parameter in the JSON params object (see examples).
+-  Returns the current revision of the API.
+-  Release versions have even revision numbers. Beta versions have odd revision numbers.
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -35,11 +41,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.getHasFunction`
 
-- **Parameters**:
-  - `functionName` : *string*
+-  Returns true if the function (or class method) is available.
+-  functionName must be the fully qualified name of the function or method,
+-  e.g. "Pixera.Screens.Screen.setPosition".
 
-- **Return Values**:
-  - `bool` : *bool*
+   - **Parameters**:
+     - `functionName` : *string*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -47,11 +57,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.outputDebug`
 
-- **Parameters**:
-  - `message` : *string*
+-  Outputs a debug string into the Pixera log and returns the same string in
+-  the reply.
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `message` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -59,8 +72,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.getLicenseJson`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -68,8 +83,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.getCurrentTime`
 
-- **Return Values**:
-  - `double` : *double*
+-  Returns the current time in frames. Use getFps() to relate the frames to seconds.
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -77,8 +94,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.getCurrentTimeAsString`
 
-- **Return Values**:
-  - `string` : *string*
+-  Returns the current time as an ISO-8601 string (using the local timezone).
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -86,8 +105,12 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.noop`
 
-- **Return Values**:
-  - `null` : *null*
+-  No operation. This function does nothing. It can be used in request/response scenarios
+-  (e.g. JSON-RPC) to bookend a set of API invocations. This gives the client a way
+-  to know that the last invocation in the set has been processed by Pixera.
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -95,11 +118,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.requestCallback`
 
-- **Parameters**:
-  - `functionName` : *string*
+-  Experimental. Currently only relevant to Javascript interpretation within Pixera.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `functionName` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -107,11 +132,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.readFileString`
 
-- **Parameters**:
-  - `path` : *string*
 
-- **Return Values**:
-  - `string` : *string*
+
+   - **Parameters**:
+     - `path` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -119,12 +146,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.writeFileString`
 
-- **Parameters**:
-  - `path` : *string*
-  - `fileStr` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `path` : *string*
+     - `fileStr` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -132,11 +161,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.getAccessRecipe`
 
-- **Parameters**:
-  - `hdlPath` : *string*
 
-- **Return Values**:
-  - `string` : *string*
+
+   - **Parameters**:
+     - `hdlPath` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -144,8 +175,12 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.pollMonitoring`
 
-- **Return Values**:
-  - `string` : *string*
+-  See the documentation PDF for more information on monitoring.
+-  The Javascript implementation does not support monitoring.
+-  In the JSON implementation, the result of this function is a JSON object, not a string.
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -153,11 +188,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.unsubscribeMonitoringSubject`
 
-- **Parameters**:
-  - `subject` : *string*
 
-- **Return Values**:
-  - `bool` : *bool*
+
+   - **Parameters**:
+     - `subject` : *string*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -165,11 +202,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.subscribeMonitoringSubject`
 
-- **Parameters**:
-  - `subject` : *string*
 
-- **Return Values**:
-  - `bool` : *bool*
+
+   - **Parameters**:
+     - `subject` : *string*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -177,11 +216,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.setMonitoringEventMode`
 
-- **Parameters**:
-  - `mode` : *string*
 
-- **Return Values**:
-  - `bool` : *bool*
+
+   - **Parameters**:
+     - `mode` : *string*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -189,11 +230,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.monitoringEvent`
 
-- **Parameters**:
-  - `eventDescription` : *string*
+-  In the Control implementation this function is called when monitoring events are sent.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `eventDescription` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -201,11 +244,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.setShowContextInReplies`
 
-- **Parameters**:
-  - `doShow` : *bool*
+-  Only available in json implementation.
 
-- **Return Values**:
-  - `bool` : *bool*
+   - **Parameters**:
+     - `doShow` : *bool*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -213,11 +258,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.setMonitoringHasDelimiter`
 
-- **Parameters**:
-  - `hasDelimiter` : *bool*
 
-- **Return Values**:
-  - `bool` : *bool*
+
+   - **Parameters**:
+     - `hasDelimiter` : *bool*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -225,12 +272,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.runJsScript`
 
-- **Parameters**:
-  - `jsFunction` : *string*
-  - `jsCode` : *string*
+-  Runs the javascript function jsFunction with code jsCode.
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `jsFunction` : *string*
+     - `jsCode` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -238,13 +287,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Utility.dynamicRebuildFromJsonDescription`
 
-- **Parameters**:
-  - `deviceName` : *string*
-  - `jsonDescription` : *string*
-  - `folder` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `deviceName` : *string*
+     - `jsonDescription` : *string*
+     - `folder` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -254,11 +305,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Network.getConveyor`
 
-- **Parameters**:
-  - `conveyorName` : *string*
+-  The Network namespace establishes a bridge between the network connections defined in the API
+-  tab and the API entities. E.g. it allows Javascript objects created during use of the API to
+-  send data on the connections defined in the API tab.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `conveyorName` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -268,12 +323,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setTransportModeOnTimelineAtIndex`
 
-- **Parameters**:
-  - `index` : *int*
-  - `mode` : *int*
+-  Sets the transport mode of the timeline at the (zero-based) index in
+-  the Timelines listing of the Compositing tab.
+-  Mode Parameter: Play = 1, Pause = 2, Stop = 3.
 
-- **Return Values**:
-  - `bool` : *bool*
+   - **Parameters**:
+     - `index` : *int*
+     - `mode` : *int*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -281,12 +340,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setTransportModeOnTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `mode` : *int*
+-  Sets the transport mode of the timeline identified by its name.
+-  Mode Parameter: Play = 1, Pause = 2, Stop = 3.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `mode` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -294,11 +356,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.toggleTransport`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Toggle the timeline between play and pause.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -306,11 +370,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getTransportModeOnTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the transport mode of the timeline identified by its name.
+-  Return values: Play = 1, Pause = 2, Stop = 3.
 
-- **Return Values**:
-  - `int` : *int*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -318,12 +385,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setOpacityOnTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `opacity` : *double*
+-  Sets the opacity of the timeline identified by its name.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `opacity` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -331,11 +400,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getOpacityOnTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the opacity of the timeline identified by its name.
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -343,8 +414,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.startFirstTimeline`
 
-- **Return Values**:
-  - `null` : *null*
+
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -352,8 +425,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.pauseFirstTimeline`
 
-- **Return Values**:
-  - `null` : *null*
+
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -361,8 +436,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.stopFirstTimeline`
 
-- **Return Values**:
-  - `null` : *null*
+
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -370,11 +447,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setPosValue`
 
-- **Parameters**:
-  - `val` : *double*
+-  Set the x position of the first layer of the first timeline.
+-  Purely for demonstration, testing purposes.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `val` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -382,12 +462,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setPosValueXY`
 
-- **Parameters**:
-  - `valX` : *double*
-  - `valY` : *double*
+-  Set the x/y position of the first layer of the first timeline.
+-  Purely for demonstration, testing purposes.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `valX` : *double*
+     - `valY` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -395,12 +478,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setParamValue`
 
-- **Parameters**:
-  - `path` : *string*
-  - `value` : *double*
+-  Sets the current value of the parameter.
+-  The parameter is identified by a path separated by periods (e.g. "Timeline 1.Layer 1.Opacity").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `path` : *string*
+     - `value` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -408,12 +494,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.applyCueAtIndexOnTimelineAtIndex`
 
-- **Parameters**:
-  - `cueIndex` : *int*
-  - `timelineIndex` : *int*
+-  Triggers the cue at the (zero-based) index in the timeline at the (zero-based) index in
+-  the Timelines listing of the Compositing tab.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `cueIndex` : *int*
+     - `timelineIndex` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -421,12 +510,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.applyCueNumberOnTimelineAtIndex`
 
-- **Parameters**:
-  - `cueNumber` : *int*
-  - `timelineIndex` : *int*
+-  Triggers the cue number in the timeline at the (zero-based) index in
+-  the Timelines listing of the Compositing tab.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `cueNumber` : *int*
+     - `timelineIndex` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -434,12 +526,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.applyCueNumberOnTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `cueNumber` : *int*
+-  Triggers the cue number in the timeline.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `cueNumber` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -447,12 +541,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.applyCueOnTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `cueName` : *string*
+-  Triggers the cue with name in the timeline.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `cueName` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -460,12 +556,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.addResourceToFolder`
 
-- **Parameters**:
-  - `namePath` : *string*
-  - `filePath` : *string*
+-  Adds the file at the path to the folder with the given name path.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `namePath` : *string*
+     - `filePath` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -473,12 +571,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.assignResourceToLayer`
 
-- **Parameters**:
-  - `resourcePath` : *string*
-  - `layerPath` : *string*
+-  Assigns a resource to a layer. The resource is identified by a path build from signatures and separated by forward slashes
+-  (e.g. "Media/Folder/video.mov"). The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `resourcePath` : *string*
+     - `layerPath` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -486,11 +587,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.refreshResource`
 
-- **Parameters**:
-  - `resourcePath` : *string*
+-  Refreshes a resource from file. The resource is identified by a path build from signatures and separated by forward slashes
+-  (e.g. "Media/Folder/video.mov").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `resourcePath` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -498,13 +602,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setTransportModeOnLayer`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `mode` : *int*
-  - `loop` : *bool*
+-  Sets the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `mode` : *int*
+     - `loop` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -512,11 +619,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getTransportModeOnLayer`
 
-- **Parameters**:
-  - `layerPath` : *string*
+-  Gets the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `int` : *int*
+   - **Parameters**:
+     - `layerPath` : *string*
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -524,11 +634,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getResourceAssignedToLayer`
 
-- **Parameters**:
-  - `layerPath` : *string*
+-  Gets the resource currently assigned to the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
+-  The returned string is the path build from signatures and separated by forward slashes
+-  (e.g. "Media/Folder/video.mov").
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `layerPath` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -536,14 +651,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.assignResourceToClipAtTimeByDmxId`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `dmxFolderId` : *int*
-  - `dmxFileId` : *int*
-  - `time` : *double*
+-  Assign the resource with dmxfolder/dmxfile id to the clip at time in frames by layerpath
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `dmxFolderId` : *int*
+     - `dmxFileId` : *int*
+     - `time` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -551,14 +668,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.assignResourceToClipAtHMSFStringByDmxId`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `dmxFolderId` : *int*
-  - `dmxFileId` : *int*
-  - `hmsf` : *string*
+-  Assign the resource with dmxfolder/dmxfile id to the clip at hmsf time by layerpath
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `dmxFolderId` : *int*
+     - `dmxFileId` : *int*
+     - `hmsf` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -566,17 +685,19 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.assignResourceToClipAtHMSFByDmxId`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `dmxFolderId` : *int*
-  - `dmxFileId` : *int*
-  - `h` : *int*
-  - `m` : *int*
-  - `s` : *int*
-  - `f` : *int*
+-  Assign the resource with dmxfolder/dmxfile id to the clip at h m s f by layerpath
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `dmxFolderId` : *int*
+     - `dmxFileId` : *int*
+     - `h` : *int*
+     - `m` : *int*
+     - `s` : *int*
+     - `f` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -584,12 +705,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setCurrentTimeOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `time` : *int*
+-  Sets the current time in frames. Use getFpsOfTimeline() to relate the frames to seconds.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `time` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -597,12 +720,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setCurrentTimeOfTimelineInSeconds`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `time` : *double*
+-  Sets the current time in seconds.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `time` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -610,13 +735,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setCurrentTimeAndTransportModeOfTimelineInSeconds`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `time` : *double*
-  - `mode` : *int*
+-  Sets the current time in seconds.
+-  Mode Parameter: Play = 1, Pause = 2, Stop = 3.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `time` : *double*
+     - `mode` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -624,11 +752,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getFpsOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the frames per second of the timeline.
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -636,11 +766,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getCurrentTimeOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the current time in frames. Use getFpsOfTimeline() to relate the frames to seconds.
 
-- **Return Values**:
-  - `int` : *int*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -648,11 +780,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getCurrentTimeOfTimelineInSeconds`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the current time in seconds.
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -660,11 +794,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getCurrentHMSFOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the current time as a hours, minutes, seconds, frames string.
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -672,11 +808,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getCurrentCountdownOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the current countdown in frames. Use getFpsOfTimeline() to relate the frames to seconds.
 
-- **Return Values**:
-  - `int` : *int*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -684,11 +822,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getCurrentCountdownHMSFOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
+-  Gets the current countdown as a hours, minutes, seconds, frames string.
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `timelineName` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -696,13 +836,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.startOpacityAnimationOfTimeline`
 
-- **Parameters**:
-  - `timelineName` : *string*
-  - `fadeIn` : *bool*
-  - `fullFadeDuration` : *double*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `timelineName` : *string*
+     - `fadeIn` : *bool*
+     - `fullFadeDuration` : *double*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -710,13 +852,17 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.createClipOnLayerAtTimeWithResource`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `time` : *double*
-  - `resourcePath` : *string*
+-  Creates a clip at the given time in frames and assigns the resource.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
+-  The resource is identified by a path build from signatures and separated by forward slashes (e.g. "Media/Folder/video.mov").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `time` : *double*
+     - `resourcePath` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -724,12 +870,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.removeClipOnLayerWithIndex`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `clipIndex` : *int*
+-  Removes the clip identified by the 0-based clipIndex on the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `clipIndex` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -737,11 +886,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.removeAllClipsOnLayer`
 
-- **Parameters**:
-  - `layerPath` : *string*
+-  Removes all clips on the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `layerPath` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -749,12 +901,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getClipDurationInSecondsWithIndex`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `clipIndex` : *int*
+-  Gets the clip duration in seconds identified by the 0-based clipIndex on the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `clipIndex` : *int*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -762,12 +917,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getClipDurationInFramesWithIndex`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `clipIndex` : *int*
+-  Gets the clip duration in frames identified by the 0-based clipIndex on the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `int` : *int*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `clipIndex` : *int*
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -775,12 +933,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getClipTimeInSecondsWithIndex`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `clipIndex` : *int*
+-  Gets the clip start time in seconds identified by the 0-based clipIndex on the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `clipIndex` : *int*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -788,12 +949,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getClipEndTimeInSecondsWithIndex`
 
-- **Parameters**:
-  - `layerPath` : *string*
-  - `clipIndex` : *int*
+-  Gets the clip end time in seconds identified by the 0-based clipIndex on the layer.
+-  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `layerPath` : *string*
+     - `clipIndex` : *int*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -801,11 +965,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getResourceDurationInSeconds`
 
-- **Parameters**:
-  - `resourcePath` : *string*
+-  Returns the duration of the resource in seconds.
+-  The resource is identified by a path build from signatures and separated by forward slashes (e.g. "Media/Folder/video.mov").
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `resourcePath` : *string*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -813,11 +980,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.getParamValue`
 
-- **Parameters**:
-  - `path` : *string*
+-  Gets the current value of the parameter.
+-  The parameter is identified by a path separated by periods (e.g. "Timeline 1.Layer 1.Opacity").
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `path` : *string*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -825,19 +995,21 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setTimecodeInput`
 
-- **Parameters**:
-  - `hour` : *int*
-  - `minute` : *int*
-  - `second` : *int*
-  - `frame` : *int*
-  - `elapsedTime` : *double*
-  - `running` : *bool*
-  - `freshMode` : *int*
-  - `stateToken` : *int*
-  - `format` : *int*
+-  Set timecode input for midi and artnet timecode.
 
-- **Return Values**:
-  - `double` : *double*
+   - **Parameters**:
+     - `hour` : *int*
+     - `minute` : *int*
+     - `second` : *int*
+     - `frame` : *int*
+     - `elapsedTime` : *double*
+     - `running` : *bool*
+     - `freshMode` : *int*
+     - `stateToken` : *int*
+     - `format` : *int*
+
+   - **Return Values**:
+     - `double` : *double*
 
 ---
 
@@ -845,8 +1017,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.takeOverAllClients`
 
-- **Return Values**:
-  - `null` : *null*
+- takeover all clients
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -854,11 +1028,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Compound.setPauseSmpteInput`
 
-- **Parameters**:
-  - `doPause` : *bool*
+- mute all incomming smpte inputs
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `doPause` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -868,11 +1044,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.closeApp`
 
-- **Parameters**:
-  - `saveProject` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `saveProject` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -880,11 +1058,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.loadProject`
 
-- **Parameters**:
-  - `path` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `path` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -892,8 +1072,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.saveProject`
 
-- **Return Values**:
-  - `null` : *null*
+
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -901,11 +1083,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.saveProjectAs`
 
-- **Parameters**:
-  - `path` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `path` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -913,8 +1097,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getProjectName`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -922,11 +1108,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.setProjectName`
 
-- **Parameters**:
-  - `name` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `name` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -934,8 +1122,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getProjectDirectory`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -943,8 +1133,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getControlMultiUserSessionName`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -952,11 +1144,17 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.shutdownSystem`
 
-- **Parameters**:
-  - `mode` : *optional<int>*
+-  Shut down the local machine. There are three options for mode:
+-  1: Shut down.
+-  2: Shut down and turn off power (if supported).
+-  3: Shut down and reboot.
+-  Default if no mode is set is 1.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `mode` : *optional<int>*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -964,8 +1162,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getLiveSystemIps`
 
-- **Return Values**:
-  - `string[]` : *string[]*
+
+
+   - **Return Values**:
+     - `string[]` : *string[]*
 
 ---
 
@@ -973,11 +1173,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getLiveSystemState`
 
-- **Parameters**:
-  - `ip` : *string*
 
-- **Return Values**:
-  - `string` : *string*
+
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -985,12 +1187,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.liveSystemStateChange`
 
-- **Parameters**:
-  - `ip` : *string*
-  - `state` : *string*
+-  This function is called in Pixera Control when the live system's state changes.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `ip` : *string*
+     - `state` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -998,12 +1202,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.shutdownLiveSystem`
 
-- **Parameters**:
-  - `ip` : *string*
-  - `mode` : *optional<int>*
+-  Shut down the live system with the given IP. The mode options are the same as for shutdownSystem():
+-  Default if no mode is set is 1.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `ip` : *string*
+     - `mode` : *optional<int>*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1011,11 +1218,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.wakeLiveSystem`
 
-- **Parameters**:
-  - `ip` : *string*
+-  Wake up the live system that last had the given IP. Uses the MAC address that was last reported
+-  for the IP.
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1023,11 +1233,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getLiveSystemMacAddress`
 
-- **Parameters**:
-  - `ip` : *string*
+-  Returns the last MAC address associated with the live system with the given IP.
 
-- **Return Values**:
-  - `string` : *string*
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1035,11 +1247,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.startLiveSystem`
 
-- **Parameters**:
-  - `ip` : *string*
+-  Start LiveSystem.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1047,8 +1261,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.startLiveSystems`
 
-- **Return Values**:
-  - `null` : *null*
+-  Start all LiveSystems in Mapping Live Tab.
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1056,11 +1272,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.stopLiveSystem`
 
-- **Parameters**:
-  - `ip` : *string*
+-  Start LiveSystem.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1068,8 +1286,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.stopLiveSystems`
 
-- **Return Values**:
-  - `null` : *null*
+-  Start all LiveSystems in Mapping Live Tab.
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1077,11 +1297,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.restartLiveSystem`
 
-- **Parameters**:
-  - `ip` : *string*
+-  Start LiveSystem.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1089,8 +1311,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.restartLiveSystems`
 
-- **Return Values**:
-  - `null` : *null*
+-  Start all LiveSystems in Mapping Live Tab.
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1098,12 +1322,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.remoteSystemStateChange`
 
-- **Parameters**:
-  - `ip` : *string*
-  - `state` : *string*
+-  This action is run when remote heartbeat tracking detects a state change in the system.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `ip` : *string*
+     - `state` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1111,8 +1337,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getRemoteSystemIps`
 
-- **Return Values**:
-  - `string[]` : *string[]*
+
+
+   - **Return Values**:
+     - `string[]` : *string[]*
 
 ---
 
@@ -1120,11 +1348,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getRemoteSystemState`
 
-- **Parameters**:
-  - `ip` : *string*
 
-- **Return Values**:
-  - `string` : *string*
+
+   - **Parameters**:
+     - `ip` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1132,13 +1362,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.setVideoStreamActiveState`
 
-- **Parameters**:
-  - `ip` : *string*
-  - `device` : *string*
-  - `isActive` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `ip` : *string*
+     - `device` : *string*
+     - `isActive` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1146,12 +1378,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getVideoStreamActiveState`
 
-- **Parameters**:
-  - `ip` : *string*
-  - `device` : *string*
 
-- **Return Values**:
-  - `bool` : *bool*
+
+   - **Parameters**:
+     - `ip` : *string*
+     - `device` : *string*
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -1159,8 +1393,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Session.getDefaultClipDurationsAsJsonString`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1170,8 +1406,11 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.LiveSystems.getLiveSystems`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Get the handles of the live systems.
+-  This will also return handles of live systems that are no longer connected.
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1179,12 +1418,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.LiveSystems.liveSystemNotAvailable`
 
-- **Parameters**:
-  - `reason` : *int*
-  - `system` : *handle*
+-  Called when the live system has become unavailable.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `reason` : *int*
+     - `system` : *handle*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1192,8 +1433,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.LiveSystems.getMultiUserMembers`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1205,11 +1448,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Screens.getScreenWithName`
 
-- **Parameters**:
-  - `name` : *string*
+-  Screen name as shown in the inspector.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `name` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1217,14 +1462,20 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Screens.setNamedScreenPosition`
 
-- **Parameters**:
-  - `name` : *string*
-  - `xPos` : *optional<double>*
-  - `yPos` : *optional<double>*
-  - `zPos` : *optional<double>*
+-  This function was introduced for test purposes, is not typical of the API
+-  and is likely to be removed soon. Do not use it in shipping products!
+-  The function sets the position of the screen with the given name.
+-  The recommended way of doing this is to first use getScreenWithName(.) and
+-  then Screen.setPosition(.).
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `name` : *string*
+     - `xPos` : *optional<double>*
+     - `yPos` : *optional<double>*
+     - `zPos` : *optional<double>*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1232,8 +1483,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Screens.getScreens`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns handles to all screens currently used in the Screens tab.
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1241,8 +1494,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Screens.getScreenNames`
 
-- **Return Values**:
-  - `string[]` : *string[]*
+
+
+   - **Return Values**:
+     - `string[]` : *string[]*
 
 ---
 
@@ -1250,11 +1505,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Screens.getFirstTimelineWithHomeScreen`
 
-- **Parameters**:
-  - `screenName` : *string*
 
-- **Return Values**:
-  - `handle` : *handle*
+
+   - **Parameters**:
+     - `screenName` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1262,8 +1519,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Screens.getStudioCameras`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns handles to all studio cameras currently used in the Screens tab.
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1273,11 +1532,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Projectors.getProjectorWithName`
 
-- **Parameters**:
-  - `name` : *string*
+-  Projector name as shown in the inspector.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `name` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1285,8 +1546,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Projectors.getProjectors`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns handles to all screens currently used in the Mapping tab.
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1294,8 +1557,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Projectors.getProjectorNames`
 
-- **Return Values**:
-  - `string[]` : *string[]*
+
+
+   - **Return Values**:
+     - `string[]` : *string[]*
 
 ---
 
@@ -1305,8 +1570,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Resources.getResources`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns handles to all the resources that are directly in one folder (i.e. does not consider subfolders).
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1314,11 +1581,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Resources.getResourceFolderWithNamePath`
 
-- **Parameters**:
-  - `namePath` : *string*
+-  Returns a handle to a folder in the resource tree. The namePath
+-  specifies the folder by starting from the root and then listing
+-  all the names as seen in the resources tree separated by forward
+-  slashes, e.g. "Media/Std Backgrounds/Atmospherics".
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `namePath` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1326,8 +1598,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Resources.getResourceFolders`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns the resource folders that are immediate children of this folder.
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1335,8 +1609,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Resources.getTranscodingFolders`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1344,8 +1620,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Resources.getJsonDescrip`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1355,11 +1633,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.getTimelineAtIndex`
 
-- **Parameters**:
-  - `index` : *int*
+-  Returns the handle of the timeline at the (zero-based) index in
+-  the Timelines listing of the Compositing tab.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `index` : *int*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1367,11 +1648,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.getTimelineFromName`
 
-- **Parameters**:
-  - `name` : *string*
+-  Returns the handle of the timeline with the given name (as shown in the
+-  timeline list).
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `name` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1379,8 +1663,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.getTimelines`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns handles to all timelines.
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1388,8 +1674,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.getTimelineNames`
 
-- **Return Values**:
-  - `string[]` : *string[]*
+-  Returns names to all timelines.
+
+   - **Return Values**:
+     - `string[]` : *string[]*
 
 ---
 
@@ -1397,8 +1685,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.getTimelinesSelected`
 
-- **Return Values**:
-  - `handle[]` : *handle[]*
+-  Returns handles to all selected timelines
+
+   - **Return Values**:
+     - `handle[]` : *handle[]*
 
 ---
 
@@ -1406,8 +1696,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.createTimeline`
 
-- **Return Values**:
-  - `handle` : *handle*
+-  Create Timeline
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1415,11 +1707,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Timelines.getNodeFromId`
 
-- **Parameters**:
-  - `id` : *double*
+-  Returns a handle for the node specified by id after checking that a node with the id exists.
+-  Conceptually, the id and the handle are the same but some implementations of the API can not
+-  yet consume handles as parameters, making it necessary to translate between the two occasionally.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `id` : *double*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1429,12 +1725,18 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Calibration.setMarkerPositions`
 
-- **Parameters**:
-  - `positions` : *double[]*
-  - `markerIds` : *int[]*
+-  Sets the marker positions for projector calibration with external data.
+-  Positions must contain the marker coordinates in world space in consecutive order
+-  like this: x1, y1, z1, x2, y2, z2, x3, y3, z3, ...
+-  markerIds must contain a unique integer id for each marker in the same order as
+-  the marker positions. The markerIds matching the coordinates example are 1,2,3.
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `positions` : *double[]*
+     - `markerIds` : *int[]*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1444,11 +1746,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.loadDeviceUi`
 
-- **Parameters**:
-  - `devicePath` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `devicePath` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1456,8 +1760,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.activatePreviousFunc`
 
-- **Return Values**:
-  - `null` : *null*
+
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1465,8 +1771,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.activateNextFunc`
 
-- **Return Values**:
-  - `null` : *null*
+
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1474,8 +1782,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.getLastActivatedFunc`
 
-- **Return Values**:
-  - `string` : *string*
+
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1483,12 +1793,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.deviceActivated`
 
-- **Parameters**:
-  - `devicePath` : *string*
-  - `withSelection` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `devicePath` : *string*
+     - `withSelection` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1496,12 +1808,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.funcActivated`
 
-- **Parameters**:
-  - `funcPath` : *string*
-  - `withSelection` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `funcPath` : *string*
+     - `withSelection` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1509,12 +1823,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.setFuncBodyState`
 
-- **Parameters**:
-  - `funcPath` : *string*
-  - `state` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `funcPath` : *string*
+     - `state` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1522,11 +1838,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.getFuncBodyState`
 
-- **Parameters**:
-  - `funcPath` : *string*
 
-- **Return Values**:
-  - `string` : *string*
+
+   - **Parameters**:
+     - `funcPath` : *string*
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1534,12 +1852,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.setTag`
 
-- **Parameters**:
-  - `tag` : *string*
-  - `text` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `tag` : *string*
+     - `text` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1547,11 +1867,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.WebViews.setEditorIsUsingBlocks`
 
-- **Parameters**:
-  - `useBlocks` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `useBlocks` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1561,11 +1883,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.getComboBoxWithId`
 
-- **Parameters**:
-  - `id` : *double*
+-  Ui namespace is only accessible from plugins hosted in Pixera, i.e. it is
+-  not relevant to external API access.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `id` : *double*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1573,11 +1898,20 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.setAppMode`
 
-- **Parameters**:
-  - `mode` : *int*
+-  Set the current AppMode
+-  1 = Screens
+-  2 = Mapping
+-  3 = Compositing
+-  4 = Compositing Inside
+-  5 = Settings
+-  6 = Mapping Screens Feedarea
+-  7 = Control
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `mode` : *int*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1585,8 +1919,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.getAppMode`
 
-- **Return Values**:
-  - `int` : *int*
+-  Get the current AppMode
+
+   - **Return Values**:
+     - `int` : *int*
 
 ---
 
@@ -1594,8 +1930,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.getDisplayTestpattern`
 
-- **Return Values**:
-  - `bool` : *bool*
+-  Get display Testpattern
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -1603,11 +1941,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.setDisplayTestpattern`
 
-- **Parameters**:
-  - `display` : *bool*
+-  Get display Testpattern
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `display` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1615,8 +1955,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.getPreviewCameraAsJsonString`
 
-- **Return Values**:
-  - `string` : *string*
+-  Get the current AppMode
+
+   - **Return Values**:
+     - `string` : *string*
 
 ---
 
@@ -1624,11 +1966,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.setPreviewCameraAsJsonString`
 
-- **Parameters**:
-  - `cameraFrustrumStateString` : *string*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `cameraFrustrumStateString` : *string*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1636,11 +1980,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.setDisableContentRendering`
 
-- **Parameters**:
-  - `state` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `state` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1648,8 +1994,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.getIsContentRenderingDisabled`
 
-- **Return Values**:
-  - `bool` : *bool*
+
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -1657,11 +2005,13 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.setDisableWorkspaceRendering`
 
-- **Parameters**:
-  - `state` : *bool*
 
-- **Return Values**:
-  - `null` : *null*
+
+   - **Parameters**:
+     - `state` : *bool*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1669,8 +2019,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Ui.getIsWorkspaceRenderingDisabled`
 
-- **Return Values**:
-  - `bool` : *bool*
+
+
+   - **Return Values**:
+     - `bool` : *bool*
 
 ---
 
@@ -1680,14 +2032,22 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Direct.setRegistered`
 
-- **Parameters**:
-  - `hdls` : *handle[]*
-  - `expectedFrequency` : *int*
-  - `dampingMs` : *int*
-  - `usageHints` : *string[]*
+-  Sets all entities registered in the current thread. Entities that were previously
+-  registered that are not in the handle array are removed.
+-  usageHints is either empty or it contains one entry for each handle. Possible entries are:
+-     "screen"
+-     "perspective"
+-     "parameter"
+-     "studioCamera"
 
-- **Return Values**:
-  - `null` : *null*
+   - **Parameters**:
+     - `hdls` : *handle[]*
+     - `expectedFrequency` : *int*
+     - `dampingMs` : *int*
+     - `usageHints` : *string[]*
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1695,8 +2055,10 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Direct.reloadRegistered`
 
-- **Return Values**:
-  - `null` : *null*
+-  Updates the representation of all registered entities.
+
+   - **Return Values**:
+     - `null` : *null*
 
 ---
 
@@ -1704,13 +2066,15 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Direct.registerScreen`
 
-- **Parameters**:
-  - `name` : *string*
-  - `expectedFrequency` : *int*
-  - `dampingMs` : *int*
+-  Register the screen for use with the Direct API.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `name` : *string*
+     - `expectedFrequency` : *int*
+     - `dampingMs` : *int*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1718,11 +2082,16 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Direct.registerParam`
 
-- **Parameters**:
-  - `instancePath` : *string*
+-  Register the parameter for use with the Direct API. At the time when this function is executed
+-  the layer should already have been displayed at least once. Otherwise the relevant underlying
+-  attributes may not have been initialized yet and can not be cached.
+-  The instance path traces the name hierarchy in the timeline tree. E.g. "Timeline 1.Position.x".
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `instancePath` : *string*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1730,12 +2099,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Direct.registerCamera`
 
-- **Parameters**:
-  - `cameraName` : *string*
-  - `expectedFrequency` : *int*
+-  Register the camera with the screen group name for use with the Direct API.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `cameraName` : *string*
+     - `expectedFrequency` : *int*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
@@ -1743,12 +2114,14 @@ Pixera API test application by Benni Müller can be found [here](http://www.benni
 
 `Pixera.Direct.registerPerspective`
 
-- **Parameters**:
-  - `screenName` : *string*
-  - `expectedFrequency` : *int*
+-  Register the perspective with the screen name for use with the Direct API.
 
-- **Return Values**:
-  - `handle` : *handle*
+   - **Parameters**:
+     - `screenName` : *string*
+     - `expectedFrequency` : *int*
+
+   - **Return Values**:
+     - `handle` : *handle*
 
 ---
 
