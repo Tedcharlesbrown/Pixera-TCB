@@ -11,5 +11,10 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 ### Edited Effects Overview
 [Edited](01-Custom/02-Shaders/Pixera-Edited/_effect_overview.md)
 
+## API
+### Pixera API Overview
+[API 349](00-Pixera/03-API/_api_overview.md)
+
+
 ## Control
 [Script - MIDI MSC SysEx Parsing](01-Custom/01-Control/scripts/MIDI_MSC_SysEx.lua)
