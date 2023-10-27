@@ -1,4 +1,6 @@
 shader,description,notes
 BoxBlur_Mix,Applies a box blur effect over content,Added in use of Mix%
 LEDEffect_AspectRatio,Applies an LED screen effect,Added aspect ratio and option for square pixels
+Perspective_Mix,Applies a perspective transform to the image,Added in use of Mix% - **STILL CANCELS ANY LAYER POSITION / SCALE**
+UVPositionAndScale_Mix,Adjusts the UV coordinates of the image for positioning and scaling,Added mix% and XY scale together
 Vignette_AspectRatio, Applies a vignette effect to the image corners,Added aspect ratio

@@ -36,6 +36,10 @@
 ## [Perspective_Mix](Perspective_Mix.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
 
+- Applies a perspective transform to the image
+
+> Added in use of Mix% - **STILL CANCELS ANY LAYER POSITION / SCALE**
+
 **Variables:**
 
 `Mix[%]`
@@ -50,6 +54,10 @@
 `Sampler`
 ## [UVPositionAndScale_Mix](UVPositionAndScale_Mix.glsl)
 <img src="_noeffect.png" alt="Placeholder Image" width="500"/>
+
+- Adjusts the UV coordinates of the image for positioning and scaling
+
+> Added mix% and XY scale together
 
 **Variables:**
 
