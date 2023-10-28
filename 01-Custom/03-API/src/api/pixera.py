@@ -223,29 +223,6 @@ class Pixera:
 
         return data
     
-
-    def get_methods(self, input_path, output_path):
-        """
-        Parses a file to extract the formatted strings and converts them into a specified format.
-        """
-        with open(input_path, 'r') as f:
-            lines = f.readlines()
-
-        methods = []
-        for line in lines:
-            if line.startswith('`'):
-                method_name = line.strip().strip('`')
-                methods.append(method_name)
-
-        # Convert to the desired format
-        formatted_strings = []
-        for method in methods:
-            # Convert camel case to uppercase with underscores
-            formatted_name = ''.join(['_' + i if i.isupper() else i for i in method.split(".")[-1]]).lstrip('_').upper()
-            formatted_string = f'{formatted_name} = "{method}"'
-            formatted_strings.append(formatted_string)
-
-        with open(output_path, 'w') as f:
-            f.write("class Methods:\n")
-            for line in formatted_strings:
-                f.write(f"    {line}\n")
+    def to_array(self, input):
+        output = input[1:-1].split(',')
+        return output
