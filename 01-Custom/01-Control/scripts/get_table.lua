@@ -19,3 +19,5 @@ function logTable(t, indent)
         end
     end
 end
+
+logTable(result)
