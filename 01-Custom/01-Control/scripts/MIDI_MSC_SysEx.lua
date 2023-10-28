@@ -1,6 +1,6 @@
 --[[
 Made by: Ted Charles Brown
-Version 1.0.0
+Version 1.0.1
 
 HOW TO USE:
  - Add a MIDI module to Control.
@@ -19,12 +19,20 @@ NOTES:
 
 local deviceID = "00" --can be set to "all"
 local cueList = "1" -- can be set to "0" for all cue lists
-local timelineName = "Timeline 1"
+local timelineName = "all" -- can be set to "all"
 
 -- ----------------------------- OTHER VARIABLES ---------------------------- --
 -- --------------------------- DONT CHANGE THESE! --------------------------- --
 
-local timeline = Pixera.Timelines.getTimelineFromName(timelineName)
+local timeline = nil
+
+if timelineName == "all" then
+	timeline = Pixera.Timelines.getTimelines()
+else
+	timeline = Pixera.Timelines.getTimelineFromName(timelineName)
+end
+
+
 local commands = {
     ["01"] = "GO",
     ["02"] = "PAUSE",
@@ -114,10 +122,21 @@ if (type(deviceID) == "number") then
 	deviceID = string.format("%02x", deviceID)
 end
 
---
---cueNumber = tonumber(cueNumber)
---local pixeraCueNumber = timeline.getCueFromNumber(cueNumber)
-local pixeraCue = timeline.getCueFromName(cueNumber)
+local pixeraCue = nil
+local foundTimeline = nil
+
+if timelineName == "all" then
+    for _, search in pairs(timeline) do
+        pixeraCue = search.getCueFromName(cueNumber) 
+        if pixeraCue ~= nil then
+            timeline = search
+            break
+        end
+    end
+end
+
+pixeraCue = timeline.getCueFromName(cueNumber)
+
 if (deviceID == sourceID or deviceID == "all" or sourceID == "7f") then
 	if (cueList == sourceCueList or tonumber(cueList) <= 0) then
 		if (command == "GO") then

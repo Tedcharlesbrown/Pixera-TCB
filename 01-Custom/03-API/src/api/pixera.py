@@ -8,15 +8,6 @@ class Pixera:
     def __init__(self, ip_address="127.0.0.1", port=1401):
         self.IP_ADDRESS = ip_address
         self.PORT = port
-
-    #     self.setup_constants()
-
-    # def setup_constants(self):
-    #     self.GET_API_REVISION = 'Pixera.Utility.getApiRevision'
-    #     self.DEBUG_OUTPUT = 'Pixera.Utility.outputDebug'
-    #     self.TOGGLE_TRANSPORT = 'Pixera.Compound.toggleTransport'
-    #     self.GET_TIMELINE_SELECTED = 'Pixera.Timelines.getTimelinesSelected'
-    #     self.SET_CURRENT_TIME_OF_TIMELINE_IN_SECONDS = 'Pixera.Compound.setCurrentTimeOfTimelineInSeconds'
     
     def send(self, protocol="TCP", method=None, params=None, message=None, verbose=False) -> str:
         """

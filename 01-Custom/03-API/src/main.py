@@ -7,10 +7,8 @@ if __name__ == "__main__":
     pixera = Pixera(ip, port)
     api = Methods
 
-    # print(api.send())    
+    print(pixera.send())    
     # print(pixera.send("TCP",method=api.GET_API_REVISION, verbose=True))
-    print(pixera.send(method=api.CLOSE_APP, params=["saveProject"], message=[True]))
-    
-    
-    
-    
+    # print(pixera.send(method=api.CLOSE_APP, params=["saveProject"], message=[True]))
+
+    # print(pixera.send(method=api.GET_HAS_FUNCTION, params=["functionName"], message=["Pixera.Compound.scrubCurrentTime"], verbose=True))
