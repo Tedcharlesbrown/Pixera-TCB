@@ -100,15 +100,18 @@ def api_table(api_data):
     debug_counter = 0
     output_lines = ["# API Overview\n\n"]  # Start with a header for the document
 
-    # Table headers
-    output_lines.append("| Namespace | Entity | Type | Name | Parameters | Return Values |\n")
-    output_lines.append("| --- | --- | --- | --- | --- | --- |\n")  # Table column format
-
     # Iterate over each namespace
     for namespace_name, namespace_info in api_data.items():
         if debug_counter >= DEBUG_LIMIT:
             break
         
+        # Add a subsection for the namespace
+        output_lines.append(f"## {namespace_name}\n")
+        
+        # Table headers for the namespace
+        output_lines.append("| Entity | Type | Name | Parameters | Return Values |\n")
+        output_lines.append("| --- | --- | --- | --- | --- |\n")  # Table column format
+
         # If there are functions or classes in the namespace, iterate through them
         if 'functions' in namespace_info or 'classes' in namespace_info:
             if 'functions' in namespace_info:
@@ -117,7 +120,7 @@ def api_table(api_data):
                         break
                     params = format_params(function_info.get('params', []))
                     returns = format_returns(function_info.get('returnValues', []))
-                    output_lines.append(f"| {namespace_name} | Function | | `{function_name}` | {params} | {returns} |\n")
+                    output_lines.append(f"| Function | | `{function_name}` | {params} | {returns} |\n")
                     debug_counter += 1
 
             if 'classes' in namespace_info:
@@ -125,7 +128,7 @@ def api_table(api_data):
                     if debug_counter >= DEBUG_LIMIT:
                         break
                     # Class row with no method details
-                    output_lines.append(f"| {namespace_name} | Class | | `{class_name}` | | |\n")
+                    output_lines.append(f"| Class | | `{class_name}` | | |\n")
                     debug_counter += 1
                     
                     if 'methods' in class_info:
@@ -134,13 +137,14 @@ def api_table(api_data):
                                 break
                             params = format_params(method_info.get('params', []))
                             returns = format_returns(method_info.get('returnValues', []))
-                            output_lines.append(f"| | | Method | `{method_name}` | {params} | {returns} |\n")
+                            output_lines.append(f"| | Method | `{method_name}` | {params} | {returns} |\n")
                             debug_counter += 1
-        else:
-            # Namespace with no functions or classes
-            output_lines.append(f"| {namespace_name} | | | | | |\n")
+        
+        # Add some space between namespaces
+        output_lines.append("\n")
 
     return ''.join(output_lines)  # Join all lines into a single string separated by newlines
+
 
 
 def format_params(params):
@@ -154,8 +158,6 @@ def format_returns(returns):
     if not returns:
         return "None"
     return ', '.join(f"`{r['name']}`: {r.get('type', 'No Type Provided')}" for r in returns)
-
-
 
 def generate_api_overview(api_data, output_path):
     overview_content = api_table(api_data)
