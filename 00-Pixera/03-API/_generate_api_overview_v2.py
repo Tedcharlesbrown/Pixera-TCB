@@ -95,47 +95,53 @@ def print_params_and_return_values(info):
 #                                   option 2                                   #
 # ---------------------------------------------------------------------------- #
 
-
 def api_table(api_data):
     DEBUG_LIMIT = 9999
     debug_counter = 0
-    output_lines = ["# API Overview\n"]
+    output_lines = ["# API Overview\n\n"]  # Start with a header for the document
 
     # Table headers
     output_lines.append("| Namespace | Entity | Type | Name | Parameters | Return Values |\n")
-    output_lines.append("| --- | --- | --- | --- | --- | --- |\n")
+    output_lines.append("| --- | --- | --- | --- | --- | --- |\n")  # Table column format
 
+    # Iterate over each namespace
     for namespace_name, namespace_info in api_data.items():
         if debug_counter >= DEBUG_LIMIT:
             break
         
-        if 'functions' in namespace_info:
-            for function_name, function_info in namespace_info['functions'].items():
-                if debug_counter >= DEBUG_LIMIT:
-                    break
-                params = format_params(function_info.get('params', []))
-                returns = format_returns(function_info.get('return_values', []))
-                output_lines.append(f"| {namespace_name} | Function | | `{function_name}` | {params} | {returns} |\n")
-                debug_counter += 1
+        # If there are functions or classes in the namespace, iterate through them
+        if 'functions' in namespace_info or 'classes' in namespace_info:
+            if 'functions' in namespace_info:
+                for function_name, function_info in namespace_info['functions'].items():
+                    if debug_counter >= DEBUG_LIMIT:
+                        break
+                    params = format_params(function_info.get('params', []))
+                    returns = format_returns(function_info.get('returnValues', []))
+                    output_lines.append(f"| {namespace_name} | Function | | `{function_name}` | {params} | {returns} |\n")
+                    debug_counter += 1
 
-        if 'classes' in namespace_info:
-            for class_name, class_info in namespace_info['classes'].items():
-                if debug_counter >= DEBUG_LIMIT:
-                    break
-                # Add a row for the class itself
-                output_lines.append(f"| {namespace_name} | Class | | `{class_name}` | | |\n")
-                debug_counter += 1
-                
-                if 'methods' in class_info:
-                    for method_name, method_info in class_info['methods'].items():
-                        if debug_counter >= DEBUG_LIMIT:
-                            break
-                        params = format_params(method_info.get('params', []))
-                        returns = format_returns(method_info.get('return_values', []))
-                        output_lines.append(f"| | | Method | `{method_name}` | {params} | {returns} |\n")
-                        debug_counter += 1
+            if 'classes' in namespace_info:
+                for class_name, class_info in namespace_info['classes'].items():
+                    if debug_counter >= DEBUG_LIMIT:
+                        break
+                    # Class row with no method details
+                    output_lines.append(f"| {namespace_name} | Class | | `{class_name}` | | |\n")
+                    debug_counter += 1
+                    
+                    if 'methods' in class_info:
+                        for method_name, method_info in class_info['methods'].items():
+                            if debug_counter >= DEBUG_LIMIT:
+                                break
+                            params = format_params(method_info.get('params', []))
+                            returns = format_returns(method_info.get('returnValues', []))
+                            output_lines.append(f"| | | Method | `{method_name}` | {params} | {returns} |\n")
+                            debug_counter += 1
+        else:
+            # Namespace with no functions or classes
+            output_lines.append(f"| {namespace_name} | | | | | |\n")
 
-    return ''.join(output_lines)
+    return ''.join(output_lines)  # Join all lines into a single string separated by newlines
+
 
 def format_params(params):
     """Helper function to format parameters into a Markdown table cell."""
