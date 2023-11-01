@@ -1,2129 +1,715 @@
-
-# Protocol Overview
-This documentation describes revision 349 of the API.
-
-The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
-
-Pixera API test application by Benni Müller can be found [here](http://www.benni-m.de/index.html#projects).
-
-Descriptions pulled from [pixera_api_examples_rev349.txt](00-Pixera/03-API/docs/pixera_api_examples_rev349.txt)
-
-## Protocols
-
- - JSON/TCP
-   - Requires header with prefix and message size
-     - 'pxr1' + 4-byte size (least significant byte first)
-       - `pxr1R000{{"jsonrpc": "2.0","id": 1,"method": "Pixera.Utility.getApiRevision"}}`
- - JSON/TDP(dl)
-   - Requires delimiter
-     - 0xPX
-       - `{"jsonrpc": "2.0","id": 1,"method": "Pixera.Utility.getApiRevision"}0xPX`
-
 # API Overview
-## Pixera
-
-### Utility
-
-**GET API REVISION**
-
-`Pixera.Utility.getApiRevision`
-
--  All class methods imply a handle parameter in the JSON params object (see examples).
--  Returns the current revision of the API.
--  Release versions have even revision numbers. Beta versions have odd revision numbers.
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**GET HAS FUNCTION**
-
-`Pixera.Utility.getHasFunction`
-
--  Returns true if the function (or class method) is available.
--  functionName must be the fully qualified name of the function or method,
--  e.g. "Pixera.Screens.Screen.setPosition".
-
-   - **Parameters**:
-     - `functionName` : *string*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**OUTPUT DEBUG**
-
-`Pixera.Utility.outputDebug`
-
--  Outputs a debug string into the Pixera log and returns the same string in
--  the reply.
-
-   - **Parameters**:
-     - `message` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**GET LICENSE JSON**
-
-`Pixera.Utility.getLicenseJson`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**GET CURRENT TIME**
-
-`Pixera.Utility.getCurrentTime`
-
--  Returns the current time in frames. Use getFps() to relate the frames to seconds.
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET CURRENT TIME AS STRING**
-
-`Pixera.Utility.getCurrentTimeAsString`
-
--  Returns the current time as an ISO-8601 string (using the local timezone).
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**NOOP**
-
-`Pixera.Utility.noop`
-
--  No operation. This function does nothing. It can be used in request/response scenarios
--  (e.g. JSON-RPC) to bookend a set of API invocations. This gives the client a way
--  to know that the last invocation in the set has been processed by Pixera.
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**REQUEST CALLBACK**
-
-`Pixera.Utility.requestCallback`
-
--  Experimental. Currently only relevant to Javascript interpretation within Pixera.
-
-   - **Parameters**:
-     - `functionName` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**READ FILE STRING**
-
-`Pixera.Utility.readFileString`
-
-
-
-   - **Parameters**:
-     - `path` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**WRITE FILE STRING**
-
-`Pixera.Utility.writeFileString`
-
-
-
-   - **Parameters**:
-     - `path` : *string*
-     - `fileStr` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET ACCESS RECIPE**
-
-`Pixera.Utility.getAccessRecipe`
-
-
-
-   - **Parameters**:
-     - `hdlPath` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**POLL MONITORING**
-
-`Pixera.Utility.pollMonitoring`
-
--  See the documentation PDF for more information on monitoring.
--  The Javascript implementation does not support monitoring.
--  In the JSON implementation, the result of this function is a JSON object, not a string.
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**UNSUBSCRIBE MONITORING SUBJECT**
-
-`Pixera.Utility.unsubscribeMonitoringSubject`
-
-
-
-   - **Parameters**:
-     - `subject` : *string*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**SUBSCRIBE MONITORING SUBJECT**
-
-`Pixera.Utility.subscribeMonitoringSubject`
-
-
-
-   - **Parameters**:
-     - `subject` : *string*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**SET MONITORING EVENT MODE**
-
-`Pixera.Utility.setMonitoringEventMode`
-
-
-
-   - **Parameters**:
-     - `mode` : *string*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**MONITORING EVENT**
-
-`Pixera.Utility.monitoringEvent`
-
--  In the Control implementation this function is called when monitoring events are sent.
-
-   - **Parameters**:
-     - `eventDescription` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET SHOW CONTEXT IN REPLIES**
-
-`Pixera.Utility.setShowContextInReplies`
-
--  Only available in json implementation.
-
-   - **Parameters**:
-     - `doShow` : *bool*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**SET MONITORING HAS DELIMITER**
-
-`Pixera.Utility.setMonitoringHasDelimiter`
-
-
-
-   - **Parameters**:
-     - `hasDelimiter` : *bool*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**RUN JS SCRIPT**
-
-`Pixera.Utility.runJsScript`
-
--  Runs the javascript function jsFunction with code jsCode.
-
-   - **Parameters**:
-     - `jsFunction` : *string*
-     - `jsCode` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**DYNAMIC REBUILD FROM JSON DESCRIPTION**
-
-`Pixera.Utility.dynamicRebuildFromJsonDescription`
-
-
-
-   - **Parameters**:
-     - `deviceName` : *string*
-     - `jsonDescription` : *string*
-     - `folder` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-### Network
-
-**GET CONVEYOR**
-
-`Pixera.Network.getConveyor`
-
--  The Network namespace establishes a bridge between the network connections defined in the API
--  tab and the API entities. E.g. it allows Javascript objects created during use of the API to
--  send data on the connections defined in the API tab.
-
-   - **Parameters**:
-     - `conveyorName` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-### Compound
-
-**SET TRANSPORT MODE ON TIMELINE AT INDEX**
-
-`Pixera.Compound.setTransportModeOnTimelineAtIndex`
-
--  Sets the transport mode of the timeline at the (zero-based) index in
--  the Timelines listing of the Compositing tab.
--  Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-
-   - **Parameters**:
-     - `index` : *int*
-     - `mode` : *int*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**SET TRANSPORT MODE ON TIMELINE**
-
-`Pixera.Compound.setTransportModeOnTimeline`
-
--  Sets the transport mode of the timeline identified by its name.
--  Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `mode` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**TOGGLE TRANSPORT**
-
-`Pixera.Compound.toggleTransport`
-
--  Toggle the timeline between play and pause.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET TRANSPORT MODE ON TIMELINE**
-
-`Pixera.Compound.getTransportModeOnTimeline`
-
--  Gets the transport mode of the timeline identified by its name.
--  Return values: Play = 1, Pause = 2, Stop = 3.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**SET OPACITY ON TIMELINE**
-
-`Pixera.Compound.setOpacityOnTimeline`
-
--  Sets the opacity of the timeline identified by its name.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `opacity` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET OPACITY ON TIMELINE**
-
-`Pixera.Compound.getOpacityOnTimeline`
-
--  Gets the opacity of the timeline identified by its name.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**START FIRST TIMELINE**
-
-`Pixera.Compound.startFirstTimeline`
-
-
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**PAUSE FIRST TIMELINE**
-
-`Pixera.Compound.pauseFirstTimeline`
-
-
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**STOP FIRST TIMELINE**
-
-`Pixera.Compound.stopFirstTimeline`
-
-
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET POS VALUE**
-
-`Pixera.Compound.setPosValue`
-
--  Set the x position of the first layer of the first timeline.
--  Purely for demonstration, testing purposes.
-
-   - **Parameters**:
-     - `val` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET POS VALUE XY**
-
-`Pixera.Compound.setPosValueXY`
-
--  Set the x/y position of the first layer of the first timeline.
--  Purely for demonstration, testing purposes.
-
-   - **Parameters**:
-     - `valX` : *double*
-     - `valY` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET PARAM VALUE**
-
-`Pixera.Compound.setParamValue`
-
--  Sets the current value of the parameter.
--  The parameter is identified by a path separated by periods (e.g. "Timeline 1.Layer 1.Opacity").
-
-   - **Parameters**:
-     - `path` : *string*
-     - `value` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**APPLY CUE AT INDEX ON TIMELINE AT INDEX**
-
-`Pixera.Compound.applyCueAtIndexOnTimelineAtIndex`
-
--  Triggers the cue at the (zero-based) index in the timeline at the (zero-based) index in
--  the Timelines listing of the Compositing tab.
-
-   - **Parameters**:
-     - `cueIndex` : *int*
-     - `timelineIndex` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**APPLY CUE NUMBER ON TIMELINE AT INDEX**
-
-`Pixera.Compound.applyCueNumberOnTimelineAtIndex`
-
--  Triggers the cue number in the timeline at the (zero-based) index in
--  the Timelines listing of the Compositing tab.
-
-   - **Parameters**:
-     - `cueNumber` : *int*
-     - `timelineIndex` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**APPLY CUE NUMBER ON TIMELINE**
-
-`Pixera.Compound.applyCueNumberOnTimeline`
-
--  Triggers the cue number in the timeline.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `cueNumber` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**APPLY CUE ON TIMELINE**
-
-`Pixera.Compound.applyCueOnTimeline`
-
--  Triggers the cue with name in the timeline.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `cueName` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**ADD RESOURCE TO FOLDER**
-
-`Pixera.Compound.addResourceToFolder`
-
--  Adds the file at the path to the folder with the given name path.
-
-   - **Parameters**:
-     - `namePath` : *string*
-     - `filePath` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**ASSIGN RESOURCE TO LAYER**
-
-`Pixera.Compound.assignResourceToLayer`
-
--  Assigns a resource to a layer. The resource is identified by a path build from signatures and separated by forward slashes
--  (e.g. "Media/Folder/video.mov"). The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `resourcePath` : *string*
-     - `layerPath` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**REFRESH RESOURCE**
-
-`Pixera.Compound.refreshResource`
-
--  Refreshes a resource from file. The resource is identified by a path build from signatures and separated by forward slashes
--  (e.g. "Media/Folder/video.mov").
-
-   - **Parameters**:
-     - `resourcePath` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET TRANSPORT MODE ON LAYER**
-
-`Pixera.Compound.setTransportModeOnLayer`
-
--  Sets the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `mode` : *int*
-     - `loop` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET TRANSPORT MODE ON LAYER**
-
-`Pixera.Compound.getTransportModeOnLayer`
-
--  Gets the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**GET RESOURCE ASSIGNED TO LAYER**
-
-`Pixera.Compound.getResourceAssignedToLayer`
-
--  Gets the resource currently assigned to the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
--  The returned string is the path build from signatures and separated by forward slashes
--  (e.g. "Media/Folder/video.mov").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**ASSIGN RESOURCE TO CLIP AT TIME BY DMX ID**
-
-`Pixera.Compound.assignResourceToClipAtTimeByDmxId`
-
--  Assign the resource with dmxfolder/dmxfile id to the clip at time in frames by layerpath
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `dmxFolderId` : *int*
-     - `dmxFileId` : *int*
-     - `time` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**ASSIGN RESOURCE TO CLIP AT HMSFSTRING BY DMX ID**
-
-`Pixera.Compound.assignResourceToClipAtHMSFStringByDmxId`
-
--  Assign the resource with dmxfolder/dmxfile id to the clip at hmsf time by layerpath
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `dmxFolderId` : *int*
-     - `dmxFileId` : *int*
-     - `hmsf` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**ASSIGN RESOURCE TO CLIP AT HMSFBY DMX ID**
-
-`Pixera.Compound.assignResourceToClipAtHMSFByDmxId`
-
--  Assign the resource with dmxfolder/dmxfile id to the clip at h m s f by layerpath
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `dmxFolderId` : *int*
-     - `dmxFileId` : *int*
-     - `h` : *int*
-     - `m` : *int*
-     - `s` : *int*
-     - `f` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET CURRENT TIME OF TIMELINE**
-
-`Pixera.Compound.setCurrentTimeOfTimeline`
-
--  Sets the current time in frames. Use getFpsOfTimeline() to relate the frames to seconds.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `time` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET CURRENT TIME OF TIMELINE IN SECONDS**
-
-`Pixera.Compound.setCurrentTimeOfTimelineInSeconds`
-
--  Sets the current time in seconds.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `time` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET CURRENT TIME AND TRANSPORT MODE OF TIMELINE IN SECONDS**
-
-`Pixera.Compound.setCurrentTimeAndTransportModeOfTimelineInSeconds`
-
--  Sets the current time in seconds.
--  Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `time` : *double*
-     - `mode` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET FPS OF TIMELINE**
-
-`Pixera.Compound.getFpsOfTimeline`
-
--  Gets the frames per second of the timeline.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET CURRENT TIME OF TIMELINE**
-
-`Pixera.Compound.getCurrentTimeOfTimeline`
-
--  Gets the current time in frames. Use getFpsOfTimeline() to relate the frames to seconds.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**GET CURRENT TIME OF TIMELINE IN SECONDS**
-
-`Pixera.Compound.getCurrentTimeOfTimelineInSeconds`
-
--  Gets the current time in seconds.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET CURRENT HMSFOF TIMELINE**
-
-`Pixera.Compound.getCurrentHMSFOfTimeline`
-
--  Gets the current time as a hours, minutes, seconds, frames string.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**GET CURRENT COUNTDOWN OF TIMELINE**
-
-`Pixera.Compound.getCurrentCountdownOfTimeline`
-
--  Gets the current countdown in frames. Use getFpsOfTimeline() to relate the frames to seconds.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**GET CURRENT COUNTDOWN HMSFOF TIMELINE**
-
-`Pixera.Compound.getCurrentCountdownHMSFOfTimeline`
-
--  Gets the current countdown as a hours, minutes, seconds, frames string.
-
-   - **Parameters**:
-     - `timelineName` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**START OPACITY ANIMATION OF TIMELINE**
-
-`Pixera.Compound.startOpacityAnimationOfTimeline`
-
-
-
-   - **Parameters**:
-     - `timelineName` : *string*
-     - `fadeIn` : *bool*
-     - `fullFadeDuration` : *double*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**CREATE CLIP ON LAYER AT TIME WITH RESOURCE**
-
-`Pixera.Compound.createClipOnLayerAtTimeWithResource`
-
--  Creates a clip at the given time in frames and assigns the resource.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
--  The resource is identified by a path build from signatures and separated by forward slashes (e.g. "Media/Folder/video.mov").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `time` : *double*
-     - `resourcePath` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**REMOVE CLIP ON LAYER WITH INDEX**
-
-`Pixera.Compound.removeClipOnLayerWithIndex`
-
--  Removes the clip identified by the 0-based clipIndex on the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `clipIndex` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**REMOVE ALL CLIPS ON LAYER**
-
-`Pixera.Compound.removeAllClipsOnLayer`
-
--  Removes all clips on the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET CLIP DURATION IN SECONDS WITH INDEX**
-
-`Pixera.Compound.getClipDurationInSecondsWithIndex`
-
--  Gets the clip duration in seconds identified by the 0-based clipIndex on the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `clipIndex` : *int*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET CLIP DURATION IN FRAMES WITH INDEX**
-
-`Pixera.Compound.getClipDurationInFramesWithIndex`
-
--  Gets the clip duration in frames identified by the 0-based clipIndex on the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `clipIndex` : *int*
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**GET CLIP TIME IN SECONDS WITH INDEX**
-
-`Pixera.Compound.getClipTimeInSecondsWithIndex`
-
--  Gets the clip start time in seconds identified by the 0-based clipIndex on the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `clipIndex` : *int*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET CLIP END TIME IN SECONDS WITH INDEX**
-
-`Pixera.Compound.getClipEndTimeInSecondsWithIndex`
-
--  Gets the clip end time in seconds identified by the 0-based clipIndex on the layer.
--  The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-
-   - **Parameters**:
-     - `layerPath` : *string*
-     - `clipIndex` : *int*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET RESOURCE DURATION IN SECONDS**
-
-`Pixera.Compound.getResourceDurationInSeconds`
-
--  Returns the duration of the resource in seconds.
--  The resource is identified by a path build from signatures and separated by forward slashes (e.g. "Media/Folder/video.mov").
-
-   - **Parameters**:
-     - `resourcePath` : *string*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**GET PARAM VALUE**
-
-`Pixera.Compound.getParamValue`
-
--  Gets the current value of the parameter.
--  The parameter is identified by a path separated by periods (e.g. "Timeline 1.Layer 1.Opacity").
-
-   - **Parameters**:
-     - `path` : *string*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**SET TIMECODE INPUT**
-
-`Pixera.Compound.setTimecodeInput`
-
--  Set timecode input for midi and artnet timecode.
-
-   - **Parameters**:
-     - `hour` : *int*
-     - `minute` : *int*
-     - `second` : *int*
-     - `frame` : *int*
-     - `elapsedTime` : *double*
-     - `running` : *bool*
-     - `freshMode` : *int*
-     - `stateToken` : *int*
-     - `format` : *int*
-
-   - **Return Values**:
-     - `double` : *double*
-
----
-
-**TAKE OVER ALL CLIENTS**
-
-`Pixera.Compound.takeOverAllClients`
-
-- takeover all clients
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET PAUSE SMPTE INPUT**
-
-`Pixera.Compound.setPauseSmpteInput`
-
-- mute all incomming smpte inputs
-
-   - **Parameters**:
-     - `doPause` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-### Session
-
-**CLOSE APP**
-
-`Pixera.Session.closeApp`
-
-
-
-   - **Parameters**:
-     - `saveProject` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**LOAD PROJECT**
-
-`Pixera.Session.loadProject`
-
-
-
-   - **Parameters**:
-     - `path` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SAVE PROJECT**
-
-`Pixera.Session.saveProject`
-
-
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SAVE PROJECT AS**
-
-`Pixera.Session.saveProjectAs`
-
-
-
-   - **Parameters**:
-     - `path` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET PROJECT NAME**
-
-`Pixera.Session.getProjectName`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**SET PROJECT NAME**
-
-`Pixera.Session.setProjectName`
-
-
-
-   - **Parameters**:
-     - `name` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET PROJECT DIRECTORY**
-
-`Pixera.Session.getProjectDirectory`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**GET CONTROL MULTI USER SESSION NAME**
-
-`Pixera.Session.getControlMultiUserSessionName`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**SHUTDOWN SYSTEM**
-
-`Pixera.Session.shutdownSystem`
-
--  Shut down the local machine. There are three options for mode:
--  1: Shut down.
--  2: Shut down and turn off power (if supported).
--  3: Shut down and reboot.
--  Default if no mode is set is 1.
-
-   - **Parameters**:
-     - `mode` : *optional<int>*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET LIVE SYSTEM IPS**
-
-`Pixera.Session.getLiveSystemIps`
-
-
-
-   - **Return Values**:
-     - `string[]` : *string[]*
-
----
-
-**GET LIVE SYSTEM STATE**
-
-`Pixera.Session.getLiveSystemState`
-
-
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**LIVE SYSTEM STATE CHANGE**
-
-`Pixera.Session.liveSystemStateChange`
-
--  This function is called in Pixera Control when the live system's state changes.
-
-   - **Parameters**:
-     - `ip` : *string*
-     - `state` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SHUTDOWN LIVE SYSTEM**
-
-`Pixera.Session.shutdownLiveSystem`
-
--  Shut down the live system with the given IP. The mode options are the same as for shutdownSystem():
--  Default if no mode is set is 1.
-
-   - **Parameters**:
-     - `ip` : *string*
-     - `mode` : *optional<int>*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**WAKE LIVE SYSTEM**
-
-`Pixera.Session.wakeLiveSystem`
-
--  Wake up the live system that last had the given IP. Uses the MAC address that was last reported
--  for the IP.
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**GET LIVE SYSTEM MAC ADDRESS**
-
-`Pixera.Session.getLiveSystemMacAddress`
-
--  Returns the last MAC address associated with the live system with the given IP.
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**START LIVE SYSTEM**
-
-`Pixera.Session.startLiveSystem`
-
--  Start LiveSystem.
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**START LIVE SYSTEMS**
-
-`Pixera.Session.startLiveSystems`
-
--  Start all LiveSystems in Mapping Live Tab.
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**STOP LIVE SYSTEM**
-
-`Pixera.Session.stopLiveSystem`
-
--  Start LiveSystem.
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**STOP LIVE SYSTEMS**
-
-`Pixera.Session.stopLiveSystems`
-
--  Start all LiveSystems in Mapping Live Tab.
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**RESTART LIVE SYSTEM**
-
-`Pixera.Session.restartLiveSystem`
-
--  Start LiveSystem.
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**RESTART LIVE SYSTEMS**
-
-`Pixera.Session.restartLiveSystems`
-
--  Start all LiveSystems in Mapping Live Tab.
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**REMOTE SYSTEM STATE CHANGE**
-
-`Pixera.Session.remoteSystemStateChange`
-
--  This action is run when remote heartbeat tracking detects a state change in the system.
-
-   - **Parameters**:
-     - `ip` : *string*
-     - `state` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET REMOTE SYSTEM IPS**
-
-`Pixera.Session.getRemoteSystemIps`
-
-
-
-   - **Return Values**:
-     - `string[]` : *string[]*
-
----
-
-**GET REMOTE SYSTEM STATE**
-
-`Pixera.Session.getRemoteSystemState`
-
-
-
-   - **Parameters**:
-     - `ip` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**SET VIDEO STREAM ACTIVE STATE**
-
-`Pixera.Session.setVideoStreamActiveState`
-
-
-
-   - **Parameters**:
-     - `ip` : *string*
-     - `device` : *string*
-     - `isActive` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET VIDEO STREAM ACTIVE STATE**
-
-`Pixera.Session.getVideoStreamActiveState`
-
-
-
-   - **Parameters**:
-     - `ip` : *string*
-     - `device` : *string*
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**GET DEFAULT CLIP DURATIONS AS JSON STRING**
-
-`Pixera.Session.getDefaultClipDurationsAsJsonString`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-### LiveSystems
-
-**GET LIVE SYSTEMS**
-
-`Pixera.LiveSystems.getLiveSystems`
-
--  Get the handles of the live systems.
--  This will also return handles of live systems that are no longer connected.
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**LIVE SYSTEM NOT AVAILABLE**
-
-`Pixera.LiveSystems.liveSystemNotAvailable`
-
--  Called when the live system has become unavailable.
-
-   - **Parameters**:
-     - `reason` : *int*
-     - `system` : *handle*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET MULTI USER MEMBERS**
-
-`Pixera.LiveSystems.getMultiUserMembers`
-
-
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-### Settings
-
-### Screens
-
-**GET SCREEN WITH NAME**
-
-`Pixera.Screens.getScreenWithName`
-
--  Screen name as shown in the inspector.
-
-   - **Parameters**:
-     - `name` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**SET NAMED SCREEN POSITION**
-
-`Pixera.Screens.setNamedScreenPosition`
-
--  This function was introduced for test purposes, is not typical of the API
--  and is likely to be removed soon. Do not use it in shipping products!
--  The function sets the position of the screen with the given name.
--  The recommended way of doing this is to first use getScreenWithName(.) and
--  then Screen.setPosition(.).
-
-   - **Parameters**:
-     - `name` : *string*
-     - `xPos` : *optional<double>*
-     - `yPos` : *optional<double>*
-     - `zPos` : *optional<double>*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET SCREENS**
-
-`Pixera.Screens.getScreens`
-
--  Returns handles to all screens currently used in the Screens tab.
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**GET SCREEN NAMES**
-
-`Pixera.Screens.getScreenNames`
-
-
-
-   - **Return Values**:
-     - `string[]` : *string[]*
-
----
-
-**GET FIRST TIMELINE WITH HOME SCREEN**
-
-`Pixera.Screens.getFirstTimelineWithHomeScreen`
-
-
-
-   - **Parameters**:
-     - `screenName` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**GET STUDIO CAMERAS**
-
-`Pixera.Screens.getStudioCameras`
-
--  Returns handles to all studio cameras currently used in the Screens tab.
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-### Projectors
-
-**GET PROJECTOR WITH NAME**
-
-`Pixera.Projectors.getProjectorWithName`
-
--  Projector name as shown in the inspector.
-
-   - **Parameters**:
-     - `name` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**GET PROJECTORS**
-
-`Pixera.Projectors.getProjectors`
-
--  Returns handles to all screens currently used in the Mapping tab.
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**GET PROJECTOR NAMES**
-
-`Pixera.Projectors.getProjectorNames`
-
-
-
-   - **Return Values**:
-     - `string[]` : *string[]*
-
----
-
-### Resources
-
-**GET RESOURCES**
-
-`Pixera.Resources.getResources`
-
--  Returns handles to all the resources that are directly in one folder (i.e. does not consider subfolders).
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**GET RESOURCE FOLDER WITH NAME PATH**
-
-`Pixera.Resources.getResourceFolderWithNamePath`
-
--  Returns a handle to a folder in the resource tree. The namePath
--  specifies the folder by starting from the root and then listing
--  all the names as seen in the resources tree separated by forward
--  slashes, e.g. "Media/Std Backgrounds/Atmospherics".
-
-   - **Parameters**:
-     - `namePath` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**GET RESOURCE FOLDERS**
-
-`Pixera.Resources.getResourceFolders`
-
--  Returns the resource folders that are immediate children of this folder.
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**GET TRANSCODING FOLDERS**
-
-`Pixera.Resources.getTranscodingFolders`
-
-
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**GET JSON DESCRIP**
-
-`Pixera.Resources.getJsonDescrip`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-### Timelines
-
-**GET TIMELINE AT INDEX**
-
-`Pixera.Timelines.getTimelineAtIndex`
-
--  Returns the handle of the timeline at the (zero-based) index in
--  the Timelines listing of the Compositing tab.
-
-   - **Parameters**:
-     - `index` : *int*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**GET TIMELINE FROM NAME**
-
-`Pixera.Timelines.getTimelineFromName`
-
--  Returns the handle of the timeline with the given name (as shown in the
--  timeline list).
-
-   - **Parameters**:
-     - `name` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**GET TIMELINES**
-
-`Pixera.Timelines.getTimelines`
-
--  Returns handles to all timelines.
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**GET TIMELINE NAMES**
-
-`Pixera.Timelines.getTimelineNames`
-
--  Returns names to all timelines.
-
-   - **Return Values**:
-     - `string[]` : *string[]*
-
----
-
-**GET TIMELINES SELECTED**
-
-`Pixera.Timelines.getTimelinesSelected`
-
--  Returns handles to all selected timelines
-
-   - **Return Values**:
-     - `handle[]` : *handle[]*
-
----
-
-**CREATE TIMELINE**
-
-`Pixera.Timelines.createTimeline`
-
--  Create Timeline
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**GET NODE FROM ID**
-
-`Pixera.Timelines.getNodeFromId`
-
--  Returns a handle for the node specified by id after checking that a node with the id exists.
--  Conceptually, the id and the handle are the same but some implementations of the API can not
--  yet consume handles as parameters, making it necessary to translate between the two occasionally.
-
-   - **Parameters**:
-     - `id` : *double*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-### Calibration
-
-**SET MARKER POSITIONS**
-
-`Pixera.Calibration.setMarkerPositions`
-
--  Sets the marker positions for projector calibration with external data.
--  Positions must contain the marker coordinates in world space in consecutive order
--  like this: x1, y1, z1, x2, y2, z2, x3, y3, z3, ...
--  markerIds must contain a unique integer id for each marker in the same order as
--  the marker positions. The markerIds matching the coordinates example are 1,2,3.
-
-   - **Parameters**:
-     - `positions` : *double[]*
-     - `markerIds` : *int[]*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-### WebViews
-
-**LOAD DEVICE UI**
-
-`Pixera.WebViews.loadDeviceUi`
-
-
-
-   - **Parameters**:
-     - `devicePath` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**ACTIVATE PREVIOUS FUNC**
-
-`Pixera.WebViews.activatePreviousFunc`
-
-
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**ACTIVATE NEXT FUNC**
-
-`Pixera.WebViews.activateNextFunc`
-
-
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET LAST ACTIVATED FUNC**
-
-`Pixera.WebViews.getLastActivatedFunc`
-
-
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**DEVICE ACTIVATED**
-
-`Pixera.WebViews.deviceActivated`
-
-
-
-   - **Parameters**:
-     - `devicePath` : *string*
-     - `withSelection` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**FUNC ACTIVATED**
-
-`Pixera.WebViews.funcActivated`
-
-
-
-   - **Parameters**:
-     - `funcPath` : *string*
-     - `withSelection` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET FUNC BODY STATE**
-
-`Pixera.WebViews.setFuncBodyState`
-
-
-
-   - **Parameters**:
-     - `funcPath` : *string*
-     - `state` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET FUNC BODY STATE**
-
-`Pixera.WebViews.getFuncBodyState`
-
-
-
-   - **Parameters**:
-     - `funcPath` : *string*
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**SET TAG**
-
-`Pixera.WebViews.setTag`
-
-
-
-   - **Parameters**:
-     - `tag` : *string*
-     - `text` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET EDITOR IS USING BLOCKS**
-
-`Pixera.WebViews.setEditorIsUsingBlocks`
-
-
-
-   - **Parameters**:
-     - `useBlocks` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-### Ui
-
-**GET COMBO BOX WITH ID**
-
-`Pixera.Ui.getComboBoxWithId`
-
--  Ui namespace is only accessible from plugins hosted in Pixera, i.e. it is
--  not relevant to external API access.
-
-   - **Parameters**:
-     - `id` : *double*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**SET APP MODE**
-
-`Pixera.Ui.setAppMode`
-
--  Set the current AppMode
--  1 = Screens
--  2 = Mapping
--  3 = Compositing
--  4 = Compositing Inside
--  5 = Settings
--  6 = Mapping Screens Feedarea
--  7 = Control
-
-   - **Parameters**:
-     - `mode` : *int*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET APP MODE**
-
-`Pixera.Ui.getAppMode`
-
--  Get the current AppMode
-
-   - **Return Values**:
-     - `int` : *int*
-
----
-
-**GET DISPLAY TESTPATTERN**
-
-`Pixera.Ui.getDisplayTestpattern`
-
--  Get display Testpattern
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**SET DISPLAY TESTPATTERN**
-
-`Pixera.Ui.setDisplayTestpattern`
-
--  Get display Testpattern
-
-   - **Parameters**:
-     - `display` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET PREVIEW CAMERA AS JSON STRING**
-
-`Pixera.Ui.getPreviewCameraAsJsonString`
-
--  Get the current AppMode
-
-   - **Return Values**:
-     - `string` : *string*
-
----
-
-**SET PREVIEW CAMERA AS JSON STRING**
-
-`Pixera.Ui.setPreviewCameraAsJsonString`
-
-
-
-   - **Parameters**:
-     - `cameraFrustrumStateString` : *string*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**SET DISABLE CONTENT RENDERING**
-
-`Pixera.Ui.setDisableContentRendering`
-
-
-
-   - **Parameters**:
-     - `state` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET IS CONTENT RENDERING DISABLED**
-
-`Pixera.Ui.getIsContentRenderingDisabled`
-
-
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-**SET DISABLE WORKSPACE RENDERING**
-
-`Pixera.Ui.setDisableWorkspaceRendering`
-
-
-
-   - **Parameters**:
-     - `state` : *bool*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**GET IS WORKSPACE RENDERING DISABLED**
-
-`Pixera.Ui.getIsWorkspaceRenderingDisabled`
-
-
-
-   - **Return Values**:
-     - `bool` : *bool*
-
----
-
-### Direct
-
-**SET REGISTERED**
-
-`Pixera.Direct.setRegistered`
-
--  Sets all entities registered in the current thread. Entities that were previously
--  registered that are not in the handle array are removed.
--  usageHints is either empty or it contains one entry for each handle. Possible entries are:
--     "screen"
--     "perspective"
--     "parameter"
--     "studioCamera"
-
-   - **Parameters**:
-     - `hdls` : *handle[]*
-     - `expectedFrequency` : *int*
-     - `dampingMs` : *int*
-     - `usageHints` : *string[]*
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**RELOAD REGISTERED**
-
-`Pixera.Direct.reloadRegistered`
-
--  Updates the representation of all registered entities.
-
-   - **Return Values**:
-     - `null` : *null*
-
----
-
-**REGISTER SCREEN**
-
-`Pixera.Direct.registerScreen`
-
--  Register the screen for use with the Direct API.
-
-   - **Parameters**:
-     - `name` : *string*
-     - `expectedFrequency` : *int*
-     - `dampingMs` : *int*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**REGISTER PARAM**
-
-`Pixera.Direct.registerParam`
-
--  Register the parameter for use with the Direct API. At the time when this function is executed
--  the layer should already have been displayed at least once. Otherwise the relevant underlying
--  attributes may not have been initialized yet and can not be cached.
--  The instance path traces the name hierarchy in the timeline tree. E.g. "Timeline 1.Position.x".
-
-   - **Parameters**:
-     - `instancePath` : *string*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**REGISTER CAMERA**
-
-`Pixera.Direct.registerCamera`
-
--  Register the camera with the screen group name for use with the Direct API.
-
-   - **Parameters**:
-     - `cameraName` : *string*
-     - `expectedFrequency` : *int*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-**REGISTER PERSPECTIVE**
-
-`Pixera.Direct.registerPerspective`
-
--  Register the perspective with the screen name for use with the Direct API.
-
-   - **Parameters**:
-     - `screenName` : *string*
-     - `expectedFrequency` : *int*
-
-   - **Return Values**:
-     - `handle` : *handle*
-
----
-
-### Unreal
-
+| Namespace | Entity | Type | Name | Parameters | Return Values |
+| --- | --- | --- | --- | --- | --- |
+| Utility | Function | | `getApiRevision` | None | None |
+| Utility | Function | | `getHasFunction` | `functionName`: string | None |
+| Utility | Function | | `outputDebug` | `message`: string | None |
+| Utility | Function | | `getLicenseJson` | None | None |
+| Utility | Function | | `getCurrentTime` | None | None |
+| Utility | Function | | `getCurrentTimeAsString` | None | None |
+| Utility | Function | | `noop` | None | None |
+| Utility | Function | | `requestCallback` | `functionName`: string | None |
+| Utility | Function | | `readFileString` | `path`: string | None |
+| Utility | Function | | `writeFileString` | `path`: string, `fileStr`: string | None |
+| Utility | Function | | `getAccessRecipe` | `hdlPath`: string | None |
+| Utility | Function | | `pollMonitoring` | None | None |
+| Utility | Function | | `unsubscribeMonitoringSubject` | `subject`: string | None |
+| Utility | Function | | `subscribeMonitoringSubject` | `subject`: string | None |
+| Utility | Function | | `setMonitoringEventMode` | `mode`: string | None |
+| Utility | Function | | `monitoringEvent` | `eventDescription`: string | None |
+| Utility | Function | | `setShowContextInReplies` | `doShow`: bool | None |
+| Utility | Function | | `setMonitoringHasDelimiter` | `hasDelimiter`: bool | None |
+| Utility | Function | | `runJsScript` | `jsFunction`: string, `jsCode`: string | None |
+| Utility | Function | | `dynamicRebuildFromJsonDescription` | `deviceName`: string, `jsonDescription`: string, `folder`: string | None |
+| Network | Function | | `getConveyor` | `conveyorName`: string | None |
+| Network | Class | | `Conveyor` | | |
+| | | Method | `sendString` | `str`: string | None |
+| Compound | Function | | `setTransportModeOnTimelineAtIndex` | `index`: int, `mode`: int | None |
+| Compound | Function | | `setTransportModeOnTimeline` | `timelineName`: string, `mode`: int | None |
+| Compound | Function | | `toggleTransport` | `timelineName`: string | None |
+| Compound | Function | | `getTransportModeOnTimeline` | `timelineName`: string | None |
+| Compound | Function | | `setOpacityOnTimeline` | `timelineName`: string, `opacity`: double | None |
+| Compound | Function | | `getOpacityOnTimeline` | `timelineName`: string | None |
+| Compound | Function | | `startFirstTimeline` | None | None |
+| Compound | Function | | `pauseFirstTimeline` | None | None |
+| Compound | Function | | `stopFirstTimeline` | None | None |
+| Compound | Function | | `setPosValue` | `val`: double | None |
+| Compound | Function | | `setPosValueXY` | `valX`: double, `valY`: double | None |
+| Compound | Function | | `setParamValue` | `path`: string, `value`: double | None |
+| Compound | Function | | `applyCueAtIndexOnTimelineAtIndex` | `cueIndex`: int, `timelineIndex`: int | None |
+| Compound | Function | | `applyCueNumberOnTimelineAtIndex` | `cueNumber`: int, `timelineIndex`: int | None |
+| Compound | Function | | `applyCueNumberOnTimeline` | `timelineName`: string, `cueNumber`: int | None |
+| Compound | Function | | `applyCueOnTimeline` | `timelineName`: string, `cueName`: string | None |
+| Compound | Function | | `addResourceToFolder` | `namePath`: string, `filePath`: string | None |
+| Compound | Function | | `assignResourceToLayer` | `resourcePath`: string, `layerPath`: string | None |
+| Compound | Function | | `refreshResource` | `resourcePath`: string | None |
+| Compound | Function | | `setTransportModeOnLayer` | `layerPath`: string, `mode`: int, `loop`: bool | None |
+| Compound | Function | | `getTransportModeOnLayer` | `layerPath`: string | None |
+| Compound | Function | | `getResourceAssignedToLayer` | `layerPath`: string | None |
+| Compound | Function | | `assignResourceToClipAtTimeByDmxId` | `layerPath`: string, `dmxFolderId`: int, `dmxFileId`: int, `time`: double | None |
+| Compound | Function | | `assignResourceToClipAtHMSFStringByDmxId` | `layerPath`: string, `dmxFolderId`: int, `dmxFileId`: int, `hmsf`: string | None |
+| Compound | Function | | `assignResourceToClipAtHMSFByDmxId` | `layerPath`: string, `dmxFolderId`: int, `dmxFileId`: int, `h`: int, `m`: int, `s`: int, `f`: int | None |
+| Compound | Function | | `setCurrentTimeOfTimeline` | `timelineName`: string, `time`: int | None |
+| Compound | Function | | `setCurrentTimeOfTimelineInSeconds` | `timelineName`: string, `time`: double | None |
+| Compound | Function | | `setCurrentTimeAndTransportModeOfTimelineInSeconds` | `timelineName`: string, `time`: double, `mode`: int | None |
+| Compound | Function | | `getFpsOfTimeline` | `timelineName`: string | None |
+| Compound | Function | | `getCurrentTimeOfTimeline` | `timelineName`: string | None |
+| Compound | Function | | `getCurrentTimeOfTimelineInSeconds` | `timelineName`: string | None |
+| Compound | Function | | `getCurrentHMSFOfTimeline` | `timelineName`: string | None |
+| Compound | Function | | `getCurrentCountdownOfTimeline` | `timelineName`: string | None |
+| Compound | Function | | `getCurrentCountdownHMSFOfTimeline` | `timelineName`: string | None |
+| Compound | Function | | `startOpacityAnimationOfTimeline` | `timelineName`: string, `fadeIn`: bool, `fullFadeDuration`: double | None |
+| Compound | Function | | `createClipOnLayerAtTimeWithResource` | `layerPath`: string, `time`: double, `resourcePath`: string | None |
+| Compound | Function | | `removeClipOnLayerWithIndex` | `layerPath`: string, `clipIndex`: int | None |
+| Compound | Function | | `removeAllClipsOnLayer` | `layerPath`: string | None |
+| Compound | Function | | `getClipDurationInSecondsWithIndex` | `layerPath`: string, `clipIndex`: int | None |
+| Compound | Function | | `getClipDurationInFramesWithIndex` | `layerPath`: string, `clipIndex`: int | None |
+| Compound | Function | | `getClipTimeInSecondsWithIndex` | `layerPath`: string, `clipIndex`: int | None |
+| Compound | Function | | `getClipEndTimeInSecondsWithIndex` | `layerPath`: string, `clipIndex`: int | None |
+| Compound | Function | | `getResourceDurationInSeconds` | `resourcePath`: string | None |
+| Compound | Function | | `getParamValue` | `path`: string | None |
+| Compound | Function | | `setTimecodeInput` | `hour`: int, `minute`: int, `second`: int, `frame`: int, `elapsedTime`: double, `running`: bool, `freshMode`: int, `stateToken`: int, `format`: int | None |
+| Compound | Function | | `takeOverAllClients` | None | None |
+| Compound | Function | | `setPauseSmpteInput` | `doPause`: bool | None |
+| Session | Function | | `closeApp` | `saveProject`: bool | None |
+| Session | Function | | `loadProject` | `path`: string | None |
+| Session | Function | | `saveProject` | None | None |
+| Session | Function | | `saveProjectAs` | `path`: string | None |
+| Session | Function | | `getProjectName` | None | None |
+| Session | Function | | `setProjectName` | `name`: string | None |
+| Session | Function | | `getProjectDirectory` | None | None |
+| Session | Function | | `getControlMultiUserSessionName` | None | None |
+| Session | Function | | `shutdownSystem` | `mode`: optional<int> | None |
+| Session | Function | | `getLiveSystemIps` | None | None |
+| Session | Function | | `getLiveSystemState` | `ip`: string | None |
+| Session | Function | | `liveSystemStateChange` | `ip`: string, `state`: string | None |
+| Session | Function | | `shutdownLiveSystem` | `ip`: string, `mode`: optional<int> | None |
+| Session | Function | | `wakeLiveSystem` | `ip`: string | None |
+| Session | Function | | `getLiveSystemMacAddress` | `ip`: string | None |
+| Session | Function | | `startLiveSystem` | `ip`: string | None |
+| Session | Function | | `startLiveSystems` | None | None |
+| Session | Function | | `stopLiveSystem` | `ip`: string | None |
+| Session | Function | | `stopLiveSystems` | None | None |
+| Session | Function | | `restartLiveSystem` | `ip`: string | None |
+| Session | Function | | `restartLiveSystems` | None | None |
+| Session | Function | | `remoteSystemStateChange` | `ip`: string, `state`: string | None |
+| Session | Function | | `getRemoteSystemIps` | None | None |
+| Session | Function | | `getRemoteSystemState` | `ip`: string | None |
+| Session | Function | | `setVideoStreamActiveState` | `ip`: string, `device`: string, `isActive`: bool | None |
+| Session | Function | | `getVideoStreamActiveState` | `ip`: string, `device`: string | None |
+| Session | Function | | `getDefaultClipDurationsAsJsonString` | None | None |
+| LiveSystems | Function | | `getLiveSystems` | None | None |
+| LiveSystems | Function | | `liveSystemNotAvailable` | `reason`: int, `system`: handle | None |
+| LiveSystems | Function | | `getMultiUserMembers` | None | None |
+| LiveSystems | Class | | `MultiUserMember` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `getIp` | None | None |
+| | | Method | `getState` | None | None |
+| | | Method | `getPerformanceMonitoringValuesJson` | None | None |
+| | | Method | `getPerformanceMonitoringValuesJsonEx` | `filter`: string | None |
+| | | Method | `resetCumulativePerformanceMonitoringValues` | None | None |
+| | | Method | `ensureFileDistribution` | `includeNotUsedYet`: bool | None |
+| | | Method | `shutDown` | `mode`: int | None |
+| | | Method | `wakeUp` | None | None |
+| | | Method | `getMacAddress` | None | None |
+| | | Method | `resetEngine` | None | None |
+| | | Method | `restartEngine` | None | None |
+| | | Method | `startEngine` | None | None |
+| | | Method | `closeEngine` | None | None |
+| | | Method | `triggerBackup` | `applyControlCommand`: optional<bool> | None |
+| | | Method | `getStructureJson` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| LiveSystems | Class | | `LiveSystem` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `getIp` | None | None |
+| | | Method | `getState` | None | None |
+| | | Method | `setBackupRole` | `role`: int | None |
+| | | Method | `getBackupRole` | None | None |
+| | | Method | `getPerformanceMonitoringValuesJson` | None | None |
+| | | Method | `getPerformanceMonitoringValuesJsonEx` | `filter`: string | None |
+| | | Method | `resetCumulativePerformanceMonitoringValues` | None | None |
+| | | Method | `moveMappingsToOutputs` | `hdlSrc`: handle, `outputIdPathMapStr`: string | None |
+| | | Method | `clearExportedMappings` | `path`: string, `onlyServicePath`: bool | None |
+| | | Method | `exportMappings` | `path`: string | None |
+| | | Method | `importMappings` | `path`: string, `outputIdPathMapStr`: string | None |
+| | | Method | `exportMappingsDirectly` | `path`: string | None |
+| | | Method | `importMappingsDirectly` | `path`: string, `outputIdPathMapStr`: string | None |
+| | | Method | `exportMappingsToLiveSystemPath` | `parentPath`: string | None |
+| | | Method | `importMappingsFromLiveSystemPath` | `parentPath`: string | None |
+| | | Method | `clearExportedMappingsAtLiveSystemPath` | `path`: string | None |
+| | | Method | `ensureFileDistribution` | `includeNotUsedYet`: bool | None |
+| | | Method | `shutDown` | `mode`: int | None |
+| | | Method | `wakeUp` | None | None |
+| | | Method | `getMacAddress` | None | None |
+| | | Method | `getGraphicsDevices` | None | None |
+| | | Method | `getEnabledOutputs` | None | None |
+| | | Method | `getAllOutputs` | None | None |
+| | | Method | `getVideoStreamOutputs` | None | None |
+| | | Method | `resetEngine` | None | None |
+| | | Method | `restartEngine` | None | None |
+| | | Method | `startEngine` | None | None |
+| | | Method | `closeEngine` | None | None |
+| | | Method | `setAudioMasterVolume` | `channel`: int, `volume`: double | None |
+| | | Method | `getAudioMasterVolume` | `channel`: int | None |
+| | | Method | `setAudioMasterMute` | `channel`: int, `state`: bool | None |
+| | | Method | `getAudioMasterMute` | `channel`: int | None |
+| | | Method | `setAudioTimecodeInput` | `channel`: int, `state`: bool | None |
+| | | Method | `triggerBackup` | `applyControlCommand`: optional<bool> | None |
+| | | Method | `getStructureJson` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| LiveSystems | Class | | `GraphicsDevice` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `getEnabledOutputs` | None | None |
+| | | Method | `getAllOutputs` | None | None |
+| LiveSystems | Class | | `Output` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `setActive` | `active`: bool | None |
+| | | Method | `getActive` | None | None |
+| | | Method | `setIdentify` | `state`: bool | None |
+| | | Method | `getIdentify` | None | None |
+| | | Method | `getAssignedScreens` | None | None |
+| | | Method | `getAssignedProjectors` | None | None |
+| | | Method | `getEnabled` | None | None |
+| | | Method | `getForPreview` | None | None |
+| LiveSystems | Class | | `VideoStream` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `setActive` | `active`: bool | None |
+| | | Method | `getActive` | None | None |
+| Screens | Function | | `getScreenWithName` | `name`: string | None |
+| Screens | Function | | `setNamedScreenPosition` | `name`: string, `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| Screens | Function | | `getScreens` | None | None |
+| Screens | Function | | `getScreenNames` | None | None |
+| Screens | Function | | `getFirstTimelineWithHomeScreen` | `screenName`: string | None |
+| Screens | Function | | `getStudioCameras` | None | None |
+| Screens | Class | | `Screen` | | |
+| | | Method | `getId` | None | None |
+| | | Method | `getName` | None | None |
+| | | Method | `setPosition` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `getPosition` | None | None |
+| | | Method | `setRotation` | `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `getRotation` | None | None |
+| | | Method | `setScale` | `xScale`: optional<double>, `yScale`: optional<double>, `zScale`: optional<double> | None |
+| | | Method | `getScale` | None | None |
+| | | Method | `setPosRot` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double>, `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `setPosRotScale` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double>, `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double>, `xScale`: optional<double>, `yScale`: optional<double>, `zScale`: optional<double> | None |
+| | | Method | `getPersepective` | None | None |
+| | | Method | `snapPerspectiveCornersToScreen` | `mode`: int | None |
+| | | Method | `setPerspectivePosition` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `setPerspectivePositionWithLookAt` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `getPerspectivePosition` | None | None |
+| | | Method | `setPerspectiveRotation` | `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `getPerspectiveRotation` | None | None |
+| | | Method | `setCameraPosition` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `setCameraPositionWithLookAt` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `getCameraPosition` | None | None |
+| | | Method | `setCameraRotation` | `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `getCameraRotation` | None | None |
+| | | Method | `setContentSamplingFrustumBase` | `x`: double, `y`: double, `width`: double, `height`: double, `rotation`: double, `originScreenId`: double | None |
+| | | Method | `runCalibration` | `mode`: string, `diff`: string | None |
+| | | Method | `editCalibration` | `diff`: string | None |
+| | | Method | `resetWarpFile` | `diff`: string | None |
+| | | Method | `loadWarpFile` | `filePath`: string | None |
+| | | Method | `loadWarpFileWithDiff` | `filePath`: string, `diff`: string | None |
+| | | Method | `addWarpFile` | `filePath`: string | None |
+| | | Method | `addWarpFileWithDiff` | `filePath`: string, `diff`: string | None |
+| | | Method | `loadColorCalibration` | `calibrationName`: string | None |
+| | | Method | `runColorCalibration` | None | None |
+| | | Method | `setIsVisible` | `isVisible`: bool | None |
+| | | Method | `getIsVisible` | None | None |
+| | | Method | `setIsProjectable` | `isProjectable`: bool | None |
+| | | Method | `getIsProjectable` | None | None |
+| | | Method | `triggerRefreshMapping` | None | None |
+| | | Method | `resetAllColorCorrections` | None | None |
+| | | Method | `setColorCorrectionWithPath` | `path`: string, `value`: float | None |
+| | | Method | `getColorCorrectionWithPath` | `path`: string | None |
+| | | Method | `setColorCorrectionAsJsonString` | `colorCorrection`: string | None |
+| | | Method | `getColorCorrectionAsJsonString` | None | None |
+| | | Method | `getOutput` | None | None |
+| | | Method | `setBlackout` | `isActive`: bool | None |
+| | | Method | `getBlackout` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Screens | Class | | `StudioCamera` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `setPosition` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `getPosition` | `xPos`: double, `yPos`: double, `zPos`: double | None |
+| | | Method | `setRotation` | `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `getRotation` | `xPos`: double, `yPos`: double, `zPos`: double | None |
+| | | Method | `setTransformation` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double>, `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double>, `fov`: optional<double>, `aspectRatio`: optional<double> | None |
+| | | Method | `setTransformationAndLensProps` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double, `nearClip`: double, `farClip`: double, `aperture`: double, `focus`: double, `iris`: double, `k1`: double, `k2`: double, `centerX`: double, `centerY`: double, `panelWidth`: double | None |
+| | | Method | `setTransformationAndLensPropsExt` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double, `nearClip`: double, `farClip`: double, `aperture`: double, `focus`: double, `focalDistance`: double, `zoom`: double, `iris`: double, `k1`: double, `k2`: double, `k3`: double, `p1`: double, `p2`: double, `centerX`: double, `centerY`: double, `panelWidth`: double, `overscan`: double | None |
+| | | Method | `setTrackingInputPause` | `pause`: bool | None |
+| | | Method | `getTrackingInputPause` | None | None |
+| | | Method | `setUsePositionPropertiesFromTracking` | `pause`: bool | None |
+| | | Method | `getUsePositionPropertiesFromTracking` | None | None |
+| | | Method | `setUseRotationPropertiesFromTracking` | `pause`: bool | None |
+| | | Method | `getUseRotationPropertiesFromTracking` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Screens | Class | | `Perspective` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `setTransformation` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double>, `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double>, `fov`: optional<double>, `aspectRatio`: optional<double> | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Projectors | Function | | `getProjectorWithName` | `name`: string | None |
+| Projectors | Function | | `getProjectors` | None | None |
+| Projectors | Function | | `getProjectorNames` | None | None |
+| Projectors | Class | | `Projector` | | |
+| | | Method | `getPosition` | None | None |
+| | | Method | `setPosition` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `getRotation` | None | None |
+| | | Method | `setRotation` | `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `getName` | None | None |
+| | | Method | `activateScreenMapping` | `screenId`: double, `isActive`: bool | None |
+| | | Method | `setBlackout` | `isActive`: bool | None |
+| | | Method | `getBlackout` | None | None |
+| | | Method | `setSoftedgeVisible` | `screenName`: string, `visible`: bool | None |
+| | | Method | `resetAllColorCorrections` | None | None |
+| | | Method | `setColorCorrectionWithPath` | `path`: string, `value`: float | None |
+| | | Method | `getColorCorrectionWithPath` | `path`: string | None |
+| | | Method | `setColorCorrectionAsJsonString` | `colorCorrection`: string | None |
+| | | Method | `getColorCorrectionAsJsonString` | None | None |
+| | | Method | `getOutput` | None | None |
+| | | Method | `setOutput` | `outputHandle`: handle | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Resources | Function | | `getResources` | None | None |
+| Resources | Function | | `getResourceFolderWithNamePath` | `namePath`: string | None |
+| Resources | Function | | `getResourceFolders` | None | None |
+| Resources | Function | | `getTranscodingFolders` | None | None |
+| Resources | Function | | `getJsonDescrip` | None | None |
+| Resources | Class | | `ResourceFolder` | | |
+| | | Method | `ref` | None | None |
+| | | Method | `getName` | None | None |
+| | | Method | `setName` | `name`: string | None |
+| | | Method | `getResourceFolders` | None | None |
+| | | Method | `getResources` | None | None |
+| | | Method | `getResourceAtIndex` | `index`: int | None |
+| | | Method | `addResource` | `path`: string | None |
+| | | Method | `addResourcesFromDirectory` | `path`: string, `removeOthers`: bool, `checkRedundancy`: bool | None |
+| | | Method | `addResourcesFromDirectoryRemoveAssets` | `path`: string, `removeOthers`: bool, `checkRedundancy`: bool | None |
+| | | Method | `addInternalResource` | `signature`: string, `resKind`: int | None |
+| | | Method | `createFoldersFrom` | `path`: string | None |
+| | | Method | `refreshResources` | None | None |
+| | | Method | `moveResourceToThis` | `id`: double | None |
+| | | Method | `removeThis` | None | None |
+| | | Method | `removeThisIncludingAssets` | None | None |
+| | | Method | `removeAllContents` | None | None |
+| | | Method | `removeAllContentsIncludingAssets` | None | None |
+| | | Method | `deleteAllContentsAssetsFromLiveSystem` | `apEntityLiveSystemHandle`: handle | None |
+| | | Method | `resetDistributionTargets` | None | None |
+| | | Method | `changeDistributionTarget` | `apEntityLiveSystemHandle`: handle, `shouldDistribute`: bool | None |
+| | | Method | `replaceResourcesByString` | `searchString`: string, `replaceString`: string, `path`: string | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| | | Method | `getDmxId` | None | None |
+| | | Method | `getCombinedDmxId` | None | None |
+| | | Method | `setDmxId` | `id`: int | None |
+| Resources | Class | | `TranscodingFolder` | | |
+| | | Method | `getUsedTranscodingPreset` | None | None |
+| | | Method | `setUsedTranscodingPreset` | `preset`: string | None |
+| | | Method | `getTranscodeAutomatically` | None | None |
+| | | Method | `setTranscodeAutomatically` | `autoTranscode`: bool | None |
+| | | Method | `getUseRxCacheAsDestination` | None | None |
+| | | Method | `setRxCacheAsDestination` | `useRxCache`: bool | None |
+| | | Method | `getDestinationDirectory` | None | None |
+| | | Method | `setDestinationDirectory` | `path`: string | None |
+| Resources | Class | | `Resource` | | |
+| | | Method | `ref` | None | None |
+| | | Method | `removeThis` | None | None |
+| | | Method | `deleteFilesOnSystems` | None | None |
+| | | Method | `removeThisIncludingAssets` | None | None |
+| | | Method | `deleteAssetFromLiveSystem` | `apEntityLiveSystemHandle`: handle | None |
+| | | Method | `resetDistributionTargets` | None | None |
+| | | Method | `changeDistributionTarget` | `apEntityLiveSystemHandle`: handle, `shouldDistribute`: bool | None |
+| | | Method | `getName` | None | None |
+| | | Method | `setName` | `name`: string | None |
+| | | Method | `getFps` | None | None |
+| | | Method | `getResolution` | None | None |
+| | | Method | `getIsActive` | None | None |
+| | | Method | `getVideoStreamModes` | None | None |
+| | | Method | `setVideoStreamMode` | `index`: int | None |
+| | | Method | `getId` | None | None |
+| | | Method | `getDuration` | None | None |
+| | | Method | `getType` | None | None |
+| | | Method | `setCurrentVersion` | `version`: string | None |
+| | | Method | `getCurrentVersion` | None | None |
+| | | Method | `getVersions` | None | None |
+| | | Method | `getVersionSuffix` | None | None |
+| | | Method | `rescanVersions` | None | None |
+| | | Method | `getThumbnailAsBase64` | None | None |
+| | | Method | `getHasPendingTransfer` | None | None |
+| | | Method | `getIsInUse` | None | None |
+| | | Method | `getLastUsageBeginTime` | None | None |
+| | | Method | `getLastUsageBeginTimeAsString` | None | None |
+| | | Method | `getLastUsageEndTime` | None | None |
+| | | Method | `getLastUsageEndTimeAsString` | None | None |
+| | | Method | `getFilePath` | None | None |
+| | | Method | `setText` | `text`: string | None |
+| | | Method | `getText` | None | None |
+| | | Method | `setFontWithName` | `fontName`: string | None |
+| | | Method | `getFontName` | None | None |
+| | | Method | `setFontWithPath` | `fontPath`: string | None |
+| | | Method | `setHorizontalTextAlignment` | `textAlignment`: int | None |
+| | | Method | `getHorizontalTextAlignment` | None | None |
+| | | Method | `setVerticalTextAlignment` | `textAlignment`: int | None |
+| | | Method | `getVerticalTextAlignment` | None | None |
+| | | Method | `setLineHeight` | `lineHeight`: double | None |
+| | | Method | `getLineHeight` | None | None |
+| | | Method | `getTextMeasurementsWidthAndHeight` | None | None |
+| | | Method | `setUrl` | `url`: string | None |
+| | | Method | `getUrl` | None | None |
+| | | Method | `setColorTransformPath` | `colorTransformPath`: string | None |
+| | | Method | `getColorTransformPath` | None | None |
+| | | Method | `clearColorTransformPath` | None | None |
+| | | Method | `refresh` | `text`: string | None |
+| | | Method | `distribute` | None | None |
+| | | Method | `getDmxId` | None | None |
+| | | Method | `setDmxId` | `id`: int | None |
+| | | Method | `removeMultiresourceIndex` | `index`: int | None |
+| | | Method | `addMultiresourceItem` | `id`: double | None |
+| | | Method | `getMultiresourceItems` | None | None |
+| | | Method | `replaceMultiresourceItemByIndex` | `index`: int, `id`: double | None |
+| | | Method | `setMultiresourceResolution` | `width`: int, `height`: int | None |
+| | | Method | `setMultiresourceItemSizebyIndex` | `index`: int, `width`: double, `height`: double | None |
+| | | Method | `setMultiresourceItemPositionbyIndex` | `index`: int, `x`: double, `y`: double | None |
+| | | Method | `setUseGradient` | `useGradient`: bool | None |
+| | | Method | `getUseGradient` | None | None |
+| | | Method | `setColors` | `argbCols`: uint[], `positions`: double[], `colNames`: string[], `useGradient`: optional<bool> | None |
+| | | Method | `setColorAtIndex` | `index`: int, `red`: int, `green`: int, `blue`: int, `alpha`: int, `position`: double, `name`: string, `useGradient`: optional<bool> | None |
+| | | Method | `getColorAtIndex` | `colorIndex`: int | None |
+| | | Method | `getColorPositionAtIndex` | `colorIndex`: int | None |
+| | | Method | `launchVirtualWorld` | `action`: string | None |
+| | | Method | `getUnrealWorld` | None | None |
+| | | Method | `setMultiResourceItemRestrictedServiceIps` | `itemIndex`: int, `ipAdresses`: string[] | None |
+| | | Method | `getMultiResourceItemRestrictedServiceIps` | `itemIndex`: int | None |
+| | | Method | `replace` | `path`: string | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| | | Method | `transcodeWithExisitngPreset` | `presetName`: string, `useRxCache`: bool, `destinationPath`: string, `startFrame`: int, `endFrame`: int, `serviceId`: uint | None |
+| | | Method | `transcodeWithSettings` | `settings`: string, `useRxCache`: bool, `destinationPath`: string, `startFrame`: int, `endFrame`: int, `serviceId`: uint | None |
+| | | Method | `moveToTranscodingFolder` | `folderPath`: string | None |
+| Resources | Class | | `UnrealWorld` | | |
+| | | Method | `getLevelNames` | None | None |
+| | | Method | `loadLevel` | `levelName`: string | None |
+| | | Method | `getEventTriggerNames` | None | None |
+| | | Method | `triggerEventByName` | `triggerName`: string | None |
+| | | Method | `createNDisplayConfig` | None | None |
+| | | Method | `runUnreal` | None | None |
+| | | Method | `killUnreal` | None | None |
+| | | Method | `getName` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Timelines | Function | | `getTimelineAtIndex` | `index`: int | None |
+| Timelines | Function | | `getTimelineFromName` | `name`: string | None |
+| Timelines | Function | | `getTimelines` | None | None |
+| Timelines | Function | | `getTimelineNames` | None | None |
+| Timelines | Function | | `getTimelinesSelected` | None | None |
+| Timelines | Function | | `createTimeline` | None | None |
+| Timelines | Function | | `getNodeFromId` | `id`: double | None |
+| Timelines | Class | | `Timeline` | | |
+| | | Method | `ref` | None | None |
+| | | Method | `removeThis` | None | None |
+| | | Method | `duplicateThis` | `withoutClipsCues`: optional<bool> | None |
+| | | Method | `selectThis` | None | None |
+| | | Method | `getZoomFactor` | None | None |
+| | | Method | `setZoomFactor` | `zoomFactor`: double | None |
+| | | Method | `getVerticalScrollOffset` | None | None |
+| | | Method | `setVerticalScrollOffset` | `offset`: int | None |
+| | | Method | `getHorizontalScrollOffset` | None | None |
+| | | Method | `setHorizontalScrollOffset` | `offset`: int | None |
+| | | Method | `moveInRenderOrder` | `moveDown`: bool | None |
+| | | Method | `getLayers` | None | None |
+| | | Method | `getLayerNames` | None | None |
+| | | Method | `getLayersSelected` | None | None |
+| | | Method | `selectLayerByIndex` | `index`: int | None |
+| | | Method | `selectLayerByNames` | `layerNames`: string[] | None |
+| | | Method | `getLayerAtIndex` | `index`: int | None |
+| | | Method | `createLayer` | None | None |
+| | | Method | `getCueInfosAsJsonString` | None | None |
+| | | Method | `getCues` | None | None |
+| | | Method | `getCueNames` | None | None |
+| | | Method | `getCueAtIndex` | `index`: int | None |
+| | | Method | `getCueFromName` | `name`: string | None |
+| | | Method | `getCueFromNumber` | `number`: int | None |
+| | | Method | `applyCueWithName` | `name`: string | None |
+| | | Method | `applyCueWithNumber` | `number`: int | None |
+| | | Method | `createCue` | `name`: string, `timeInFrames`: double, `operation`: int | None |
+| | | Method | `removeCues` | None | None |
+| | | Method | `createPauseCueBeforeSelectedClips` | None | None |
+| | | Method | `play` | None | None |
+| | | Method | `pause` | None | None |
+| | | Method | `stop` | None | None |
+| | | Method | `toggleTransport` | None | None |
+| | | Method | `store` | None | None |
+| | | Method | `reset` | None | None |
+| | | Method | `getAttributes` | None | None |
+| | | Method | `setCurrentFrame` | `time`: int | None |
+| | | Method | `setCurrentTime` | `time`: int | None |
+| | | Method | `getCurrentTime` | None | None |
+| | | Method | `scrubCurrentTime` | `frames`: int | None |
+| | | Method | `CurrentTime` | `time`: int, `doSet`: bool | None |
+| | | Method | `getCurrentHMSF` | None | None |
+| | | Method | `setTransportMode` | `mode`: int | None |
+| | | Method | `getTransportMode` | None | None |
+| | | Method | `setTimecodeInput` | `hour`: int, `minute`: int, `second`: int, `frame`: int, `elapsedTime`: double, `running`: bool, `freshMode`: int, `stateToken`: int, `format`: int | None |
+| | | Method | `getFps` | None | None |
+| | | Method | `getName` | None | None |
+| | | Method | `setName` | `name`: string | None |
+| | | Method | `moveToNextCue` | None | None |
+| | | Method | `moveToNextCueIgnoreProperties` | None | None |
+| | | Method | `getCueNext` | None | None |
+| | | Method | `moveToPreviousCue` | None | None |
+| | | Method | `moveToPreviousCueIgnoreProperties` | None | None |
+| | | Method | `getCuePrevious` | None | None |
+| | | Method | `ignoreNextCue` | None | None |
+| | | Method | `ignoreNextCueWithOperation` | `cueOperation`: int | None |
+| | | Method | `blendToTime` | `goalTime`: double, `blendDuration`: double, `preloadDelayInMilliseconds`: optional<int> | None |
+| | | Method | `blendToTimeWithTransportMode` | `goalTime`: double, `blendDuration`: double, `transportMode`: int, `preloadDelayInMilliseconds`: optional<int> | None |
+| | | Method | `setBlendToTimeMode` | `mode`: int | None |
+| | | Method | `setSpeedFactor` | `factor`: double | None |
+| | | Method | `getSpeedFactor` | None | None |
+| | | Method | `setOpacity` | `value`: double | None |
+| | | Method | `getOpacity` | None | None |
+| | | Method | `startOpacityAnimation` | `fadeIn`: bool, `durationFrames`: double | None |
+| | | Method | `setSmpteMode` | `mode`: int | None |
+| | | Method | `getSmpteMode` | None | None |
+| | | Method | `storeRecordedValues` | None | None |
+| | | Method | `setSmpteInputBehaviour` | `mode`: int | None |
+| | | Method | `getSmpteInputBehaviour` | None | None |
+| | | Method | `setSmpteOffset` | `time`: double | None |
+| | | Method | `getSmpteOffset` | None | None |
+| | | Method | `resetRecordedValues` | None | None |
+| | | Method | `getTimelineInfosAsJsonString` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Timelines | Class | | `Layer` | | |
+| | | Method | `ref` | None | None |
+| | | Method | `removeThis` | None | None |
+| | | Method | `getNodes` | None | None |
+| | | Method | `getNodeWithName` | `name`: string | None |
+| | | Method | `getParamWithName` | `name`: string | None |
+| | | Method | `getSpatialParametersAtTime` | `time`: double | None |
+| | | Method | `getTimeline` | None | None |
+| | | Method | `setName` | `name`: string | None |
+| | | Method | `getName` | None | None |
+| | | Method | `resetLayer` | None | None |
+| | | Method | `getLayerJsonDescrip` | None | None |
+| | | Method | `setLayerJsonDescrip` | `descrip`: string, `makeAllDominant`: bool | None |
+| | | Method | `getJsonDescrip` | None | None |
+| | | Method | `initFromJsonDescrip` | `descrip`: string | None |
+| | | Method | `setOpacity` | `value`: double | None |
+| | | Method | `getOpacity` | None | None |
+| | | Method | `resetOpacity` | None | None |
+| | | Method | `setVolume` | `value`: double | None |
+| | | Method | `getVolume` | None | None |
+| | | Method | `resetVolume` | None | None |
+| | | Method | `muteLayer` | None | None |
+| | | Method | `unMuteLayer` | None | None |
+| | | Method | `getIsLayerMuted` | None | None |
+| | | Method | `muteAudio` | None | None |
+| | | Method | `unMuteAudio` | None | None |
+| | | Method | `getIsAudioMuted` | None | None |
+| | | Method | `getDmxMuteState` | None | None |
+| | | Method | `setDmxMuteState` | `muteState`: uint | None |
+| | | Method | `toggleExplicitMute` | `flag`: uint | None |
+| | | Method | `setTransport` | `mode`: int, `loop`: bool | None |
+| | | Method | `getTransportMode` | None | None |
+| | | Method | `resetTransportMode` | None | None |
+| | | Method | `getTransportLoop` | None | None |
+| | | Method | `assignResource` | `id`: double | None |
+| | | Method | `assignResourceWithFade` | `id`: double, `fadeDuration`: double | None |
+| | | Method | `getAssignedResource` | None | None |
+| | | Method | `resetAssignedResource` | None | None |
+| | | Method | `getAssignedModelResource` | None | None |
+| | | Method | `resetAssignedModelResource` | None | None |
+| | | Method | `getFxNames` | None | None |
+| | | Method | `setFadeDurationDominantResourceChange` | `value`: double | None |
+| | | Method | `getFadeDurationDominantResourceChange` | None | None |
+| | | Method | `createClip` | None | None |
+| | | Method | `createClipAtTime` | `timeInFrames`: double | None |
+| | | Method | `controlClipBorder` | `clip`: handle, `isEnter`: bool, `isIncremental`: bool, `entryTime`: double | None |
+| | | Method | `getClipAtIndex` | `index`: int | None |
+| | | Method | `getClips` | None | None |
+| | | Method | `getClipCurrent` | `offset`: int | None |
+| | | Method | `getClipsSelected` | None | None |
+| | | Method | `removeClips` | None | None |
+| | | Method | `setHomeScreenFromScreenName` | `screenName`: string | None |
+| | | Method | `getHomeScreenName` | None | None |
+| | | Method | `setBlendMode` | `blendMode`: string | None |
+| | | Method | `getBlendMode` | None | None |
+| | | Method | `addEffectById` | `id`: double | None |
+| | | Method | `setPreloadPermanently` | `doPreloadPermanently`: bool | None |
+| | | Method | `getPreloadPermanently` | None | None |
+| | | Method | `setRestrictToServiceWithIps` | `doRestrict`: bool, `ipAdresses`: string[] | None |
+| | | Method | `getRestrictToService` | None | None |
+| | | Method | `getRestrictedServiceIps` | None | None |
+| | | Method | `getOffsets` | None | None |
+| | | Method | `setOffsets` | `x`: optional<double>, `y`: optional<double>, `z`: optional<double>, `xr`: optional<double>, `yr`: optional<double>, `zr`: optional<double>, `xScale`: optional<double>, `yScale`: optional<double>, `zScale`: optional<double> | None |
+| | | Method | `setCurrentValuesToOffset` | `typeIndex`: int, `resetDominant`: optional<bool>, `removeKeyframesClips`: optional<bool> | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Timelines | Class | | `Clip` | | |
+| | | Method | `getId` | None | None |
+| | | Method | `removeThis` | None | None |
+| | | Method | `getTimeline` | None | None |
+| | | Method | `setTime` | `time`: double | None |
+| | | Method | `getTime` | None | None |
+| | | Method | `setDuration` | `duration`: double | None |
+| | | Method | `getDuration` | None | None |
+| | | Method | `setLabel` | `label`: string | None |
+| | | Method | `getLabel` | None | None |
+| | | Method | `getPlayMode` | None | None |
+| | | Method | `setPlayMode` | `playMode`: int | None |
+| | | Method | `getSpeed` | None | None |
+| | | Method | `setSpeed` | `speed`: double | None |
+| | | Method | `getBlendFrames` | None | None |
+| | | Method | `setBlendFrames` | `doFrameblending`: bool | None |
+| | | Method | `getInpoint` | None | None |
+| | | Method | `setInpoint` | `inpoint`: double | None |
+| | | Method | `getOutpoint` | None | None |
+| | | Method | `setOutpoint` | `inpoint`: double | None |
+| | | Method | `assignResource` | `resId`: double, `setToResourceDuration`: optional<bool> | None |
+| | | Method | `getAssignedResource` | None | None |
+| | | Method | `setToResourceDuration` | None | None |
+| | | Method | `createEvent` | `namePath`: string, `time`: double, `value`: double | None |
+| | | Method | `createEventInPixelSpace` | `namePath`: string, `time`: double, `value`: double | None |
+| | | Method | `removeEvent` | `namePath`: string, `time`: double | None |
+| | | Method | `createPauseCueBeforeClip` | None | None |
+| | | Method | `setColorTransformPath` | `colorTransformPath`: string | None |
+| | | Method | `getColorTransformPath` | None | None |
+| | | Method | `clearColorTransformPath` | None | None |
+| | | Method | `getKeyframesAsJsonString` | None | None |
+| Timelines | Class | | `Node` | | |
+| | | Method | `getParameters` | None | None |
+| | | Method | `getName` | None | None |
+| | | Method | `getParamWithName` | `name`: string | None |
+| | | Method | `setValues` | `values`: double[] | None |
+| | | Method | `getValues` | None | None |
+| | | Method | `resetValues` | None | None |
+| | | Method | `storeValues` | None | None |
+| | | Method | `mute` | None | None |
+| | | Method | `unMute` | None | None |
+| | | Method | `getIsMuted` | None | None |
+| | | Method | `getTimeline` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Timelines | Class | | `Param` | | |
+| | | Method | `getName` | None | None |
+| | | Method | `getIsChannel` | None | None |
+| | | Method | `setValue` | `value`: timelineParamValue | None |
+| | | Method | `setValueRelativ` | `value`: double | None |
+| | | Method | `getValue` | None | None |
+| | | Method | `resetValue` | None | None |
+| | | Method | `storeValue` | None | None |
+| | | Method | `setTransportAttributes` | `mode`: int, `speed`: double, `loop`: bool, `inpoint`: int, `outpoint`: int | None |
+| | | Method | `getAttributes` | None | None |
+| | | Method | `mute` | None | None |
+| | | Method | `unMute` | None | None |
+| | | Method | `getIsMuted` | None | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Timelines | Class | | `Cue` | | |
+| | | Method | `removeThis` | None | None |
+| | | Method | `apply` | None | None |
+| | | Method | `blendToThis` | `blendDurationInSeconds`: double | None |
+| | | Method | `getAttributes` | None | None |
+| | | Method | `getTimeline` | None | None |
+| | | Method | `getIndex` | None | None |
+| | | Method | `getName` | None | None |
+| | | Method | `setName` | `name`: string | None |
+| | | Method | `getNote` | None | None |
+| | | Method | `setNote` | `note`: string | None |
+| | | Method | `getOperation` | None | None |
+| | | Method | `setOperation` | `operation`: int | None |
+| | | Method | `getJumpMode` | None | None |
+| | | Method | `setJumpMode` | `jumpMode`: int | None |
+| | | Method | `getJumpGoalTime` | None | None |
+| | | Method | `setJumpGoalTime` | `time`: double | None |
+| | | Method | `getJumpGoalLabel` | None | None |
+| | | Method | `getJumpGoalCue` | None | None |
+| | | Method | `setJumpGoalLabel` | `jumpGoalLabel`: string | None |
+| | | Method | `getNumber` | None | None |
+| | | Method | `setNumber` | `number`: int | None |
+| | | Method | `getWaitDuration` | None | None |
+| | | Method | `setWaitDuration` | `time`: double | None |
+| | | Method | `getBlendDuration` | None | None |
+| | | Method | `setBlendDuration` | `timeInFrames`: double | None |
+| | | Method | `getTime` | None | None |
+| | | Method | `setTime` | `time`: double | None |
+| | | Method | `getTimelineToTriggerName` | None | None |
+| | | Method | `setTimelineToTrigger` | `nameTimeline`: string | None |
+| | | Method | `getTimelineTriggerMode` | None | None |
+| | | Method | `setTimelineTriggerMode` | `mode`: int | None |
+| | | Method | `getTimelineTriggerApplyTime` | None | None |
+| | | Method | `setTimelineTriggerApplyTime` | `time`: double | None |
+| | | Method | `setTimelineTriggerApplyCue` | `goalCueLabel`: string | None |
+| | | Method | `getCountdown` | None | None |
+| | | Method | `getCountdownHMSF` | None | None |
+| | | Method | `setCommand` | `conveyorName`: string, `commandData`: string | None |
+| | | Method | `getInst` | `instancePath`: string | None |
+| | | Method | `getHandleFromInstancePath` | `instancePath`: string | None |
+| | | Method | `getInstancePath` | None | None |
+| Calibration | Function | | `setMarkerPositions` | `positions`: double[], `markerIds`: int[] | None |
+| WebViews | Function | | `loadDeviceUi` | `devicePath`: string | None |
+| WebViews | Function | | `activatePreviousFunc` | None | None |
+| WebViews | Function | | `activateNextFunc` | None | None |
+| WebViews | Function | | `getLastActivatedFunc` | None | None |
+| WebViews | Function | | `deviceActivated` | `devicePath`: string, `withSelection`: bool | None |
+| WebViews | Function | | `funcActivated` | `funcPath`: string, `withSelection`: bool | None |
+| WebViews | Function | | `setFuncBodyState` | `funcPath`: string, `state`: string | None |
+| WebViews | Function | | `getFuncBodyState` | `funcPath`: string | None |
+| WebViews | Function | | `setTag` | `tag`: string, `text`: string | None |
+| WebViews | Function | | `setEditorIsUsingBlocks` | `useBlocks`: bool | None |
+| Ui | Function | | `getComboBoxWithId` | `id`: double | None |
+| Ui | Function | | `setAppMode` | `mode`: int | None |
+| Ui | Function | | `getAppMode` | None | None |
+| Ui | Function | | `getDisplayTestpattern` | None | None |
+| Ui | Function | | `setDisplayTestpattern` | `display`: bool | None |
+| Ui | Function | | `getPreviewCameraAsJsonString` | None | None |
+| Ui | Function | | `setPreviewCameraAsJsonString` | `cameraFrustrumStateString`: string | None |
+| Ui | Function | | `setDisableContentRendering` | `state`: bool | None |
+| Ui | Function | | `getIsContentRenderingDisabled` | None | None |
+| Ui | Function | | `setDisableWorkspaceRendering` | `state`: bool | None |
+| Ui | Function | | `getIsWorkspaceRenderingDisabled` | None | None |
+| Ui | Class | | `ComboBox` | | |
+| | | Method | `clear` | None | None |
+| | | Method | `addItem` | `item`: string, `id`: int | None |
+| | | Method | `setSelectedId` | `id`: int | None |
+| | | Method | `getSelectedId` | None | None |
+| Direct | Function | | `setRegistered` | `hdls`: handle[], `expectedFrequency`: int, `dampingMs`: int, `usageHints`: string[] | None |
+| Direct | Function | | `reloadRegistered` | None | None |
+| Direct | Function | | `registerScreen` | `name`: string, `expectedFrequency`: int, `dampingMs`: int | None |
+| Direct | Function | | `registerParam` | `instancePath`: string | None |
+| Direct | Function | | `registerCamera` | `cameraName`: string, `expectedFrequency`: int | None |
+| Direct | Function | | `registerPerspective` | `screenName`: string, `expectedFrequency`: int | None |
+| Direct | Class | | `Screen` | | |
+| | | Method | `setPosition` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double> | None |
+| | | Method | `setRotation` | `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `setPosRot` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double>, `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double> | None |
+| | | Method | `setPosRotScale` | `xPos`: optional<double>, `yPos`: optional<double>, `zPos`: optional<double>, `xRot`: optional<double>, `yRot`: optional<double>, `zRot`: optional<double>, `xScale`: optional<double>, `yScale`: optional<double>, `zScale`: optional<double> | None |
+| | | Method | `enableLogging` | `enable`: bool | None |
+| Direct | Class | | `Param` | | |
+| | | Method | `setValue` | `value`: double | None |
+| | | Method | `enableLogging` | `enable`: bool | None |
+| Direct | Class | | `Camera` | | |
+| | | Method | `setPosition` | `xPos`: double, `yPos`: double, `zPos`: double | None |
+| | | Method | `setRotation` | `xRot`: double, `yRot`: double, `zRot`: double | None |
+| | | Method | `setTransformation` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double | None |
+| | | Method | `setTransformationAndLensProps` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double, `nearClip`: double, `farClip`: double, `aperture`: double, `focus`: double, `iris`: double, `k1`: double, `k2`: double, `centerX`: double, `centerY`: double, `panelWidth`: double | None |
+| | | Method | `setTransformationAndLensPropsExt` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double, `nearClip`: double, `farClip`: double, `aperture`: double, `focus`: double, `focalDistance`: double, `zoom`: double, `iris`: double, `k1`: double, `k2`: double, `k3`: double, `p1`: double, `p2`: double, `centerX`: double, `centerY`: double, `panelWidth`: double, `overscan`: double | None |
+| Direct | Class | | `Perspective` | | |
+| | | Method | `setTransformation` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double | None |
+| | | Method | `setTransformationAndLensProps` | `xPos`: double, `yPos`: double, `zPos`: double, `xRot`: double, `yRot`: double, `zRot`: double, `fov`: double, `aspectRatio`: double, `nearClip`: double, `farClip`: double, `aperture`: double, `focus`: double, `iris`: double, `k1`: double, `k2`: double, `centerX`: double, `centerY`: double, `panelWidth`: double | None |
