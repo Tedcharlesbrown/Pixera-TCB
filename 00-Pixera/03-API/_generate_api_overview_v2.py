@@ -2,6 +2,26 @@ import os
 import re
 import json
 
+readme_prefix = """
+# Protocol Overview
+This documentation describes revision 349 of the API.
+
+The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
+
+## Protocols
+
+ - JSON/TCP
+   - Requires header with prefix and message size
+     - 'pxr1' + 4-byte size (least significant byte first)
+       - `pxr1R000{{"jsonrpc": "2.0","id": 1,"method": "Pixera.Utility.getApiRevision"}}`
+ - JSON/TDP(dl)
+   - Requires delimiter
+     - 0xPX
+       - `{"jsonrpc": "2.0","id": 1,"method": "Pixera.Utility.getApiRevision"}0xPX`
+
+# API Overview
+"""
+
 
 def read_api_json(version_directory):
     files = os.listdir(version_directory)
@@ -98,7 +118,7 @@ def print_params_and_return_values(info):
 def api_table(api_data):
     DEBUG_LIMIT = 9999
     debug_counter = 0
-    output_lines = ["# API Overview\n\n"]  # Start with a header for the document
+    output_lines = []  # Start with a header for the document
 
     # Iterate over each namespace
     for namespace_name, namespace_info in api_data.items():
@@ -151,17 +171,18 @@ def format_params(params):
     """Helper function to format parameters into a Markdown table cell."""
     if not params:
         return "None"
-    return ', '.join(f"`{p['name']}`: {p.get('type', 'No Type Provided')}" for p in params)
+    return ''.join(f"`{p['name']}` : {p.get('type')} <br>" for p in params)
 
 def format_returns(returns):
     """Helper function to format return values into a Markdown table cell."""
     if not returns:
         return "None"
-    return ', '.join(f"`{r['name']}`: {r.get('type', 'No Type Provided')}" for r in returns)
+    return ', '.join(f"`{r['name']}` : {r.get('type')} <br>" for r in returns)
 
 def generate_api_overview(api_data, output_path):
     overview_content = api_table(api_data)
     with open(output_path, 'w') as md_file:
+        md_file.write(readme_prefix)
         md_file.write(overview_content)
 
 def create_dictionary(json_data):
