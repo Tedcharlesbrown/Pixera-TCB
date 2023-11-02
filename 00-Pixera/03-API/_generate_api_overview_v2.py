@@ -199,7 +199,8 @@ def create_dictionary(json_data):
         # Initialize dictionaries for the namespace if they don't exist
         organized_json_data[namespace_name] = {
             'functions': {},
-            'classes': {}  # Initialize 'classes' dictionary here
+            'classes': {},
+            'namespaces': {}
         }
 
         # Check if the 'functions' key exists before proceeding
@@ -236,8 +237,19 @@ def create_dictionary(json_data):
                             organized_json_data[namespace_name]['classes'][class_name]['methods'][method_name] = {
                                 'params': method.get("params", []),
                                 'returnValues': method.get("returnValues", [])
+
+            
                             }
+
+        if 'namespaces' in namespace:
+            print(namespace["name"])
+            for name in namespace["namespaces"]:
+                # print(name["name"])
+                pass
+
     return organized_json_data
+
+
 
     # utility_functions = api_data.get('Utility', {}).get('functions', {})
     # get_api_revision_data = utility_functions.get('getApiRevision', {})
