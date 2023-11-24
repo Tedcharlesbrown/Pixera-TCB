@@ -46,18 +46,18 @@ def api_table(api_data):
     debug_counter = 0
     output_lines = []  # Start with a header for the document
 
-    def format_params(params):
+    def format_params(params, is_class_method=False):
         """Helper function to format parameters into a Markdown table cell."""
-        if not params:
-            return "None"
-        return ''.join(f"`{p['name']}` : {p.get('type')} <br>" for p in params)
+        formatted_params = []
+        if is_class_method:
+            formatted_params.append("`handle` : object<br>")  # Adding default `handle` parameter for class methods
+
+        formatted_params.extend(f"`{p['name']}` : {p.get('type')} <br>" for p in params)
+        return ''.join(formatted_params) if formatted_params else "None"
 
     def format_returns(returns):
         """Helper function to format return values into a Markdown table cell."""
-        if not returns:
-            return "None"
-        # return ', '.join(f"`{r['name']}` : {r.get('type')} <br>" for r in returns)
-        return ', '.join(f"`{r['name']}`<br>" for r in returns)
+        return ', '.join(f"`{r['name']}`<br>" for r in returns) if returns else "None"
 
     # Iterate over each namespace
     for namespace_name, namespace_info in api_data.items():
@@ -66,10 +66,9 @@ def api_table(api_data):
         
         # Add a subsection for the namespace
         output_lines.append(f"## {namespace_name}\n")
-
         output_lines.append(f"Syntax: *Pixera.{namespace_name}.(function)*\n")
 
-        # Check and add a section for functions if they exist
+        # Section for functions
         if 'functions' in namespace_info:
             output_lines.append("### Functions\n")
             output_lines.append("| Name | Parameters | Return Values |\n")
@@ -82,13 +81,12 @@ def api_table(api_data):
                 output_lines.append(f"| `{function_name}` | {params} | {returns} |\n")
                 debug_counter += 1
 
-        # Check and add a section for classes if they exist
+        # Section for classes
         if namespace_info.get('classes'):  # Only show "Classes" if there are classes
             output_lines.append("### Classes\n")
             for class_name, class_info in namespace_info['classes'].items():
                 if debug_counter >= DEBUG_LIMIT:
                     break
-                # Class row with no method details
                 output_lines.append(f"#### {class_name}\n")
                 output_lines.append(f"Syntax: *Pixera.{namespace_name}.{class_name}.(method)*\n")
                 output_lines.append("| Class Name | Method Name | Parameters | Return Values |\n")
@@ -99,15 +97,16 @@ def api_table(api_data):
                     for method_name, method_info in class_info['methods'].items():
                         if debug_counter >= DEBUG_LIMIT:
                             break
-                        params = format_params(method_info.get('params', []))
+                        params = format_params(method_info.get('params', []), is_class_method=True)
                         returns = format_returns(method_info.get('returnValues', []))
                         output_lines.append(f"| `{class_name}` | `{method_name}` | {params} | {returns} |\n")
                         debug_counter += 1
         
-        # Add some space between namespaces
+        # Add space between namespaces
         output_lines.append("\n")
 
     return ''.join(output_lines)  # Join all lines into a single string separated by newlines
+
 
 
 

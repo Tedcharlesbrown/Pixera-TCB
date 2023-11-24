@@ -7,7 +7,7 @@ if __name__ == "__main__":
     pixera = Pixera(ip, port)
     api = Methods
 
-    print(pixera.send())
+    # print(pixera.send())
     # print(pixera.send("TCP",method=api.GET_API_REVISION, verbose=True))
     # print(pixera.send(method=api.CLOSE_APP, params=["saveProject"], message=[True]))
 
@@ -18,8 +18,7 @@ if __name__ == "__main__":
     # result = int(pixera.to_array(pixera.send(method=api.GET_TIMELINES))[0])
     # print(pixera.send(method="Pixera.Timelines.Timeline.getName", params=["handle"], message=[int(result)], verbose=True))
 
-
-    # print(pixera.send(method="NewModule.test", verbose=True))
+    # print(pixera.send(method="NewModule.Test", verbose=True))
 
     # print(pixera.send(method="Pixera.Utility.getApiRevision", verbose=True))
 
@@ -29,3 +28,6 @@ if __name__ == "__main__":
 
     # pixera.send("Pixera.Utility.getApiRevision")
     # pixera.send_test(api.getApiRevision())
+
+    # print(pixera.send(method="Pixera.Screens.getScreens", verbose=True))
+    print(pixera.send(method="Pixera.Screens.Screen.getName", params=["handle"], message=[7265999439151760], verbose=True))

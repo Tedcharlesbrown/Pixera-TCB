@@ -53,7 +53,7 @@ Syntax: *Pixera.Network.(function)*
 Syntax: *Pixera.Network.Conveyor.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Conveyor` | `sendString` | `str` : string <br> | `null`<br> |
+| `Conveyor` | `sendString` | `handle` : object<br>`str` : string <br> | `null`<br> |
 
 ## Compound
 Syntax: *Pixera.Compound.(function)*
@@ -154,92 +154,92 @@ Syntax: *Pixera.LiveSystems.(function)*
 Syntax: *Pixera.LiveSystems.MultiUserMember.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `MultiUserMember` | `getName` | None | `string`<br> |
-| `MultiUserMember` | `getIp` | None | `string`<br> |
-| `MultiUserMember` | `getState` | None | `string`<br> |
-| `MultiUserMember` | `getPerformanceMonitoringValuesJson` | None | `string`<br> |
-| `MultiUserMember` | `getPerformanceMonitoringValuesJsonEx` | `filter` : string <br> | `string`<br> |
-| `MultiUserMember` | `resetCumulativePerformanceMonitoringValues` | None | `null`<br> |
-| `MultiUserMember` | `ensureFileDistribution` | `includeNotUsedYet` : bool <br> | `null`<br> |
-| `MultiUserMember` | `shutDown` | `mode` : int <br> | `null`<br> |
-| `MultiUserMember` | `wakeUp` | None | `string`<br> |
-| `MultiUserMember` | `getMacAddress` | None | `string`<br> |
-| `MultiUserMember` | `resetEngine` | None | `null`<br> |
-| `MultiUserMember` | `restartEngine` | None | `null`<br> |
-| `MultiUserMember` | `startEngine` | None | `null`<br> |
-| `MultiUserMember` | `closeEngine` | None | `null`<br> |
-| `MultiUserMember` | `triggerBackup` | `applyControlCommand` : optional<bool> <br> | `null`<br> |
-| `MultiUserMember` | `getStructureJson` | None | `string`<br> |
-| `MultiUserMember` | `getInst` | `instancePath` : string <br> | `handle`<br> |
+| `MultiUserMember` | `getName` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `getIp` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `getState` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `getPerformanceMonitoringValuesJson` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `getPerformanceMonitoringValuesJsonEx` | `handle` : object<br>`filter` : string <br> | `string`<br> |
+| `MultiUserMember` | `resetCumulativePerformanceMonitoringValues` | `handle` : object<br> | `null`<br> |
+| `MultiUserMember` | `ensureFileDistribution` | `handle` : object<br>`includeNotUsedYet` : bool <br> | `null`<br> |
+| `MultiUserMember` | `shutDown` | `handle` : object<br>`mode` : int <br> | `null`<br> |
+| `MultiUserMember` | `wakeUp` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `getMacAddress` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `resetEngine` | `handle` : object<br> | `null`<br> |
+| `MultiUserMember` | `restartEngine` | `handle` : object<br> | `null`<br> |
+| `MultiUserMember` | `startEngine` | `handle` : object<br> | `null`<br> |
+| `MultiUserMember` | `closeEngine` | `handle` : object<br> | `null`<br> |
+| `MultiUserMember` | `triggerBackup` | `handle` : object<br>`applyControlCommand` : optional<bool> <br> | `null`<br> |
+| `MultiUserMember` | `getStructureJson` | `handle` : object<br> | `string`<br> |
+| `MultiUserMember` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 #### LiveSystem
 Syntax: *Pixera.LiveSystems.LiveSystem.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `LiveSystem` | `getName` | None | `string`<br> |
-| `LiveSystem` | `getIp` | None | `string`<br> |
-| `LiveSystem` | `getState` | None | `string`<br> |
-| `LiveSystem` | `setBackupRole` | `role` : int <br> | `null`<br> |
-| `LiveSystem` | `getBackupRole` | None | `int`<br> |
-| `LiveSystem` | `getPerformanceMonitoringValuesJson` | None | `string`<br> |
-| `LiveSystem` | `getPerformanceMonitoringValuesJsonEx` | `filter` : string <br> | `string`<br> |
-| `LiveSystem` | `resetCumulativePerformanceMonitoringValues` | None | `null`<br> |
-| `LiveSystem` | `moveMappingsToOutputs` | `hdlSrc` : handle <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `clearExportedMappings` | `path` : string <br>`onlyServicePath` : bool <br> | `null`<br> |
-| `LiveSystem` | `exportMappings` | `path` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappings` | `path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `exportMappingsDirectly` | `path` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappingsDirectly` | `path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `exportMappingsToLiveSystemPath` | `parentPath` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappingsFromLiveSystemPath` | `parentPath` : string <br> | `null`<br> |
-| `LiveSystem` | `clearExportedMappingsAtLiveSystemPath` | `path` : string <br> | `null`<br> |
-| `LiveSystem` | `ensureFileDistribution` | `includeNotUsedYet` : bool <br> | `null`<br> |
-| `LiveSystem` | `shutDown` | `mode` : int <br> | `null`<br> |
-| `LiveSystem` | `wakeUp` | None | `string`<br> |
-| `LiveSystem` | `getMacAddress` | None | `string`<br> |
-| `LiveSystem` | `getGraphicsDevices` | None | `handle[]`<br> |
-| `LiveSystem` | `getEnabledOutputs` | None | `handle[]`<br> |
-| `LiveSystem` | `getAllOutputs` | None | `handle[]`<br> |
-| `LiveSystem` | `getVideoStreamOutputs` | None | `handle[]`<br> |
-| `LiveSystem` | `resetEngine` | None | `null`<br> |
-| `LiveSystem` | `restartEngine` | None | `null`<br> |
-| `LiveSystem` | `startEngine` | None | `null`<br> |
-| `LiveSystem` | `closeEngine` | None | `null`<br> |
-| `LiveSystem` | `setAudioMasterVolume` | `channel` : int <br>`volume` : double <br> | `null`<br> |
-| `LiveSystem` | `getAudioMasterVolume` | `channel` : int <br> | `double`<br> |
-| `LiveSystem` | `setAudioMasterMute` | `channel` : int <br>`state` : bool <br> | `null`<br> |
-| `LiveSystem` | `getAudioMasterMute` | `channel` : int <br> | `bool`<br> |
-| `LiveSystem` | `setAudioTimecodeInput` | `channel` : int <br>`state` : bool <br> | `null`<br> |
-| `LiveSystem` | `triggerBackup` | `applyControlCommand` : optional<bool> <br> | `null`<br> |
-| `LiveSystem` | `getStructureJson` | None | `string`<br> |
-| `LiveSystem` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `LiveSystem` | `getInstancePath` | None | `string`<br> |
+| `LiveSystem` | `getName` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `getIp` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `getState` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `setBackupRole` | `handle` : object<br>`role` : int <br> | `null`<br> |
+| `LiveSystem` | `getBackupRole` | `handle` : object<br> | `int`<br> |
+| `LiveSystem` | `getPerformanceMonitoringValuesJson` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `getPerformanceMonitoringValuesJsonEx` | `handle` : object<br>`filter` : string <br> | `string`<br> |
+| `LiveSystem` | `resetCumulativePerformanceMonitoringValues` | `handle` : object<br> | `null`<br> |
+| `LiveSystem` | `moveMappingsToOutputs` | `handle` : object<br>`hdlSrc` : handle <br>`outputIdPathMapStr` : string <br> | `null`<br> |
+| `LiveSystem` | `clearExportedMappings` | `handle` : object<br>`path` : string <br>`onlyServicePath` : bool <br> | `null`<br> |
+| `LiveSystem` | `exportMappings` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `LiveSystem` | `importMappings` | `handle` : object<br>`path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
+| `LiveSystem` | `exportMappingsDirectly` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `LiveSystem` | `importMappingsDirectly` | `handle` : object<br>`path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
+| `LiveSystem` | `exportMappingsToLiveSystemPath` | `handle` : object<br>`parentPath` : string <br> | `null`<br> |
+| `LiveSystem` | `importMappingsFromLiveSystemPath` | `handle` : object<br>`parentPath` : string <br> | `null`<br> |
+| `LiveSystem` | `clearExportedMappingsAtLiveSystemPath` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `LiveSystem` | `ensureFileDistribution` | `handle` : object<br>`includeNotUsedYet` : bool <br> | `null`<br> |
+| `LiveSystem` | `shutDown` | `handle` : object<br>`mode` : int <br> | `null`<br> |
+| `LiveSystem` | `wakeUp` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `getMacAddress` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `getGraphicsDevices` | `handle` : object<br> | `handle[]`<br> |
+| `LiveSystem` | `getEnabledOutputs` | `handle` : object<br> | `handle[]`<br> |
+| `LiveSystem` | `getAllOutputs` | `handle` : object<br> | `handle[]`<br> |
+| `LiveSystem` | `getVideoStreamOutputs` | `handle` : object<br> | `handle[]`<br> |
+| `LiveSystem` | `resetEngine` | `handle` : object<br> | `null`<br> |
+| `LiveSystem` | `restartEngine` | `handle` : object<br> | `null`<br> |
+| `LiveSystem` | `startEngine` | `handle` : object<br> | `null`<br> |
+| `LiveSystem` | `closeEngine` | `handle` : object<br> | `null`<br> |
+| `LiveSystem` | `setAudioMasterVolume` | `handle` : object<br>`channel` : int <br>`volume` : double <br> | `null`<br> |
+| `LiveSystem` | `getAudioMasterVolume` | `handle` : object<br>`channel` : int <br> | `double`<br> |
+| `LiveSystem` | `setAudioMasterMute` | `handle` : object<br>`channel` : int <br>`state` : bool <br> | `null`<br> |
+| `LiveSystem` | `getAudioMasterMute` | `handle` : object<br>`channel` : int <br> | `bool`<br> |
+| `LiveSystem` | `setAudioTimecodeInput` | `handle` : object<br>`channel` : int <br>`state` : bool <br> | `null`<br> |
+| `LiveSystem` | `triggerBackup` | `handle` : object<br>`applyControlCommand` : optional<bool> <br> | `null`<br> |
+| `LiveSystem` | `getStructureJson` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `LiveSystem` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### GraphicsDevice
 Syntax: *Pixera.LiveSystems.GraphicsDevice.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `GraphicsDevice` | `getName` | None | `string`<br> |
-| `GraphicsDevice` | `getEnabledOutputs` | None | `handle[]`<br> |
-| `GraphicsDevice` | `getAllOutputs` | None | `handle[]`<br> |
+| `GraphicsDevice` | `getName` | `handle` : object<br> | `string`<br> |
+| `GraphicsDevice` | `getEnabledOutputs` | `handle` : object<br> | `handle[]`<br> |
+| `GraphicsDevice` | `getAllOutputs` | `handle` : object<br> | `handle[]`<br> |
 #### Output
 Syntax: *Pixera.LiveSystems.Output.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Output` | `getName` | None | `string`<br> |
-| `Output` | `setActive` | `active` : bool <br> | `null`<br> |
-| `Output` | `getActive` | None | `bool`<br> |
-| `Output` | `setIdentify` | `state` : bool <br> | `null`<br> |
-| `Output` | `getIdentify` | None | `bool`<br> |
-| `Output` | `getAssignedScreens` | None | `handle[]`<br> |
-| `Output` | `getAssignedProjectors` | None | `handle[]`<br> |
-| `Output` | `getEnabled` | None | `bool`<br> |
-| `Output` | `getForPreview` | None | `bool`<br> |
+| `Output` | `getName` | `handle` : object<br> | `string`<br> |
+| `Output` | `setActive` | `handle` : object<br>`active` : bool <br> | `null`<br> |
+| `Output` | `getActive` | `handle` : object<br> | `bool`<br> |
+| `Output` | `setIdentify` | `handle` : object<br>`state` : bool <br> | `null`<br> |
+| `Output` | `getIdentify` | `handle` : object<br> | `bool`<br> |
+| `Output` | `getAssignedScreens` | `handle` : object<br> | `handle[]`<br> |
+| `Output` | `getAssignedProjectors` | `handle` : object<br> | `handle[]`<br> |
+| `Output` | `getEnabled` | `handle` : object<br> | `bool`<br> |
+| `Output` | `getForPreview` | `handle` : object<br> | `bool`<br> |
 #### VideoStream
 Syntax: *Pixera.LiveSystems.VideoStream.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `VideoStream` | `getName` | None | `string`<br> |
-| `VideoStream` | `setActive` | `active` : bool <br> | `null`<br> |
-| `VideoStream` | `getActive` | None | `bool`<br> |
+| `VideoStream` | `getName` | `handle` : object<br> | `string`<br> |
+| `VideoStream` | `setActive` | `handle` : object<br>`active` : bool <br> | `null`<br> |
+| `VideoStream` | `getActive` | `handle` : object<br> | `bool`<br> |
 
 ## Settings
 Syntax: *Pixera.Settings.(function)*
@@ -269,84 +269,84 @@ Syntax: *Pixera.Screens.(function)*
 Syntax: *Pixera.Screens.Screen.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Screen` | `getId` | None | `double`<br> |
-| `Screen` | `getName` | None | `string`<br> |
-| `Screen` | `setPosition` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getPosition` | None | `ScreenPosValues`<br> |
-| `Screen` | `setRotation` | `xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getRotation` | None | `ScreenPosValues`<br> |
-| `Screen` | `setScale` | `xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getScale` | None | `ScreenPosValues`<br> |
-| `Screen` | `setPosRot` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
-| `Screen` | `setPosRotScale` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getPersepective` | None | `handle`<br> |
-| `Screen` | `snapPerspectiveCornersToScreen` | `mode` : int <br> | `null`<br> |
-| `Screen` | `setPerspectivePosition` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
-| `Screen` | `setPerspectivePositionWithLookAt` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getPerspectivePosition` | None | `ScreenPosValues`<br> |
-| `Screen` | `setPerspectiveRotation` | `xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getPerspectiveRotation` | None | `ScreenPosValues`<br> |
-| `Screen` | `setCameraPosition` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
-| `Screen` | `setCameraPositionWithLookAt` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getCameraPosition` | None | `ScreenPosValues`<br> |
-| `Screen` | `setCameraRotation` | `xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getCameraRotation` | None | `ScreenPosValues`<br> |
-| `Screen` | `setContentSamplingFrustumBase` | `x` : double <br>`y` : double <br>`width` : double <br>`height` : double <br>`rotation` : double <br>`originScreenId` : double <br> | `null`<br> |
-| `Screen` | `runCalibration` | `mode` : string <br>`diff` : string <br> | `null`<br> |
-| `Screen` | `editCalibration` | `diff` : string <br> | `null`<br> |
-| `Screen` | `resetWarpFile` | `diff` : string <br> | `null`<br> |
-| `Screen` | `loadWarpFile` | `filePath` : string <br> | `null`<br> |
-| `Screen` | `loadWarpFileWithDiff` | `filePath` : string <br>`diff` : string <br> | `null`<br> |
-| `Screen` | `addWarpFile` | `filePath` : string <br> | `null`<br> |
-| `Screen` | `addWarpFileWithDiff` | `filePath` : string <br>`diff` : string <br> | `null`<br> |
-| `Screen` | `loadColorCalibration` | `calibrationName` : string <br> | `null`<br> |
-| `Screen` | `runColorCalibration` | None | `null`<br> |
-| `Screen` | `setIsVisible` | `isVisible` : bool <br> | `null`<br> |
-| `Screen` | `getIsVisible` | None | `bool`<br> |
-| `Screen` | `setIsProjectable` | `isProjectable` : bool <br> | `null`<br> |
-| `Screen` | `getIsProjectable` | None | `bool`<br> |
-| `Screen` | `triggerRefreshMapping` | None | `null`<br> |
-| `Screen` | `resetAllColorCorrections` | None | `null`<br> |
-| `Screen` | `setColorCorrectionWithPath` | `path` : string <br>`value` : float <br> | `null`<br> |
-| `Screen` | `getColorCorrectionWithPath` | `path` : string <br> | `float`<br> |
-| `Screen` | `setColorCorrectionAsJsonString` | `colorCorrection` : string <br> | `null`<br> |
-| `Screen` | `getColorCorrectionAsJsonString` | None | `string`<br> |
-| `Screen` | `getOutput` | None | `handle[]`<br> |
-| `Screen` | `setBlackout` | `isActive` : bool <br> | `null`<br> |
-| `Screen` | `getBlackout` | None | `bool`<br> |
-| `Screen` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Screen` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Screen` | `getInstancePath` | None | `string`<br> |
+| `Screen` | `getId` | `handle` : object<br> | `double`<br> |
+| `Screen` | `getName` | `handle` : object<br> | `string`<br> |
+| `Screen` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getPosition` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getRotation` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setScale` | `handle` : object<br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getScale` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setPosRot` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
+| `Screen` | `setPosRotScale` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getPersepective` | `handle` : object<br> | `handle`<br> |
+| `Screen` | `snapPerspectiveCornersToScreen` | `handle` : object<br>`mode` : int <br> | `null`<br> |
+| `Screen` | `setPerspectivePosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
+| `Screen` | `setPerspectivePositionWithLookAt` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getPerspectivePosition` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setPerspectiveRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getPerspectiveRotation` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setCameraPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
+| `Screen` | `setCameraPositionWithLookAt` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getCameraPosition` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setCameraRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
+| `Screen` | `getCameraRotation` | `handle` : object<br> | `ScreenPosValues`<br> |
+| `Screen` | `setContentSamplingFrustumBase` | `handle` : object<br>`x` : double <br>`y` : double <br>`width` : double <br>`height` : double <br>`rotation` : double <br>`originScreenId` : double <br> | `null`<br> |
+| `Screen` | `runCalibration` | `handle` : object<br>`mode` : string <br>`diff` : string <br> | `null`<br> |
+| `Screen` | `editCalibration` | `handle` : object<br>`diff` : string <br> | `null`<br> |
+| `Screen` | `resetWarpFile` | `handle` : object<br>`diff` : string <br> | `null`<br> |
+| `Screen` | `loadWarpFile` | `handle` : object<br>`filePath` : string <br> | `null`<br> |
+| `Screen` | `loadWarpFileWithDiff` | `handle` : object<br>`filePath` : string <br>`diff` : string <br> | `null`<br> |
+| `Screen` | `addWarpFile` | `handle` : object<br>`filePath` : string <br> | `null`<br> |
+| `Screen` | `addWarpFileWithDiff` | `handle` : object<br>`filePath` : string <br>`diff` : string <br> | `null`<br> |
+| `Screen` | `loadColorCalibration` | `handle` : object<br>`calibrationName` : string <br> | `null`<br> |
+| `Screen` | `runColorCalibration` | `handle` : object<br> | `null`<br> |
+| `Screen` | `setIsVisible` | `handle` : object<br>`isVisible` : bool <br> | `null`<br> |
+| `Screen` | `getIsVisible` | `handle` : object<br> | `bool`<br> |
+| `Screen` | `setIsProjectable` | `handle` : object<br>`isProjectable` : bool <br> | `null`<br> |
+| `Screen` | `getIsProjectable` | `handle` : object<br> | `bool`<br> |
+| `Screen` | `triggerRefreshMapping` | `handle` : object<br> | `null`<br> |
+| `Screen` | `resetAllColorCorrections` | `handle` : object<br> | `null`<br> |
+| `Screen` | `setColorCorrectionWithPath` | `handle` : object<br>`path` : string <br>`value` : float <br> | `null`<br> |
+| `Screen` | `getColorCorrectionWithPath` | `handle` : object<br>`path` : string <br> | `float`<br> |
+| `Screen` | `setColorCorrectionAsJsonString` | `handle` : object<br>`colorCorrection` : string <br> | `null`<br> |
+| `Screen` | `getColorCorrectionAsJsonString` | `handle` : object<br> | `string`<br> |
+| `Screen` | `getOutput` | `handle` : object<br> | `handle[]`<br> |
+| `Screen` | `setBlackout` | `handle` : object<br>`isActive` : bool <br> | `null`<br> |
+| `Screen` | `getBlackout` | `handle` : object<br> | `bool`<br> |
+| `Screen` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Screen` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Screen` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### StudioCamera
 Syntax: *Pixera.Screens.StudioCamera.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `StudioCamera` | `getName` | None | `string`<br> |
-| `StudioCamera` | `setPosition` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
-| `StudioCamera` | `getPosition` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `double[]`<br> |
-| `StudioCamera` | `setRotation` | `xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
-| `StudioCamera` | `getRotation` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `double[]`<br> |
-| `StudioCamera` | `setTransformation` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
-| `StudioCamera` | `setTransformationAndLensProps` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
-| `StudioCamera` | `setTransformationAndLensPropsExt` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br> | `null`<br> |
-| `StudioCamera` | `setTrackingInputPause` | `pause` : bool <br> | `null`<br> |
-| `StudioCamera` | `getTrackingInputPause` | None | `bool`<br> |
-| `StudioCamera` | `setUsePositionPropertiesFromTracking` | `pause` : bool <br> | `null`<br> |
-| `StudioCamera` | `getUsePositionPropertiesFromTracking` | None | `bool`<br> |
-| `StudioCamera` | `setUseRotationPropertiesFromTracking` | `pause` : bool <br> | `null`<br> |
-| `StudioCamera` | `getUseRotationPropertiesFromTracking` | None | `bool`<br> |
-| `StudioCamera` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `StudioCamera` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `StudioCamera` | `getInstancePath` | None | `string`<br> |
+| `StudioCamera` | `getName` | `handle` : object<br> | `string`<br> |
+| `StudioCamera` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
+| `StudioCamera` | `getPosition` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `double[]`<br> |
+| `StudioCamera` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
+| `StudioCamera` | `getRotation` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `double[]`<br> |
+| `StudioCamera` | `setTransformation` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
+| `StudioCamera` | `setTransformationAndLensProps` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
+| `StudioCamera` | `setTransformationAndLensPropsExt` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br> | `null`<br> |
+| `StudioCamera` | `setTrackingInputPause` | `handle` : object<br>`pause` : bool <br> | `null`<br> |
+| `StudioCamera` | `getTrackingInputPause` | `handle` : object<br> | `bool`<br> |
+| `StudioCamera` | `setUsePositionPropertiesFromTracking` | `handle` : object<br>`pause` : bool <br> | `null`<br> |
+| `StudioCamera` | `getUsePositionPropertiesFromTracking` | `handle` : object<br> | `bool`<br> |
+| `StudioCamera` | `setUseRotationPropertiesFromTracking` | `handle` : object<br>`pause` : bool <br> | `null`<br> |
+| `StudioCamera` | `getUseRotationPropertiesFromTracking` | `handle` : object<br> | `bool`<br> |
+| `StudioCamera` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `StudioCamera` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `StudioCamera` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### Perspective
 Syntax: *Pixera.Screens.Perspective.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Perspective` | `getName` | None | `string`<br> |
-| `Perspective` | `setTransformation` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
-| `Perspective` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Perspective` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Perspective` | `getInstancePath` | None | `string`<br> |
+| `Perspective` | `getName` | `handle` : object<br> | `string`<br> |
+| `Perspective` | `setTransformation` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
+| `Perspective` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Perspective` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Perspective` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 
 ## Projectors
 Syntax: *Pixera.Projectors.(function)*
@@ -361,25 +361,25 @@ Syntax: *Pixera.Projectors.(function)*
 Syntax: *Pixera.Projectors.Projector.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Projector` | `getPosition` | None | `ProjectorPosValues`<br> |
-| `Projector` | `setPosition` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
-| `Projector` | `getRotation` | None | `ProjectorPosValues`<br> |
-| `Projector` | `setRotation` | `xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
-| `Projector` | `getName` | None | `string`<br> |
-| `Projector` | `activateScreenMapping` | `screenId` : double <br>`isActive` : bool <br> | `null`<br> |
-| `Projector` | `setBlackout` | `isActive` : bool <br> | `null`<br> |
-| `Projector` | `getBlackout` | None | `bool`<br> |
-| `Projector` | `setSoftedgeVisible` | `screenName` : string <br>`visible` : bool <br> | `null`<br> |
-| `Projector` | `resetAllColorCorrections` | None | `null`<br> |
-| `Projector` | `setColorCorrectionWithPath` | `path` : string <br>`value` : float <br> | `null`<br> |
-| `Projector` | `getColorCorrectionWithPath` | `path` : string <br> | `float`<br> |
-| `Projector` | `setColorCorrectionAsJsonString` | `colorCorrection` : string <br> | `null`<br> |
-| `Projector` | `getColorCorrectionAsJsonString` | None | `string`<br> |
-| `Projector` | `getOutput` | None | `handle`<br> |
-| `Projector` | `setOutput` | `outputHandle` : handle <br> | `null`<br> |
-| `Projector` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Projector` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Projector` | `getInstancePath` | None | `string`<br> |
+| `Projector` | `getPosition` | `handle` : object<br> | `ProjectorPosValues`<br> |
+| `Projector` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
+| `Projector` | `getRotation` | `handle` : object<br> | `ProjectorPosValues`<br> |
+| `Projector` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
+| `Projector` | `getName` | `handle` : object<br> | `string`<br> |
+| `Projector` | `activateScreenMapping` | `handle` : object<br>`screenId` : double <br>`isActive` : bool <br> | `null`<br> |
+| `Projector` | `setBlackout` | `handle` : object<br>`isActive` : bool <br> | `null`<br> |
+| `Projector` | `getBlackout` | `handle` : object<br> | `bool`<br> |
+| `Projector` | `setSoftedgeVisible` | `handle` : object<br>`screenName` : string <br>`visible` : bool <br> | `null`<br> |
+| `Projector` | `resetAllColorCorrections` | `handle` : object<br> | `null`<br> |
+| `Projector` | `setColorCorrectionWithPath` | `handle` : object<br>`path` : string <br>`value` : float <br> | `null`<br> |
+| `Projector` | `getColorCorrectionWithPath` | `handle` : object<br>`path` : string <br> | `float`<br> |
+| `Projector` | `setColorCorrectionAsJsonString` | `handle` : object<br>`colorCorrection` : string <br> | `null`<br> |
+| `Projector` | `getColorCorrectionAsJsonString` | `handle` : object<br> | `string`<br> |
+| `Projector` | `getOutput` | `handle` : object<br> | `handle`<br> |
+| `Projector` | `setOutput` | `handle` : object<br>`outputHandle` : handle <br> | `null`<br> |
+| `Projector` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Projector` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Projector` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 
 ## Resources
 Syntax: *Pixera.Resources.(function)*
@@ -396,139 +396,139 @@ Syntax: *Pixera.Resources.(function)*
 Syntax: *Pixera.Resources.ResourceFolder.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `ResourceFolder` | `ref` | None | `handle`<br> |
-| `ResourceFolder` | `getName` | None | `string`<br> |
-| `ResourceFolder` | `setName` | `name` : string <br> | `null`<br> |
-| `ResourceFolder` | `getResourceFolders` | None | `handle[]`<br> |
-| `ResourceFolder` | `getResources` | None | `handle[]`<br> |
-| `ResourceFolder` | `getResourceAtIndex` | `index` : int <br> | `handle`<br> |
-| `ResourceFolder` | `addResource` | `path` : string <br> | `handle`<br> |
-| `ResourceFolder` | `addResourcesFromDirectory` | `path` : string <br>`removeOthers` : bool <br>`checkRedundancy` : bool <br> | `handle[]`<br> |
-| `ResourceFolder` | `addResourcesFromDirectoryRemoveAssets` | `path` : string <br>`removeOthers` : bool <br>`checkRedundancy` : bool <br> | `handle[]`<br> |
-| `ResourceFolder` | `addInternalResource` | `signature` : string <br>`resKind` : int <br> | `handle`<br> |
-| `ResourceFolder` | `createFoldersFrom` | `path` : string <br> | `null`<br> |
-| `ResourceFolder` | `refreshResources` | None | `null`<br> |
-| `ResourceFolder` | `moveResourceToThis` | `id` : double <br> | `null`<br> |
-| `ResourceFolder` | `removeThis` | None | `null`<br> |
-| `ResourceFolder` | `removeThisIncludingAssets` | None | `null`<br> |
-| `ResourceFolder` | `removeAllContents` | None | `null`<br> |
-| `ResourceFolder` | `removeAllContentsIncludingAssets` | None | `null`<br> |
-| `ResourceFolder` | `deleteAllContentsAssetsFromLiveSystem` | `apEntityLiveSystemHandle` : handle <br> | `null`<br> |
-| `ResourceFolder` | `resetDistributionTargets` | None | `null`<br> |
-| `ResourceFolder` | `changeDistributionTarget` | `apEntityLiveSystemHandle` : handle <br>`shouldDistribute` : bool <br> | `null`<br> |
-| `ResourceFolder` | `replaceResourcesByString` | `searchString` : string <br>`replaceString` : string <br>`path` : string <br> | `null`<br> |
-| `ResourceFolder` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `ResourceFolder` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `ResourceFolder` | `getInstancePath` | None | `string`<br> |
-| `ResourceFolder` | `getDmxId` | None | `int`<br> |
-| `ResourceFolder` | `getCombinedDmxId` | None | `int`<br> |
-| `ResourceFolder` | `setDmxId` | `id` : int <br> | `null`<br> |
+| `ResourceFolder` | `ref` | `handle` : object<br> | `handle`<br> |
+| `ResourceFolder` | `getName` | `handle` : object<br> | `string`<br> |
+| `ResourceFolder` | `setName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `ResourceFolder` | `getResourceFolders` | `handle` : object<br> | `handle[]`<br> |
+| `ResourceFolder` | `getResources` | `handle` : object<br> | `handle[]`<br> |
+| `ResourceFolder` | `getResourceAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
+| `ResourceFolder` | `addResource` | `handle` : object<br>`path` : string <br> | `handle`<br> |
+| `ResourceFolder` | `addResourcesFromDirectory` | `handle` : object<br>`path` : string <br>`removeOthers` : bool <br>`checkRedundancy` : bool <br> | `handle[]`<br> |
+| `ResourceFolder` | `addResourcesFromDirectoryRemoveAssets` | `handle` : object<br>`path` : string <br>`removeOthers` : bool <br>`checkRedundancy` : bool <br> | `handle[]`<br> |
+| `ResourceFolder` | `addInternalResource` | `handle` : object<br>`signature` : string <br>`resKind` : int <br> | `handle`<br> |
+| `ResourceFolder` | `createFoldersFrom` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `ResourceFolder` | `refreshResources` | `handle` : object<br> | `null`<br> |
+| `ResourceFolder` | `moveResourceToThis` | `handle` : object<br>`id` : double <br> | `null`<br> |
+| `ResourceFolder` | `removeThis` | `handle` : object<br> | `null`<br> |
+| `ResourceFolder` | `removeThisIncludingAssets` | `handle` : object<br> | `null`<br> |
+| `ResourceFolder` | `removeAllContents` | `handle` : object<br> | `null`<br> |
+| `ResourceFolder` | `removeAllContentsIncludingAssets` | `handle` : object<br> | `null`<br> |
+| `ResourceFolder` | `deleteAllContentsAssetsFromLiveSystem` | `handle` : object<br>`apEntityLiveSystemHandle` : handle <br> | `null`<br> |
+| `ResourceFolder` | `resetDistributionTargets` | `handle` : object<br> | `null`<br> |
+| `ResourceFolder` | `changeDistributionTarget` | `handle` : object<br>`apEntityLiveSystemHandle` : handle <br>`shouldDistribute` : bool <br> | `null`<br> |
+| `ResourceFolder` | `replaceResourcesByString` | `handle` : object<br>`searchString` : string <br>`replaceString` : string <br>`path` : string <br> | `null`<br> |
+| `ResourceFolder` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `ResourceFolder` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `ResourceFolder` | `getInstancePath` | `handle` : object<br> | `string`<br> |
+| `ResourceFolder` | `getDmxId` | `handle` : object<br> | `int`<br> |
+| `ResourceFolder` | `getCombinedDmxId` | `handle` : object<br> | `int`<br> |
+| `ResourceFolder` | `setDmxId` | `handle` : object<br>`id` : int <br> | `null`<br> |
 #### TranscodingFolder
 Syntax: *Pixera.Resources.TranscodingFolder.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `TranscodingFolder` | `getUsedTranscodingPreset` | None | `string`<br> |
-| `TranscodingFolder` | `setUsedTranscodingPreset` | `preset` : string <br> | `null`<br> |
-| `TranscodingFolder` | `getTranscodeAutomatically` | None | `bool`<br> |
-| `TranscodingFolder` | `setTranscodeAutomatically` | `autoTranscode` : bool <br> | `null`<br> |
-| `TranscodingFolder` | `getUseRxCacheAsDestination` | None | `bool`<br> |
-| `TranscodingFolder` | `setRxCacheAsDestination` | `useRxCache` : bool <br> | `null`<br> |
-| `TranscodingFolder` | `getDestinationDirectory` | None | `string`<br> |
-| `TranscodingFolder` | `setDestinationDirectory` | `path` : string <br> | `null`<br> |
+| `TranscodingFolder` | `getUsedTranscodingPreset` | `handle` : object<br> | `string`<br> |
+| `TranscodingFolder` | `setUsedTranscodingPreset` | `handle` : object<br>`preset` : string <br> | `null`<br> |
+| `TranscodingFolder` | `getTranscodeAutomatically` | `handle` : object<br> | `bool`<br> |
+| `TranscodingFolder` | `setTranscodeAutomatically` | `handle` : object<br>`autoTranscode` : bool <br> | `null`<br> |
+| `TranscodingFolder` | `getUseRxCacheAsDestination` | `handle` : object<br> | `bool`<br> |
+| `TranscodingFolder` | `setRxCacheAsDestination` | `handle` : object<br>`useRxCache` : bool <br> | `null`<br> |
+| `TranscodingFolder` | `getDestinationDirectory` | `handle` : object<br> | `string`<br> |
+| `TranscodingFolder` | `setDestinationDirectory` | `handle` : object<br>`path` : string <br> | `null`<br> |
 #### Resource
 Syntax: *Pixera.Resources.Resource.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Resource` | `ref` | None | `handle`<br> |
-| `Resource` | `removeThis` | None | `null`<br> |
-| `Resource` | `deleteFilesOnSystems` | None | `null`<br> |
-| `Resource` | `removeThisIncludingAssets` | None | `null`<br> |
-| `Resource` | `deleteAssetFromLiveSystem` | `apEntityLiveSystemHandle` : handle <br> | `null`<br> |
-| `Resource` | `resetDistributionTargets` | None | `null`<br> |
-| `Resource` | `changeDistributionTarget` | `apEntityLiveSystemHandle` : handle <br>`shouldDistribute` : bool <br> | `null`<br> |
-| `Resource` | `getName` | None | `string`<br> |
-| `Resource` | `setName` | `name` : string <br> | `null`<br> |
-| `Resource` | `getFps` | None | `double`<br> |
-| `Resource` | `getResolution` | None | `double[]`<br> |
-| `Resource` | `getIsActive` | None | `bool`<br> |
-| `Resource` | `getVideoStreamModes` | None | `string[]`<br> |
-| `Resource` | `setVideoStreamMode` | `index` : int <br> | `null`<br> |
-| `Resource` | `getId` | None | `double`<br> |
-| `Resource` | `getDuration` | None | `double`<br> |
-| `Resource` | `getType` | None | `string`<br> |
-| `Resource` | `setCurrentVersion` | `version` : string <br> | `null`<br> |
-| `Resource` | `getCurrentVersion` | None | `string`<br> |
-| `Resource` | `getVersions` | None | `string[]`<br> |
-| `Resource` | `getVersionSuffix` | None | `string[]`<br> |
-| `Resource` | `rescanVersions` | None | `null`<br> |
-| `Resource` | `getThumbnailAsBase64` | None | `string`<br> |
-| `Resource` | `getHasPendingTransfer` | None | `bool`<br> |
-| `Resource` | `getIsInUse` | None | `double`<br> |
-| `Resource` | `getLastUsageBeginTime` | None | `double`<br> |
-| `Resource` | `getLastUsageBeginTimeAsString` | None | `string`<br> |
-| `Resource` | `getLastUsageEndTime` | None | `double`<br> |
-| `Resource` | `getLastUsageEndTimeAsString` | None | `string`<br> |
-| `Resource` | `getFilePath` | None | `string`<br> |
-| `Resource` | `setText` | `text` : string <br> | `null`<br> |
-| `Resource` | `getText` | None | `string`<br> |
-| `Resource` | `setFontWithName` | `fontName` : string <br> | `bool`<br> |
-| `Resource` | `getFontName` | None | `string`<br> |
-| `Resource` | `setFontWithPath` | `fontPath` : string <br> | `bool`<br> |
-| `Resource` | `setHorizontalTextAlignment` | `textAlignment` : int <br> | `bool`<br> |
-| `Resource` | `getHorizontalTextAlignment` | None | `int`<br> |
-| `Resource` | `setVerticalTextAlignment` | `textAlignment` : int <br> | `bool`<br> |
-| `Resource` | `getVerticalTextAlignment` | None | `int`<br> |
-| `Resource` | `setLineHeight` | `lineHeight` : double <br> | `bool`<br> |
-| `Resource` | `getLineHeight` | None | `double`<br> |
-| `Resource` | `getTextMeasurementsWidthAndHeight` | None | `int[]`<br> |
-| `Resource` | `setUrl` | `url` : string <br> | `null`<br> |
-| `Resource` | `getUrl` | None | `string`<br> |
-| `Resource` | `setColorTransformPath` | `colorTransformPath` : string <br> | `null`<br> |
-| `Resource` | `getColorTransformPath` | None | `string`<br> |
-| `Resource` | `clearColorTransformPath` | None | `null`<br> |
-| `Resource` | `refresh` | `text` : string <br> | `null`<br> |
-| `Resource` | `distribute` | None | `null`<br> |
-| `Resource` | `getDmxId` | None | `int`<br> |
-| `Resource` | `setDmxId` | `id` : int <br> | `null`<br> |
-| `Resource` | `removeMultiresourceIndex` | `index` : int <br> | `null`<br> |
-| `Resource` | `addMultiresourceItem` | `id` : double <br> | `null`<br> |
-| `Resource` | `getMultiresourceItems` | None | `handle[]`<br> |
-| `Resource` | `replaceMultiresourceItemByIndex` | `index` : int <br>`id` : double <br> | `null`<br> |
-| `Resource` | `setMultiresourceResolution` | `width` : int <br>`height` : int <br> | `null`<br> |
-| `Resource` | `setMultiresourceItemSizebyIndex` | `index` : int <br>`width` : double <br>`height` : double <br> | `null`<br> |
-| `Resource` | `setMultiresourceItemPositionbyIndex` | `index` : int <br>`x` : double <br>`y` : double <br> | `null`<br> |
-| `Resource` | `setUseGradient` | `useGradient` : bool <br> | `null`<br> |
-| `Resource` | `getUseGradient` | None | `bool`<br> |
-| `Resource` | `setColors` | `argbCols` : uint[] <br>`positions` : double[] <br>`colNames` : string[] <br>`useGradient` : optional<bool> <br> | `null`<br> |
-| `Resource` | `setColorAtIndex` | `index` : int <br>`red` : int <br>`green` : int <br>`blue` : int <br>`alpha` : int <br>`position` : double <br>`name` : string <br>`useGradient` : optional<bool> <br> | `null`<br> |
-| `Resource` | `getColorAtIndex` | `colorIndex` : int <br> | `int`<br> |
-| `Resource` | `getColorPositionAtIndex` | `colorIndex` : int <br> | `double`<br> |
-| `Resource` | `launchVirtualWorld` | `action` : string <br> | `null`<br> |
-| `Resource` | `getUnrealWorld` | None | `handle`<br> |
-| `Resource` | `setMultiResourceItemRestrictedServiceIps` | `itemIndex` : int <br>`ipAdresses` : string[] <br> | `null`<br> |
-| `Resource` | `getMultiResourceItemRestrictedServiceIps` | `itemIndex` : int <br> | `string[]`<br> |
-| `Resource` | `replace` | `path` : string <br> | `null`<br> |
-| `Resource` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Resource` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Resource` | `getInstancePath` | None | `string`<br> |
-| `Resource` | `transcodeWithExisitngPreset` | `presetName` : string <br>`useRxCache` : bool <br>`destinationPath` : string <br>`startFrame` : int <br>`endFrame` : int <br>`serviceId` : uint <br> | `null`<br> |
-| `Resource` | `transcodeWithSettings` | `settings` : string <br>`useRxCache` : bool <br>`destinationPath` : string <br>`startFrame` : int <br>`endFrame` : int <br>`serviceId` : uint <br> | `null`<br> |
-| `Resource` | `moveToTranscodingFolder` | `folderPath` : string <br> | `null`<br> |
+| `Resource` | `ref` | `handle` : object<br> | `handle`<br> |
+| `Resource` | `removeThis` | `handle` : object<br> | `null`<br> |
+| `Resource` | `deleteFilesOnSystems` | `handle` : object<br> | `null`<br> |
+| `Resource` | `removeThisIncludingAssets` | `handle` : object<br> | `null`<br> |
+| `Resource` | `deleteAssetFromLiveSystem` | `handle` : object<br>`apEntityLiveSystemHandle` : handle <br> | `null`<br> |
+| `Resource` | `resetDistributionTargets` | `handle` : object<br> | `null`<br> |
+| `Resource` | `changeDistributionTarget` | `handle` : object<br>`apEntityLiveSystemHandle` : handle <br>`shouldDistribute` : bool <br> | `null`<br> |
+| `Resource` | `getName` | `handle` : object<br> | `string`<br> |
+| `Resource` | `setName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `Resource` | `getFps` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getResolution` | `handle` : object<br> | `double[]`<br> |
+| `Resource` | `getIsActive` | `handle` : object<br> | `bool`<br> |
+| `Resource` | `getVideoStreamModes` | `handle` : object<br> | `string[]`<br> |
+| `Resource` | `setVideoStreamMode` | `handle` : object<br>`index` : int <br> | `null`<br> |
+| `Resource` | `getId` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getDuration` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getType` | `handle` : object<br> | `string`<br> |
+| `Resource` | `setCurrentVersion` | `handle` : object<br>`version` : string <br> | `null`<br> |
+| `Resource` | `getCurrentVersion` | `handle` : object<br> | `string`<br> |
+| `Resource` | `getVersions` | `handle` : object<br> | `string[]`<br> |
+| `Resource` | `getVersionSuffix` | `handle` : object<br> | `string[]`<br> |
+| `Resource` | `rescanVersions` | `handle` : object<br> | `null`<br> |
+| `Resource` | `getThumbnailAsBase64` | `handle` : object<br> | `string`<br> |
+| `Resource` | `getHasPendingTransfer` | `handle` : object<br> | `bool`<br> |
+| `Resource` | `getIsInUse` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getLastUsageBeginTime` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getLastUsageBeginTimeAsString` | `handle` : object<br> | `string`<br> |
+| `Resource` | `getLastUsageEndTime` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getLastUsageEndTimeAsString` | `handle` : object<br> | `string`<br> |
+| `Resource` | `getFilePath` | `handle` : object<br> | `string`<br> |
+| `Resource` | `setText` | `handle` : object<br>`text` : string <br> | `null`<br> |
+| `Resource` | `getText` | `handle` : object<br> | `string`<br> |
+| `Resource` | `setFontWithName` | `handle` : object<br>`fontName` : string <br> | `bool`<br> |
+| `Resource` | `getFontName` | `handle` : object<br> | `string`<br> |
+| `Resource` | `setFontWithPath` | `handle` : object<br>`fontPath` : string <br> | `bool`<br> |
+| `Resource` | `setHorizontalTextAlignment` | `handle` : object<br>`textAlignment` : int <br> | `bool`<br> |
+| `Resource` | `getHorizontalTextAlignment` | `handle` : object<br> | `int`<br> |
+| `Resource` | `setVerticalTextAlignment` | `handle` : object<br>`textAlignment` : int <br> | `bool`<br> |
+| `Resource` | `getVerticalTextAlignment` | `handle` : object<br> | `int`<br> |
+| `Resource` | `setLineHeight` | `handle` : object<br>`lineHeight` : double <br> | `bool`<br> |
+| `Resource` | `getLineHeight` | `handle` : object<br> | `double`<br> |
+| `Resource` | `getTextMeasurementsWidthAndHeight` | `handle` : object<br> | `int[]`<br> |
+| `Resource` | `setUrl` | `handle` : object<br>`url` : string <br> | `null`<br> |
+| `Resource` | `getUrl` | `handle` : object<br> | `string`<br> |
+| `Resource` | `setColorTransformPath` | `handle` : object<br>`colorTransformPath` : string <br> | `null`<br> |
+| `Resource` | `getColorTransformPath` | `handle` : object<br> | `string`<br> |
+| `Resource` | `clearColorTransformPath` | `handle` : object<br> | `null`<br> |
+| `Resource` | `refresh` | `handle` : object<br>`text` : string <br> | `null`<br> |
+| `Resource` | `distribute` | `handle` : object<br> | `null`<br> |
+| `Resource` | `getDmxId` | `handle` : object<br> | `int`<br> |
+| `Resource` | `setDmxId` | `handle` : object<br>`id` : int <br> | `null`<br> |
+| `Resource` | `removeMultiresourceIndex` | `handle` : object<br>`index` : int <br> | `null`<br> |
+| `Resource` | `addMultiresourceItem` | `handle` : object<br>`id` : double <br> | `null`<br> |
+| `Resource` | `getMultiresourceItems` | `handle` : object<br> | `handle[]`<br> |
+| `Resource` | `replaceMultiresourceItemByIndex` | `handle` : object<br>`index` : int <br>`id` : double <br> | `null`<br> |
+| `Resource` | `setMultiresourceResolution` | `handle` : object<br>`width` : int <br>`height` : int <br> | `null`<br> |
+| `Resource` | `setMultiresourceItemSizebyIndex` | `handle` : object<br>`index` : int <br>`width` : double <br>`height` : double <br> | `null`<br> |
+| `Resource` | `setMultiresourceItemPositionbyIndex` | `handle` : object<br>`index` : int <br>`x` : double <br>`y` : double <br> | `null`<br> |
+| `Resource` | `setUseGradient` | `handle` : object<br>`useGradient` : bool <br> | `null`<br> |
+| `Resource` | `getUseGradient` | `handle` : object<br> | `bool`<br> |
+| `Resource` | `setColors` | `handle` : object<br>`argbCols` : uint[] <br>`positions` : double[] <br>`colNames` : string[] <br>`useGradient` : optional<bool> <br> | `null`<br> |
+| `Resource` | `setColorAtIndex` | `handle` : object<br>`index` : int <br>`red` : int <br>`green` : int <br>`blue` : int <br>`alpha` : int <br>`position` : double <br>`name` : string <br>`useGradient` : optional<bool> <br> | `null`<br> |
+| `Resource` | `getColorAtIndex` | `handle` : object<br>`colorIndex` : int <br> | `int`<br> |
+| `Resource` | `getColorPositionAtIndex` | `handle` : object<br>`colorIndex` : int <br> | `double`<br> |
+| `Resource` | `launchVirtualWorld` | `handle` : object<br>`action` : string <br> | `null`<br> |
+| `Resource` | `getUnrealWorld` | `handle` : object<br> | `handle`<br> |
+| `Resource` | `setMultiResourceItemRestrictedServiceIps` | `handle` : object<br>`itemIndex` : int <br>`ipAdresses` : string[] <br> | `null`<br> |
+| `Resource` | `getMultiResourceItemRestrictedServiceIps` | `handle` : object<br>`itemIndex` : int <br> | `string[]`<br> |
+| `Resource` | `replace` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `Resource` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Resource` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Resource` | `getInstancePath` | `handle` : object<br> | `string`<br> |
+| `Resource` | `transcodeWithExisitngPreset` | `handle` : object<br>`presetName` : string <br>`useRxCache` : bool <br>`destinationPath` : string <br>`startFrame` : int <br>`endFrame` : int <br>`serviceId` : uint <br> | `null`<br> |
+| `Resource` | `transcodeWithSettings` | `handle` : object<br>`settings` : string <br>`useRxCache` : bool <br>`destinationPath` : string <br>`startFrame` : int <br>`endFrame` : int <br>`serviceId` : uint <br> | `null`<br> |
+| `Resource` | `moveToTranscodingFolder` | `handle` : object<br>`folderPath` : string <br> | `null`<br> |
 #### UnrealWorld
 Syntax: *Pixera.Resources.UnrealWorld.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `UnrealWorld` | `getLevelNames` | None | `string[]`<br> |
-| `UnrealWorld` | `loadLevel` | `levelName` : string <br> | `null`<br> |
-| `UnrealWorld` | `getEventTriggerNames` | None | `string[]`<br> |
-| `UnrealWorld` | `triggerEventByName` | `triggerName` : string <br> | `null`<br> |
-| `UnrealWorld` | `createNDisplayConfig` | None | `null`<br> |
-| `UnrealWorld` | `runUnreal` | None | `null`<br> |
-| `UnrealWorld` | `killUnreal` | None | `null`<br> |
-| `UnrealWorld` | `getName` | None | `string`<br> |
-| `UnrealWorld` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `UnrealWorld` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `UnrealWorld` | `getInstancePath` | None | `string`<br> |
+| `UnrealWorld` | `getLevelNames` | `handle` : object<br> | `string[]`<br> |
+| `UnrealWorld` | `loadLevel` | `handle` : object<br>`levelName` : string <br> | `null`<br> |
+| `UnrealWorld` | `getEventTriggerNames` | `handle` : object<br> | `string[]`<br> |
+| `UnrealWorld` | `triggerEventByName` | `handle` : object<br>`triggerName` : string <br> | `null`<br> |
+| `UnrealWorld` | `createNDisplayConfig` | `handle` : object<br> | `null`<br> |
+| `UnrealWorld` | `runUnreal` | `handle` : object<br> | `null`<br> |
+| `UnrealWorld` | `killUnreal` | `handle` : object<br> | `null`<br> |
+| `UnrealWorld` | `getName` | `handle` : object<br> | `string`<br> |
+| `UnrealWorld` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `UnrealWorld` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `UnrealWorld` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 
 ## Timelines
 Syntax: *Pixera.Timelines.(function)*
@@ -547,267 +547,267 @@ Syntax: *Pixera.Timelines.(function)*
 Syntax: *Pixera.Timelines.Timeline.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Timeline` | `ref` | None | `handle`<br> |
-| `Timeline` | `removeThis` | None | `null`<br> |
-| `Timeline` | `duplicateThis` | `withoutClipsCues` : optional<bool> <br> | `handle`<br> |
-| `Timeline` | `selectThis` | None | `null`<br> |
-| `Timeline` | `getZoomFactor` | None | `double`<br> |
-| `Timeline` | `setZoomFactor` | `zoomFactor` : double <br> | `null`<br> |
-| `Timeline` | `getVerticalScrollOffset` | None | `int`<br> |
-| `Timeline` | `setVerticalScrollOffset` | `offset` : int <br> | `null`<br> |
-| `Timeline` | `getHorizontalScrollOffset` | None | `int`<br> |
-| `Timeline` | `setHorizontalScrollOffset` | `offset` : int <br> | `null`<br> |
-| `Timeline` | `moveInRenderOrder` | `moveDown` : bool <br> | `null`<br> |
-| `Timeline` | `getLayers` | None | `handle[]`<br> |
-| `Timeline` | `getLayerNames` | None | `string[]`<br> |
-| `Timeline` | `getLayersSelected` | None | `handle[]`<br> |
-| `Timeline` | `selectLayerByIndex` | `index` : int <br> | `null`<br> |
-| `Timeline` | `selectLayerByNames` | `layerNames` : string[] <br> | `null`<br> |
-| `Timeline` | `getLayerAtIndex` | `index` : int <br> | `handle`<br> |
-| `Timeline` | `createLayer` | None | `handle`<br> |
-| `Timeline` | `getCueInfosAsJsonString` | None | `string`<br> |
-| `Timeline` | `getCues` | None | `handle[]`<br> |
-| `Timeline` | `getCueNames` | None | `string[]`<br> |
-| `Timeline` | `getCueAtIndex` | `index` : int <br> | `handle`<br> |
-| `Timeline` | `getCueFromName` | `name` : string <br> | `handle`<br> |
-| `Timeline` | `getCueFromNumber` | `number` : int <br> | `handle`<br> |
-| `Timeline` | `applyCueWithName` | `name` : string <br> | `null`<br> |
-| `Timeline` | `applyCueWithNumber` | `number` : int <br> | `null`<br> |
-| `Timeline` | `createCue` | `name` : string <br>`timeInFrames` : double <br>`operation` : int <br> | `handle`<br> |
-| `Timeline` | `removeCues` | None | `null`<br> |
-| `Timeline` | `createPauseCueBeforeSelectedClips` | None | `null`<br> |
-| `Timeline` | `play` | None | `null`<br> |
-| `Timeline` | `pause` | None | `null`<br> |
-| `Timeline` | `stop` | None | `null`<br> |
-| `Timeline` | `toggleTransport` | None | `null`<br> |
-| `Timeline` | `store` | None | `null`<br> |
-| `Timeline` | `reset` | None | `null`<br> |
-| `Timeline` | `getAttributes` | None | `TimelineAttributes`<br> |
-| `Timeline` | `setCurrentFrame` | `time` : int <br> | `bool`<br> |
-| `Timeline` | `setCurrentTime` | `time` : int <br> | `null`<br> |
-| `Timeline` | `getCurrentTime` | None | `int`<br> |
-| `Timeline` | `scrubCurrentTime` | `frames` : int <br> | `null`<br> |
-| `Timeline` | `CurrentTime` | `time` : int <br>`doSet` : bool <br> | `int`<br> |
-| `Timeline` | `getCurrentHMSF` | None | `string`<br> |
-| `Timeline` | `setTransportMode` | `mode` : int <br> | `bool`<br> |
-| `Timeline` | `getTransportMode` | None | `int`<br> |
-| `Timeline` | `setTimecodeInput` | `hour` : int <br>`minute` : int <br>`second` : int <br>`frame` : int <br>`elapsedTime` : double <br>`running` : bool <br>`freshMode` : int <br>`stateToken` : int <br>`format` : int <br> | `double`<br> |
-| `Timeline` | `getFps` | None | `double`<br> |
-| `Timeline` | `getName` | None | `string`<br> |
-| `Timeline` | `setName` | `name` : string <br> | `null`<br> |
-| `Timeline` | `moveToNextCue` | None | `null`<br> |
-| `Timeline` | `moveToNextCueIgnoreProperties` | None | `null`<br> |
-| `Timeline` | `getCueNext` | None | `handle`<br> |
-| `Timeline` | `moveToPreviousCue` | None | `null`<br> |
-| `Timeline` | `moveToPreviousCueIgnoreProperties` | None | `null`<br> |
-| `Timeline` | `getCuePrevious` | None | `handle`<br> |
-| `Timeline` | `ignoreNextCue` | None | `null`<br> |
-| `Timeline` | `ignoreNextCueWithOperation` | `cueOperation` : int <br> | `null`<br> |
-| `Timeline` | `blendToTime` | `goalTime` : double <br>`blendDuration` : double <br>`preloadDelayInMilliseconds` : optional<int> <br> | `null`<br> |
-| `Timeline` | `blendToTimeWithTransportMode` | `goalTime` : double <br>`blendDuration` : double <br>`transportMode` : int <br>`preloadDelayInMilliseconds` : optional<int> <br> | `null`<br> |
-| `Timeline` | `setBlendToTimeMode` | `mode` : int <br> | `bool`<br> |
-| `Timeline` | `setSpeedFactor` | `factor` : double <br> | `null`<br> |
-| `Timeline` | `getSpeedFactor` | None | `double`<br> |
-| `Timeline` | `setOpacity` | `value` : double <br> | `null`<br> |
-| `Timeline` | `getOpacity` | None | `double`<br> |
-| `Timeline` | `startOpacityAnimation` | `fadeIn` : bool <br>`durationFrames` : double <br> | `null`<br> |
-| `Timeline` | `setSmpteMode` | `mode` : int <br> | `null`<br> |
-| `Timeline` | `getSmpteMode` | None | `int`<br> |
-| `Timeline` | `storeRecordedValues` | None | `null`<br> |
-| `Timeline` | `setSmpteInputBehaviour` | `mode` : int <br> | `null`<br> |
-| `Timeline` | `getSmpteInputBehaviour` | None | `int`<br> |
-| `Timeline` | `setSmpteOffset` | `time` : double <br> | `null`<br> |
-| `Timeline` | `getSmpteOffset` | None | `double`<br> |
-| `Timeline` | `resetRecordedValues` | None | `null`<br> |
-| `Timeline` | `getTimelineInfosAsJsonString` | None | `string`<br> |
-| `Timeline` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Timeline` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Timeline` | `getInstancePath` | None | `string`<br> |
+| `Timeline` | `ref` | `handle` : object<br> | `handle`<br> |
+| `Timeline` | `removeThis` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `duplicateThis` | `handle` : object<br>`withoutClipsCues` : optional<bool> <br> | `handle`<br> |
+| `Timeline` | `selectThis` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `getZoomFactor` | `handle` : object<br> | `double`<br> |
+| `Timeline` | `setZoomFactor` | `handle` : object<br>`zoomFactor` : double <br> | `null`<br> |
+| `Timeline` | `getVerticalScrollOffset` | `handle` : object<br> | `int`<br> |
+| `Timeline` | `setVerticalScrollOffset` | `handle` : object<br>`offset` : int <br> | `null`<br> |
+| `Timeline` | `getHorizontalScrollOffset` | `handle` : object<br> | `int`<br> |
+| `Timeline` | `setHorizontalScrollOffset` | `handle` : object<br>`offset` : int <br> | `null`<br> |
+| `Timeline` | `moveInRenderOrder` | `handle` : object<br>`moveDown` : bool <br> | `null`<br> |
+| `Timeline` | `getLayers` | `handle` : object<br> | `handle[]`<br> |
+| `Timeline` | `getLayerNames` | `handle` : object<br> | `string[]`<br> |
+| `Timeline` | `getLayersSelected` | `handle` : object<br> | `handle[]`<br> |
+| `Timeline` | `selectLayerByIndex` | `handle` : object<br>`index` : int <br> | `null`<br> |
+| `Timeline` | `selectLayerByNames` | `handle` : object<br>`layerNames` : string[] <br> | `null`<br> |
+| `Timeline` | `getLayerAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
+| `Timeline` | `createLayer` | `handle` : object<br> | `handle`<br> |
+| `Timeline` | `getCueInfosAsJsonString` | `handle` : object<br> | `string`<br> |
+| `Timeline` | `getCues` | `handle` : object<br> | `handle[]`<br> |
+| `Timeline` | `getCueNames` | `handle` : object<br> | `string[]`<br> |
+| `Timeline` | `getCueAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
+| `Timeline` | `getCueFromName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
+| `Timeline` | `getCueFromNumber` | `handle` : object<br>`number` : int <br> | `handle`<br> |
+| `Timeline` | `applyCueWithName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `Timeline` | `applyCueWithNumber` | `handle` : object<br>`number` : int <br> | `null`<br> |
+| `Timeline` | `createCue` | `handle` : object<br>`name` : string <br>`timeInFrames` : double <br>`operation` : int <br> | `handle`<br> |
+| `Timeline` | `removeCues` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `createPauseCueBeforeSelectedClips` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `play` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `pause` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `stop` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `toggleTransport` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `store` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `reset` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `getAttributes` | `handle` : object<br> | `TimelineAttributes`<br> |
+| `Timeline` | `setCurrentFrame` | `handle` : object<br>`time` : int <br> | `bool`<br> |
+| `Timeline` | `setCurrentTime` | `handle` : object<br>`time` : int <br> | `null`<br> |
+| `Timeline` | `getCurrentTime` | `handle` : object<br> | `int`<br> |
+| `Timeline` | `scrubCurrentTime` | `handle` : object<br>`frames` : int <br> | `null`<br> |
+| `Timeline` | `CurrentTime` | `handle` : object<br>`time` : int <br>`doSet` : bool <br> | `int`<br> |
+| `Timeline` | `getCurrentHMSF` | `handle` : object<br> | `string`<br> |
+| `Timeline` | `setTransportMode` | `handle` : object<br>`mode` : int <br> | `bool`<br> |
+| `Timeline` | `getTransportMode` | `handle` : object<br> | `int`<br> |
+| `Timeline` | `setTimecodeInput` | `handle` : object<br>`hour` : int <br>`minute` : int <br>`second` : int <br>`frame` : int <br>`elapsedTime` : double <br>`running` : bool <br>`freshMode` : int <br>`stateToken` : int <br>`format` : int <br> | `double`<br> |
+| `Timeline` | `getFps` | `handle` : object<br> | `double`<br> |
+| `Timeline` | `getName` | `handle` : object<br> | `string`<br> |
+| `Timeline` | `setName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `Timeline` | `moveToNextCue` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `moveToNextCueIgnoreProperties` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `getCueNext` | `handle` : object<br> | `handle`<br> |
+| `Timeline` | `moveToPreviousCue` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `moveToPreviousCueIgnoreProperties` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `getCuePrevious` | `handle` : object<br> | `handle`<br> |
+| `Timeline` | `ignoreNextCue` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `ignoreNextCueWithOperation` | `handle` : object<br>`cueOperation` : int <br> | `null`<br> |
+| `Timeline` | `blendToTime` | `handle` : object<br>`goalTime` : double <br>`blendDuration` : double <br>`preloadDelayInMilliseconds` : optional<int> <br> | `null`<br> |
+| `Timeline` | `blendToTimeWithTransportMode` | `handle` : object<br>`goalTime` : double <br>`blendDuration` : double <br>`transportMode` : int <br>`preloadDelayInMilliseconds` : optional<int> <br> | `null`<br> |
+| `Timeline` | `setBlendToTimeMode` | `handle` : object<br>`mode` : int <br> | `bool`<br> |
+| `Timeline` | `setSpeedFactor` | `handle` : object<br>`factor` : double <br> | `null`<br> |
+| `Timeline` | `getSpeedFactor` | `handle` : object<br> | `double`<br> |
+| `Timeline` | `setOpacity` | `handle` : object<br>`value` : double <br> | `null`<br> |
+| `Timeline` | `getOpacity` | `handle` : object<br> | `double`<br> |
+| `Timeline` | `startOpacityAnimation` | `handle` : object<br>`fadeIn` : bool <br>`durationFrames` : double <br> | `null`<br> |
+| `Timeline` | `setSmpteMode` | `handle` : object<br>`mode` : int <br> | `null`<br> |
+| `Timeline` | `getSmpteMode` | `handle` : object<br> | `int`<br> |
+| `Timeline` | `storeRecordedValues` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `setSmpteInputBehaviour` | `handle` : object<br>`mode` : int <br> | `null`<br> |
+| `Timeline` | `getSmpteInputBehaviour` | `handle` : object<br> | `int`<br> |
+| `Timeline` | `setSmpteOffset` | `handle` : object<br>`time` : double <br> | `null`<br> |
+| `Timeline` | `getSmpteOffset` | `handle` : object<br> | `double`<br> |
+| `Timeline` | `resetRecordedValues` | `handle` : object<br> | `null`<br> |
+| `Timeline` | `getTimelineInfosAsJsonString` | `handle` : object<br> | `string`<br> |
+| `Timeline` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Timeline` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Timeline` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### Layer
 Syntax: *Pixera.Timelines.Layer.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Layer` | `ref` | None | `handle`<br> |
-| `Layer` | `removeThis` | None | `null`<br> |
-| `Layer` | `getNodes` | None | `handle[]`<br> |
-| `Layer` | `getNodeWithName` | `name` : string <br> | `handle`<br> |
-| `Layer` | `getParamWithName` | `name` : string <br> | `handle`<br> |
-| `Layer` | `getSpatialParametersAtTime` | `time` : double <br> | `double[]`<br> |
-| `Layer` | `getTimeline` | None | `handle`<br> |
-| `Layer` | `setName` | `name` : string <br> | `null`<br> |
-| `Layer` | `getName` | None | `string`<br> |
-| `Layer` | `resetLayer` | None | `null`<br> |
-| `Layer` | `getLayerJsonDescrip` | None | `string`<br> |
-| `Layer` | `setLayerJsonDescrip` | `descrip` : string <br>`makeAllDominant` : bool <br> | `null`<br> |
-| `Layer` | `getJsonDescrip` | None | `string`<br> |
-| `Layer` | `initFromJsonDescrip` | `descrip` : string <br> | `null`<br> |
-| `Layer` | `setOpacity` | `value` : double <br> | `null`<br> |
-| `Layer` | `getOpacity` | None | `double`<br> |
-| `Layer` | `resetOpacity` | None | `null`<br> |
-| `Layer` | `setVolume` | `value` : double <br> | `null`<br> |
-| `Layer` | `getVolume` | None | `double`<br> |
-| `Layer` | `resetVolume` | None | `null`<br> |
-| `Layer` | `muteLayer` | None | `null`<br> |
-| `Layer` | `unMuteLayer` | None | `null`<br> |
-| `Layer` | `getIsLayerMuted` | None | `bool`<br> |
-| `Layer` | `muteAudio` | None | `null`<br> |
-| `Layer` | `unMuteAudio` | None | `null`<br> |
-| `Layer` | `getIsAudioMuted` | None | `bool`<br> |
-| `Layer` | `getDmxMuteState` | None | `int`<br> |
-| `Layer` | `setDmxMuteState` | `muteState` : uint <br> | `null`<br> |
-| `Layer` | `toggleExplicitMute` | `flag` : uint <br> | `null`<br> |
-| `Layer` | `setTransport` | `mode` : int <br>`loop` : bool <br> | `null`<br> |
-| `Layer` | `getTransportMode` | None | `int`<br> |
-| `Layer` | `resetTransportMode` | None | `null`<br> |
-| `Layer` | `getTransportLoop` | None | `bool`<br> |
-| `Layer` | `assignResource` | `id` : double <br> | `null`<br> |
-| `Layer` | `assignResourceWithFade` | `id` : double <br>`fadeDuration` : double <br> | `null`<br> |
-| `Layer` | `getAssignedResource` | None | `handle`<br> |
-| `Layer` | `resetAssignedResource` | None | `null`<br> |
-| `Layer` | `getAssignedModelResource` | None | `handle`<br> |
-| `Layer` | `resetAssignedModelResource` | None | `null`<br> |
-| `Layer` | `getFxNames` | None | `string[]`<br> |
-| `Layer` | `setFadeDurationDominantResourceChange` | `value` : double <br> | `null`<br> |
-| `Layer` | `getFadeDurationDominantResourceChange` | None | `double`<br> |
-| `Layer` | `createClip` | None | `handle`<br> |
-| `Layer` | `createClipAtTime` | `timeInFrames` : double <br> | `handle`<br> |
-| `Layer` | `controlClipBorder` | `clip` : handle <br>`isEnter` : bool <br>`isIncremental` : bool <br>`entryTime` : double <br> | `null`<br> |
-| `Layer` | `getClipAtIndex` | `index` : int <br> | `handle`<br> |
-| `Layer` | `getClips` | None | `handle[]`<br> |
-| `Layer` | `getClipCurrent` | `offset` : int <br> | `handle`<br> |
-| `Layer` | `getClipsSelected` | None | `handle[]`<br> |
-| `Layer` | `removeClips` | None | `null`<br> |
-| `Layer` | `setHomeScreenFromScreenName` | `screenName` : string <br> | `null`<br> |
-| `Layer` | `getHomeScreenName` | None | `string`<br> |
-| `Layer` | `setBlendMode` | `blendMode` : string <br> | `null`<br> |
-| `Layer` | `getBlendMode` | None | `string`<br> |
-| `Layer` | `addEffectById` | `id` : double <br> | `null`<br> |
-| `Layer` | `setPreloadPermanently` | `doPreloadPermanently` : bool <br> | `null`<br> |
-| `Layer` | `getPreloadPermanently` | None | `bool`<br> |
-| `Layer` | `setRestrictToServiceWithIps` | `doRestrict` : bool <br>`ipAdresses` : string[] <br> | `null`<br> |
-| `Layer` | `getRestrictToService` | None | `bool`<br> |
-| `Layer` | `getRestrictedServiceIps` | None | `string[]`<br> |
-| `Layer` | `getOffsets` | None | `double[]`<br> |
-| `Layer` | `setOffsets` | `x` : optional<double> <br>`y` : optional<double> <br>`z` : optional<double> <br>`xr` : optional<double> <br>`yr` : optional<double> <br>`zr` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `null`<br> |
-| `Layer` | `setCurrentValuesToOffset` | `typeIndex` : int <br>`resetDominant` : optional<bool> <br>`removeKeyframesClips` : optional<bool> <br> | `null`<br> |
-| `Layer` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Layer` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Layer` | `getInstancePath` | None | `string`<br> |
+| `Layer` | `ref` | `handle` : object<br> | `handle`<br> |
+| `Layer` | `removeThis` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getNodes` | `handle` : object<br> | `handle[]`<br> |
+| `Layer` | `getNodeWithName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
+| `Layer` | `getParamWithName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
+| `Layer` | `getSpatialParametersAtTime` | `handle` : object<br>`time` : double <br> | `double[]`<br> |
+| `Layer` | `getTimeline` | `handle` : object<br> | `handle`<br> |
+| `Layer` | `setName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `Layer` | `getName` | `handle` : object<br> | `string`<br> |
+| `Layer` | `resetLayer` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getLayerJsonDescrip` | `handle` : object<br> | `string`<br> |
+| `Layer` | `setLayerJsonDescrip` | `handle` : object<br>`descrip` : string <br>`makeAllDominant` : bool <br> | `null`<br> |
+| `Layer` | `getJsonDescrip` | `handle` : object<br> | `string`<br> |
+| `Layer` | `initFromJsonDescrip` | `handle` : object<br>`descrip` : string <br> | `null`<br> |
+| `Layer` | `setOpacity` | `handle` : object<br>`value` : double <br> | `null`<br> |
+| `Layer` | `getOpacity` | `handle` : object<br> | `double`<br> |
+| `Layer` | `resetOpacity` | `handle` : object<br> | `null`<br> |
+| `Layer` | `setVolume` | `handle` : object<br>`value` : double <br> | `null`<br> |
+| `Layer` | `getVolume` | `handle` : object<br> | `double`<br> |
+| `Layer` | `resetVolume` | `handle` : object<br> | `null`<br> |
+| `Layer` | `muteLayer` | `handle` : object<br> | `null`<br> |
+| `Layer` | `unMuteLayer` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getIsLayerMuted` | `handle` : object<br> | `bool`<br> |
+| `Layer` | `muteAudio` | `handle` : object<br> | `null`<br> |
+| `Layer` | `unMuteAudio` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getIsAudioMuted` | `handle` : object<br> | `bool`<br> |
+| `Layer` | `getDmxMuteState` | `handle` : object<br> | `int`<br> |
+| `Layer` | `setDmxMuteState` | `handle` : object<br>`muteState` : uint <br> | `null`<br> |
+| `Layer` | `toggleExplicitMute` | `handle` : object<br>`flag` : uint <br> | `null`<br> |
+| `Layer` | `setTransport` | `handle` : object<br>`mode` : int <br>`loop` : bool <br> | `null`<br> |
+| `Layer` | `getTransportMode` | `handle` : object<br> | `int`<br> |
+| `Layer` | `resetTransportMode` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getTransportLoop` | `handle` : object<br> | `bool`<br> |
+| `Layer` | `assignResource` | `handle` : object<br>`id` : double <br> | `null`<br> |
+| `Layer` | `assignResourceWithFade` | `handle` : object<br>`id` : double <br>`fadeDuration` : double <br> | `null`<br> |
+| `Layer` | `getAssignedResource` | `handle` : object<br> | `handle`<br> |
+| `Layer` | `resetAssignedResource` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getAssignedModelResource` | `handle` : object<br> | `handle`<br> |
+| `Layer` | `resetAssignedModelResource` | `handle` : object<br> | `null`<br> |
+| `Layer` | `getFxNames` | `handle` : object<br> | `string[]`<br> |
+| `Layer` | `setFadeDurationDominantResourceChange` | `handle` : object<br>`value` : double <br> | `null`<br> |
+| `Layer` | `getFadeDurationDominantResourceChange` | `handle` : object<br> | `double`<br> |
+| `Layer` | `createClip` | `handle` : object<br> | `handle`<br> |
+| `Layer` | `createClipAtTime` | `handle` : object<br>`timeInFrames` : double <br> | `handle`<br> |
+| `Layer` | `controlClipBorder` | `handle` : object<br>`clip` : handle <br>`isEnter` : bool <br>`isIncremental` : bool <br>`entryTime` : double <br> | `null`<br> |
+| `Layer` | `getClipAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
+| `Layer` | `getClips` | `handle` : object<br> | `handle[]`<br> |
+| `Layer` | `getClipCurrent` | `handle` : object<br>`offset` : int <br> | `handle`<br> |
+| `Layer` | `getClipsSelected` | `handle` : object<br> | `handle[]`<br> |
+| `Layer` | `removeClips` | `handle` : object<br> | `null`<br> |
+| `Layer` | `setHomeScreenFromScreenName` | `handle` : object<br>`screenName` : string <br> | `null`<br> |
+| `Layer` | `getHomeScreenName` | `handle` : object<br> | `string`<br> |
+| `Layer` | `setBlendMode` | `handle` : object<br>`blendMode` : string <br> | `null`<br> |
+| `Layer` | `getBlendMode` | `handle` : object<br> | `string`<br> |
+| `Layer` | `addEffectById` | `handle` : object<br>`id` : double <br> | `null`<br> |
+| `Layer` | `setPreloadPermanently` | `handle` : object<br>`doPreloadPermanently` : bool <br> | `null`<br> |
+| `Layer` | `getPreloadPermanently` | `handle` : object<br> | `bool`<br> |
+| `Layer` | `setRestrictToServiceWithIps` | `handle` : object<br>`doRestrict` : bool <br>`ipAdresses` : string[] <br> | `null`<br> |
+| `Layer` | `getRestrictToService` | `handle` : object<br> | `bool`<br> |
+| `Layer` | `getRestrictedServiceIps` | `handle` : object<br> | `string[]`<br> |
+| `Layer` | `getOffsets` | `handle` : object<br> | `double[]`<br> |
+| `Layer` | `setOffsets` | `handle` : object<br>`x` : optional<double> <br>`y` : optional<double> <br>`z` : optional<double> <br>`xr` : optional<double> <br>`yr` : optional<double> <br>`zr` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `null`<br> |
+| `Layer` | `setCurrentValuesToOffset` | `handle` : object<br>`typeIndex` : int <br>`resetDominant` : optional<bool> <br>`removeKeyframesClips` : optional<bool> <br> | `null`<br> |
+| `Layer` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Layer` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Layer` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### Clip
 Syntax: *Pixera.Timelines.Clip.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Clip` | `getId` | None | `double`<br> |
-| `Clip` | `removeThis` | None | `null`<br> |
-| `Clip` | `getTimeline` | None | `handle`<br> |
-| `Clip` | `setTime` | `time` : double <br> | `null`<br> |
-| `Clip` | `getTime` | None | `double`<br> |
-| `Clip` | `setDuration` | `duration` : double <br> | `null`<br> |
-| `Clip` | `getDuration` | None | `double`<br> |
-| `Clip` | `setLabel` | `label` : string <br> | `null`<br> |
-| `Clip` | `getLabel` | None | `string`<br> |
-| `Clip` | `getPlayMode` | None | `int`<br> |
-| `Clip` | `setPlayMode` | `playMode` : int <br> | `null`<br> |
-| `Clip` | `getSpeed` | None | `double`<br> |
-| `Clip` | `setSpeed` | `speed` : double <br> | `null`<br> |
-| `Clip` | `getBlendFrames` | None | `bool`<br> |
-| `Clip` | `setBlendFrames` | `doFrameblending` : bool <br> | `null`<br> |
-| `Clip` | `getInpoint` | None | `double`<br> |
-| `Clip` | `setInpoint` | `inpoint` : double <br> | `null`<br> |
-| `Clip` | `getOutpoint` | None | `double`<br> |
-| `Clip` | `setOutpoint` | `inpoint` : double <br> | `null`<br> |
-| `Clip` | `assignResource` | `resId` : double <br>`setToResourceDuration` : optional<bool> <br> | `null`<br> |
-| `Clip` | `getAssignedResource` | None | `handle`<br> |
-| `Clip` | `setToResourceDuration` | None | `null`<br> |
-| `Clip` | `createEvent` | `namePath` : string <br>`time` : double <br>`value` : double <br> | `null`<br> |
-| `Clip` | `createEventInPixelSpace` | `namePath` : string <br>`time` : double <br>`value` : double <br> | `null`<br> |
-| `Clip` | `removeEvent` | `namePath` : string <br>`time` : double <br> | `null`<br> |
-| `Clip` | `createPauseCueBeforeClip` | None | `handle`<br> |
-| `Clip` | `setColorTransformPath` | `colorTransformPath` : string <br> | `null`<br> |
-| `Clip` | `getColorTransformPath` | None | `string`<br> |
-| `Clip` | `clearColorTransformPath` | None | `null`<br> |
-| `Clip` | `getKeyframesAsJsonString` | None | `string`<br> |
+| `Clip` | `getId` | `handle` : object<br> | `double`<br> |
+| `Clip` | `removeThis` | `handle` : object<br> | `null`<br> |
+| `Clip` | `getTimeline` | `handle` : object<br> | `handle`<br> |
+| `Clip` | `setTime` | `handle` : object<br>`time` : double <br> | `null`<br> |
+| `Clip` | `getTime` | `handle` : object<br> | `double`<br> |
+| `Clip` | `setDuration` | `handle` : object<br>`duration` : double <br> | `null`<br> |
+| `Clip` | `getDuration` | `handle` : object<br> | `double`<br> |
+| `Clip` | `setLabel` | `handle` : object<br>`label` : string <br> | `null`<br> |
+| `Clip` | `getLabel` | `handle` : object<br> | `string`<br> |
+| `Clip` | `getPlayMode` | `handle` : object<br> | `int`<br> |
+| `Clip` | `setPlayMode` | `handle` : object<br>`playMode` : int <br> | `null`<br> |
+| `Clip` | `getSpeed` | `handle` : object<br> | `double`<br> |
+| `Clip` | `setSpeed` | `handle` : object<br>`speed` : double <br> | `null`<br> |
+| `Clip` | `getBlendFrames` | `handle` : object<br> | `bool`<br> |
+| `Clip` | `setBlendFrames` | `handle` : object<br>`doFrameblending` : bool <br> | `null`<br> |
+| `Clip` | `getInpoint` | `handle` : object<br> | `double`<br> |
+| `Clip` | `setInpoint` | `handle` : object<br>`inpoint` : double <br> | `null`<br> |
+| `Clip` | `getOutpoint` | `handle` : object<br> | `double`<br> |
+| `Clip` | `setOutpoint` | `handle` : object<br>`inpoint` : double <br> | `null`<br> |
+| `Clip` | `assignResource` | `handle` : object<br>`resId` : double <br>`setToResourceDuration` : optional<bool> <br> | `null`<br> |
+| `Clip` | `getAssignedResource` | `handle` : object<br> | `handle`<br> |
+| `Clip` | `setToResourceDuration` | `handle` : object<br> | `null`<br> |
+| `Clip` | `createEvent` | `handle` : object<br>`namePath` : string <br>`time` : double <br>`value` : double <br> | `null`<br> |
+| `Clip` | `createEventInPixelSpace` | `handle` : object<br>`namePath` : string <br>`time` : double <br>`value` : double <br> | `null`<br> |
+| `Clip` | `removeEvent` | `handle` : object<br>`namePath` : string <br>`time` : double <br> | `null`<br> |
+| `Clip` | `createPauseCueBeforeClip` | `handle` : object<br> | `handle`<br> |
+| `Clip` | `setColorTransformPath` | `handle` : object<br>`colorTransformPath` : string <br> | `null`<br> |
+| `Clip` | `getColorTransformPath` | `handle` : object<br> | `string`<br> |
+| `Clip` | `clearColorTransformPath` | `handle` : object<br> | `null`<br> |
+| `Clip` | `getKeyframesAsJsonString` | `handle` : object<br> | `string`<br> |
 #### Node
 Syntax: *Pixera.Timelines.Node.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Node` | `getParameters` | None | `handle[]`<br> |
-| `Node` | `getName` | None | `string`<br> |
-| `Node` | `getParamWithName` | `name` : string <br> | `handle`<br> |
-| `Node` | `setValues` | `values` : double[] <br> | `null`<br> |
-| `Node` | `getValues` | None | `double[]`<br> |
-| `Node` | `resetValues` | None | `null`<br> |
-| `Node` | `storeValues` | None | `null`<br> |
-| `Node` | `mute` | None | `null`<br> |
-| `Node` | `unMute` | None | `null`<br> |
-| `Node` | `getIsMuted` | None | `bool`<br> |
-| `Node` | `getTimeline` | None | `handle`<br> |
-| `Node` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Node` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Node` | `getInstancePath` | None | `string`<br> |
+| `Node` | `getParameters` | `handle` : object<br> | `handle[]`<br> |
+| `Node` | `getName` | `handle` : object<br> | `string`<br> |
+| `Node` | `getParamWithName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
+| `Node` | `setValues` | `handle` : object<br>`values` : double[] <br> | `null`<br> |
+| `Node` | `getValues` | `handle` : object<br> | `double[]`<br> |
+| `Node` | `resetValues` | `handle` : object<br> | `null`<br> |
+| `Node` | `storeValues` | `handle` : object<br> | `null`<br> |
+| `Node` | `mute` | `handle` : object<br> | `null`<br> |
+| `Node` | `unMute` | `handle` : object<br> | `null`<br> |
+| `Node` | `getIsMuted` | `handle` : object<br> | `bool`<br> |
+| `Node` | `getTimeline` | `handle` : object<br> | `handle`<br> |
+| `Node` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Node` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Node` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### Param
 Syntax: *Pixera.Timelines.Param.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Param` | `getName` | None | `string`<br> |
-| `Param` | `getIsChannel` | None | `bool`<br> |
-| `Param` | `setValue` | `value` : timelineParamValue <br> | `null`<br> |
-| `Param` | `setValueRelativ` | `value` : double <br> | `null`<br> |
-| `Param` | `getValue` | None | `timelineParamValue`<br> |
-| `Param` | `resetValue` | None | `null`<br> |
-| `Param` | `storeValue` | None | `null`<br> |
-| `Param` | `setTransportAttributes` | `mode` : int <br>`speed` : double <br>`loop` : bool <br>`inpoint` : int <br>`outpoint` : int <br> | `null`<br> |
-| `Param` | `getAttributes` | None | `TransportAttributes`<br> |
-| `Param` | `mute` | None | `null`<br> |
-| `Param` | `unMute` | None | `null`<br> |
-| `Param` | `getIsMuted` | None | `bool`<br> |
-| `Param` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Param` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Param` | `getInstancePath` | None | `string`<br> |
+| `Param` | `getName` | `handle` : object<br> | `string`<br> |
+| `Param` | `getIsChannel` | `handle` : object<br> | `bool`<br> |
+| `Param` | `setValue` | `handle` : object<br>`value` : timelineParamValue <br> | `null`<br> |
+| `Param` | `setValueRelativ` | `handle` : object<br>`value` : double <br> | `null`<br> |
+| `Param` | `getValue` | `handle` : object<br> | `timelineParamValue`<br> |
+| `Param` | `resetValue` | `handle` : object<br> | `null`<br> |
+| `Param` | `storeValue` | `handle` : object<br> | `null`<br> |
+| `Param` | `setTransportAttributes` | `handle` : object<br>`mode` : int <br>`speed` : double <br>`loop` : bool <br>`inpoint` : int <br>`outpoint` : int <br> | `null`<br> |
+| `Param` | `getAttributes` | `handle` : object<br> | `TransportAttributes`<br> |
+| `Param` | `mute` | `handle` : object<br> | `null`<br> |
+| `Param` | `unMute` | `handle` : object<br> | `null`<br> |
+| `Param` | `getIsMuted` | `handle` : object<br> | `bool`<br> |
+| `Param` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Param` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Param` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### Cue
 Syntax: *Pixera.Timelines.Cue.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Cue` | `removeThis` | None | `null`<br> |
-| `Cue` | `apply` | None | `null`<br> |
-| `Cue` | `blendToThis` | `blendDurationInSeconds` : double <br> | `null`<br> |
-| `Cue` | `getAttributes` | None | `CueAttributes`<br> |
-| `Cue` | `getTimeline` | None | `handle`<br> |
-| `Cue` | `getIndex` | None | `int`<br> |
-| `Cue` | `getName` | None | `string`<br> |
-| `Cue` | `setName` | `name` : string <br> | `bool`<br> |
-| `Cue` | `getNote` | None | `string`<br> |
-| `Cue` | `setNote` | `note` : string <br> | `bool`<br> |
-| `Cue` | `getOperation` | None | `int`<br> |
-| `Cue` | `setOperation` | `operation` : int <br> | `bool`<br> |
-| `Cue` | `getJumpMode` | None | `int`<br> |
-| `Cue` | `setJumpMode` | `jumpMode` : int <br> | `bool`<br> |
-| `Cue` | `getJumpGoalTime` | None | `double`<br> |
-| `Cue` | `setJumpGoalTime` | `time` : double <br> | `bool`<br> |
-| `Cue` | `getJumpGoalLabel` | None | `string`<br> |
-| `Cue` | `getJumpGoalCue` | None | `handle`<br> |
-| `Cue` | `setJumpGoalLabel` | `jumpGoalLabel` : string <br> | `bool`<br> |
-| `Cue` | `getNumber` | None | `int`<br> |
-| `Cue` | `setNumber` | `number` : int <br> | `null`<br> |
-| `Cue` | `getWaitDuration` | None | `double`<br> |
-| `Cue` | `setWaitDuration` | `time` : double <br> | `bool`<br> |
-| `Cue` | `getBlendDuration` | None | `double`<br> |
-| `Cue` | `setBlendDuration` | `timeInFrames` : double <br> | `bool`<br> |
-| `Cue` | `getTime` | None | `double`<br> |
-| `Cue` | `setTime` | `time` : double <br> | `bool`<br> |
-| `Cue` | `getTimelineToTriggerName` | None | `string`<br> |
-| `Cue` | `setTimelineToTrigger` | `nameTimeline` : string <br> | `bool`<br> |
-| `Cue` | `getTimelineTriggerMode` | None | `int`<br> |
-| `Cue` | `setTimelineTriggerMode` | `mode` : int <br> | `bool`<br> |
-| `Cue` | `getTimelineTriggerApplyTime` | None | `double`<br> |
-| `Cue` | `setTimelineTriggerApplyTime` | `time` : double <br> | `bool`<br> |
-| `Cue` | `setTimelineTriggerApplyCue` | `goalCueLabel` : string <br> | `bool`<br> |
-| `Cue` | `getCountdown` | None | `double`<br> |
-| `Cue` | `getCountdownHMSF` | None | `string`<br> |
-| `Cue` | `setCommand` | `conveyorName` : string <br>`commandData` : string <br> | `null`<br> |
-| `Cue` | `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `Cue` | `getHandleFromInstancePath` | `instancePath` : string <br> | `handle`<br> |
-| `Cue` | `getInstancePath` | None | `string`<br> |
+| `Cue` | `removeThis` | `handle` : object<br> | `null`<br> |
+| `Cue` | `apply` | `handle` : object<br> | `null`<br> |
+| `Cue` | `blendToThis` | `handle` : object<br>`blendDurationInSeconds` : double <br> | `null`<br> |
+| `Cue` | `getAttributes` | `handle` : object<br> | `CueAttributes`<br> |
+| `Cue` | `getTimeline` | `handle` : object<br> | `handle`<br> |
+| `Cue` | `getIndex` | `handle` : object<br> | `int`<br> |
+| `Cue` | `getName` | `handle` : object<br> | `string`<br> |
+| `Cue` | `setName` | `handle` : object<br>`name` : string <br> | `bool`<br> |
+| `Cue` | `getNote` | `handle` : object<br> | `string`<br> |
+| `Cue` | `setNote` | `handle` : object<br>`note` : string <br> | `bool`<br> |
+| `Cue` | `getOperation` | `handle` : object<br> | `int`<br> |
+| `Cue` | `setOperation` | `handle` : object<br>`operation` : int <br> | `bool`<br> |
+| `Cue` | `getJumpMode` | `handle` : object<br> | `int`<br> |
+| `Cue` | `setJumpMode` | `handle` : object<br>`jumpMode` : int <br> | `bool`<br> |
+| `Cue` | `getJumpGoalTime` | `handle` : object<br> | `double`<br> |
+| `Cue` | `setJumpGoalTime` | `handle` : object<br>`time` : double <br> | `bool`<br> |
+| `Cue` | `getJumpGoalLabel` | `handle` : object<br> | `string`<br> |
+| `Cue` | `getJumpGoalCue` | `handle` : object<br> | `handle`<br> |
+| `Cue` | `setJumpGoalLabel` | `handle` : object<br>`jumpGoalLabel` : string <br> | `bool`<br> |
+| `Cue` | `getNumber` | `handle` : object<br> | `int`<br> |
+| `Cue` | `setNumber` | `handle` : object<br>`number` : int <br> | `null`<br> |
+| `Cue` | `getWaitDuration` | `handle` : object<br> | `double`<br> |
+| `Cue` | `setWaitDuration` | `handle` : object<br>`time` : double <br> | `bool`<br> |
+| `Cue` | `getBlendDuration` | `handle` : object<br> | `double`<br> |
+| `Cue` | `setBlendDuration` | `handle` : object<br>`timeInFrames` : double <br> | `bool`<br> |
+| `Cue` | `getTime` | `handle` : object<br> | `double`<br> |
+| `Cue` | `setTime` | `handle` : object<br>`time` : double <br> | `bool`<br> |
+| `Cue` | `getTimelineToTriggerName` | `handle` : object<br> | `string`<br> |
+| `Cue` | `setTimelineToTrigger` | `handle` : object<br>`nameTimeline` : string <br> | `bool`<br> |
+| `Cue` | `getTimelineTriggerMode` | `handle` : object<br> | `int`<br> |
+| `Cue` | `setTimelineTriggerMode` | `handle` : object<br>`mode` : int <br> | `bool`<br> |
+| `Cue` | `getTimelineTriggerApplyTime` | `handle` : object<br> | `double`<br> |
+| `Cue` | `setTimelineTriggerApplyTime` | `handle` : object<br>`time` : double <br> | `bool`<br> |
+| `Cue` | `setTimelineTriggerApplyCue` | `handle` : object<br>`goalCueLabel` : string <br> | `bool`<br> |
+| `Cue` | `getCountdown` | `handle` : object<br> | `double`<br> |
+| `Cue` | `getCountdownHMSF` | `handle` : object<br> | `string`<br> |
+| `Cue` | `setCommand` | `handle` : object<br>`conveyorName` : string <br>`commandData` : string <br> | `null`<br> |
+| `Cue` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Cue` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `Cue` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 
 ## Calibration
 Syntax: *Pixera.Calibration.(function)*
@@ -853,10 +853,10 @@ Syntax: *Pixera.Ui.(function)*
 Syntax: *Pixera.Ui.ComboBox.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `ComboBox` | `clear` | None | `null`<br> |
-| `ComboBox` | `addItem` | `item` : string <br>`id` : int <br> | `null`<br> |
-| `ComboBox` | `setSelectedId` | `id` : int <br> | `null`<br> |
-| `ComboBox` | `getSelectedId` | None | `int`<br> |
+| `ComboBox` | `clear` | `handle` : object<br> | `null`<br> |
+| `ComboBox` | `addItem` | `handle` : object<br>`item` : string <br>`id` : int <br> | `null`<br> |
+| `ComboBox` | `setSelectedId` | `handle` : object<br>`id` : int <br> | `null`<br> |
+| `ComboBox` | `getSelectedId` | `handle` : object<br> | `int`<br> |
 
 ## Direct
 Syntax: *Pixera.Direct.(function)*
@@ -874,32 +874,32 @@ Syntax: *Pixera.Direct.(function)*
 Syntax: *Pixera.Direct.Screen.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Screen` | `setPosition` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
-| `Screen` | `setRotation` | `xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
-| `Screen` | `setPosRot` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
-| `Screen` | `setPosRotScale` | `xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `null`<br> |
-| `Screen` | `enableLogging` | `enable` : bool <br> | `null`<br> |
+| `Screen` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
+| `Screen` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
+| `Screen` | `setPosRot` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
+| `Screen` | `setPosRotScale` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `null`<br> |
+| `Screen` | `enableLogging` | `handle` : object<br>`enable` : bool <br> | `null`<br> |
 #### Param
 Syntax: *Pixera.Direct.Param.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Param` | `setValue` | `value` : double <br> | `null`<br> |
-| `Param` | `enableLogging` | `enable` : bool <br> | `null`<br> |
+| `Param` | `setValue` | `handle` : object<br>`value` : double <br> | `null`<br> |
+| `Param` | `enableLogging` | `handle` : object<br>`enable` : bool <br> | `null`<br> |
 #### Camera
 Syntax: *Pixera.Direct.Camera.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Camera` | `setPosition` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `null`<br> |
-| `Camera` | `setRotation` | `xRot` : double <br>`yRot` : double <br>`zRot` : double <br> | `null`<br> |
-| `Camera` | `setTransformation` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br> | `null`<br> |
-| `Camera` | `setTransformationAndLensProps` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
-| `Camera` | `setTransformationAndLensPropsExt` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br> | `null`<br> |
+| `Camera` | `setPosition` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `null`<br> |
+| `Camera` | `setRotation` | `handle` : object<br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br> | `null`<br> |
+| `Camera` | `setTransformation` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br> | `null`<br> |
+| `Camera` | `setTransformationAndLensProps` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
+| `Camera` | `setTransformationAndLensPropsExt` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br> | `null`<br> |
 #### Perspective
 Syntax: *Pixera.Direct.Perspective.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
-| `Perspective` | `setTransformation` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br> | `null`<br> |
-| `Perspective` | `setTransformationAndLensProps` | `xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
+| `Perspective` | `setTransformation` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br> | `null`<br> |
+| `Perspective` | `setTransformationAndLensProps` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
 
 ## Unreal
 Syntax: *Pixera.Unreal.(function)*
