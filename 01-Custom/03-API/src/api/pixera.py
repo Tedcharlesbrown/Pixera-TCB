@@ -46,6 +46,56 @@ class Pixera:
             result = result[result_index + 8:-1]
             return result
         
+    def send_test(self, array = None, verbose=False):
+        params_dict = {}
+        method = array[0]
+        params = array[1]
+        message = array[2]
+        if params is not None:
+            # Convert the params and message lists to a dictionary
+            try:
+                params_dict = {params[i]: message[i] for i in range(len(params))}
+            except:
+                pass
+            
+        # Create a TCP/IP socket
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            # Set a timeout for the socket operations
+            s.settimeout(10)  # 10 seconds timeout
+            
+            # Connect the socket to the server's address and port
+            s.connect((self.IP_ADDRESS, self.PORT))
+
+            # Define the JSON-RPC request payload
+            payload = {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": method,
+                "params": params_dict
+            }
+
+            # Convert the payload to a JSON string and encode it
+            message = json.dumps(payload).encode()
+
+            # Calculate the size of the message
+            size = len(message)
+
+            # Construct the header
+            # "pxr1" + 4-byte size (least significant byte first)
+            header = b"pxr1" + struct.pack("<I", size)
+
+            message = header + message
+            # Send the header and the message
+            if verbose: print("Sending:", message)
+            s.sendall(message)
+
+            # Receive the response
+            data = s.recv(1024)
+            data_start = data.decode().rfind("{")
+            data = data.decode()[data_start:]
+
+        return data
+        
     def send_tcp(self, method=None, params=None, message=None, verbose=False):
         params_dict = {}
         if params is not None:
