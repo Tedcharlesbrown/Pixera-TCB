@@ -1,33 +1,42 @@
-from api import Pixera, Methods
+from api import Pixera, API
+from time import sleep
 
 if __name__ == "__main__":
     ip = "127.0.0.1"  # Replace with your Pixera system's IP address
     port = 1400  # Replace with your Pixera system's port if different
 
     pixera = Pixera(ip, port)
-    api = Methods
+    api = API()
 
-    # print(pixera.send())
-    # print(pixera.send("TCP",method=api.GET_API_REVISION, verbose=True))
-    # print(pixera.send(method=api.CLOSE_APP, params=["saveProject"], message=[True]))
+    # ----------------------------- DEFAULT DEBUGGING ---------------------------- #
+    output = pixera.send()
+    print(output)
+    sleep(1)
+    # ----------------------------- VERBOSE DEBUGGING ---------------------------- #
+    output = pixera.send(api.outputDebug("Hello from Python!"), verbose=True)
+    print(output)
+    sleep(1)
+    # ---------------------------- CHANGING API METHOD --------------------------- #
+    output = pixera.send(api.getApiRevision(), protocol="TCP_DL", port=1401, verbose=True)
+    print(output)
+    sleep(1)
+    # ------------------------- ACCESSING CONTROL MODULES ------------------------ #
+    output = pixera.send(["NewModule.Test"])
+    print(output)
+    sleep(1)
+    # ---------------------------- MULTIPLE PARAMETERS --------------------------- #
+    pixera.send(api.setTransportModeOnTimeline("Timeline 1", 1))
+    sleep(1)
+    pixera.send(api.setTransportModeOnTimeline("Timeline 1", 0))
+    sleep(1)
+    # ----------------------------- HANDLING HANDLES ----------------------------- #
+    screens = pixera.return_array(pixera.send(api.getScreens()))
+    for screen in screens:
+        output = pixera.send(api.Screen().getName(int(screen)), verbose=True)
+        print(output)
+        sleep(1)
 
 
-    # print(pixera.send(method=api.GET_HAS_FUNCTION, params=["functionName"], message=["Pixera.Compound.scrubCurrentTime"], verbose=True))
-
-    # print(pixera.send())
-    # result = int(pixera.to_array(pixera.send(method=api.GET_TIMELINES))[0])
-    # print(pixera.send(method="Pixera.Timelines.Timeline.getName", params=["handle"], message=[int(result)], verbose=True))
-
-    # print(pixera.send(method="NewModule.Test", verbose=True))
-
-    # print(pixera.send(method="Pixera.Utility.getApiRevision", verbose=True))
-
-    # print(pixera.send(verbose=True))
-    # print(pixera.send(method="Pixera.Utility.outputDebug", params=["message"], message=["Hello from Python!"], verbose=True))
-    # print(pixera.send_test(api.outputDebug("Hello from Python!"), verbose=False))
-
-    # pixera.send("Pixera.Utility.getApiRevision")
-    # pixera.send_test(api.getApiRevision())
-
-    # print(pixera.send(method="Pixera.Screens.getScreens", verbose=True))
-    print(pixera.send(method="Pixera.Screens.Screen.getName", params=["handle"], message=[7265999439151760], verbose=True))
+    # ------------------------------- MANUAL INPUT ------------------------------- #
+    output = pixera.send(["Pixera.Utility.outputDebug", ["message"], ["Hello from Python!"]], verbose=True)
+    print(output)

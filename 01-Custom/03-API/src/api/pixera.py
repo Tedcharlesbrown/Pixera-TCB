@@ -4,12 +4,13 @@ import struct
 import requests
 
 class Pixera:
+    DEFAULT_PORT = 1400
 
-    def __init__(self, ip_address="127.0.0.1", port=1401):
+    def __init__(self, ip_address="127.0.0.1", port=DEFAULT_PORT):
         self.IP_ADDRESS = ip_address
         self.PORT = port
-    
-    def send(self, protocol="TCP", method=None, params=None, message=None, verbose=False) -> str:
+
+    def send(self, array=[], protocol="TCP", port=DEFAULT_PORT, verbose=False,) -> str:
         """
         Send a message using the specified protocol.
 
@@ -21,6 +22,21 @@ class Pixera:
         :param verbose: Print the send message and the response.
         :return: Response data.
         """
+        try:
+            method = array[0]
+        except:
+            method = None
+
+        try:
+            params = array[1]
+        except:
+            params = None
+            
+        try:
+            message = array[2]
+        except:
+            message = None
+
         if method is None:
             method = 'Pixera.Utility.outputDebug'
             if params is None:
@@ -29,6 +45,8 @@ class Pixera:
                 message = ["Hello from Python!"]
 
         result = None
+
+        self.PORT = port
 
         if protocol == "TCP":
             result = self.send_tcp(method, params, message, verbose)
@@ -46,62 +64,15 @@ class Pixera:
             result = result[result_index + 8:-1]
             return result
         
-    def send_test(self, array = None, verbose=False):
-        params_dict = {}
-        method = array[0]
-        params = array[1]
-        message = array[2]
+    def create_params_dict(self, params, message):
         if params is not None:
             # Convert the params and message lists to a dictionary
-            try:
-                params_dict = {params[i]: message[i] for i in range(len(params))}
-            except:
-                pass
-            
-        # Create a TCP/IP socket
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            # Set a timeout for the socket operations
-            s.settimeout(10)  # 10 seconds timeout
-            
-            # Connect the socket to the server's address and port
-            s.connect((self.IP_ADDRESS, self.PORT))
+            return {params[i]: message[i] for i in range(len(params))}
 
-            # Define the JSON-RPC request payload
-            payload = {
-                "jsonrpc": "2.0",
-                "id": 1,
-                "method": method,
-                "params": params_dict
-            }
-
-            # Convert the payload to a JSON string and encode it
-            message = json.dumps(payload).encode()
-
-            # Calculate the size of the message
-            size = len(message)
-
-            # Construct the header
-            # "pxr1" + 4-byte size (least significant byte first)
-            header = b"pxr1" + struct.pack("<I", size)
-
-            message = header + message
-            # Send the header and the message
-            if verbose: print("Sending:", message)
-            s.sendall(message)
-
-            # Receive the response
-            data = s.recv(1024)
-            data_start = data.decode().rfind("{")
-            data = data.decode()[data_start:]
-
-        return data
         
     def send_tcp(self, method=None, params=None, message=None, verbose=False):
-        params_dict = {}
-        if params is not None:
-            # Convert the params and message lists to a dictionary
-            params_dict = {params[i]: message[i] for i in range(len(params))}
-            
+        params_dict = self.create_params_dict(params, message)
+                 
         # Create a TCP/IP socket
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # Set a timeout for the socket operations
@@ -142,10 +113,8 @@ class Pixera:
 
 
     def send_tcp_dl(self, method=None, params=None, message=None, verbose=False):
-        params_dict = {}
-        if params is not None:
-            # Convert the params and message lists to a dictionary
-            params_dict = {params[i]: message[i] for i in range(len(params))}
+        params_dict = self.create_params_dict(params, message)
+
         # Create a TCP/IP socket
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # Set a timeout for the socket operations
@@ -177,17 +146,7 @@ class Pixera:
         
         
     def send_http(self, method=None, params=None, message=None, verbose=False):
-        if method is None:
-            method = 'Pixera.Utility.outputDebug'
-            if params is None:
-                params = ["message"]
-            if message is None:
-                message = ["Hello from Python!"]
-
-        params_dict = {}
-        if params is not None:
-            # Convert the params and message lists to a dictionary
-            params_dict = {params[i]: message[i] for i in range(len(params))}
+        params_dict = self.create_params_dict(params, message)
 
         # Define the JSON-RPC request payload
         payload = {
@@ -227,11 +186,14 @@ class Pixera:
                 method += "."
         method = method[:-1]
 
-        params_dict = {}
+        params_dict = self.create_params_dict(params, message)
 
         if params is not None:
             # Convert the params and message lists to a dictionary
-            params_dict = {params[i]: message[i] for i in range(len(params))}
+            try:
+                params_dict = {params[i]: message[i] for i in range(len(params))}
+            except:
+                pass#TODO: handle this error - message index out of range
             
         # Create a TCP/IP socket
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -273,6 +235,6 @@ class Pixera:
 
         return data
     
-    def to_array(self, input):
+    def return_array(self, input):
         output = input[1:-1].split(',')
         return output
