@@ -1,4 +1,6 @@
-from api import Pixera, API
+#WRITTEN BY: Ted Charles Brown
+
+from PixeraPy import Pixera, API
 from time import sleep
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+#WRITTEN BY: Ted Charles Brown
+
 import socket
 import json
 import struct

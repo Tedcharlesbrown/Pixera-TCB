@@ -129,7 +129,7 @@ def main():
         api_data = create_dictionary(json_data)
         if api_data:
             python_code = generate_python_code(api_data)
-            with open('../../01-Custom/03-API/src/api/api_functions.py', 'w') as file:
+            with open('../../01-Custom/03-API/PixeraPy/api_functions.py', 'w') as file:
                 file.write(python_code)
             print("Python API file generated successfully.")
         else:

@@ -8,10 +8,6 @@ This documentation describes revision 349 of the API.
 
 The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
 
-Pixera API test application by Benni Müller can be found [here](http://www.benni-m.de/index.html#projects).
-
-Descriptions pulled from [pixera_api_examples_rev349.txt](00-Pixera/03-API/docs/pixera_api_examples_rev349.txt)
-
 ## Protocols
 
  - JSON/TCP
@@ -45,121 +41,153 @@ def read_api_json(version_directory):
                 print(f"Error details: {e}")  # Print the error details
                 return
 
+def api_table(api_data):
+    DEBUG_LIMIT = 9999
+    debug_counter = 0
+    output_lines = []  # Start with a header for the document
+
+    def format_params(params, is_class_method=False):
+        """Helper function to format parameters into a Markdown table cell."""
+        formatted_params = []
+        if is_class_method:
+            formatted_params.append("`handle` : object<br>")  # Adding default `handle` parameter for class methods
+
+        formatted_params.extend(f"`{p['name']}` : {p.get('type')} <br>" for p in params)
+        return ''.join(formatted_params) if formatted_params else "None"
+
+    def format_returns(returns):
+        """Helper function to format return values into a Markdown table cell."""
+        return ', '.join(f"`{r['name']}`<br>" for r in returns) if returns else "None"
+
+    # Iterate over each namespace
+    for namespace_name, namespace_info in api_data.items():
+        if debug_counter >= DEBUG_LIMIT:
+            break
+        
+        # Add a subsection for the namespace
+        output_lines.append(f"## {namespace_name}\n")
+        output_lines.append(f"Syntax: *Pixera.{namespace_name}.(function)*\n")
+
+        # Section for functions
+        if 'functions' in namespace_info:
+            output_lines.append("### Functions\n")
+            output_lines.append("| Name | Parameters | Return Values |\n")
+            output_lines.append("| --- | --- | --- |\n")  # Table column format
+            for function_name, function_info in namespace_info['functions'].items():
+                if debug_counter >= DEBUG_LIMIT:
+                    break
+                params = format_params(function_info.get('params', []))
+                returns = format_returns(function_info.get('returnValues', []))
+                output_lines.append(f"| `{function_name}` | {params} | {returns} |\n")
+                debug_counter += 1
+
+        # Section for classes
+        if namespace_info.get('classes'):  # Only show "Classes" if there are classes
+            output_lines.append("### Classes\n")
+            for class_name, class_info in namespace_info['classes'].items():
+                if debug_counter >= DEBUG_LIMIT:
+                    break
+                output_lines.append(f"#### {class_name}\n")
+                output_lines.append(f"Syntax: *Pixera.{namespace_name}.{class_name}.(method)*\n")
+                output_lines.append("| Class Name | Method Name | Parameters | Return Values |\n")
+                output_lines.append("| --- | --- | --- | --- |\n")
+                debug_counter += 1
+                
+                if 'methods' in class_info:
+                    for method_name, method_info in class_info['methods'].items():
+                        if debug_counter >= DEBUG_LIMIT:
+                            break
+                        params = format_params(method_info.get('params', []), is_class_method=True)
+                        returns = format_returns(method_info.get('returnValues', []))
+                        output_lines.append(f"| `{class_name}` | `{method_name}` | {params} | {returns} |\n")
+                        debug_counter += 1
+        
+        # Add space between namespaces
+        output_lines.append("\n")
+
+    return ''.join(output_lines)  # Join all lines into a single string separated by newlines
 
 
-# def build_function_descriptions(file_path):
-#     # Read the content of the other file
-#     with open(file_path, 'r') as f:
-#         lines = f.readlines()
-
-#     comments = []
-#     for line in lines:
-#         stripped_line = line.strip()
-#         if stripped_line.startswith("//"):
-#             # Collect comment lines
-#             comments.append(stripped_line.replace('//', '- '))
-#         elif '(' in stripped_line and ');' in stripped_line:
-#             function_name = stripped_line.split('(')[0].split()[-1]
-#             function_descriptions[function_name] = "\n".join(comments) + "\n\n"
-#             comments = []  # Reset comments for the next function
-
-def build_function_descriptions(file_path):
-    # Read the content of the other file
-    with open(file_path, 'r') as f:
-        lines = f.readlines()
-
-    # Define the start and end markers of the block to ignore
-    start_marker = "// The Compound namespace contains functions that represent core Pixera capabilites and can be invoked"
-    end_marker = "namespace Compound"
-
-    # Flag to determine if we are inside the block to ignore
-    ignore_block = False
-
-    comments = []
-    for line in lines:
-        stripped_line = line.strip()
-
-        # Check if we are entering or leaving the block to ignore
-        if stripped_line == start_marker:
-            ignore_block = True
-        elif stripped_line == end_marker:
-            ignore_block = False
-            comments = []  # Reset comments after the end marker
-            continue  # Skip the current line and move to the next
-
-        # If we are inside the block to ignore, skip processing
-        if ignore_block:
-            continue
-
-        if stripped_line.startswith("//"):
-            # Collect comment lines
-            comments.append(stripped_line.replace('//', '- '))
-        elif '(' in stripped_line and ');' in stripped_line:
-            # This is a simplistic check for a function line
-            function_name = stripped_line.split('(')[0].split()[-1]
-            function_descriptions[function_name] = "\n".join(comments) + "\n\n"
-            comments = []  # Reset comments
 
 
-def get_function_description(function_name):
-    return function_descriptions.get(function_name, "")
 
-def generate_api_overview(json_data):
-    example_json = """
-    => {"jsonrpc":"2.0", "id":3, "method":"Pixera.Utility.outputDebug", "params":{"message":"Hello World"}}
-    <= {"jsonrpc":"2.0", "id":3, "result":"Hello World"}
-    """
+def generate_api_overview(api_data, output_path):
+    overview_content = api_table(api_data)
+    with open(output_path, 'w') as md_file:
+        md_file.write(readme_prefix)
+        md_file.write(overview_content)
 
+def create_dictionary(json_data):
 
     if not json_data:  # Check if json_data is None or empty
         return
+    
+    # RECURSIVE NAMESPACE FUNCTION
+    def process_namespace(namespace):
+        # Check if the 'functions' key exists before proceeding
+        if 'functions' in namespace:
+            # Loop through each function in the current namespace
+            for function in namespace["functions"]:
+                function_name = function["name"]
 
-    output_path = '_api_overview.md'
-    with open(output_path, 'w') as f:
-        f.write(readme_prefix)
-        f.write(f"## {json_data['name']}\n\n")
-        # f.write("---\n\n")  # Horizontal line
+                # Store the function with its params and return values
+                organized_json_data[namespace_name]['functions'][function_name] = {
+                    'params': function.get("params", []),  # Use .get() to avoid KeyError
+                    'returnValues': function.get("returnValues", [])  # Use .get() to avoid KeyError
+                }
+        
+            # Check if the 'classes' key exists before proceeding
+            if 'classes' in namespace:
+                # Loop through each class in the current namespace
+                for class_ in namespace["classes"]:
+                    class_name = class_["name"]
 
+                    # Initialize dictionary for the class
+                    organized_json_data[namespace_name]['classes'][class_name] = {
+                        'methods': {},
+                        # 'params': class_.get("params", [])  # Classes might not have params at this level, depending on your JSON structure
+                    }
+                    
+                    # Check if the 'methods' key exists in the class before proceeding
+                    if 'methods' in class_:
+                        # Loop through each method in the current class
+                        for method in class_["methods"]:
+                            method_name = method["name"]
 
-        # Loop through namespaces
-        for namespace in json_data['namespaces']:
-            # Write namespace name as a subsection
-            f.write(f"### {namespace['name']}\n\n")
-            # f.write("---\n\n")  # Horizontal line
+                            # Store the class method with its params and return values
+                            organized_json_data[namespace_name]['classes'][class_name]['methods'][method_name] = {
+                                'params': method.get("params", []),
+                                'returnValues': method.get("returnValues", [])
 
-            # Loop through functions in each namespace
-            if 'functions' in namespace:
-                for function in namespace['functions']:
-                    formatted_function_name = re.sub(r'(?<=[a-z])([A-Z])', r' \1', function['name']).strip().upper()
-                    f.write(f"**{formatted_function_name}**\n")
-                    f.write(f"\n`{json_data['name']}.{namespace['name']}.{function['name']}`\n\n")
+            
+                            }
+    
+    # Initialize an empty dictionary to hold the organized data
+    organized_json_data = {}
 
-                    # If there is a description, write it
-                    f.write(get_function_description(function['name']))
-                    # return
+    # Loop through each namespace in the JSON data
+    for namespace in json_data["namespaces"]:
+        namespace_name = namespace["name"]
+        
+        # Initialize dictionaries for the namespace if they don't exist
+        organized_json_data[namespace_name] = {
+            'functions': {},
+            'classes': {},
+            'namespaces': {}
+        }
 
-                    # If there are parameters, list them
-                    if function['params']:
-                        f.write("   - **Parameters**:\n")
-                        for param in function['params']:
-                            f.write(f"     - `{param['name']}` : *{param['type']}*\n")
-                        f.write("\n")
+        process_namespace(namespace)
 
-                    # If there are return values, list them
-                    if function['returnValues']:
-                        f.write("   - **Return Values**:\n")
-                        for ret_val in function['returnValues']:
-                            f.write(f"     - `{ret_val['name']}` : *{ret_val['type']}*\n")
-                        f.write("\n")
+        # Catch Settings and Unreal namespaces
+        if 'namespaces' in namespace:
+            for name in namespace["namespaces"]:
+                process_namespace(name)
 
-                    f.write("---\n\n")  # Horizontal line after each function
+    return organized_json_data
 
-
-# Dictionary to store function descriptions
-function_descriptions = {}
 
 if __name__ == "__main__":
     version_directory = './'
-    build_function_descriptions("docs/pixera_api_examples_rev349.txt")
     json_data = read_api_json(version_directory)
-    generate_api_overview(json_data)
+    data = create_dictionary(json_data)
+    generate_api_overview(data, "_api_overview.md")
