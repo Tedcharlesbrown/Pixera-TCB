@@ -24,20 +24,16 @@ class Pixera:
         :param verbose: Print the send message and the response.
         :return: Response data.
         """
-        try:
-            method = array[0]
-        except:
-            method = None
+        # Default values for method, params, and message
+        method, params, message = None, None, None
 
-        try:
+        # Unpack the array based on its length
+        if len(array) >= 1:
+            method = array[0]
+        if len(array) >= 2:
             params = array[1]
-        except:
-            params = None
-            
-        try:
+        if len(array) == 3:
             message = array[2]
-        except:
-            message = None
 
         if method is None:
             method = 'Pixera.Utility.outputDebug'
@@ -68,7 +64,14 @@ class Pixera:
         
     def create_params_dict(self, params, message):
         if params is not None:
-            # Convert the params and message lists to a dictionary
+            # Check if params is a single string and split it if necessary
+            if isinstance(params, str):
+                params = params.split(',')
+
+            # Trim whitespace from each parameter name
+            params = [param.strip() for param in params]
+
+            # Create and return the dictionary
             return {params[i]: message[i] for i in range(len(params))}
 
         

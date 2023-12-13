@@ -76,15 +76,15 @@ def generate_python_code(api_data):
             param_names = [param['name'] for param in function_info.get('params', [])]
             return_values = ', '.join([replace_types(ret['type']) for ret in function_info.get('returnValues', [])])
             return_type = f" -> {return_values}" if return_values else ""
-            params_list_string = '[' + ', '.join(f'"{name}"' for name in param_names) + ']' if param_names else '[]'
-            params_list = '[' + ', '.join(param_names) + ']' if param_names else '[]'
+            params_list_string = ', '.join(f'"{name}"' for name in param_names)
+            params_list = ', '.join(param_names)
 
             function_definition = (
                 f"    @staticmethod\n"
                 f"    def {function_name}({all_params}){return_type}:\n"
                 f"        method = \"Pixera.{namespace_name}.{function_name}\"\n"
-                f"        params = {params_list_string}\n"
-                f"        return [method, params, {params_list}]\n\n"
+                f"        params = [{params_list_string}]\n"
+                f"        return [method, params, [{params_list}]]\n\n"
             )
             code_lines.append(function_definition)
 
@@ -99,16 +99,16 @@ def generate_python_code(api_data):
                 if params_list:
                     handle_param += ", " + ', '.join(params_list)
                 param_names_list = [param['name'] for param in method_info.get('params', [])]
-                param_names_with_handle = "handle"
-                if param_names_list:
-                    param_names_with_handle += ", " + ', '.join(param_names_list)
+                param_names_with_handle = ', '.join(['handle'] + param_names_list)
+                params_string_with_handle = ', '.join(['"handle"'] + [f'"{name}"' for name in param_names_list])
+
                 return_values = ', '.join([replace_types(ret['type']) for ret in method_info.get('returnValues', [])])
                 return_type = f" -> {return_values}" if return_values else ""
                 method_definition = (
                     f"        @staticmethod\n"
                     f"        def {method_name}({handle_param}){return_type}:\n"
                     f"            method = \"Pixera.{namespace_name}.{class_name}.{method_name}\"\n"
-                    f"            params = [\"{param_names_with_handle}\"]\n\n"
+                    f"            params = [{params_string_with_handle}]\n"
                     f"            return [method, params, [{param_names_with_handle}]]\n\n"
                 )
                 class_definition += method_definition
