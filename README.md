@@ -10,8 +10,6 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 [v1.9.220](00-Pixera/02-Shaders/v1.9.220/_effect_overview.md)
 
 [v1.9.149](00-Pixera/02-Shaders/v1.9.149/_effect_overview.md)
-### Edited Effects Overview
-[Edited](01-Custom/02-Shaders/Pixera-Edited/_effect_overview.md)
 
 ## API
 ### Pixera API Overview
