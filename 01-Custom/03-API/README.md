@@ -2,7 +2,6 @@
 ## PixeraPy
 
 Made by Ted Charles Brown<br>
-API Version: 349
 
 `pip install PixeraPy`
 
