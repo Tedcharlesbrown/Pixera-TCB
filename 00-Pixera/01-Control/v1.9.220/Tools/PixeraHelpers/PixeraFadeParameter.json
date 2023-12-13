@@ -1,0 +1,193 @@
+{
+ "api": [
+  {
+   "elems": [
+    {
+     "body": "local root = pixc.getRoot()\r\nlocal fps = 1000.0 / root.Pixera.Timelines.Timeline.getInst(Timeline).getFps()\r\nlocal oldValue = root.Pixera.Timelines.Timeline.getInst(Timeline).getOpacity()\r\nlocal times = timeMs / fps\r\nlocal add_value = (Value - oldValue) / times\r\nfor i = 0.0, times-1, 1 do\r\n\toldValue = oldValue + add_value\r\n\troot.Pixera.Timelines.Timeline.getInst(Timeline).setOpacity(oldValue)\r\n\troot.Utils.Timer.sleep(fps)\r\nend\r\nroot.Pixera.Timelines.Timeline.getInst(Timeline).setOpacity(Value)\r\n",
+     "kind": "func",
+     "name": "FadeTimelineOpacity",
+     "params": [
+      {
+       "name": "Timeline",
+       "type": "string"
+      },
+      {
+       "name": "Value",
+       "type": "Int"
+      },
+      {
+       "name": "timeMs",
+       "type": "Int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Timeline"
+  },
+  {
+   "elems": [
+    {
+     "body": "local root = pixc.getRoot()\r\nlocal fpsMS = 1000.0 / root.Pixera.Timelines.Timeline.getInst(Timeline).getFps()\r\nlocal oldValue = root.Pixera.Timelines.Layer.getInst(Timeline .. \".\" .. Layer).getOpacity()\r\nlocal times = timeMs / fpsMS\r\nlocal add_value = (Value - oldValue) / times\r\nfor i = 0.0, times-1, 1 do\r\n\toldValue = oldValue + add_value\r\n\troot.Pixera.Timelines.Layer.getInst(Timeline .. \".\" .. Layer).setOpacity(oldValue)\r\n\troot.Utils.Timer.sleep(fpsMS)\r\nend\r\nroot.Pixera.Timelines.Layer.getInst(Timeline .. \".\" .. Layer).setOpacity(Value)\r\n\r\n",
+     "kind": "func",
+     "name": "FadeLayerOpacity",
+     "params": [
+      {
+       "name": "Timeline",
+       "type": "string"
+      },
+      {
+       "name": "Layer",
+       "type": "string"
+      },
+      {
+       "name": "Value",
+       "type": "Int"
+      },
+      {
+       "name": "timeMs",
+       "type": "Int"
+      }
+     ]
+    },
+    {
+     "body": "local root = pixc.getRoot()\nlocal fpsMS = 1000.0 / root.Pixera.Timelines.Timeline.getInst(Timeline).getFps()\nlocal oldValue = root.Pixera.Timelines.Param.getInst(Timeline .. \".\" .. LayerPath).getValue()\nlocal times = timeMs / fpsMS\nlocal add_value = (Value - oldValue) / times\nfor i = 0.0, times-1, 1 do\n\toldValue = oldValue + add_value\n\troot.Pixera.Timelines.Param.getInst(Timeline .. \".\" .. LayerPath).setValue(oldValue)\n\troot.Utils.Timer.sleep(fpsMS)\nend\nroot.Pixera.Timelines.Param.getInst(Timeline .. \".\" .. LayerPath).setValue(Value)\n",
+     "kind": "func",
+     "name": "FadeLayerParameter",
+     "params": [
+      {
+       "name": "Timeline",
+       "type": "string"
+      },
+      {
+       "name": "LayerPath",
+       "type": "string"
+      },
+      {
+       "name": "Value",
+       "type": "Int"
+      },
+      {
+       "name": "timeMs",
+       "type": "Int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Layer"
+  },
+  {
+   "elems": [
+    {
+     "body": "local root = pixc.getRoot()\nlocal fpsMS = 1000.0 / 60.0\nlocal positionOld = {oldX,oldY,oldZ}\nlocal positionNew = {newX,newY,newZ}\nlocal times = timeMs / fpsMS\nlocal add_valueX = (positionNew[1] - positionOld[1]) / times\nlocal add_valueY = (positionNew[2] - positionOld[2]) / times\nlocal add_valueZ = (positionNew[3] - positionOld[3]) / times\nfor i = 0.0, times-1, 1 do\n\tpositionOld[1] = positionOld[1] + add_valueX\n\tpositionOld[2] = positionOld[2] + add_valueY\n\tpositionOld[3] = positionOld[3] + add_valueZ\n\troot.Pixera.Screens.Screen.getInst(ScreenName).setPosition(positionOld[1],positionOld[2],positionOld[3])\n\troot.Utils.Timer.sleep(fpsMS)\nend\nroot.Pixera.Screens.Screen.getInst(ScreenName).setPosition(positionNew[1],positionNew[2],positionNew[3])\n",
+     "kind": "func",
+     "name": "FadeScreenPosition",
+     "params": [
+      {
+       "name": "ScreenName",
+       "type": "string"
+      },
+      {
+       "name": "oldX",
+       "type": "Double"
+      },
+      {
+       "name": "oldY",
+       "type": "Double"
+      },
+      {
+       "name": "oldZ",
+       "type": "Double"
+      },
+      {
+       "name": "newX",
+       "type": "Double"
+      },
+      {
+       "name": "newY",
+       "type": "Double"
+      },
+      {
+       "name": "newZ",
+       "type": "Double"
+      },
+      {
+       "name": "timeMs",
+       "type": "Double"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Screen"
+  },
+  {
+   "elems": [
+    {
+     "body": "local root = pixc.getRoot()\nlocal fpsMS = 1000.0 / 60.0\nlocal positionOld = {oldX,oldY,oldZ}\nlocal positionNew = {newX,newY,newZ}\nlocal times = timeMs / fpsMS\nlocal add_valueX = (positionNew[1] - positionOld[1]) / times\nlocal add_valueY = (positionNew[2] - positionOld[2]) / times\nlocal add_valueZ = (positionNew[3] - positionOld[3]) / times\nfor i = 0.0, times-1, 1 do\n\tpositionOld[1] = positionOld[1] + add_valueX\n\tpositionOld[2] = positionOld[2] + add_valueY\n\tpositionOld[3] = positionOld[3] + add_valueZ\n\troot.Pixera.Screens.Screen.getInst(ScreenName).setCameraPosition(positionOld[1],positionOld[2],positionOld[3])\n\troot.Utils.Timer.sleep(fpsMS)\nend\nroot.Pixera.Screens.Screen.getInst(ScreenName).setCameraPosition(positionNew[1],positionNew[2],positionNew[3])\n",
+     "kind": "func",
+     "name": "FadeEyePosition",
+     "params": [
+      {
+       "name": "ScreenName",
+       "type": "string"
+      },
+      {
+       "name": "oldX",
+       "type": "Double"
+      },
+      {
+       "name": "oldY",
+       "type": "Double"
+      },
+      {
+       "name": "oldZ",
+       "type": "Double"
+      },
+      {
+       "name": "newX",
+       "type": "Double"
+      },
+      {
+       "name": "newY",
+       "type": "Double"
+      },
+      {
+       "name": "newZ",
+       "type": "Double"
+      },
+      {
+       "name": "timeMs",
+       "type": "Double"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Eye"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 69.0,
+  "y": 42.0
+ },
+ "definedExternally": false,
+ "libraryExportPath": "C:\\ProgramData\\AV Stumpfl\\Pixera\\control_library_user\\Custom\\PixeraFadeParameter.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4v2rFTwbARvGyScqlRRo7M0IUQ3+SN8jizmW+xah7pjtp30aUiXFhkfirG+xU6qWi7p0DSQ/eKC3utnPO+CacX0=",
+ "name": "PixeraFadeParameter",
+ "properties": [
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}

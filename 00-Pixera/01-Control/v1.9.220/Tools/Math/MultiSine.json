@@ -1,0 +1,205 @@
+{
+ "api": [
+  {
+   "body": "local res = math.sin(self.Hz() * time/500.0 * math.pi)\nself.sendTuple(\n\tres * self.X_Scale() + self.X_Off(),\n\tres * self.Y_Scale() + self.Y_Off(),\n\tres * self.Z_Scale() + self.Z_Off())\n\n",
+   "kind": "func",
+   "name": "receiveTime",
+   "params": [
+    {
+     "name": "time",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "leftIn;rightIn"
+  },
+  {
+   "body": "",
+   "kind": "func",
+   "name": "sendTuple",
+   "params": [
+    {
+     "name": "x",
+     "type": "double"
+    },
+    {
+     "name": "y",
+     "type": "double"
+    },
+    {
+     "name": "z",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._Hz = pixcCommon.execAttribute(0.1, self._Hz, val, doSet)\r\nreturn self._Hz\r\n",
+   "kind": "func",
+   "name": "Hz",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._X_Scale = pixcCommon.execAttribute(1.0, self._X_Scale, val, doSet)\r\nreturn self._X_Scale\r\n",
+   "kind": "func",
+   "name": "X_Scale",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._Y_Scale = pixcCommon.execAttribute(1.0, self._Y_Scale, val, doSet)\r\nreturn self._Y_Scale\r\n",
+   "kind": "func",
+   "name": "Y_Scale",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._Z_Scale = pixcCommon.execAttribute(1.0, self._Z_Scale, val, doSet)\r\nreturn self._Z_Scale\r\n",
+   "kind": "func",
+   "name": "Z_Scale",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._X_Off = pixcCommon.execAttribute(0, self._X_Off, val, doSet)\r\nreturn self._X_Off\r\n",
+   "kind": "func",
+   "name": "X_Off",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._Y_Off = pixcCommon.execAttribute(0, self._Y_Off, val, doSet)\r\nreturn self._Y_Off\r\n",
+   "kind": "func",
+   "name": "Y_Off",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._Z_Off = pixcCommon.execAttribute(0, self._Z_Off, val, doSet)\r\nreturn self._Z_Off\r\n",
+   "kind": "func",
+   "name": "Z_Off",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "double"
+   },
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 525.0,
+  "y": 383.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/env/nui/data/control_library_standard/Tools/MultiSine.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4gWyEtza3cgkiZD7LpGnfaikhMo4GVmEskWY5Pd2TqQuug6XN4nNuWKr27I5ygtchAjwRRTJdQ80ywHFGj5qkpTNh1VIGU0hhGB0PuNmNdWbdIg/lOdgU4n6+30GIHuqQw==",
+ "name": "MultiSine",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

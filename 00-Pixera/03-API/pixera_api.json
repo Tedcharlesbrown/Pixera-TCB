@@ -406,6 +406,36 @@
      ]
     },
     {
+     "name": "startFirstTimeline",
+     "params": [],
+     "returnValues": [
+      {
+       "name": "null",
+       "type": "null"
+      }
+     ]
+    },
+    {
+     "name": "pauseFirstTimeline",
+     "params": [],
+     "returnValues": [
+      {
+       "name": "null",
+       "type": "null"
+      }
+     ]
+    },
+    {
+     "name": "stopFirstTimeline",
+     "params": [],
+     "returnValues": [
+      {
+       "name": "null",
+       "type": "null"
+      }
+     ]
+    },
+    {
      "name": "setOpacityOnTimeline",
      "params": [
       {
@@ -436,36 +466,6 @@
       {
        "name": "double",
        "type": "double"
-      }
-     ]
-    },
-    {
-     "name": "startFirstTimeline",
-     "params": [],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "name": "pauseFirstTimeline",
-     "params": [],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "name": "stopFirstTimeline",
-     "params": [],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
       }
      ]
     },
@@ -532,6 +532,10 @@
       {
        "name": "timelineIndex",
        "type": "int"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
       }
      ],
      "returnValues": [
@@ -551,6 +555,10 @@
       {
        "name": "timelineIndex",
        "type": "int"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
       }
      ],
      "returnValues": [
@@ -570,6 +578,10 @@
       {
        "name": "cueNumber",
        "type": "int"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
       }
      ],
      "returnValues": [
@@ -589,6 +601,10 @@
       {
        "name": "cueName",
        "type": "string"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
       }
      ],
      "returnValues": [
@@ -801,7 +817,7 @@
      "name": "setCurrentTimeOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       },
       {
@@ -820,7 +836,7 @@
      "name": "setCurrentTimeOfTimelineInSeconds",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       },
       {
@@ -839,7 +855,7 @@
      "name": "setCurrentTimeAndTransportModeOfTimelineInSeconds",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       },
       {
@@ -862,7 +878,7 @@
      "name": "getFpsOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       }
      ],
@@ -877,7 +893,7 @@
      "name": "getCurrentTimeOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       }
      ],
@@ -892,7 +908,7 @@
      "name": "getCurrentTimeOfTimelineInSeconds",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       }
      ],
@@ -907,7 +923,7 @@
      "name": "getCurrentHMSFOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       }
      ],
@@ -922,7 +938,7 @@
      "name": "getCurrentCountdownOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       }
      ],
@@ -937,7 +953,7 @@
      "name": "getCurrentCountdownHMSFOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       }
      ],
@@ -949,10 +965,29 @@
      ]
     },
     {
+     "name": "blockUiTimelineUpdates",
+     "params": [
+      {
+       "name": "doBlock",
+       "type": "bool"
+      },
+      {
+       "name": "terminationDurationInMs",
+       "type": "optional<int>"
+      }
+     ],
+     "returnValues": [
+      {
+       "name": "null",
+       "type": "null"
+      }
+     ]
+    },
+    {
      "name": "startOpacityAnimationOfTimeline",
      "params": [
       {
-       "name": "timelineName",
+       "name": "name",
        "type": "string"
       },
       {
@@ -1908,15 +1943,76 @@
        ]
       },
       {
-       "name": "clearExportedMappings",
+       "name": "setUsagePresetName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "getUsagePresetName",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "string",
+         "type": "string"
+        }
+       ]
+      },
+      {
+       "name": "updateUsagePreset",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "saveUsagePresetAs",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "applyUsagePreset",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "exportUsagePreset",
        "params": [
         {
          "name": "path",
          "type": "string"
-        },
-        {
-         "name": "onlyServicePath",
-         "type": "bool"
         }
        ],
        "returnValues": [
@@ -1927,105 +2023,7 @@
        ]
       },
       {
-       "name": "exportMappings",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "importMappings",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        },
-        {
-         "name": "outputIdPathMapStr",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "exportMappingsDirectly",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "importMappingsDirectly",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        },
-        {
-         "name": "outputIdPathMapStr",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "exportMappingsToLiveSystemPath",
-       "params": [
-        {
-         "name": "parentPath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "importMappingsFromLiveSystemPath",
-       "params": [
-        {
-         "name": "parentPath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "clearExportedMappingsAtLiveSystemPath",
+       "name": "importUsagePreset",
        "params": [
         {
          "name": "path",
@@ -2242,6 +2240,21 @@
        ]
       },
       {
+       "name": "toggleAudioMasterMute",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
        "name": "setAudioTimecodeInput",
        "params": [
         {
@@ -2313,6 +2326,102 @@
       }
      ],
      "name": "LiveSystem"
+    },
+    {
+     "methods": [
+      {
+       "name": "getName",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "string",
+         "type": "string"
+        }
+       ]
+      },
+      {
+       "name": "update",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "apply",
+       "params": [
+        {
+         "name": "destinationIp",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "importFromFile",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "exportToFile",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "deliver": "Pixera.LiveSystems.UsagePreset",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "handle",
+         "type": "handle"
+        }
+       ]
+      },
+      {
+       "name": "getInstancePath",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "string",
+         "type": "string"
+        }
+       ]
+      }
+     ],
+     "name": "UsagePreset"
     },
     {
      "methods": [
@@ -2454,6 +2563,60 @@
          "type": "bool"
         }
        ]
+      },
+      {
+       "name": "setIsOutputAggregate",
+       "params": [
+        {
+         "name": "state",
+         "type": "bool"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "getIsOutputAggregate",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "bool",
+         "type": "bool"
+        }
+       ]
+      },
+      {
+       "name": "setAggregateDims",
+       "params": [
+        {
+         "name": "horizontalCount",
+         "type": "int"
+        },
+        {
+         "name": "verticalCount",
+         "type": "int"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "getAggregateDims",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "int[]",
+         "type": "int[]"
+        }
+       ]
       }
      ],
      "name": "Output"
@@ -2533,6 +2696,17 @@
     {
      "deliver": "Pixera.LiveSystems.MultiUserMember",
      "name": "getMultiUserMembers",
+     "params": [],
+     "returnValues": [
+      {
+       "name": "handle[]",
+       "type": "handle[]"
+      }
+     ]
+    },
+    {
+     "deliver": "Pixera.LiveSystems.UsagePreset",
+     "name": "getUsagePresets",
      "params": [],
      "returnValues": [
       {
@@ -2777,6 +2951,53 @@
         },
         {
          "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "bool",
+         "type": "bool"
+        }
+       ]
+      },
+      {
+       "name": "setPosRotAndPerspectivePos",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspXPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspYPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspZPos",
          "type": "optional<double>"
         }
        ],
@@ -3928,6 +4149,10 @@
         {
          "name": "aspectRatio",
          "type": "optional<double>"
+        },
+        {
+         "name": "lockLookAtPt",
+         "type": "optional<bool>"
         }
        ],
        "returnValues": [
@@ -4312,7 +4537,12 @@
       {
        "deliver": "Pixera.LiveSystems.Output",
        "name": "getOutput",
-       "params": [],
+       "params": [
+        {
+         "name": "index",
+         "type": "optional<int>"
+        }
+       ],
        "returnValues": [
         {
          "name": "handle",
@@ -6497,6 +6727,10 @@
         {
          "name": "name",
          "type": "string"
+        },
+        {
+         "name": "blendDuration",
+         "type": "optional<double>"
         }
        ],
        "returnValues": [
@@ -6512,6 +6746,10 @@
         {
          "name": "number",
          "type": "int"
+        },
+        {
+         "name": "blendDuration",
+         "type": "optional<double>"
         }
        ],
        "returnValues": [
@@ -7036,7 +7274,7 @@
          "type": "bool"
         },
         {
-         "name": "durationFrames",
+         "name": "fullFadeDuration",
          "type": "double"
         }
        ],
@@ -8582,6 +8820,16 @@
        ]
       },
       {
+       "name": "toggleMute",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
        "name": "getIsMuted",
        "params": [],
        "returnValues": [
@@ -8791,6 +9039,16 @@
        ]
       },
       {
+       "name": "toggleMute",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
        "name": "getIsMuted",
        "params": [],
        "returnValues": [
@@ -8859,7 +9117,12 @@
       },
       {
        "name": "apply",
-       "params": [],
+       "params": [
+        {
+         "name": "blendDuration",
+         "type": "optional<double>"
+        }
+       ],
        "returnValues": [
         {
          "name": "null",
@@ -8871,7 +9134,7 @@
        "name": "blendToThis",
        "params": [
         {
-         "name": "blendDurationInSeconds",
+         "name": "blendDuration",
          "type": "double"
         }
        ],
@@ -9994,6 +10257,53 @@
         },
         {
          "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
+        }
+       ]
+      },
+      {
+       "name": "setPosRotAndPerspectivePos",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspXPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspYPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspZPos",
          "type": "optional<double>"
         }
        ],

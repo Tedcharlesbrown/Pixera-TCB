@@ -1,0 +1,104 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcDriver\"\nself.pixcHelper = createPixcHelper(pixc,self())\nself.driver = createPixcDriver()\npixc.log(self.driver)\npixc.log(self.pixcHelper)\n \nself.driver:setLogFunction(function (...) pixc.log(...) end)\nself.driver:setConnectionLifecycleCallback(self.pixcHelper.wrapCallback(self().connectionLifecycle))\n\nself.driver:createParser()\nself.driver:addMatcher(\"Msg\", 'string(&0,{\\r\\n},[4096])', true,self.pixcHelper.wrapCallback(self().receive))\n--self.driver:addMatcher(\"Msg\", 'string(&0,[20])', true,self.pixcHelper.wrapCallback(self().receive))\n--self.driver:addMatcher(\"Msg\", 'string(&0,{r},[4096])', true,self.pixcHelper.wrapCallback(self().receive))\nself.driver:addMatcher(\"Value\", 'number(&1)', true,self.pixcHelper.wrapCallback(self().receiveNum))\n\n\nself.ip = self.pixcHelper:getProperty(\"IP\",\"127.0.0.1\")\nself.port = tonumber(self.pixcHelper:getProperty(\"Port\",\"6451\"))\n--\t\t\t\ttcp/udp\tIP\t\t\tPORT\t\tRecIP\tRecPort\tOSC\nself.driver:set(\"tcp\",\tself.ip,\tself.port,\tnil,\tnil,\tfalse);\n\nself.driver:connect();\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.driver ~= nil then\r\n\tself.driver:close()\r\nend\r\nself.connectionLifecycle(false)\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "standard",
+   "body": "-- attKind:val\r\n\r\nif result == true then\r\npixc.report(\"connected\")\r\nelse\r\npixc.report(\"disconnected\")\r\nend\r\n\r\npixc.log(\"connectionLifecycle: \" .. tostring(result))\r\n",
+   "kind": "func",
+   "name": "connectionLifecycle",
+   "params": [
+    {
+     "name": "result",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "self.driver:send(msg .. '\\r\\n')\r\n--self.driver:send('Halgloweqw\\r\\n')\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "pixc.log(msg)\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n--if else\r\nif msg == \"play\" then self.ReceiveAction.Action1()\r\nelseif msg == \"stop\" then self.ReceiveAction.Action2()\r\nend",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "pixc.log(Num)",
+   "kind": "func",
+   "name": "receiveNum",
+   "params": [
+    {
+     "name": "Num",
+     "type": "double"
+    }
+   ]
+  },
+  {
+   "elems": [
+    {
+     "body": "pixc.log(\"Action 1\")",
+     "kind": "func",
+     "name": "Action1"
+    },
+    {
+     "body": "pixc.log(\"Action 2\")",
+     "kind": "func",
+     "name": "Action2"
+    }
+   ],
+   "kind": "ns",
+   "name": "ReceiveAction"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 358.0,
+  "y": 500.0
+ },
+ "definedExternally": false,
+ "libraryExportPath": "C:\\ProgramData\\AV Stumpfl\\Pixera\\control_library_user\\Generic\\PlainTcpString.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4q6S+Bbns6lvewrVc1r5YU1b+Hemht+Pgqmoxqa+ar1YxC16hL/z/B2+V+1peXdnEGsihkJg2mZq1tJt9KfFGB8=",
+ "name": "PlainTcpString",
+ "properties": [
+  {
+   "cont": "192.168.0.2",
+   "name": "IP"
+  },
+  {
+   "cont": "56435",
+   "name": "Port"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL"
+  }
+ ],
+ "separateCode": false
+}

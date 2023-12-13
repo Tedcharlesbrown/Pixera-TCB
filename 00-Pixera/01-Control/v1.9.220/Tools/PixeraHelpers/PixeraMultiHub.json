@@ -1,0 +1,115 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref"
+  },
+  {
+   "body": "return pixc.callRefs(action, val)",
+   "kind": "func",
+   "name": "toPixeraHubs",
+   "params": [
+    {
+     "name": "action",
+     "type": ""
+    },
+    {
+     "name": "val",
+     "type": ""
+    }
+   ]
+  },
+  {
+   "body": "self.toPixeraHubs(\"init\")",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "self.toPixeraHubs(\"uninit\")",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "self.toPixeraHubs(\"reboot\", force)",
+   "kind": "func",
+   "name": "reboot",
+   "params": [
+    {
+     "name": "force",
+     "type": "boolean"
+    }
+   ]
+  },
+  {
+   "body": "self.toPixeraHubs(\"shutdown\",force)",
+   "kind": "func",
+   "name": "shutdown",
+   "params": [
+    {
+     "name": "force",
+     "type": "boolean"
+    }
+   ]
+  },
+  {
+   "body": "self.toPixeraHubs(\"startPixera\", version)",
+   "kind": "func",
+   "name": "startPixera",
+   "params": [
+    {
+     "name": "version",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "self.toPixeraHubs(\"startPresence\", version)",
+   "kind": "func",
+   "name": "startPresence",
+   "params": [
+    {
+     "name": "version",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "self.toPixeraHubs(\"stopPixera\")",
+   "kind": "func",
+   "name": "stopPixera"
+  },
+  {
+   "body": "self.toPixeraHubs(\"stopPresence\")",
+   "kind": "func",
+   "name": "stopPresence"
+  },
+  {
+   "body": "self.toPixeraHubs(\"wake\")",
+   "kind": "func",
+   "name": "wake"
+  }
+ ],
+ "cjv": {
+  "h": 260.0,
+  "w": 232.0,
+  "x": 109.0,
+  "y": 335.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Tools/PixeraMultiHub.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4jrxTQuYoB4RkKF3q/JQqhiZG0vIOw2Caj9S+yggNIg/r6MUmA9gGslYaOZEoWD1GGelRoXeO6xSeSMoFRIC3d1yq4zOhdIMCcPqOaSXYT/y+99ZqTuRy8pQ9VoAKBlUqA==",
+ "name": "PixeraMultiHub",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

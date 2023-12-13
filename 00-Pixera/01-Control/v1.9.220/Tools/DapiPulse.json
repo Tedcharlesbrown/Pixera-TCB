@@ -1,0 +1,72 @@
+{
+ "api": [
+  {
+   "body": "self().testDapi(\"scLoad\", \"self\", 100, 10, true)\n",
+   "kind": "func",
+   "name": "load",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "self().testDapi(\"scCall\", \"self.Internal.startImp\")\n",
+   "kind": "func",
+   "name": "start",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "self().testDapi(\"scCall\", \"self.Internal.stopImp\")\n",
+   "kind": "func",
+   "name": "stop",
+   "slotStyle": "leftIn;rightNone"
+  },
+  {
+   "body": "",
+   "kind": "func",
+   "name": "pulse",
+   "params": [
+    {
+     "name": "time",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut"
+  },
+  {
+   "elems": [
+    {
+     "body": "self.interval = Utils.Timer.setInterval(self.pulse, 10)",
+     "kind": "func",
+     "name": "startImp"
+    },
+    {
+     "body": "if self.interval ~= nil then\n\tUtils.Timer.clearInterval(self.interval)\n\tself.interval = nil\nend",
+     "kind": "func",
+     "name": "stopImp"
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 50.0,
+  "y": 442.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/env/nui/data/control_library_standard/Tools/DapiPulse.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4mbAVi8krM5BWrwLcVaidB01fFfQnHGIP5n1//P0uwQvYnD6Nxg+k5gozjDmtWECQqXAqozThpS9D/8uq+YQi9c=",
+ "name": "DapiPulse",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

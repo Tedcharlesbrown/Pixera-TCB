@@ -1,0 +1,1756 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nself.xml2lua = require(\"xml2lua\")\nself.treehandler = require(\"xmlhandler.tree\")\nif self.helper ~= nil then -- already init called\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.connected = false\nself.IsConnected(false)\nself.ip = self.helper:getProperty(\"IP\",\"127.0.0.1\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"8099\"))\nself.network:configureTcp(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self().Internal.receive(data) end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isConnected) self().IsConnected(isConnected) end)\nself.network:start()\nif self._interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self._interval);\n\tself._interval = nil\nend\nself._interval = pixc.getRoot().Utils.Timer.setInterval(\n\tfunction()\n\t\tif self.network == nil or self._isConnected == false then\n\t\t\treturn\n\t\tend\n\t\tself.network:send(\"XML\\r\\n\")\n\t  end,250)\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "if self._interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self._interval);\n\tself._interval = nil\nend\nif self.network == nil then return end\nself.network:close()\nself.network = nil\nself.helper = nil\n",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "internal",
+   "body": "if result ~= nil then \n\tif result == true then\n\t\tpixc.report(\"connected\")\n\t\tself._isConnected = true\n\telse\n\t\tpixc.report(\"disconnected\")\n\t\tself.Internal.receive(\"\")\n\t\tself._isConnected = false\n\tend\nend\nreturn self._isConnected",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "result",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION ActiveInput Input=\" .. input .. \"\\r\\n\")\npixc.report(input)\r\n",
+   "kind": "func",
+   "name": "InputToProgram",
+   "params": [
+    {
+     "name": "Input",
+     "type": "int"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION PreviewInput Input=\" .. input .. \"\\r\\n\")\npixc.report(input)\r\n",
+   "kind": "func",
+   "name": "InputToPrev",
+   "params": [
+    {
+     "name": "Input",
+     "type": "sring"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(msg)\n\tend\n\treturn\nend\n\nif type(msg) ~= \"string\" then\n\tpixc.report(msg)\n\tpixc.log(\"Error. Message was not a string!\")\n\treturn\nend\nself.network:send(msg .. \"\\r\\n\")\npixc.report(msg)\n",
+   "kind": "func",
+   "name": "CustomCommand",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "pixc.report(msg)\npixc.callRefs(msg)\nlocal isXML = string.sub(msg,1,3)\nlocal isXML2 = string.sub(msg,1,6)\nif isXML == \"XML\" or isXML2 == \"<vmix>\" then\n\tlocal xmlData = \"\"\n\tif isXML == \"XML\" then\n\t\txmlData = string.sub(msg,9,string.len(msg))\n\telse\n\t\txmlData = msg\n\tend\n\tlocal handler = self.treehandler:new()\n\tlocal parser = self.xml2lua.parser(handler)\n\tparser:parse(xmlData)\n\tif handler.root.vmix ~= nil then\n\t\tself.Status.Version(handler.root.vmix.version)\n\t\tself.Status.Edition(handler.root.vmix.edition)\n\t\tself.Status.Preview(handler.root.vmix.preview)\n\t\tself.Status.Program(handler.root.vmix.active)\n\t\tself.Status.Overlay_1(handler.root.vmix.overlays.overlay[1][1])\n\t\tself.Status.Overlay_2(handler.root.vmix.overlays.overlay[2][1])\n\t\tself.Status.Overlay_3(handler.root.vmix.overlays.overlay[3][1])\n\t\tself.Status.Overlay_4(handler.root.vmix.overlays.overlay[4][1])\n\t\tself.Status.Recording(handler.root.vmix.recording)\n\t\tself.Status.External(handler.root.vmix.external)\n\t\tself.Status.Streaming(handler.root.vmix.streaming)\n\t\tself.Status.Multicorder(handler.root.vmix.multiCorder)\n\t\tself.Status.Fullscreen(handler.root.vmix.fullscreen)\n\t\t\n\t\tself.Status.Audio.Master.Volume(handler.root.vmix.audio.master._attr.volume)\n\t\tself.Status.Audio.Master.Muted(handler.root.vmix.audio.master._attr.muted)\n\t\tself.Status.Audio.Master.Meter1(handler.root.vmix.audio.master._attr.meterF1)\n\t\tself.Status.Audio.Master.Meter2(handler.root.vmix.audio.master._attr.meterF2)\n\t\tself.Status.Audio.Master.Headphones(handler.root.vmix.audio.master._attr.headphonesVolume)\n\t\t\n\t\t\n\t\tself.Status.Audio.BusA.Volume(handler.root.vmix.audio.busA._attr.volume)\n\t\tself.Status.Audio.BusA.Muted(handler.root.vmix.audio.busA._attr.muted)\n\t\tself.Status.Audio.BusA.Meter1(handler.root.vmix.audio.busA._attr.meterF1)\n\t\tself.Status.Audio.BusA.Meter2(handler.root.vmix.audio.busA._attr.meterF2)\n\t\t\n\t\t\n\t\tself.Status.Audio.BusB.Volume(handler.root.vmix.audio.busB._attr.volume)\n\t\tself.Status.Audio.BusB.Muted(handler.root.vmix.audio.busB._attr.muted)\n\t\tself.Status.Audio.BusB.Meter1(handler.root.vmix.audio.busB._attr.meterF1)\n\t\tself.Status.Audio.BusB.Meter2(handler.root.vmix.audio.busB._attr.meterF2)\n\t\t\n\t\t\n\t\tself.Status.Audio.BusC.Volume(handler.root.vmix.audio.busC._attr.volume)\n\t\tself.Status.Audio.BusC.Muted(handler.root.vmix.audio.busC._attr.muted)\n\t\tself.Status.Audio.BusC.Meter1(handler.root.vmix.audio.busC._attr.meterF1)\n\t\tself.Status.Audio.BusC.Meter2(handler.root.vmix.audio.busC._attr.meterF2)\n\t\t\n\t\tself.Status.Audio.BusD.Volume(handler.root.vmix.audio.busD._attr.volume)\n\t\tself.Status.Audio.BusD.Muted(handler.root.vmix.audio.busD._attr.muted)\n\t\tself.Status.Audio.BusD.Meter1(handler.root.vmix.audio.busD._attr.meterF1)\n\t\tself.Status.Audio.BusD.Meter2(handler.root.vmix.audio.busD._attr.meterF2)\n\t\t\n\t\tself.Status.Audio.BusE.Volume(handler.root.vmix.audio.busE._attr.volume)\n\t\tself.Status.Audio.BusE.Muted(handler.root.vmix.audio.busE._attr.muted)\n\t\tself.Status.Audio.BusE.Meter1(handler.root.vmix.audio.busE._attr.meterF1)\n\t\tself.Status.Audio.BusE.Meter2(handler.root.vmix.audio.busE._attr.meterF2)\n\t\t\n\t\tself.Status.Audio.BusF.Volume(handler.root.vmix.audio.busF._attr.volume)\n\t\tself.Status.Audio.BusF.Muted(handler.root.vmix.audio.busF._attr.muted)\n\t\tself.Status.Audio.BusF.Meter1(handler.root.vmix.audio.busF._attr.meterF1)\n\t\tself.Status.Audio.BusF.Meter2(handler.root.vmix.audio.busF._attr.meterF2)\n\tend\n\t\n\txml2lua = nil\n\thandler = nil\n\tparser = nil\n\tcontent = nil;\n\t\nend\n",
+     "kind": "func",
+     "name": "receive",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "pixc.report(version)\npixc.callRefs(msg)\nreturn msg\n",
+     "kind": "func",
+     "name": "Version",
+     "params": [
+      {
+       "name": "version",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(edition)\npixc.callRefs(edition)\nreturn edition\r\n",
+     "kind": "func",
+     "name": "Edition",
+     "params": [
+      {
+       "name": "edition",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(input)\npixc.callRefs(input)\nreturn input\r\n",
+     "kind": "func",
+     "name": "Preview",
+     "params": [
+      {
+       "name": "input",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(input)\npixc.callRefs(input)\nreturn input\r\n",
+     "kind": "func",
+     "name": "Program",
+     "params": [
+      {
+       "name": "input",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(msg)\npixc.callRefs(msg)\nreturn msg\r\n",
+     "kind": "func",
+     "name": "Overlay_1",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(msg)\npixc.callRefs(msg)\nreturn msg\r\n",
+     "kind": "func",
+     "name": "Overlay_2",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(msg)\npixc.callRefs(msg)\nreturn msg\r\n",
+     "kind": "func",
+     "name": "Overlay_3",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(msg)\npixc.callRefs(msg)\nreturn msg\r\n",
+     "kind": "func",
+     "name": "Overlay_4",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(state)\npixc.callRefs(state)\nreturn state\r\n",
+     "kind": "func",
+     "name": "Recording",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(state)\npixc.callRefs(state)\nreturn state\r\n",
+     "kind": "func",
+     "name": "External",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(state)\npixc.callRefs(state)\nreturn state\r\n",
+     "kind": "func",
+     "name": "Streaming",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(state)\npixc.callRefs(state)\nreturn state\r\n",
+     "kind": "func",
+     "name": "Multicorder",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "pixc.report(state)\npixc.callRefs(state)\nreturn state\r\n",
+     "kind": "func",
+     "name": "Fullscreen",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "elems": [
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "pixc.report(value)\npixc.callRefs(value)\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "pixc.report(state)\npixc.callRefs(state)\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "pixc.report(value)\npixc.callRefs(value)\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "pixc.report(value)\npixc.callRefs(value)\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "pixc.report(value)\npixc.callRefs(value)\nreturn value\r\n",
+         "kind": "func",
+         "name": "Headphones",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Master"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(state)\r\npixc.callRefs(state)\r\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "BusA"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(state)\r\npixc.callRefs(state)\r\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "BusB"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(state)\r\npixc.callRefs(state)\r\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "BusC"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(state)\r\npixc.callRefs(state)\r\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "BusD"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(state)\r\npixc.callRefs(state)\r\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "BusE"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Volume",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(state)\r\npixc.callRefs(state)\r\nreturn state\r\n",
+         "kind": "func",
+         "name": "Muted",
+         "params": [
+          {
+           "name": "state",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter1",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "\r\npixc.report(value)\r\npixc.callRefs(value)\r\nreturn value\r\n",
+         "kind": "func",
+         "name": "Meter2",
+         "params": [
+          {
+           "name": "value",
+           "type": "double"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "BusF"
+      }
+     ],
+     "kind": "ns",
+     "name": "Audio"
+    }
+   ],
+   "kind": "ns",
+   "name": "Status"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nself.network:send(\"FUNCTION Cut duration=1000&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1)\n",
+     "kind": "func",
+     "name": "Cut",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Fade duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Fade",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Zoom duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Zoom",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Wipe duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Wipe",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Slide duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Slide",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Fly duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Fly",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION CrossZoom duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "CrossZoom",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION FlyRotate duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "FlyRotate",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Cube duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Cube",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION CubeZoom duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "CubeZoom",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION VerticalWipe duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "VerticalWipe",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION VerticalSlide duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "VerticalSlide",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION Merge duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\n",
+     "kind": "func",
+     "name": "Merge",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION WipeReverse duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\r\n",
+     "kind": "func",
+     "name": "WipeReverse",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION SlideReverse duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\r\n",
+     "kind": "func",
+     "name": "SlideReverse",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION VerticalWipeReverse duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\r\n",
+     "kind": "func",
+     "name": "VerticalWipeReverse",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.network == nil then\n\tif Mix == nil or Duration == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Mix .. \",\" .. Duration)\n\tend\n\treturn\nend\nmix = math.floor(math.abs(Mix)-1)\nduration = math.floor(math.abs(Duration))\nself.network:send(\"FUNCTION VerticalSlideReverse duration=\" .. duration .. \"&mix=\" .. mix .. \"\\r\\n\")\npixc.report(mix+1 .. \",\" .. duration)\r\n",
+     "kind": "func",
+     "name": "VerticalSlideReverse",
+     "params": [
+      {
+       "name": "Mix",
+       "type": "int"
+      },
+      {
+       "name": "Duration",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Transition"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Transition1\\r\\n\")\n",
+     "kind": "func",
+     "name": "Transition_1",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Transition2\\r\\n\")\n",
+     "kind": "func",
+     "name": "Transition_2",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Transition3\\r\\n\")\n",
+     "kind": "func",
+     "name": "Transition_3",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Transition4\\r\\n\")\n",
+     "kind": "func",
+     "name": "Transition_4",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Stinger1\\r\\n\")\n",
+     "kind": "func",
+     "name": "Stinger_1",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Stinger2\\r\\n\")\n",
+     "kind": "func",
+     "name": "Stinger_2",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Stinger3\\r\\n\")\n",
+     "kind": "func",
+     "name": "Stinger_3",
+     "slotStyle": "leftIn;rightOut"
+    },
+    {
+     "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION Stinger4\\r\\n\")\n",
+     "kind": "func",
+     "name": "Stinger_4",
+     "slotStyle": "leftIn;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "AutoTransition"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION PreviewOverlayInput1 input=\" .. input .. \"\\r\\n\")\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePrev",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION OverlayInput1 input=\" .. input .. \"\\r\\n\")\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION OverlayInput1In input=\" .. input .. \"\\r\\n\")\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OnPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION OverlayInput1Out input=\" .. input .. \"\\r\\n\")\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OffPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Overlay_1"
+    },
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION PreviewOverlayInput2 input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePrev",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput2 input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput2In input=\" .. input .. \"\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OnPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput2Out input=\" .. input .. \"\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OffPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Overlay_2"
+    },
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION PreviewOverlayInput3 input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePrev",
+       "params": [
+        {
+         "name": "input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput3 input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput3In input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OnPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput3Out input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OffPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Overlay_3"
+    },
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION PreviewOverlayInput4 input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePrev",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput4 input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "TogglePGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput4In input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OnPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "\r\nif self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\n\r\nself.network:send(\"FUNCTION OverlayInput4Out input=\" .. input .. \"\\r\\n\")\r\n\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OffPGM",
+       "params": [
+        {
+         "name": "Input",
+         "type": "string"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Overlay_4"
+    }
+   ],
+   "kind": "ns",
+   "name": "Overlay"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION SetOutput2 Value=Output\\r\\n\")\n",
+       "kind": "func",
+       "name": "OutputProgram",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION SetOutput2 Value=Preview\\r\\n\")\n",
+       "kind": "func",
+       "name": "OutputPreview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION SetOutput2 Value=MulitView\\r\\n\")\n",
+       "kind": "func",
+       "name": "OutputMultiview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\n\tif Input == nil then\n\t\tpixc.report(nil)\n\telse\n\t\tpixc.report(Input)\n\tend\n\treturn\nend\nlocal input = 0\nif type(Input) == \"number\" then\n\tinput = math.floor(math.abs(Input))\nelse\n\tinput = tostring(Input)\nend\nself.network:send(\"FUNCTION SetOutput2 Value=Input&Input=\" .. input .. \"\\r\\n\")\npixc.report(input)\n",
+       "kind": "func",
+       "name": "OutputInput",
+       "params": [
+        {
+         "name": "Input",
+         "type": "int"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Output2"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutput3 Value=Output\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputProgram",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutput3 Value=Preview\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputPreview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutput3 Value=MulitView\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputMultiview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\nself.network:send(\"FUNCTION SetOutput3 Value=Input&Input=\" .. input .. \"\\r\\n\")\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OutputInput",
+       "params": [
+        {
+         "name": "Input",
+         "type": "int"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Output3"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutput4 Value=Output\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputProgram",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutput4 Value=Preview\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputPreview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutput4 Value=MulitView\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputMultiview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\nself.network:send(\"FUNCTION SetOutput4 Value=Input&Input=\" .. input .. \"\\r\\n\")\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OutputInput",
+       "params": [
+        {
+         "name": "Input",
+         "type": "int"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Output4"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputExternal2 Value=Output\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputProgram",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputExternal2 Value=Preview\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputPreview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputExternal2 Value=MulitView\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputMultiview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\nself.network:send(\"FUNCTION SetOutputExternal2 Value=Input&Input=\" .. input .. \"\\r\\n\")\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OutputInput",
+       "params": [
+        {
+         "name": "Input",
+         "type": "int"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "OutputExternal2"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen Value=Output\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputProgram",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen Value=Preview\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputPreview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen Value=MulitView\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputMultiview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen Value=Input&Input=\" .. input .. \"\\r\\n\")\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OutputInput",
+       "params": [
+        {
+         "name": "Input",
+         "type": "int"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "OutputFullscreen1"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen2 Value=Output\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputProgram",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen2 Value=Preview\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputPreview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen2 Value=MulitView\\r\\n\")\r\n\r\n",
+       "kind": "func",
+       "name": "OutputMultiview",
+       "slotStyle": "leftIn;rightOut"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.network == nil then\r\n\tif Input == nil then\r\n\t\tpixc.report(nil)\r\n\telse\r\n\t\tpixc.report(Input)\r\n\tend\r\n\treturn\r\nend\r\nlocal input = 0\r\nif type(Input) == \"number\" then\r\n\tinput = math.floor(math.abs(Input))\r\nelse\r\n\tinput = tostring(Input)\r\nend\r\nself.network:send(\"FUNCTION SetOutputFullscreen2 Value=Input&Input=\" .. input .. \"\\r\\n\")\r\npixc.report(input)\r\n",
+       "kind": "func",
+       "name": "OutputInput",
+       "params": [
+        {
+         "name": "Input",
+         "type": "int"
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "OutputFullscreen2"
+    },
+    {
+     "elems": [
+      {
+       "elems": [
+        {
+         "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION StartStopMultiCorder value=\\r\\n\")\n",
+         "kind": "func",
+         "name": "StartStop_All",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION StartStopMultiCorder value=0\\r\\n\")\n",
+         "kind": "func",
+         "name": "StartStop_0",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION StartStopMultiCorder value=1\\r\\n\")\n",
+         "kind": "func",
+         "name": "StartStop_1",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\n\treturn\nend\nself.network:send(\"FUNCTION StartStopMultiCorder value=2\\r\\n\")\n",
+         "kind": "func",
+         "name": "StartStop_2",
+         "slotStyle": "leftIn;rightOut"
+        }
+       ],
+       "kind": "ns",
+       "name": "Multicorder"
+      },
+      {
+       "elems": [
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopRecording value=\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_All",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopRecording value=0\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_0",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopRecording value=1\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_1",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopRecording value=2\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_2",
+         "slotStyle": "leftIn;rightOut"
+        }
+       ],
+       "kind": "ns",
+       "name": "Recording"
+      },
+      {
+       "elems": [
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopStream value=\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_All",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopStream value=0\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_0",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopStream value=1\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_1",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopStream value=2\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_2",
+         "slotStyle": "leftIn;rightOut"
+        }
+       ],
+       "kind": "ns",
+       "name": "Stream"
+      },
+      {
+       "elems": [
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopExternal value=\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_All",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopExternal value=0\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_0",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopExternal value=1\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_1",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopExternal value=2\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_2",
+         "slotStyle": "leftIn;rightOut"
+        }
+       ],
+       "kind": "ns",
+       "name": "External"
+      },
+      {
+       "elems": [
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopFullscreen value=\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_All",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopFullscreen value=0\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_0",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopFullscreen value=1\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_1",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION StartStopFullscreen value=2\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_2",
+         "slotStyle": "leftIn;rightOut"
+        }
+       ],
+       "kind": "ns",
+       "name": "Fullscreen"
+      },
+      {
+       "elems": [
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION FadeToBlack value=\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_All",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION FadeToBlack value=0\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_0",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION FadeToBlack value=1\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_1",
+         "slotStyle": "leftIn;rightOut"
+        },
+        {
+         "body": "if self.network == nil then\r\n\treturn\r\nend\r\nself.network:send(\"FUNCTION FadeToBlack value=2\\r\\n\")\r\n\r\n",
+         "kind": "func",
+         "name": "StartStop_2",
+         "slotStyle": "leftIn;rightOut"
+        }
+       ],
+       "kind": "ns",
+       "name": "FadeToBlack"
+      }
+     ],
+     "kind": "ns",
+     "name": "ToggleFunctions"
+    }
+   ],
+   "kind": "ns",
+   "name": "Output"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 427.6923076923077,
+  "y": 280.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/StudioCoast/vMix.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4n/h1Tca5RzEgvPYhV4fftLGDm7eU6neqoVWXz0YdVIquetD9uVZyAe65wwdyqFVExB5Hb97zAt9WEJC3Zhot5dVSOf6MJI9RwQDtkCRsEX9BrgSWafPgG9+JKTo2IXYgg==",
+ "name": "vMix",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "127.0.0.1",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "8099",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "iVBORw0KGgoAAAANSUhEUgAAAEYAAAAoCAYAAABD0IyuAAAH7klEQVRoge2ZD2zVVxXHP69/aOlKxwA7RBosSCkdG6MDkY1sCBtRYtEtZEI2pgPCJkrEGKNugInMLc6QTZl/RkRkkb8laYlDW+Y2GbYbyCwidBBooX+AUlkL8s/2tf2au3daf319r++9poUs6UlO7u937/2de+/3d86559xLP/VTP/VTH5IPlAp8DcgBvgv8N8JwcUA8kAAkAgOANqA1IK/jucW49eP4A93iioF77X0M8CEwEEgGkqz0PreXiR5wFAYYB/L1IPZbWzPwH+AscAk4B/wbuApcBs5bW8vNAuaCTcwt6n5blJt0k/E1W1iDle3v7RNWkEyflU6TnDamGHjx9n6rcYqBHN/N/GqBagPtNFBh747rbO7B4/cK+UzuJ21BzfZH/fbcV39roHGixxzTgOFAJjAKGGHz+hRwOzAkSIbfAPoAKAH+AZwAanpj3r4+Ary3yWnXJ4AMYKSZfLb5xfEGcjvVGEh/8wDWFOt8bggwaWkwcyYsWwZVVbBpE/h8kJQEKSkBdu+XLsG5cwGuq4ta/BADazQw0fxlLjDM2p057gH+DLwD1EcjtFeASU2FYcNgxAiYMAEyMyEjA267DdLTA/WOo6XGRigthRdegJKSHk0pJTWVrJEjmXbsGI8AD1q92wx2A+uBNyL4J0XN48eLOXPE8uVi7VqRny/27xe1teLKFSFF5C9IuidMv1slpXjrWlrEhg1i4kSRkNB1nunpIiOjc11Kili9WlRWKtnv186CAuUkJ2sU6AnQ6yAZHwA9CUoMvf4ogJkxQxQVBSYaxeK74zWSXpf0iKQfSnpF0i5JRyRdkHReUpmkFyWNapfT3CzKy0VBgXjuOZGXJ9asEXV1oqFBrFwZAMSBtG9fx/hjFKD569Z1Wk826DcgvwH0LmhGTMBMnSqKi3sMQpykTEmPS9om6QNJjZJaJB2VtFPSjyU9aUA9JGm2pAWSqiS9E8t4DriKik516ZIuSbrXvc+d22V9nwG94tGgn0QEZvJksWNH4E/FMLl4SdmSFkvaIqlS0hVJZyX9UdIKSV+294xu5NwuqULSyijGTO1GlgPmsqTPu3dn7mPHhlSA6aBSA+dXIF8XYJwP2bxZ+P1RgzFM0lxJv5V0WlKzgbFf0vOSpkga6Onvk1RrmhFKntOuUiu9gMeH6f+MpENh2iaZKT3RXldWJtLSQoKTBHrNwPlRBzB33CHWrxdXr0YEYqCpvPMB70qql3TcNOSbkqZKGhJBxluSng36s98weW2S8iWtl7RP0gkzqyozP/ftavvGfbtK0lXTxOBxlhgwP/DWb9nSrT/dDWoFTUjYswfuuy8QS0QgF0jtsLih3La9t4EDFoVGS38FpgOPA3nG7QGay52mWI5UZUHaWcu/fBYJu4T3MWAycNSCv7uBXUHj51o51lu5YAG8/z6sXRtytitM5opYfMhgSZMlDeqBI3YmdKek70gq1/+pxhyz05jPShouKSGCrFcltdr27kzVL2lCiH5/N19VGtzW1iZmzgyrNTtBl2NdYKzsVP57th23U52kD83PRALByw60rSZjsdXPsl3urqC+42z7Xy7pjKS0YHnbtoUF5llQW1wMJhArOdnbgRctKdxtJpBlptgUQ7I3DzhsZrcE2GD1d1p2Pi+of54dn7xmZnhPsMDsbEhICDuer681xkW5D9ju5a13u9jLkhIjfH+3OWFHuy1oCzYr57BPBsk6ajuWe94s6RehzGnatJAa8ydQbV8DE47nm594OUx7jqQ/GCAuMHwsTD8XFhQYME9b3dclXZQ01N4X2q7WxWxnz+4CSq5t2StvFjCZtuiDQfXOAW+0tmpz1klBfX5qGpdi/uPbkr5o27YD87qkZZ7+LgBssH5vmQZ/1BakMS6WOQiqBw29GaAkW/kzm6xzjEstjmkHa2FwQunh7ZKKLF5y9Ki15UlaJ2leiG+czGJJpyQ96OpWreqUmA4B/cU5XdCsj+puEBgTJX3fJldkCeIMC+TOWvK4SdL9Mch0udgij8l0x29L+rWkAZWV4uGHO2mKSyDLzYQe7ajvQzDcH/+qpL2erfqc/bVq40JJX4kUGzU1RT9ua6vYuFFs397pNGCHM9HqajF6dAcgnwb90gA5AfpcJ3/Th8B8ywOIi1tKbBdxfmO6JYBhv29sFLt2iaVLxbhxYtasQGLr8jh31HD8eKDf3r2BtvnzxaJFgQS4fXHuHMcdSZSVaXB+vm6xs5spoN+BWjy5UVrw7uQi0j4KYxhkh9h+C/UbvY319XDmTKDMygqkJEeOwHvvBU7tDh8OtAdTTg5cuwbnz0NuLhw4AP4ICUlcHGPa2ngIWGhHnxcsFvo9cCzUN30JTCdqbobiYigshEOH4NSpwBGmIwfKgAFw8WKvDJVgNwuTgDnAAxZUOjoI/BwoBK50K+VGON+tW8WkSdEfocbAbovNAn0JtApUCKryHD5dBr0BetoOpqKW3SONcaocidraAgfaL70ERUUdne+ycD3X/mqCXaQtCJOhx1n2PNgy65GWXrgbgXEmb7invzORf9q1SYll/j3Sw5iAOX0aliyBiorIfVtboaamU9Vi4NUwN4/PW/1w80vu6uMWO44Yav7KS812LfIvYJ+VJ+3G8nrUC+qGwqdRIeipp+DNN3s81iC7/g0FzDNWttq9dYP9/ZN221hjZa3dC9WbJtwYB9lP/dRP/dRP/XTzCPgfc3PRa2WuzMQAAAAASUVORK5CYII=",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "07.04.2021",
+   "name": "Date",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,274 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nself.helper = createPixcHelper(pixc,self())\r\nself.props = self.helper:loadAllProperties(self.props)\r\nself.regActions = {}\r\nself.data ={}\r\nfor i=1,512 do\r\n\tself.data[i] = self.props.DefaultValue\r\nend\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "",
+   "kind": "func",
+   "name": "ArrayOut",
+   "params": [
+    {
+     "name": "value",
+     "type": "array"
+    }
+   ],
+   "slotStyle": "leftOut;rightOut"
+  },
+  {
+   "body": "self.ArrayOut(self.data,true)",
+   "kind": "func",
+   "name": "exec",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "local templateOut = [[\r\n\t{\r\n\t\t\"name\": \"##PREFIX####IDX##\",\r\n\t\t\"kind\": \"fn\",\r\n\t\t\"attKind\": \"standard\",\r\n\t\t\"slotStyle\": \"leftIn;rightIn;triggerHidden\",\r\n\t\t\"params\": [\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"val\",\r\n\t\t\t\t\"type\": \"int\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"doSet\",\r\n\t\t\t\t\"type\": \"bool\"\r\n\t\t\t}\r\n\t\t],\r\n\t\t\"result\": {\r\n\t\t},\r\n\t\t\"body\": \"if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[##IDX##] = pixcCommon.execAttribute(0, self.data[##IDX##], val, doSet);self.exec() ; return self.data[##IDX##]\"\r\n\t}\r\n]]\r\nlocal template = templateOut;\r\nlocal res = '[';\r\nlocal sets = self.helper.stringSplit(self.props.SlotIndexes,',')\r\nlocal removeLast = false;\r\nfor _, x in ipairs(sets) do\r\n\tif x ~= nil then\r\n\t\tlocal set = self.helper.stringSplit(x,'-');\r\n\t\tlocal vBegin, vEnd\r\n\t\tvBegin = tonumber(set[1]);\r\n\t\tvEnd = tonumber(set[2]);\r\n\t\tremoveLast = true\r\n\t\tif vBegin ~= nil and vEnd ~= nil then\r\n\t\t\tfor i= vBegin, vEnd, 1 do\r\n\t\t\t\tlocal tmod = template;\r\n\t\t\t\tlocal s = tostring(i);\r\n\t\t\t\tlocal c;\r\n\r\n\t\t\t\ttmod, c = string.gsub(tmod,\"##IDX##\", s)\r\n\t\t\t\ttmod, c = string.gsub(tmod,\"##PREFIX##\", self.props.Prefix)\r\n\t\t\t\tres = res..tmod;\r\n\t\t\t\tres = res..','\r\n\t\t\tend\r\n\t\tend\r\n\tend\r\nend\r\nif removeLast == true then\r\n\tres = res:sub(1, -2)\r\nend\r\n\r\nres = res..']'\r\nreturn res;\r\n",
+   "kind": "func",
+   "name": "getDescription",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "self().dynamicRebuildFromDescriptions(self.getDescription(), \"Actions\", \"(.*)\")",
+   "kind": "func",
+   "name": "rebuild"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[1] = pixcCommon.execAttribute(0, self.data[1], val, doSet);self.exec() ; return self.data[1]",
+     "kind": "func",
+     "name": "DMXOUT_1",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[2] = pixcCommon.execAttribute(0, self.data[2], val, doSet);self.exec() ; return self.data[2]",
+     "kind": "func",
+     "name": "DMXOUT_2",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[3] = pixcCommon.execAttribute(0, self.data[3], val, doSet);self.exec() ; return self.data[3]",
+     "kind": "func",
+     "name": "DMXOUT_3",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[4] = pixcCommon.execAttribute(0, self.data[4], val, doSet);self.exec() ; return self.data[4]",
+     "kind": "func",
+     "name": "DMXOUT_4",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[5] = pixcCommon.execAttribute(0, self.data[5], val, doSet);self.exec() ; return self.data[5]",
+     "kind": "func",
+     "name": "DMXOUT_5",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[6] = pixcCommon.execAttribute(0, self.data[6], val, doSet);self.exec() ; return self.data[6]",
+     "kind": "func",
+     "name": "DMXOUT_6",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[7] = pixcCommon.execAttribute(0, self.data[7], val, doSet);self.exec() ; return self.data[7]",
+     "kind": "func",
+     "name": "DMXOUT_7",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[8] = pixcCommon.execAttribute(0, self.data[8], val, doSet);self.exec() ; return self.data[8]",
+     "kind": "func",
+     "name": "DMXOUT_8",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[9] = pixcCommon.execAttribute(0, self.data[9], val, doSet);self.exec() ; return self.data[9]",
+     "kind": "func",
+     "name": "DMXOUT_9",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.data == nil then return; end; if val == nil then doSet = false; end ; self.data[10] = pixcCommon.execAttribute(0, self.data[10], val, doSet);self.exec() ; return self.data[10]",
+     "kind": "func",
+     "name": "DMXOUT_10",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Actions"
+  }
+ ],
+ "cjv": {
+  "h": 571.0,
+  "w": 305.0,
+  "x": 752.75,
+  "y": 577.75
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Tools/ConvertToArray.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4pljiqIW3r/Lbo4TgBf/4DroxPjx1rO9Z2mKxctrOuaVVJbKE+3ShyRjd4ueJtSFk0fUnkQtjzIJV9wk6IDR5+ahq3WllWCQLI7AWCYAl6dO936PeF0n6yQ4CsUqhkt6Pw==",
+ "name": "ConvertToArray",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "DMXOUT_",
+   "name": "Prefix",
+   "typeHint": "string"
+  },
+  {
+   "cont": "1-10",
+   "name": "SlotIndexes",
+   "typeHint": "string"
+  },
+  {
+   "cont": "512",
+   "name": "ArraySize",
+   "typeHint": "number"
+  },
+  {
+   "cont": "256",
+   "name": "DefaultValue",
+   "typeHint": "number"
+  },
+  {
+   "cont": "A action sets the value to it index of the array and dann call ArrayOut with the whole array. Rebuild generates the action depending on Prefix and slotindexes. Slotindexes are specified as ranges seperated by comma",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl (ME)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

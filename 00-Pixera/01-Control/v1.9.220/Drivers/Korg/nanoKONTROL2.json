@@ -1,0 +1,628 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcProtocolMidi\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nif self.protocol == nil then\n\tself.protocol = createPixcProtocolMidi()\nend\nself.midiInDev = self.helper:getProperty(\"Midi In Device\",\"\")\nself.disableLog = self.helper:getProperty(\"Disable Logs\",\"true\")\nif self.disableLog == \"true\" or  self.disableLog == true then\n\t self.disableLog = true\nelse\n\t self.disableLog = false\nend\nself.protocol:setStatusCallbacks(\nfunction (...) pixc.log(...) end)\nself.MidiInCallbacks = {}\nself.MidiInCallbacks[\"controlChange\"] = self.recvControlChange\nif self.midiInDev ~= nil and self.midiInDev ~= \"\" then\n\tself.protocol:openMidiInDevice(self.midiInDev,self.MidiInCallbacks)\nend\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if error then \r\n\tif self.disableLog == false then\tpixc.log(error) end\r\nelse \r\n\tif self.disableLog == false then pixc.log( \"ControlChange: channel(\"..channel..\") controller(\"..controller..\") value(\"..value..\")\") end\r\nend\r\n\r\n--Button\r\nif controller == 58.0 and value == 127.0 then self.Button.PREV_TRACK()\r\n\telseif controller == 59.0 and value == 127.0 then self.Button.NEXT_TRACK()\r\n\telseif controller == 60.0 and value == 127.0 then self.Button.SET_MARKER()\r\n\telseif controller == 61.0 and value == 127.0 then self.Button.PREV_MARKER()\r\n\telseif controller == 62.0 and value == 127.0 then self.Button.NEXT_MARKER()\r\n\telseif controller == 46.0 and value == 127.0 then self.Button.CYCLE()\r\n\telseif controller == 43.0 and value == 127.0 then self.Button.REWIND()\r\n\telseif controller == 44.0 and value == 127.0 then self.Button.FAST_FORWARD()\r\n\telseif controller == 42.0 and value == 127.0 then self.Button.STOP()\r\n\telseif controller == 41.0 and value == 127.0 then self.Button.PLAY()\r\n\telseif controller == 45.0 and value == 127.0 then self.Button.REC()\r\n\telseif controller == 32.0 and value == 127.0 then self.Button.S1()\r\n\telseif controller == 33.0 and value == 127.0 then self.Button.S2()\r\n\telseif controller == 34.0 and value == 127.0 then self.Button.S3()\r\n\telseif controller == 35.0 and value == 127.0 then self.Button.S4()\r\n\telseif controller == 36.0 and value == 127.0 then self.Button.S5()\r\n\telseif controller == 37.0 and value == 127.0 then self.Button.S6()\r\n\telseif controller == 38.0 and value == 127.0 then self.Button.S7()\r\n\telseif controller == 39.0 and value == 127.0 then self.Button.S8()\r\n\telseif controller == 48.0 and value == 127.0 then self.Button.M1()\r\n\telseif controller == 49.0 and value == 127.0 then self.Button.M2()\r\n\telseif controller == 50.0 and value == 127.0 then self.Button.M3()\r\n\telseif controller == 51.0 and value == 127.0 then self.Button.M4()\r\n\telseif controller == 52.0 and value == 127.0 then self.Button.M5()\r\n\telseif controller == 53.0 and value == 127.0 then self.Button.M6()\r\n\telseif controller == 54.0 and value == 127.0 then self.Button.M7()\r\n\telseif controller == 55.0 and value == 127.0 then self.Button.M8()\r\n\telseif controller == 64.0 and value == 127.0 then self.Button.R1()\r\n\telseif controller == 65.0 and value == 127.0 then self.Button.R2()\r\n\telseif controller == 66.0 and value == 127.0 then self.Button.R3()\r\n\telseif controller == 67.0 and value == 127.0 then self.Button.R4()\r\n\telseif controller == 68.0 and value == 127.0 then self.Button.R5()\r\n\telseif controller == 69.0 and value == 127.0 then self.Button.R6()\r\n\telseif controller == 70.0 and value == 127.0 then self.Button.R7()\r\n\telseif controller == 71.0 and value == 127.0 then self.Button.R8()\r\nend\r\n\r\n--Knob\r\nif controller == 16 then self.Knob.Knob1(value)\r\n\telseif controller == 17 then self.Knob.Knob2(value)\r\n\telseif controller == 18 then self.Knob.Knob3(value)\r\n\telseif controller == 19 then self.Knob.Knob4(value)\r\n\telseif controller == 20 then self.Knob.Knob5(value)\r\n\telseif controller == 21 then self.Knob.Knob6(value)\r\n\telseif controller == 22 then self.Knob.Knob7(value)\r\n\telseif controller == 23 then self.Knob.Knob8(value)\r\nend\r\n\r\n--Slider\r\nif controller == 0 then self.Slider.Slider1(value)\r\n\telseif controller == 1 then self.Slider.Slider2(value)\r\n\telseif controller == 2 then self.Slider.Slider3(value)\r\n\telseif controller == 3 then self.Slider.Slider4(value)\r\n\telseif controller == 4 then self.Slider.Slider5(value)\r\n\telseif controller == 5 then self.Slider.Slider6(value)\r\n\telseif controller == 6 then self.Slider.Slider7(value)\r\n\telseif controller == 7 then self.Slider.Slider8(value)\r\nend",
+   "kind": "func",
+   "name": "recvControlChange",
+   "params": [
+    {
+     "name": "error",
+     "type": ""
+    },
+    {
+     "name": "time",
+     "type": ""
+    },
+    {
+     "name": "channel",
+     "type": ""
+    },
+    {
+     "name": "controller",
+     "type": ""
+    },
+    {
+     "name": "value",
+     "type": ""
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcProtocolMidi\"\nif self.protocol == nil then\n\tself.protocol = createPixcProtocolMidi()\nend\nreturn self.protocol:listMidiInDevices();\r\n",
+   "kind": "func",
+   "name": "getInDevices",
+   "slotStyle": "leftNone;rightNone"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "kind": "func",
+     "name": "PREV_TRACK"
+    },
+    {
+     "body": "\r\n",
+     "kind": "func",
+     "name": "NEXT_TRACK"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "SET_MARKER"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "PREV_MARKER"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "NEXT_MARKER"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "CYCLE"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "REWIND"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "FAST_FORWARD"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "STOP"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "PLAY"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "REC"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S1"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M1"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R1"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S2"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M2"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R2"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S3"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M3"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R3"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S4"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M4"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R4"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S5"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M5"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R5"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S6"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M6"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R6"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S7"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M7"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R7"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "S8"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "M8"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "R8"
+    }
+   ],
+   "kind": "ns",
+   "name": "Button"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "self._Knob1 = pixcCommon.execAttribute(0, self._Knob1, val, doSet)\r\nreturn self._Knob1\r\n",
+     "kind": "func",
+     "name": "Knob1",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob2 = pixcCommon.execAttribute(0, self._Knob2, val, doSet)\r\nreturn self._Knob2\r\n",
+     "kind": "func",
+     "name": "Knob2",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob3 = pixcCommon.execAttribute(0, self._Knob3, val, doSet)\r\nreturn self._Knob3\r\n",
+     "kind": "func",
+     "name": "Knob3",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob4 = pixcCommon.execAttribute(0, self._Knob4, val, doSet)\r\nreturn self._Knob4\r\n",
+     "kind": "func",
+     "name": "Knob4",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob5 = pixcCommon.execAttribute(0, self._Knob5, val, doSet)\r\nreturn self._Knob5\r\n",
+     "kind": "func",
+     "name": "Knob5",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob6 = pixcCommon.execAttribute(0, self._Knob6, val, doSet)\r\nreturn self._Knob6\r\n",
+     "kind": "func",
+     "name": "Knob6",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob7 = pixcCommon.execAttribute(0, self._Knob7, val, doSet)\r\nreturn self._Knob7\r\n",
+     "kind": "func",
+     "name": "Knob7",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Knob8 = pixcCommon.execAttribute(0, self._Knob8, val, doSet)\r\nreturn self._Knob8\r\n",
+     "kind": "func",
+     "name": "Knob8",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Knob"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "self._Slider1 = pixcCommon.execAttribute(0, self._Slider1, val, doSet)\r\nreturn self._Slider1\r\n",
+     "kind": "func",
+     "name": "Slider1",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider2 = pixcCommon.execAttribute(0, self._Slider2, val, doSet)\r\nreturn self._Slider2\r\n",
+     "kind": "func",
+     "name": "Slider2",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider3 = pixcCommon.execAttribute(0, self._Slider3, val, doSet)\r\nreturn self._Slider3\r\n",
+     "kind": "func",
+     "name": "Slider3",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider4 = pixcCommon.execAttribute(0, self._Slider4, val, doSet)\r\nreturn self._Slider4\r\n",
+     "kind": "func",
+     "name": "Slider4",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider5 = pixcCommon.execAttribute(0, self._Slider5, val, doSet)\r\nreturn self._Slider5\r\n",
+     "kind": "func",
+     "name": "Slider5",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider6 = pixcCommon.execAttribute(0, self._Slider6, val, doSet)\r\nreturn self._Slider6\r\n",
+     "kind": "func",
+     "name": "Slider6",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider7 = pixcCommon.execAttribute(0, self._Slider7, val, doSet)\r\nreturn self._Slider7\r\n",
+     "kind": "func",
+     "name": "Slider7",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Slider8 = pixcCommon.execAttribute(0, self._Slider8, val, doSet)\r\nreturn self._Slider8\r\n",
+     "kind": "func",
+     "name": "Slider8",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "int"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Slider"
+  }
+ ],
+ "cjv": {
+  "h": 460.9090909090909,
+  "w": 265.45454545454544,
+  "x": 560.0000000000001,
+  "y": 161.909090909091
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_user/nanoKONTROL2.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4tR7GaYLVEC59B3kcERfoNNhROL6COgYbKUE3vj4/7vu67LdvkzssAjU75XbYmfWsBXkN9nYM8+JD+270YO/pmFoT0JSD/BNH6V1QNOmzgeWU4XS4TocS5ZgmQfjngOJJQ==",
+ "name": "nanoKONTROL2",
+ "properties": [
+  {
+   "cont": "nanoKONTROL2 0",
+   "name": "Midi In Device",
+   "optionsSourceFunc": "Utils.Midi.In.list",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "true",
+   "name": "Disable Logs",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "Yosuke Kikukawa",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1.0.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "14 Sep. 2022",
+   "name": "Date",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

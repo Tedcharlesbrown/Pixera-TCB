@@ -183,18 +183,6 @@ class API:
         return [method, params, [timelineName]]
 
     @staticmethod
-    def setOpacityOnTimeline(timelineName: str, opacity: float) -> None:
-        method = "Pixera.Compound.setOpacityOnTimeline"
-        params = ["timelineName", "opacity"]
-        return [method, params, [timelineName, opacity]]
-
-    @staticmethod
-    def getOpacityOnTimeline(timelineName: str) -> float:
-        method = "Pixera.Compound.getOpacityOnTimeline"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
-
-    @staticmethod
     def startFirstTimeline() -> None:
         method = "Pixera.Compound.startFirstTimeline"
         params = []
@@ -211,6 +199,18 @@ class API:
         method = "Pixera.Compound.stopFirstTimeline"
         params = []
         return [method, params, []]
+
+    @staticmethod
+    def setOpacityOnTimeline(timelineName: str, opacity: float) -> None:
+        method = "Pixera.Compound.setOpacityOnTimeline"
+        params = ["timelineName", "opacity"]
+        return [method, params, [timelineName, opacity]]
+
+    @staticmethod
+    def getOpacityOnTimeline(timelineName: str) -> float:
+        method = "Pixera.Compound.getOpacityOnTimeline"
+        params = ["timelineName"]
+        return [method, params, [timelineName]]
 
     @staticmethod
     def setPosValue(val: float) -> None:
@@ -231,28 +231,28 @@ class API:
         return [method, params, [path, value]]
 
     @staticmethod
-    def applyCueAtIndexOnTimelineAtIndex(cueIndex: int, timelineIndex: int) -> None:
+    def applyCueAtIndexOnTimelineAtIndex(cueIndex: int, timelineIndex: int, blendDuration: Optional[float]) -> None:
         method = "Pixera.Compound.applyCueAtIndexOnTimelineAtIndex"
-        params = ["cueIndex", "timelineIndex"]
-        return [method, params, [cueIndex, timelineIndex]]
+        params = ["cueIndex", "timelineIndex", "blendDuration"]
+        return [method, params, [cueIndex, timelineIndex, blendDuration]]
 
     @staticmethod
-    def applyCueNumberOnTimelineAtIndex(cueNumber: int, timelineIndex: int) -> None:
+    def applyCueNumberOnTimelineAtIndex(cueNumber: int, timelineIndex: int, blendDuration: Optional[float]) -> None:
         method = "Pixera.Compound.applyCueNumberOnTimelineAtIndex"
-        params = ["cueNumber", "timelineIndex"]
-        return [method, params, [cueNumber, timelineIndex]]
+        params = ["cueNumber", "timelineIndex", "blendDuration"]
+        return [method, params, [cueNumber, timelineIndex, blendDuration]]
 
     @staticmethod
-    def applyCueNumberOnTimeline(timelineName: str, cueNumber: int) -> None:
+    def applyCueNumberOnTimeline(timelineName: str, cueNumber: int, blendDuration: Optional[float]) -> None:
         method = "Pixera.Compound.applyCueNumberOnTimeline"
-        params = ["timelineName", "cueNumber"]
-        return [method, params, [timelineName, cueNumber]]
+        params = ["timelineName", "cueNumber", "blendDuration"]
+        return [method, params, [timelineName, cueNumber, blendDuration]]
 
     @staticmethod
-    def applyCueOnTimeline(timelineName: str, cueName: str) -> None:
+    def applyCueOnTimeline(timelineName: str, cueName: str, blendDuration: Optional[float]) -> None:
         method = "Pixera.Compound.applyCueOnTimeline"
-        params = ["timelineName", "cueName"]
-        return [method, params, [timelineName, cueName]]
+        params = ["timelineName", "cueName", "blendDuration"]
+        return [method, params, [timelineName, cueName, blendDuration]]
 
     @staticmethod
     def addResourceToFolder(namePath: str, filePath: str) -> handle:
@@ -309,64 +309,70 @@ class API:
         return [method, params, [layerPath, dmxFolderId, dmxFileId, h, m, s, f]]
 
     @staticmethod
-    def setCurrentTimeOfTimeline(timelineName: str, time: int) -> None:
+    def setCurrentTimeOfTimeline(name: str, time: int) -> None:
         method = "Pixera.Compound.setCurrentTimeOfTimeline"
-        params = ["timelineName", "time"]
-        return [method, params, [timelineName, time]]
+        params = ["name", "time"]
+        return [method, params, [name, time]]
 
     @staticmethod
-    def setCurrentTimeOfTimelineInSeconds(timelineName: str, time: float) -> None:
+    def setCurrentTimeOfTimelineInSeconds(name: str, time: float) -> None:
         method = "Pixera.Compound.setCurrentTimeOfTimelineInSeconds"
-        params = ["timelineName", "time"]
-        return [method, params, [timelineName, time]]
+        params = ["name", "time"]
+        return [method, params, [name, time]]
 
     @staticmethod
-    def setCurrentTimeAndTransportModeOfTimelineInSeconds(timelineName: str, time: float, mode: int) -> None:
+    def setCurrentTimeAndTransportModeOfTimelineInSeconds(name: str, time: float, mode: int) -> None:
         method = "Pixera.Compound.setCurrentTimeAndTransportModeOfTimelineInSeconds"
-        params = ["timelineName", "time", "mode"]
-        return [method, params, [timelineName, time, mode]]
+        params = ["name", "time", "mode"]
+        return [method, params, [name, time, mode]]
 
     @staticmethod
-    def getFpsOfTimeline(timelineName: str) -> float:
+    def getFpsOfTimeline(name: str) -> float:
         method = "Pixera.Compound.getFpsOfTimeline"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
+        params = ["name"]
+        return [method, params, [name]]
 
     @staticmethod
-    def getCurrentTimeOfTimeline(timelineName: str) -> int:
+    def getCurrentTimeOfTimeline(name: str) -> int:
         method = "Pixera.Compound.getCurrentTimeOfTimeline"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
+        params = ["name"]
+        return [method, params, [name]]
 
     @staticmethod
-    def getCurrentTimeOfTimelineInSeconds(timelineName: str) -> float:
+    def getCurrentTimeOfTimelineInSeconds(name: str) -> float:
         method = "Pixera.Compound.getCurrentTimeOfTimelineInSeconds"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
+        params = ["name"]
+        return [method, params, [name]]
 
     @staticmethod
-    def getCurrentHMSFOfTimeline(timelineName: str) -> str:
+    def getCurrentHMSFOfTimeline(name: str) -> str:
         method = "Pixera.Compound.getCurrentHMSFOfTimeline"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
+        params = ["name"]
+        return [method, params, [name]]
 
     @staticmethod
-    def getCurrentCountdownOfTimeline(timelineName: str) -> int:
+    def getCurrentCountdownOfTimeline(name: str) -> int:
         method = "Pixera.Compound.getCurrentCountdownOfTimeline"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
+        params = ["name"]
+        return [method, params, [name]]
 
     @staticmethod
-    def getCurrentCountdownHMSFOfTimeline(timelineName: str) -> str:
+    def getCurrentCountdownHMSFOfTimeline(name: str) -> str:
         method = "Pixera.Compound.getCurrentCountdownHMSFOfTimeline"
-        params = ["timelineName"]
-        return [method, params, [timelineName]]
+        params = ["name"]
+        return [method, params, [name]]
 
     @staticmethod
-    def startOpacityAnimationOfTimeline(timelineName: str, fadeIn: bool, fullFadeDuration: float) -> None:
+    def blockUiTimelineUpdates(doBlock: bool, terminationDurationInMs: Optional[int]) -> None:
+        method = "Pixera.Compound.blockUiTimelineUpdates"
+        params = ["doBlock", "terminationDurationInMs"]
+        return [method, params, [doBlock, terminationDurationInMs]]
+
+    @staticmethod
+    def startOpacityAnimationOfTimeline(name: str, fadeIn: bool, fullFadeDuration: float) -> None:
         method = "Pixera.Compound.startOpacityAnimationOfTimeline"
-        params = ["timelineName", "fadeIn", "fullFadeDuration"]
-        return [method, params, [timelineName, fadeIn, fullFadeDuration]]
+        params = ["name", "fadeIn", "fullFadeDuration"]
+        return [method, params, [name, fadeIn, fullFadeDuration]]
 
     @staticmethod
     def createClipOnLayerAtTimeWithResource(layerPath: str, time: float, resourcePath: str) -> None:
@@ -620,6 +626,12 @@ class API:
         params = []
         return [method, params, []]
 
+    @staticmethod
+    def getUsagePresets() -> List[handle]:
+        method = "Pixera.LiveSystems.getUsagePresets"
+        params = []
+        return [method, params, []]
+
     class MultiUserMember:
         @staticmethod
         def getName(handle: handle) -> str:
@@ -805,57 +817,50 @@ class API:
             return [method, params, [handle, hdlSrc, outputIdPathMapStr]]
 
         @staticmethod
-        def clearExportedMappings(handle: handle, path: str, onlyServicePath: bool) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.clearExportedMappings"
-            params = ["handle, path, onlyServicePath"]
+        def setUsagePresetName(handle: handle, name: str) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.setUsagePresetName"
+            params = ["handle, name"]
 
-            return [method, params, [handle, path, onlyServicePath]]
+            return [method, params, [handle, name]]
 
         @staticmethod
-        def exportMappings(handle: handle, path: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.exportMappings"
+        def getUsagePresetName(handle: handle) -> str:
+            method = "Pixera.LiveSystems.LiveSystem.getUsagePresetName"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
+        def updateUsagePreset(handle: handle) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.updateUsagePreset"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
+        def saveUsagePresetAs(handle: handle, name: str) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.saveUsagePresetAs"
+            params = ["handle, name"]
+
+            return [method, params, [handle, name]]
+
+        @staticmethod
+        def applyUsagePreset(handle: handle, name: str) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.applyUsagePreset"
+            params = ["handle, name"]
+
+            return [method, params, [handle, name]]
+
+        @staticmethod
+        def exportUsagePreset(handle: handle, path: str) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.exportUsagePreset"
             params = ["handle, path"]
 
             return [method, params, [handle, path]]
 
         @staticmethod
-        def importMappings(handle: handle, path: str, outputIdPathMapStr: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.importMappings"
-            params = ["handle, path, outputIdPathMapStr"]
-
-            return [method, params, [handle, path, outputIdPathMapStr]]
-
-        @staticmethod
-        def exportMappingsDirectly(handle: handle, path: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.exportMappingsDirectly"
-            params = ["handle, path"]
-
-            return [method, params, [handle, path]]
-
-        @staticmethod
-        def importMappingsDirectly(handle: handle, path: str, outputIdPathMapStr: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.importMappingsDirectly"
-            params = ["handle, path, outputIdPathMapStr"]
-
-            return [method, params, [handle, path, outputIdPathMapStr]]
-
-        @staticmethod
-        def exportMappingsToLiveSystemPath(handle: handle, parentPath: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.exportMappingsToLiveSystemPath"
-            params = ["handle, parentPath"]
-
-            return [method, params, [handle, parentPath]]
-
-        @staticmethod
-        def importMappingsFromLiveSystemPath(handle: handle, parentPath: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.importMappingsFromLiveSystemPath"
-            params = ["handle, parentPath"]
-
-            return [method, params, [handle, parentPath]]
-
-        @staticmethod
-        def clearExportedMappingsAtLiveSystemPath(handle: handle, path: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.clearExportedMappingsAtLiveSystemPath"
+        def importUsagePreset(handle: handle, path: str) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.importUsagePreset"
             params = ["handle, path"]
 
             return [method, params, [handle, path]]
@@ -973,6 +978,13 @@ class API:
             return [method, params, [handle, channel]]
 
         @staticmethod
+        def toggleAudioMasterMute(handle: handle, channel: int) -> None:
+            method = "Pixera.LiveSystems.LiveSystem.toggleAudioMasterMute"
+            params = ["handle, channel"]
+
+            return [method, params, [handle, channel]]
+
+        @staticmethod
         def setAudioTimecodeInput(handle: handle, channel: int, state: bool) -> None:
             method = "Pixera.LiveSystems.LiveSystem.setAudioTimecodeInput"
             params = ["handle, channel, state"]
@@ -1003,6 +1015,56 @@ class API:
         @staticmethod
         def getInstancePath(handle: handle) -> str:
             method = "Pixera.LiveSystems.LiveSystem.getInstancePath"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+    class UsagePreset:
+        @staticmethod
+        def getName(handle: handle) -> str:
+            method = "Pixera.LiveSystems.UsagePreset.getName"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
+        def update(handle: handle) -> None:
+            method = "Pixera.LiveSystems.UsagePreset.update"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
+        def apply(handle: handle, destinationIp: str) -> None:
+            method = "Pixera.LiveSystems.UsagePreset.apply"
+            params = ["handle, destinationIp"]
+
+            return [method, params, [handle, destinationIp]]
+
+        @staticmethod
+        def importFromFile(handle: handle, path: str) -> None:
+            method = "Pixera.LiveSystems.UsagePreset.importFromFile"
+            params = ["handle, path"]
+
+            return [method, params, [handle, path]]
+
+        @staticmethod
+        def exportToFile(handle: handle, path: str) -> None:
+            method = "Pixera.LiveSystems.UsagePreset.exportToFile"
+            params = ["handle, path"]
+
+            return [method, params, [handle, path]]
+
+        @staticmethod
+        def getInst(handle: handle, instancePath: str) -> handle:
+            method = "Pixera.LiveSystems.UsagePreset.getInst"
+            params = ["handle, instancePath"]
+
+            return [method, params, [handle, instancePath]]
+
+        @staticmethod
+        def getInstancePath(handle: handle) -> str:
+            method = "Pixera.LiveSystems.UsagePreset.getInstancePath"
             params = ["handle"]
 
             return [method, params, [handle]]
@@ -1089,6 +1151,34 @@ class API:
         @staticmethod
         def getForPreview(handle: handle) -> bool:
             method = "Pixera.LiveSystems.Output.getForPreview"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
+        def setIsOutputAggregate(handle: handle, state: bool) -> None:
+            method = "Pixera.LiveSystems.Output.setIsOutputAggregate"
+            params = ["handle, state"]
+
+            return [method, params, [handle, state]]
+
+        @staticmethod
+        def getIsOutputAggregate(handle: handle) -> bool:
+            method = "Pixera.LiveSystems.Output.getIsOutputAggregate"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
+        def setAggregateDims(handle: handle, horizontalCount: int, verticalCount: int) -> None:
+            method = "Pixera.LiveSystems.Output.setAggregateDims"
+            params = ["handle, horizontalCount, verticalCount"]
+
+            return [method, params, [handle, horizontalCount, verticalCount]]
+
+        @staticmethod
+        def getAggregateDims(handle: handle) -> List[int]:
+            method = "Pixera.LiveSystems.Output.getAggregateDims"
             params = ["handle"]
 
             return [method, params, [handle]]
@@ -1250,6 +1340,13 @@ class API:
             params = ["handle, xPos, yPos, zPos, xRot, yRot, zRot"]
 
             return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot]]
+
+        @staticmethod
+        def setPosRotAndPerspectivePos(handle: handle, xPos: Optional[float], yPos: Optional[float], zPos: Optional[float], xRot: Optional[float], yRot: Optional[float], zRot: Optional[float], perspXPos: Optional[float], perspYPos: Optional[float], perspZPos: Optional[float]) -> bool:
+            method = "Pixera.Screens.Screen.setPosRotAndPerspectivePos"
+            params = ["handle, xPos, yPos, zPos, xRot, yRot, zRot, perspXPos, perspYPos, perspZPos"]
+
+            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, perspXPos, perspYPos, perspZPos]]
 
         @staticmethod
         def setPosRotScale(handle: handle, xPos: Optional[float], yPos: Optional[float], zPos: Optional[float], xRot: Optional[float], yRot: Optional[float], zRot: Optional[float], xScale: Optional[float], yScale: Optional[float], zScale: Optional[float]) -> bool:
@@ -1653,11 +1750,11 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def setTransformation(handle: handle, xPos: Optional[float], yPos: Optional[float], zPos: Optional[float], xRot: Optional[float], yRot: Optional[float], zRot: Optional[float], fov: Optional[float], aspectRatio: Optional[float]) -> None:
+        def setTransformation(handle: handle, xPos: Optional[float], yPos: Optional[float], zPos: Optional[float], xRot: Optional[float], yRot: Optional[float], zRot: Optional[float], fov: Optional[float], aspectRatio: Optional[float], lockLookAtPt: Optional[bool]) -> None:
             method = "Pixera.Screens.Perspective.setTransformation"
-            params = ["handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio"]
+            params = ["handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, lockLookAtPt"]
 
-            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio]]
+            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, lockLookAtPt]]
 
         @staticmethod
         def getInst(handle: handle, instancePath: str) -> handle:
@@ -1798,11 +1895,11 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def getOutput(handle: handle) -> handle:
+        def getOutput(handle: handle, index: Optional[int]) -> handle:
             method = "Pixera.Projectors.Projector.getOutput"
-            params = ["handle"]
+            params = ["handle, index"]
 
-            return [method, params, [handle]]
+            return [method, params, [handle, index]]
 
         @staticmethod
         def setOutput(handle: handle, outputHandle: handle) -> None:
@@ -2925,18 +3022,18 @@ class API:
             return [method, params, [handle, number]]
 
         @staticmethod
-        def applyCueWithName(handle: handle, name: str) -> None:
+        def applyCueWithName(handle: handle, name: str, blendDuration: Optional[float]) -> None:
             method = "Pixera.Timelines.Timeline.applyCueWithName"
-            params = ["handle, name"]
+            params = ["handle, name, blendDuration"]
 
-            return [method, params, [handle, name]]
+            return [method, params, [handle, name, blendDuration]]
 
         @staticmethod
-        def applyCueWithNumber(handle: handle, number: int) -> None:
+        def applyCueWithNumber(handle: handle, number: int, blendDuration: Optional[float]) -> None:
             method = "Pixera.Timelines.Timeline.applyCueWithNumber"
-            params = ["handle, number"]
+            params = ["handle, number, blendDuration"]
 
-            return [method, params, [handle, number]]
+            return [method, params, [handle, number, blendDuration]]
 
         @staticmethod
         def createCue(handle: handle, name: str, timeInFrames: float, operation: int) -> handle:
@@ -3198,11 +3295,11 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def startOpacityAnimation(handle: handle, fadeIn: bool, durationFrames: float) -> None:
+        def startOpacityAnimation(handle: handle, fadeIn: bool, fullFadeDuration: float) -> None:
             method = "Pixera.Timelines.Timeline.startOpacityAnimation"
-            params = ["handle, fadeIn, durationFrames"]
+            params = ["handle, fadeIn, fullFadeDuration"]
 
-            return [method, params, [handle, fadeIn, durationFrames]]
+            return [method, params, [handle, fadeIn, fullFadeDuration]]
 
         @staticmethod
         def setSmpteMode(handle: handle, mode: int) -> None:
@@ -4027,6 +4124,13 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
+        def toggleMute(handle: handle) -> None:
+            method = "Pixera.Timelines.Node.toggleMute"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
         def getIsMuted(handle: handle) -> bool:
             method = "Pixera.Timelines.Node.getIsMuted"
             params = ["handle"]
@@ -4140,6 +4244,13 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
+        def toggleMute(handle: handle) -> None:
+            method = "Pixera.Timelines.Param.toggleMute"
+            params = ["handle"]
+
+            return [method, params, [handle]]
+
+        @staticmethod
         def getIsMuted(handle: handle) -> bool:
             method = "Pixera.Timelines.Param.getIsMuted"
             params = ["handle"]
@@ -4176,18 +4287,18 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def apply(handle: handle) -> None:
+        def apply(handle: handle, blendDuration: Optional[float]) -> None:
             method = "Pixera.Timelines.Cue.apply"
-            params = ["handle"]
+            params = ["handle, blendDuration"]
 
-            return [method, params, [handle]]
+            return [method, params, [handle, blendDuration]]
 
         @staticmethod
-        def blendToThis(handle: handle, blendDurationInSeconds: float) -> None:
+        def blendToThis(handle: handle, blendDuration: float) -> None:
             method = "Pixera.Timelines.Cue.blendToThis"
-            params = ["handle, blendDurationInSeconds"]
+            params = ["handle, blendDuration"]
 
-            return [method, params, [handle, blendDurationInSeconds]]
+            return [method, params, [handle, blendDuration]]
 
         @staticmethod
         def getAttributes(handle: handle) -> CueAttributes:

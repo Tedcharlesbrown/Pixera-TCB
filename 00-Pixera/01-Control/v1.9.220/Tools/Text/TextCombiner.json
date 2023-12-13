@@ -1,0 +1,143 @@
+{
+ "api": [
+  {
+   "body": "local json = require \"json\"\r\nlocal module = {}\r\n\r\nif self.helper == nil then -- already init called\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nself.count = tonumber(self.helper:getProperty(\"Input Count\",1))\r\n\r\n--dont override reload\r\ntable.insert(module,{cont= \"true\", name= \"reload\"})\r\n\r\nlocal resultCode = \"\"\r\nlocal resultCode2 = \"self._res =  \"\r\nfor i=1,self.count do\r\n\tlocal fn = {}\r\n\tfn.kind = \"func\"\r\n\tfn.attKind = \"standard\"\r\n\tfn.slotStyle = \"leftIn;rightNone;triggerHidden\"\r\n\tfn.params = {{name=\"val\", type=\"string\"}}\r\n\tfn.name = \"In\" .. i\r\n\tfn.body = \"self._\" .. fn.name .. \" = pixcCommon.execAttribute('', self._\" .. fn.name .. \", val, true)\\n\"\r\n\tfn.body = fn.body .. \"self.Result()\\n\"\r\n\tfn.body = fn.body .. \"return self._\" .. fn.name\r\n\r\n\tresultCode = resultCode .. \"if self._\" .. fn.name .. \" == nil then\\n\"\r\n\tresultCode = resultCode .. \"\tself._\" .. fn.name .. \" = ''\\n\"\r\n\tresultCode = resultCode .. \"end\\n\"\r\n\r\n\tresultCode2 = resultCode2 .. \"self._\" .. fn.name .. \" .. \"\r\n\r\n\ttable.insert(module,fn)\r\nend\r\n\r\nresultCode2 = resultCode2 .. \"''\\npixc.callRefs(self._res)\\npixc.report(self._res)\\nreturn self._res\"\r\ntable.insert(module,{cont= \"true\", name= \"Result\", body= resultCode .. resultCode2})\r\n\r\nself().dynamicRebuildFromDescriptions(json.encode(module), \"\", \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "reload",
+   "slotStyle": "hidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": ""
+   },
+   "body": "self._In1 = pixcCommon.execAttribute('', self._In1, val, true)\nself.Result()\nreturn self._In1",
+   "kind": "func",
+   "name": "In1",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": ""
+   },
+   "body": "self._In2 = pixcCommon.execAttribute('', self._In2, val, true)\nself.Result()\nreturn self._In2",
+   "kind": "func",
+   "name": "In2",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._In3 = pixcCommon.execAttribute('', self._In3, val, true)\nself.Result()\nreturn self._In3",
+   "kind": "func",
+   "name": "In3",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "self._In4 = pixcCommon.execAttribute('', self._In4, val, true)\nself.Result()\nreturn self._In4",
+   "kind": "func",
+   "name": "In4",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "if self._In1 == nil then\n\tself._In1 = ''\nend\nif self._In2 == nil then\n\tself._In2 = ''\nend\nif self._In3 == nil then\n\tself._In3 = ''\nend\nif self._In4 == nil then\n\tself._In4 = ''\nend\nself._res =  self._In1 .. self._In2 .. self._In3 .. self._In4 .. ''\npixc.callRefs(self._res)\npixc.report(self._res)\nreturn self._res",
+   "kind": "func",
+   "name": "Result",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 583.3703703703703,
+  "y": 953.3333333333333
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Tools/Text/TextCombiner.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4hdhLi/XnJsDB6I8KWLgfrUfYQflWu6Y/tDyzn0bGOPyWps0NWDCSYYuIiTF4MpdDHwo+gkvgckpgLxASdGBC7PxdtE+fLbo5kSgkdzL0Zxxe8DJRQ0C29fEliKAh7Z6fQtKbftRo/59DpO1gpY1IjA=",
+ "name": "TextCombiner",
+ "properties": [
+  {
+   "cont": "4",
+   "name": "Input Count",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Create Inputs",
+   "name": "createButton",
+   "optionsAction": "self.reload",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "button"
+  },
+  {
+   "cont": "Change Input Count and Click Create to get more Inputs",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#Text-TextCombiner",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,114 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolKnx\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.knx = createPixcProtocolKnx()\r\npixc.log(self.helper)\r\nself.open = false\r\nself.ip = self.helper:getProperty(\"IP\",\"\")\r\nself.port = tonumber(self.helper:getProperty(\"Port\",\"3671\"))\r\nself.IsOpen(false, true)\r\nself.knx:configure(\r\n\tself.ip,\r\n\tself.port)\r\nself.knx:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\nself.knx:start()\r\nself.readInit()\r\nself.addListener()\r\n\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.knx == nil then return end\r\nself.knx:close()\r\nself.knx = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\n-- slotStyle:leftNone;rightOut;triggerHidden\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "--\n\tself.knx:listen(\"1/4/42\",1,1,function(addr,value) self.Status.AussenSpots(value,true) end )\r\n\r\n",
+   "kind": "func",
+   "name": "addListener"
+  },
+  {
+   "body": "--\r\n\tlocal v = self.knx:read(\"1/4/42\",1,1 )\r\n\tif v ~= nil then\r\n\t\tself.Status.AussenSpots(v,true)\r\n\tend\r\n\r\n",
+   "kind": "func",
+   "name": "readInit"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "-- attKind:internal\r\n-- slotStyle:leftNone;rightOut;triggerHidden\r\nself.Aussen = pixcCommon.execAttribute(false, self.Aussen, value, doSet)\r\n",
+     "kind": "func",
+     "name": "AussenSpots",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Status"
+  },
+  {
+   "elems": [
+    {
+     "body": "-- slotStyle:leftIn;rightNone\nself.knx:write(\"1/1/42\",1,1, value )\n",
+     "kind": "func",
+     "name": "AussenSpots",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone"
+    }
+   ],
+   "kind": "ns",
+   "name": "Schalten"
+  }
+ ],
+ "cjv": {
+  "h": 344.0,
+  "w": 268.0,
+  "x": 385.0,
+  "y": 478.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "O:/Repos/nui/data/control_library_standard/Protocols/Knx.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4hbWIbGOI5GwJiEwQLWdbRzMPS7Z3vXmyUelBPEEJj7BWT/WSehndK21hUqqV5k0vpe64JQ1y1At3mpUbLSyjdE=",
+ "name": "Knx",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "192.168.1.31",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "3671",
+   "name": "Port",
+   "typeHint": "number"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

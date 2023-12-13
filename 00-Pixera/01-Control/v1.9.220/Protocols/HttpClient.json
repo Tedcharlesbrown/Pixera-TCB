@@ -1,0 +1,39 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcProtocolHttp\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.protocol = createPixcProtocolHttp()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal parameter = {}\nparameter[\"name\"] = \"Max\"\nparameter[\"tag\"] = \"Test\"\n\nlocal success, code, headerDict, content = self.protocol:httpGet(\"https://putsreq.com/I2hC8Z6ICWKzLJ47F3VT\", parameter)\nif(success) then\n\tpixc.log(code)\n\tpixc.log(content)\nend\n",
+   "kind": "func",
+   "name": "testHttpGet"
+  },
+  {
+   "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=dgdgg\"}\nlocal parameter = {}\nparameter[\"name\"] = \"Max\"\nparameter[\"tag\"] = \"Test\"\nlocal success, code, headerDict, content = self.protocol:httpPost(\"https://putsreq.com/I2hC8Z6ICWKzLJ47F3VT\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+   "kind": "func",
+   "name": "testHttpPost"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 551.0,
+  "y": 361.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "O:\\Repos\\nui\\data\\control_library_standard\\Protocols\\SimpleHttpClient.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4h0N8TSPr5oX9mGNB4TQtzURUv6J4xXfYdHXFzdcJ3hPqJBugJQzSOBntTDHwBId9YUcVKowQLxY3XGNXgNvQJk=",
+ "name": "SimpleHttpClient",
+ "separateCode": false,
+ "uiUrl": ""
+}

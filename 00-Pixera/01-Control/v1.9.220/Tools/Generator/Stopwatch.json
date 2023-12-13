@@ -1,0 +1,203 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nif self._startet ~= nil then return end\nself._startet = true\nif self.pixHelper == nil then\n\tself.pixcHelper = createPixcHelper(pixc,self())\nend\nself._reset = self.pixcHelper:getProperty(\"Auto Reset\")\nself._dispTime = self.pixcHelper:getProperty(\"Display Time To Asset\")\nself._textInst = self.pixcHelper:getProperty(\"Text Asset\")\npixc.log(self._textInst)\nif self._interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self._interval);\n\tself._interval = nil\nend\n\nif self._reset == \"true\"  or self._counter == nil then\n\tself.Reset()\nend\n\nself._interval = pixc.getRoot().Utils.Timer.setInterval(\n\tfunction()\n\t\tself.Tick(false)\n\tend, 10)",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "\r\nif self._interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self._interval);\r\n\tself._interval = nil\r\nend\r\nself._startet = nil",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "self._counter = 0.0\nself.Tick(true)\n",
+   "kind": "func",
+   "name": "Reset",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nif reset == true then\n\tpixc.report(0.00)\n\tpixc.callRefs(0.00)\n\tself.Display_Time.Days(0)\n\tself.Display_Time.Hours(0)\n\tself.Display_Time.Minutes(0)\n\tself.Display_Time.Seconds(0)\n\tself.Display_Time.DisplayToText()\nelse\n\tself._counter = self._counter + 0.01\n\tpixc.report(self._counter)\n\tpixc.callRefs(self._counter)\n\tself.Display_Time.Days(self._counter)\n\tself.Display_Time.Hours(self._counter)\n\tself.Display_Time.Minutes(self._counter)\n\tself.Display_Time.Seconds(self._counter)\n\tself.Display_Time.DisplayToText()\nend",
+   "kind": "func",
+   "name": "Tick",
+   "params": [
+    {
+     "name": "reset",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "local days = tostring(math.floor(val / 86400))\r\nself._Days = pixcCommon.execAttribute(0, self._Days, days, doSet)\r\nreturn self._Days\r\n",
+     "kind": "func",
+     "name": "Days",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local hours = tostring(math.floor(math.fmod(val, 86400) / 3600))\r\nif string.len(hours) < 2 then\r\n\thours = \"0\" .. hours\r\nend\r\nself._Hours = pixcCommon.execAttribute(0, self._Hours, hours, doSet)\r\nreturn self._Hours\r\n",
+     "kind": "func",
+     "name": "Hours",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local minutes = tostring(math.floor(math.fmod(val, 3600) / 60))\r\nif string.len(minutes) < 2 then\r\n\tminutes = \"0\" .. minutes\r\nend\r\nself._Minutes = pixcCommon.execAttribute(0, self._Minutes, minutes, doSet)\r\nreturn self._Minutes\r\n",
+     "kind": "func",
+     "name": "Minutes",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local seconds = tostring(math.floor(math.fmod(val, 60)))\r\nif string.len(seconds) < 2 then\r\n\tseconds = \"0\" .. seconds\r\nend\r\nself._Seconds = pixcCommon.execAttribute(0, self._Seconds, seconds, doSet)\r\nreturn self._Seconds\r\n",
+     "kind": "func",
+     "name": "Seconds",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "if Pixera.Resources.Resource.getInst(self._textInst) == nil then\r\n\treturn\r\nend\r\nlocal dispText = \"\"\r\nlocal _Days = tonumber(self._Days)\r\nlocal _Hours = tonumber(self._Hours) \r\nlocal _Minutes = tonumber(self._Minutes)\r\nlocal _Seconds = tonumber(self._Seconds)\r\n\r\nif self._dispTime == self.displayTable()[1] then\r\n\tdispText = self._Days .. \":\" .. self._Hours .. \":\" .. self._Minutes .. \":\" .. self._Seconds\r\nend\r\nif self._dispTime == self.displayTable()[2] then\r\n\tdispText = tostring(_Hours + (_Days * 24)) .. \":\" .. self._Minutes .. \":\" .. self._Seconds\r\nend\r\nif self._dispTime == self.displayTable()[3] then\r\n\tdispText = tostring(_Minutes + (_Hours * 60) + (_Days * 1440)) .. \":\" .. self._Seconds\r\nend\r\nif self._dispTime == self.displayTable()[4] then\r\n\tdispText = tostring(_Seconds + (_Minutes * 60) + (_Hours * 3600) + (_Days * 86400))\r\nend\r\nPixera.Resources.Resource.getInst(self._textInst).setText(dispText)\r\nself._DisplayToText = pixcCommon.execAttribute(0, self._DisplayToText, dispText, doSet)\r\nreturn self._DisplayToText\r\n",
+     "kind": "func",
+     "name": "DisplayToText",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Display_Time"
+  },
+  {
+   "body": "local table = {\"Days:Hours:Minutes:Seconds\",\"Hours:Minutes:Seconds\",\"Minutes:Seconds\",\"Seconds\"}\r\nreturn table\r\n",
+   "kind": "func",
+   "name": "displayTable",
+   "slotStyle": "leftNone;rightNone;triggerHidden;hidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 1370.3809523809523,
+  "y": 1465.3607503607502
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Tools/Generator/Stopwatch.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4oTjkmvVFhbwEQk86ubx5DI/IhPozYfg9EeJ8el0pTGuxW7lX6Vxt9N8hYbJyZHgm1s5JVswTzfnQMbzK/qdkOdBBX7gagFf6B/PQGQ1gpGHdA8Kme2v3xHeEkfSgnduJQ==",
+ "name": "Stopwatch",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Reset",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "Media.Standard Content.Unnamed Text",
+   "name": "Text Asset"
+  },
+  {
+   "cont": "Days:Hours:Minutes:Seconds",
+   "name": "Display Time To Asset",
+   "optionsSourceFunc": "self.displayTable",
+   "typeHint": "string"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#Generator-Stopwatch",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

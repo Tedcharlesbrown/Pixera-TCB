@@ -4,7 +4,7 @@ import json
 
 readme_prefix = """
 # Protocol Overview
-This documentation describes revision 349 of the API.
+This documentation describes revision 367 of the API.
 
 The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
 
@@ -28,7 +28,7 @@ def read_api_json(version_directory):
     if 'pixera_api.json' not in files:
         return
     else:
-        print("FOUND FILE")
+        print(f"Reading JSON file from {version_directory}")
 
     file_path = os.path.join(version_directory, "pixera_api.json")
     with open(file_path, 'r', encoding='utf-8-sig') as f:  # Use 'utf-8-sig' encoding
@@ -187,7 +187,9 @@ def create_dictionary(json_data):
 
 
 if __name__ == "__main__":
+    print("Generating API Overview")
     version_directory = './'
     json_data = read_api_json(version_directory)
     data = create_dictionary(json_data)
     generate_api_overview(data, "_api_overview.md")
+    print("API Overview generated successfully.")

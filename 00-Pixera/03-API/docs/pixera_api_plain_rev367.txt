@@ -1,0 +1,944 @@
+﻿This documentation describes revision 367 of the API.
+
+namespace Pixera
+{
+namespace Utility
+{
+   int getApiRevision();
+   boolean getHasFunction(string functionName);
+   string outputDebug(string message);
+   string getLicenseJson();
+   double getCurrentTime();
+   string getCurrentTimeAsString();
+   null noop();
+   null requestCallback(string functionName);
+   string readFileString(string path);
+   null writeFileString(string path,string fileStr);
+   string getAccessRecipe(string hdlPath);
+   string pollMonitoring();
+   boolean unsubscribeMonitoringSubject(string subject);
+   boolean subscribeMonitoringSubject(string subject);
+   boolean setMonitoringEventMode(string mode);
+   null monitoringEvent(string eventDescription);
+   boolean setShowContextInReplies(boolean doShow);
+   boolean setMonitoringHasDelimiter(boolean hasDelimiter);
+   string runJsScript(string jsFunction,string jsCode);
+   null dynamicRebuildFromJsonDescription(string deviceName,string jsonDescription,string folder);
+}
+
+namespace Network
+{
+   handle getConveyor(string conveyorName);
+
+   class Conveyor
+   {
+      null sendString(string str);
+   }
+}
+
+namespace Compound
+{
+   boolean setTransportModeOnTimelineAtIndex(int index,int mode);
+   null setTransportModeOnTimeline(string timelineName,int mode);
+   null toggleTransport(string timelineName);
+   int getTransportModeOnTimeline(string timelineName);
+   null startFirstTimeline();
+   null pauseFirstTimeline();
+   null stopFirstTimeline();
+   null setOpacityOnTimeline(string timelineName,double opacity);
+   double getOpacityOnTimeline(string timelineName);
+   null setPosValue(double val);
+   null setPosValueXY(double valX,double valY);
+   null setParamValue(string path,double value);
+   null applyCueAtIndexOnTimelineAtIndex(int cueIndex,int timelineIndex,optional<double> blendDuration);
+   null applyCueNumberOnTimelineAtIndex(int cueNumber,int timelineIndex,optional<double> blendDuration);
+   null applyCueNumberOnTimeline(string timelineName,int cueNumber,optional<double> blendDuration);
+   null applyCueOnTimeline(string timelineName,string cueName,optional<double> blendDuration);
+   handle addResourceToFolder(string namePath,string filePath);
+   null assignResourceToLayer(string resourcePath,string layerPath);
+   null refreshResource(string resourcePath);
+   null setTransportModeOnLayer(string layerPath,int mode,boolean loop);
+   int getTransportModeOnLayer(string layerPath);
+   string getResourceAssignedToLayer(string layerPath);
+   null assignResourceToClipAtTimeByDmxId(string layerPath,int dmxFolderId,int dmxFileId,double time);
+   null assignResourceToClipAtHMSFStringByDmxId(string layerPath,int dmxFolderId,int dmxFileId,string hmsf);
+   null assignResourceToClipAtHMSFByDmxId(string layerPath,int dmxFolderId,int dmxFileId,int h,int m,int s,int f);
+   null setCurrentTimeOfTimeline(string name,int time);
+   null setCurrentTimeOfTimelineInSeconds(string name,double time);
+   null setCurrentTimeAndTransportModeOfTimelineInSeconds(string name,double time,int mode);
+   double getFpsOfTimeline(string name);
+   int getCurrentTimeOfTimeline(string name);
+   double getCurrentTimeOfTimelineInSeconds(string name);
+   string getCurrentHMSFOfTimeline(string name);
+   int getCurrentCountdownOfTimeline(string name);
+   string getCurrentCountdownHMSFOfTimeline(string name);
+   null blockUiTimelineUpdates(boolean doBlock,optional<int> terminationDurationInMs);
+   null startOpacityAnimationOfTimeline(string name,boolean fadeIn,double fullFadeDuration);
+   null createClipOnLayerAtTimeWithResource(string layerPath,double time,string resourcePath);
+   null removeClipOnLayerWithIndex(string layerPath,int clipIndex);
+   null removeAllClipsOnLayer(string layerPath);
+   double getClipDurationInSecondsWithIndex(string layerPath,int clipIndex);
+   int getClipDurationInFramesWithIndex(string layerPath,int clipIndex);
+   double getClipTimeInSecondsWithIndex(string layerPath,int clipIndex);
+   double getClipEndTimeInSecondsWithIndex(string layerPath,int clipIndex);
+   double getResourceDurationInSeconds(string resourcePath);
+   double getParamValue(string path);
+   double setTimecodeInput(int hour,int minute,int second,int frame,double elapsedTime,boolean running,int freshMode,int stateToken,int format);
+   null takeOverAllClients();
+   null setPauseSmpteInput(boolean doPause);
+}
+
+namespace Session
+{
+   null closeApp(boolean saveProject);
+   null loadProject(string path);
+   null saveProject();
+   null saveProjectAs(string path);
+   string getProjectName();
+   null setProjectName(string name);
+   string getProjectDirectory();
+   string getControlMultiUserSessionName();
+   null shutdownSystem(optional<int> mode);
+   string[] getLiveSystemIps();
+   string getLiveSystemState(string ip);
+   null liveSystemStateChange(string ip,string state);
+   null shutdownLiveSystem(string ip,optional<int> mode);
+   string wakeLiveSystem(string ip);
+   string getLiveSystemMacAddress(string ip);
+   null startLiveSystem(string ip);
+   null startLiveSystems();
+   null stopLiveSystem(string ip);
+   null stopLiveSystems();
+   null restartLiveSystem(string ip);
+   null restartLiveSystems();
+   null remoteSystemStateChange(string ip,string state);
+   string[] getRemoteSystemIps();
+   string getRemoteSystemState(string ip);
+   null setVideoStreamActiveState(string ip,string device,boolean isActive);
+   boolean getVideoStreamActiveState(string ip,string device);
+   string getDefaultClipDurationsAsJsonString();
+}
+
+namespace LiveSystems
+{
+   handle[] getLiveSystems();
+   null liveSystemNotAvailable(int reason,handle system);
+   handle[] getMultiUserMembers();
+   handle[] getUsagePresets();
+
+   class MultiUserMember
+   {
+      string getName();
+      string getIp();
+      string getState();
+      string getPerformanceMonitoringValuesJson();
+      string getPerformanceMonitoringValuesJsonEx(string filter);
+      null resetCumulativePerformanceMonitoringValues();
+      null ensureFileDistribution(boolean includeNotUsedYet);
+      null shutDown(int mode);
+      string wakeUp();
+      string getMacAddress();
+      null resetEngine();
+      null restartEngine();
+      null startEngine();
+      null closeEngine();
+      null triggerBackup(optional<bool> applyControlCommand);
+      string getStructureJson();
+   handle getInst(string instancePath);
+   }
+
+   class LiveSystem
+   {
+      string getName();
+      string getIp();
+      string getState();
+      null setBackupRole(int role);
+      int getBackupRole();
+      string getPerformanceMonitoringValuesJson();
+      string getPerformanceMonitoringValuesJsonEx(string filter);
+      null resetCumulativePerformanceMonitoringValues();
+      null moveMappingsToOutputs(handle hdlSrc,string outputIdPathMapStr);
+      null setUsagePresetName(string name);
+      string getUsagePresetName();
+      null updateUsagePreset();
+      null saveUsagePresetAs(string name);
+      null applyUsagePreset(string name);
+      null exportUsagePreset(string path);
+      null importUsagePreset(string path);
+      null ensureFileDistribution(boolean includeNotUsedYet);
+      null shutDown(int mode);
+      string wakeUp();
+      string getMacAddress();
+      handle[] getGraphicsDevices();
+      handle[] getEnabledOutputs();
+      handle[] getAllOutputs();
+      handle[] getVideoStreamOutputs();
+      null resetEngine();
+      null restartEngine();
+      null startEngine();
+      null closeEngine();
+      null setAudioMasterVolume(int channel,double volume);
+      double getAudioMasterVolume(int channel);
+      null setAudioMasterMute(int channel,boolean state);
+      boolean getAudioMasterMute(int channel);
+      null toggleAudioMasterMute(int channel);
+      null setAudioTimecodeInput(int channel,boolean state);
+      null triggerBackup(optional<bool> applyControlCommand);
+      string getStructureJson();
+   handle getInst(string instancePath);
+      string getInstancePath();
+   }
+
+   class UsagePreset
+   {
+      string getName();
+      null update();
+      null apply(string destinationIp);
+      null importFromFile(string path);
+      null exportToFile(string path);
+   handle getInst(string instancePath);
+      string getInstancePath();
+   }
+
+   class GraphicsDevice
+   {
+      string getName();
+      handle[] getEnabledOutputs();
+      handle[] getAllOutputs();
+   }
+
+   class Output
+   {
+      string getName();
+      null setActive(boolean active);
+      boolean getActive();
+      null setIdentify(boolean state);
+      boolean getIdentify();
+      handle[] getAssignedScreens();
+      handle[] getAssignedProjectors();
+      boolean getEnabled();
+      boolean getForPreview();
+      null setIsOutputAggregate(boolean state);
+      boolean getIsOutputAggregate();
+      null setAggregateDims(int horizontalCount,int verticalCount);
+      int[] getAggregateDims();
+   }
+
+   class VideoStream
+   {
+      string getName();
+      null setActive(boolean active);
+      boolean getActive();
+   }
+}
+
+namespace Settings
+{
+namespace SettingsGeneral
+{
+   boolean getShowDimsInPixels();
+   boolean getShowScaleAsSize();
+   null setFadeToTimeDelay(int timeInMilliseconds);
+   int getFadeToTimeDelay();
+}
+
+namespace SettingsTranscoding
+{
+   string[] getTranscodingPresets();
+   null addOrChangeTranscodingPreset(string preset);
+}
+
+}
+
+namespace Screens
+{
+   handle getScreenWithName(string name);
+   null setNamedScreenPosition(string name,optional<double> xPos,optional<double> yPos,optional<double> zPos);
+   handle[] getScreens();
+   string[] getScreenNames();
+   handle getFirstTimelineWithHomeScreen(string screenName);
+   handle[] getStudioCameras();
+
+   struct ScreenPosValues
+   {
+      double x;
+      double y;
+      double z;
+   }
+
+   class Screen
+   {
+      double getId();
+      string getName();
+      boolean setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      null getPosition();
+      boolean setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      null getRotation();
+      boolean setScale(optional<double> xScale,optional<double> yScale,optional<double> zScale);
+      null getScale();
+      boolean setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      boolean setPosRotAndPerspectivePos(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> perspXPos,optional<double> perspYPos,optional<double> perspZPos);
+      boolean setPosRotScale(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> xScale,optional<double> yScale,optional<double> zScale);
+      handle getPersepective();
+      null snapPerspectiveCornersToScreen(int mode);
+      boolean setPerspectivePosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      boolean setPerspectivePositionWithLookAt(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      null getPerspectivePosition();
+      boolean setPerspectiveRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      null getPerspectiveRotation();
+      boolean setCameraPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      boolean setCameraPositionWithLookAt(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      null getCameraPosition();
+      boolean setCameraRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      null getCameraRotation();
+      null setContentSamplingFrustumBase(double x,double y,double width,double height,double rotation,double originScreenId);
+      null runCalibration(string mode,string diff);
+      null editCalibration(string diff);
+      null resetWarpFile(string diff);
+      null loadWarpFile(string filePath);
+      null loadWarpFileWithDiff(string filePath,string diff);
+      null addWarpFile(string filePath);
+      null addWarpFileWithDiff(string filePath,string diff);
+      null loadColorCalibration(string calibrationName);
+      null runColorCalibration();
+      null setIsVisible(boolean isVisible);
+      boolean getIsVisible();
+      null setIsProjectable(boolean isProjectable);
+      boolean getIsProjectable();
+      null triggerRefreshMapping();
+      null resetAllColorCorrections();
+      null setColorCorrectionWithPath(string path,float value);
+      float getColorCorrectionWithPath(string path);
+      null setColorCorrectionAsJsonString(string colorCorrection);
+      string getColorCorrectionAsJsonString();
+      handle[] getOutput();
+      null setBlackout(boolean isActive);
+      boolean getBlackout();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+
+   class StudioCamera
+   {
+      string getName();
+      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      double[] getPosition(double xPos,double yPos,double zPos);
+      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      double[] getRotation(double xPos,double yPos,double zPos);
+      null setTransformation(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> fov,optional<double> aspectRatio);
+      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth);
+      null setTransformationAndLensPropsExt(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan);
+      null setTrackingInputPause(boolean pause);
+      boolean getTrackingInputPause();
+      null setUsePositionPropertiesFromTracking(boolean pause);
+      boolean getUsePositionPropertiesFromTracking();
+      null setUseRotationPropertiesFromTracking(boolean pause);
+      boolean getUseRotationPropertiesFromTracking();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+
+   class Perspective
+   {
+      string getName();
+      null setTransformation(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> fov,optional<double> aspectRatio,optional<bool> lockLookAtPt);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+}
+
+namespace Projectors
+{
+   handle getProjectorWithName(string name);
+   handle[] getProjectors();
+   string[] getProjectorNames();
+
+   struct ProjectorPosValues
+   {
+      double x;
+      double y;
+      double z;
+   }
+
+   class Projector
+   {
+      null getPosition();
+      boolean setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      null getRotation();
+      boolean setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      string getName();
+      null activateScreenMapping(double screenId,boolean isActive);
+      null setBlackout(boolean isActive);
+      boolean getBlackout();
+      null setSoftedgeVisible(string screenName,boolean visible);
+      null resetAllColorCorrections();
+      null setColorCorrectionWithPath(string path,float value);
+      float getColorCorrectionWithPath(string path);
+      null setColorCorrectionAsJsonString(string colorCorrection);
+      string getColorCorrectionAsJsonString();
+      handle getOutput(optional<int> index);
+      null setOutput(handle outputHandle);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+}
+
+namespace Resources
+{
+   handle[] getResources();
+   handle getResourceFolderWithNamePath(string namePath);
+   handle[] getResourceFolders();
+   handle[] getTranscodingFolders();
+   string getJsonDescrip();
+
+   class ResourceFolder
+   {
+      handle ref();
+      string getName();
+      null setName(string name);
+      handle[] getResourceFolders();
+      handle[] getResources();
+      handle getResourceAtIndex(int index);
+      handle addResource(string path);
+      handle[] addResourcesFromDirectory(string path,boolean removeOthers,boolean checkRedundancy);
+      handle[] addResourcesFromDirectoryRemoveAssets(string path,boolean removeOthers,boolean checkRedundancy);
+      handle addInternalResource(string signature,int resKind);
+      null createFoldersFrom(string path);
+      null refreshResources();
+      null moveResourceToThis(double id);
+      null removeThis();
+      null removeThisIncludingAssets();
+      null removeAllContents();
+      null removeAllContentsIncludingAssets();
+      null deleteAllContentsAssetsFromLiveSystem(handle apEntityLiveSystemHandle);
+      null resetDistributionTargets();
+      null changeDistributionTarget(handle apEntityLiveSystemHandle,boolean shouldDistribute);
+      null replaceResourcesByString(string searchString,string replaceString,string path);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+      int getDmxId();
+      int getCombinedDmxId();
+      null setDmxId(int id);
+   }
+
+   class TranscodingFolder
+   {
+      string getUsedTranscodingPreset();
+      null setUsedTranscodingPreset(string preset);
+      boolean getTranscodeAutomatically();
+      null setTranscodeAutomatically(boolean autoTranscode);
+      boolean getUseRxCacheAsDestination();
+      null setRxCacheAsDestination(boolean useRxCache);
+      string getDestinationDirectory();
+      null setDestinationDirectory(string path);
+   }
+
+   class Resource
+   {
+      handle ref();
+      null removeThis();
+      null deleteFilesOnSystems();
+      null removeThisIncludingAssets();
+      null deleteAssetFromLiveSystem(handle apEntityLiveSystemHandle);
+      null resetDistributionTargets();
+      null changeDistributionTarget(handle apEntityLiveSystemHandle,boolean shouldDistribute);
+      string getName();
+      null setName(string name);
+      double getFps();
+      double[] getResolution();
+      boolean getIsActive();
+      string[] getVideoStreamModes();
+      null setVideoStreamMode(int index);
+      double getId();
+      double getDuration();
+      string getType();
+      null setCurrentVersion(string version);
+      string getCurrentVersion();
+      string[] getVersions();
+      string[] getVersionSuffix();
+      null rescanVersions();
+      string getThumbnailAsBase64();
+      boolean getHasPendingTransfer();
+      double getIsInUse();
+      double getLastUsageBeginTime();
+      string getLastUsageBeginTimeAsString();
+      double getLastUsageEndTime();
+      string getLastUsageEndTimeAsString();
+      string getFilePath();
+      null setText(string text);
+      string getText();
+      boolean setFontWithName(string fontName);
+      string getFontName();
+      boolean setFontWithPath(string fontPath);
+      boolean setHorizontalTextAlignment(int textAlignment);
+      int getHorizontalTextAlignment();
+      boolean setVerticalTextAlignment(int textAlignment);
+      int getVerticalTextAlignment();
+      boolean setLineHeight(double lineHeight);
+      double getLineHeight();
+      int[] getTextMeasurementsWidthAndHeight();
+      null setUrl(string url);
+      string getUrl();
+      null setColorTransformPath(string colorTransformPath);
+      string getColorTransformPath();
+      null clearColorTransformPath();
+      null refresh(string text);
+      null distribute();
+      int getDmxId();
+      null setDmxId(int id);
+      null removeMultiresourceIndex(int index);
+      null addMultiresourceItem(double id);
+      handle[] getMultiresourceItems();
+      null replaceMultiresourceItemByIndex(int index,double id);
+      null setMultiresourceResolution(int width,int height);
+      null setMultiresourceItemSizebyIndex(int index,double width,double height);
+      null setMultiresourceItemPositionbyIndex(int index,double x,double y);
+      null setUseGradient(boolean useGradient);
+      boolean getUseGradient();
+      null setColors(uint[] argbCols,double[] positions,string[] colNames,optional<bool> useGradient);
+      null setColorAtIndex(int index,int red,int green,int blue,int alpha,double position,string name,optional<bool> useGradient);
+      int getColorAtIndex(int colorIndex);
+      double getColorPositionAtIndex(int colorIndex);
+      null launchVirtualWorld(string action);
+      handle getUnrealWorld();
+      null setMultiResourceItemRestrictedServiceIps(int itemIndex,string[] ipAdresses);
+      string[] getMultiResourceItemRestrictedServiceIps(int itemIndex);
+      null replace(string path);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+      null transcodeWithExisitngPreset(string presetName,boolean useRxCache,string destinationPath,int startFrame,int endFrame,uint serviceId);
+      null transcodeWithSettings(string settings,boolean useRxCache,string destinationPath,int startFrame,int endFrame,uint serviceId);
+      null moveToTranscodingFolder(string folderPath);
+   }
+
+   class UnrealWorld
+   {
+      string[] getLevelNames();
+      null loadLevel(string levelName);
+      string[] getEventTriggerNames();
+      null triggerEventByName(string triggerName);
+      null createNDisplayConfig();
+      null runUnreal();
+      null killUnreal();
+      string getName();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+}
+
+namespace Timelines
+{
+   handle getTimelineAtIndex(int index);
+   handle getTimelineFromName(string name);
+   handle[] getTimelines();
+   string[] getTimelineNames();
+   handle[] getTimelinesSelected();
+   handle createTimeline();
+
+   struct TimelineAttributes
+   {
+      int index;
+      string name;
+      double fps;
+      int mode;
+   }
+
+   class Timeline
+   {
+      handle ref();
+      null removeThis();
+      handle duplicateThis(optional<bool> withoutClipsCues);
+      null selectThis();
+      double getZoomFactor();
+      null setZoomFactor(double zoomFactor);
+      int getVerticalScrollOffset();
+      null setVerticalScrollOffset(int offset);
+      int getHorizontalScrollOffset();
+      null setHorizontalScrollOffset(int offset);
+      null moveInRenderOrder(boolean moveDown);
+      handle[] getLayers();
+      string[] getLayerNames();
+      handle[] getLayersSelected();
+      null selectLayerByIndex(int index);
+      null selectLayerByNames(string[] layerNames);
+      handle getLayerAtIndex(int index);
+      handle createLayer();
+      string getCueInfosAsJsonString();
+      handle[] getCues();
+      string[] getCueNames();
+      handle getCueAtIndex(int index);
+      handle getCueFromName(string name);
+      handle getCueFromNumber(int number);
+      null applyCueWithName(string name,optional<double> blendDuration);
+      null applyCueWithNumber(int number,optional<double> blendDuration);
+      handle createCue(string name,double timeInFrames,int operation);
+      null removeCues();
+      null createPauseCueBeforeSelectedClips();
+      null play();
+      null pause();
+      null stop();
+      null toggleTransport();
+      null store();
+      null reset();
+      null getAttributes();
+      boolean setCurrentFrame(int time);
+      null setCurrentTime(int time);
+      int getCurrentTime();
+      null scrubCurrentTime(int frames);
+      string getCurrentHMSF();
+      boolean setTransportMode(int mode);
+      int getTransportMode();
+      double setTimecodeInput(int hour,int minute,int second,int frame,double elapsedTime,boolean running,int freshMode,int stateToken,int format);
+      double getFps();
+      string getName();
+      null setName(string name);
+      null moveToNextCue();
+      null moveToNextCueIgnoreProperties();
+      handle getCueNext();
+      null moveToPreviousCue();
+      null moveToPreviousCueIgnoreProperties();
+      handle getCuePrevious();
+      null ignoreNextCue();
+      null ignoreNextCueWithOperation(int cueOperation);
+      null blendToTime(double goalTime,double blendDuration,optional<int> preloadDelayInMilliseconds);
+      null blendToTimeWithTransportMode(double goalTime,double blendDuration,int transportMode,optional<int> preloadDelayInMilliseconds);
+      boolean setBlendToTimeMode(int mode);
+      null setSpeedFactor(double factor);
+      double getSpeedFactor();
+      null setOpacity(double value);
+      double getOpacity();
+      null startOpacityAnimation(boolean fadeIn,double fullFadeDuration);
+      null setSmpteMode(int mode);
+      int getSmpteMode();
+      null storeRecordedValues();
+      null setSmpteInputBehaviour(int mode);
+      int getSmpteInputBehaviour();
+      null setSmpteOffset(double time);
+      double getSmpteOffset();
+      null resetRecordedValues();
+      string getTimelineInfosAsJsonString();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+
+   class Layer
+   {
+      handle ref();
+      null removeThis();
+      handle[] getNodes();
+      handle getNodeWithName(string name);
+      handle getParamWithName(string name);
+      double[] getSpatialParametersAtTime(double time);
+      handle getTimeline();
+      null setName(string name);
+      string getName();
+      null resetLayer();
+      string getLayerJsonDescrip();
+      null setLayerJsonDescrip(string descrip,boolean makeAllDominant);
+      string getJsonDescrip();
+      null initFromJsonDescrip(string descrip);
+      null setOpacity(double value);
+      double getOpacity();
+      null resetOpacity();
+      null setVolume(double value);
+      double getVolume();
+      null resetVolume();
+      null muteLayer();
+      null unMuteLayer();
+      boolean getIsLayerMuted();
+      null muteAudio();
+      null unMuteAudio();
+      boolean getIsAudioMuted();
+      int getDmxMuteState();
+      null setDmxMuteState(uint muteState);
+      null toggleExplicitMute(uint flag);
+      null setTransport(int mode,boolean loop);
+      int getTransportMode();
+      null resetTransportMode();
+      boolean getTransportLoop();
+      null assignResource(double id);
+      null assignResourceWithFade(double id,double fadeDuration);
+      handle getAssignedResource();
+      null resetAssignedResource();
+      handle getAssignedModelResource();
+      null resetAssignedModelResource();
+      string[] getFxNames();
+      null setFadeDurationDominantResourceChange(double value);
+      double getFadeDurationDominantResourceChange();
+      handle createClip();
+      handle createClipAtTime(double timeInFrames);
+      null controlClipBorder(handle clip,boolean isEnter,boolean isIncremental,double entryTime);
+      handle getClipAtIndex(int index);
+      handle[] getClips();
+      handle getClipCurrent(int offset);
+      handle[] getClipsSelected();
+      null removeClips();
+      null setHomeScreenFromScreenName(string screenName);
+      string getHomeScreenName();
+      null setBlendMode(string blendMode);
+      string getBlendMode();
+      null addEffectById(double id);
+      null setPreloadPermanently(boolean doPreloadPermanently);
+      boolean getPreloadPermanently();
+      null setRestrictToServiceWithIps(boolean doRestrict,string[] ipAdresses);
+      boolean getRestrictToService();
+      string[] getRestrictedServiceIps();
+      double[] getOffsets();
+      null setOffsets(optional<double> x,optional<double> y,optional<double> z,optional<double> xr,optional<double> yr,optional<double> zr,optional<double> xScale,optional<double> yScale,optional<double> zScale);
+      null setCurrentValuesToOffset(int typeIndex,optional<bool> resetDominant,optional<bool> removeKeyframesClips);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+
+   class Clip
+   {
+      double getId();
+      null removeThis();
+      handle getTimeline();
+      null setTime(double time);
+      double getTime();
+      null setDuration(double duration);
+      double getDuration();
+      null setLabel(string label);
+      string getLabel();
+      int getPlayMode();
+      null setPlayMode(int playMode);
+      double getSpeed();
+      null setSpeed(double speed);
+      boolean getBlendFrames();
+      null setBlendFrames(boolean doFrameblending);
+      double getInpoint();
+      null setInpoint(double inpoint);
+      double getOutpoint();
+      null setOutpoint(double inpoint);
+      null assignResource(double resId,optional<bool> setToResourceDuration);
+      handle getAssignedResource();
+      null setToResourceDuration();
+      null createEvent(string namePath,double time,double value);
+      null createEventInPixelSpace(string namePath,double time,double value);
+      null removeEvent(string namePath,double time);
+      handle createPauseCueBeforeClip();
+      null setColorTransformPath(string colorTransformPath);
+      string getColorTransformPath();
+      null clearColorTransformPath();
+      string getKeyframesAsJsonString();
+   }
+
+   handle getNodeFromId(double id);
+
+   class Node
+   {
+      handle[] getParameters();
+      string getName();
+      handle getParamWithName(string name);
+      null setValues(double[] values);
+      double[] getValues();
+      null resetValues();
+      null storeValues();
+      null mute();
+      null unMute();
+      null toggleMute();
+      boolean getIsMuted();
+      handle getTimeline();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+
+   struct TransportAttributes
+   {
+      int mode;
+      double speed;
+      boolean loop;
+      double inpoint;
+      double outpoint;
+   }
+
+   class Param
+   {
+      string getName();
+      boolean getIsChannel();
+      null setValue(timelineParamValue value);
+      null setValueRelativ(double value);
+      timelineParamValue getValue();
+      null resetValue();
+      null storeValue();
+      null setTransportAttributes(int mode,double speed,boolean loop,int inpoint,int outpoint);
+      null getAttributes();
+      null mute();
+      null unMute();
+      null toggleMute();
+      boolean getIsMuted();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+
+   struct CueAttributes
+   {
+      int index;
+      string name;
+      int operation;
+      int jumpMode;
+      double jumpGoalTime;
+      string jumpGoalLabel;
+      handle jumpGoalCue;
+      int number;
+      double waitDuration;
+   }
+
+   class Cue
+   {
+      null removeThis();
+      null apply(optional<double> blendDuration);
+      null blendToThis(double blendDuration);
+      null getAttributes();
+      handle getTimeline();
+      int getIndex();
+      string getName();
+      boolean setName(string name);
+      string getNote();
+      boolean setNote(string note);
+      int getOperation();
+      boolean setOperation(int operation);
+      int getJumpMode();
+      boolean setJumpMode(int jumpMode);
+      double getJumpGoalTime();
+      boolean setJumpGoalTime(double time);
+      string getJumpGoalLabel();
+      handle getJumpGoalCue();
+      boolean setJumpGoalLabel(string jumpGoalLabel);
+      int getNumber();
+      null setNumber(int number);
+      double getWaitDuration();
+      boolean setWaitDuration(double time);
+      double getBlendDuration();
+      boolean setBlendDuration(double timeInFrames);
+      double getTime();
+      boolean setTime(double time);
+      string getTimelineToTriggerName();
+      boolean setTimelineToTrigger(string nameTimeline);
+      int getTimelineTriggerMode();
+      boolean setTimelineTriggerMode(int mode);
+      double getTimelineTriggerApplyTime();
+      boolean setTimelineTriggerApplyTime(double time);
+      boolean setTimelineTriggerApplyCue(string goalCueLabel);
+      double getCountdown();
+      string getCountdownHMSF();
+      null setCommand(string conveyorName,string commandData);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+   }
+}
+
+namespace Calibration
+{
+   null setMarkerPositions(double[] positions,int[] markerIds);
+}
+
+namespace WebViews
+{
+   null loadDeviceUi(string devicePath);
+   null activatePreviousFunc();
+   null activateNextFunc();
+   string getLastActivatedFunc();
+   null deviceActivated(string devicePath,boolean withSelection);
+   null funcActivated(string funcPath,boolean withSelection);
+   null setFuncBodyState(string funcPath,string state);
+   string getFuncBodyState(string funcPath);
+   null setTag(string tag,string text);
+   null setEditorIsUsingBlocks(boolean useBlocks);
+}
+
+namespace Ui
+{
+   handle getComboBoxWithId(double id);
+   null setAppMode(int mode);
+   int getAppMode();
+   boolean getDisplayTestpattern();
+   null setDisplayTestpattern(boolean display);
+   string getPreviewCameraAsJsonString();
+   null setPreviewCameraAsJsonString(string cameraFrustrumStateString);
+   null setDisableContentRendering(boolean state);
+   boolean getIsContentRenderingDisabled();
+   null setDisableWorkspaceRendering(boolean state);
+   boolean getIsWorkspaceRenderingDisabled();
+
+   class ComboBox
+   {
+      null clear();
+      null addItem(string item,int id);
+      null setSelectedId(int id);
+      int getSelectedId();
+   }
+}
+
+namespace Direct
+{
+   null setRegistered(handle[] hdls,int expectedFrequency,int dampingMs,string[] usageHints);
+   null reloadRegistered();
+   handle registerScreen(string name,int expectedFrequency,int dampingMs);
+
+   class Screen
+   {
+      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
+      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      null setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      null setPosRotAndPerspectivePos(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> perspXPos,optional<double> perspYPos,optional<double> perspZPos);
+      null setPosRotScale(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> xScale,optional<double> yScale,optional<double> zScale);
+      null enableLogging(boolean enable);
+   }
+
+   handle registerParam(string instancePath);
+
+   class Param
+   {
+      null setValue(double value);
+      null enableLogging(boolean enable);
+   }
+
+   handle registerCamera(string cameraName,int expectedFrequency);
+
+   class Camera
+   {
+      null setPosition(double xPos,double yPos,double zPos);
+      null setRotation(double xRot,double yRot,double zRot);
+      null setTransformation(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio);
+      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth);
+      null setTransformationAndLensPropsExt(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan);
+   }
+
+   handle registerPerspective(string screenName,int expectedFrequency);
+
+   class Perspective
+   {
+      null setTransformation(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio);
+      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth);
+   }
+}
+
+namespace Unreal
+{
+namespace Utility
+{
+   int getSupportedUnrealPluginVersion();
+}
+
+namespace Network
+{
+}
+
+}
+
+}
+

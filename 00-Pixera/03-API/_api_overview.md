@@ -1,6 +1,6 @@
 
 # Protocol Overview
-This documentation describes revision 349 of the API.
+This documentation describes revision 367 of the API.
 
 The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
 
@@ -64,18 +64,18 @@ Syntax: *Pixera.Compound.(function)*
 | `setTransportModeOnTimeline` | `timelineName` : string <br>`mode` : int <br> | `null`<br> |
 | `toggleTransport` | `timelineName` : string <br> | `null`<br> |
 | `getTransportModeOnTimeline` | `timelineName` : string <br> | `int`<br> |
-| `setOpacityOnTimeline` | `timelineName` : string <br>`opacity` : double <br> | `null`<br> |
-| `getOpacityOnTimeline` | `timelineName` : string <br> | `double`<br> |
 | `startFirstTimeline` | None | `null`<br> |
 | `pauseFirstTimeline` | None | `null`<br> |
 | `stopFirstTimeline` | None | `null`<br> |
+| `setOpacityOnTimeline` | `timelineName` : string <br>`opacity` : double <br> | `null`<br> |
+| `getOpacityOnTimeline` | `timelineName` : string <br> | `double`<br> |
 | `setPosValue` | `val` : double <br> | `null`<br> |
 | `setPosValueXY` | `valX` : double <br>`valY` : double <br> | `null`<br> |
 | `setParamValue` | `path` : string <br>`value` : double <br> | `null`<br> |
-| `applyCueAtIndexOnTimelineAtIndex` | `cueIndex` : int <br>`timelineIndex` : int <br> | `null`<br> |
-| `applyCueNumberOnTimelineAtIndex` | `cueNumber` : int <br>`timelineIndex` : int <br> | `null`<br> |
-| `applyCueNumberOnTimeline` | `timelineName` : string <br>`cueNumber` : int <br> | `null`<br> |
-| `applyCueOnTimeline` | `timelineName` : string <br>`cueName` : string <br> | `null`<br> |
+| `applyCueAtIndexOnTimelineAtIndex` | `cueIndex` : int <br>`timelineIndex` : int <br>`blendDuration` : optional<double> <br> | `null`<br> |
+| `applyCueNumberOnTimelineAtIndex` | `cueNumber` : int <br>`timelineIndex` : int <br>`blendDuration` : optional<double> <br> | `null`<br> |
+| `applyCueNumberOnTimeline` | `timelineName` : string <br>`cueNumber` : int <br>`blendDuration` : optional<double> <br> | `null`<br> |
+| `applyCueOnTimeline` | `timelineName` : string <br>`cueName` : string <br>`blendDuration` : optional<double> <br> | `null`<br> |
 | `addResourceToFolder` | `namePath` : string <br>`filePath` : string <br> | `handle`<br> |
 | `assignResourceToLayer` | `resourcePath` : string <br>`layerPath` : string <br> | `null`<br> |
 | `refreshResource` | `resourcePath` : string <br> | `null`<br> |
@@ -85,16 +85,17 @@ Syntax: *Pixera.Compound.(function)*
 | `assignResourceToClipAtTimeByDmxId` | `layerPath` : string <br>`dmxFolderId` : int <br>`dmxFileId` : int <br>`time` : double <br> | `null`<br> |
 | `assignResourceToClipAtHMSFStringByDmxId` | `layerPath` : string <br>`dmxFolderId` : int <br>`dmxFileId` : int <br>`hmsf` : string <br> | `null`<br> |
 | `assignResourceToClipAtHMSFByDmxId` | `layerPath` : string <br>`dmxFolderId` : int <br>`dmxFileId` : int <br>`h` : int <br>`m` : int <br>`s` : int <br>`f` : int <br> | `null`<br> |
-| `setCurrentTimeOfTimeline` | `timelineName` : string <br>`time` : int <br> | `null`<br> |
-| `setCurrentTimeOfTimelineInSeconds` | `timelineName` : string <br>`time` : double <br> | `null`<br> |
-| `setCurrentTimeAndTransportModeOfTimelineInSeconds` | `timelineName` : string <br>`time` : double <br>`mode` : int <br> | `null`<br> |
-| `getFpsOfTimeline` | `timelineName` : string <br> | `double`<br> |
-| `getCurrentTimeOfTimeline` | `timelineName` : string <br> | `int`<br> |
-| `getCurrentTimeOfTimelineInSeconds` | `timelineName` : string <br> | `double`<br> |
-| `getCurrentHMSFOfTimeline` | `timelineName` : string <br> | `string`<br> |
-| `getCurrentCountdownOfTimeline` | `timelineName` : string <br> | `int`<br> |
-| `getCurrentCountdownHMSFOfTimeline` | `timelineName` : string <br> | `string`<br> |
-| `startOpacityAnimationOfTimeline` | `timelineName` : string <br>`fadeIn` : bool <br>`fullFadeDuration` : double <br> | `null`<br> |
+| `setCurrentTimeOfTimeline` | `name` : string <br>`time` : int <br> | `null`<br> |
+| `setCurrentTimeOfTimelineInSeconds` | `name` : string <br>`time` : double <br> | `null`<br> |
+| `setCurrentTimeAndTransportModeOfTimelineInSeconds` | `name` : string <br>`time` : double <br>`mode` : int <br> | `null`<br> |
+| `getFpsOfTimeline` | `name` : string <br> | `double`<br> |
+| `getCurrentTimeOfTimeline` | `name` : string <br> | `int`<br> |
+| `getCurrentTimeOfTimelineInSeconds` | `name` : string <br> | `double`<br> |
+| `getCurrentHMSFOfTimeline` | `name` : string <br> | `string`<br> |
+| `getCurrentCountdownOfTimeline` | `name` : string <br> | `int`<br> |
+| `getCurrentCountdownHMSFOfTimeline` | `name` : string <br> | `string`<br> |
+| `blockUiTimelineUpdates` | `doBlock` : bool <br>`terminationDurationInMs` : optional<int> <br> | `null`<br> |
+| `startOpacityAnimationOfTimeline` | `name` : string <br>`fadeIn` : bool <br>`fullFadeDuration` : double <br> | `null`<br> |
 | `createClipOnLayerAtTimeWithResource` | `layerPath` : string <br>`time` : double <br>`resourcePath` : string <br> | `null`<br> |
 | `removeClipOnLayerWithIndex` | `layerPath` : string <br>`clipIndex` : int <br> | `null`<br> |
 | `removeAllClipsOnLayer` | `layerPath` : string <br> | `null`<br> |
@@ -149,6 +150,7 @@ Syntax: *Pixera.LiveSystems.(function)*
 | `getLiveSystems` | None | `handle[]`<br> |
 | `liveSystemNotAvailable` | `reason` : int <br>`system` : handle <br> | `null`<br> |
 | `getMultiUserMembers` | None | `handle[]`<br> |
+| `getUsagePresets` | None | `handle[]`<br> |
 ### Classes
 #### MultiUserMember
 Syntax: *Pixera.LiveSystems.MultiUserMember.(method)*
@@ -184,14 +186,13 @@ Syntax: *Pixera.LiveSystems.LiveSystem.(method)*
 | `LiveSystem` | `getPerformanceMonitoringValuesJsonEx` | `handle` : object<br>`filter` : string <br> | `string`<br> |
 | `LiveSystem` | `resetCumulativePerformanceMonitoringValues` | `handle` : object<br> | `null`<br> |
 | `LiveSystem` | `moveMappingsToOutputs` | `handle` : object<br>`hdlSrc` : handle <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `clearExportedMappings` | `handle` : object<br>`path` : string <br>`onlyServicePath` : bool <br> | `null`<br> |
-| `LiveSystem` | `exportMappings` | `handle` : object<br>`path` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappings` | `handle` : object<br>`path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `exportMappingsDirectly` | `handle` : object<br>`path` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappingsDirectly` | `handle` : object<br>`path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `exportMappingsToLiveSystemPath` | `handle` : object<br>`parentPath` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappingsFromLiveSystemPath` | `handle` : object<br>`parentPath` : string <br> | `null`<br> |
-| `LiveSystem` | `clearExportedMappingsAtLiveSystemPath` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `LiveSystem` | `setUsagePresetName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `LiveSystem` | `getUsagePresetName` | `handle` : object<br> | `string`<br> |
+| `LiveSystem` | `updateUsagePreset` | `handle` : object<br> | `null`<br> |
+| `LiveSystem` | `saveUsagePresetAs` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `LiveSystem` | `applyUsagePreset` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `LiveSystem` | `exportUsagePreset` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `LiveSystem` | `importUsagePreset` | `handle` : object<br>`path` : string <br> | `null`<br> |
 | `LiveSystem` | `ensureFileDistribution` | `handle` : object<br>`includeNotUsedYet` : bool <br> | `null`<br> |
 | `LiveSystem` | `shutDown` | `handle` : object<br>`mode` : int <br> | `null`<br> |
 | `LiveSystem` | `wakeUp` | `handle` : object<br> | `string`<br> |
@@ -208,11 +209,23 @@ Syntax: *Pixera.LiveSystems.LiveSystem.(method)*
 | `LiveSystem` | `getAudioMasterVolume` | `handle` : object<br>`channel` : int <br> | `double`<br> |
 | `LiveSystem` | `setAudioMasterMute` | `handle` : object<br>`channel` : int <br>`state` : bool <br> | `null`<br> |
 | `LiveSystem` | `getAudioMasterMute` | `handle` : object<br>`channel` : int <br> | `bool`<br> |
+| `LiveSystem` | `toggleAudioMasterMute` | `handle` : object<br>`channel` : int <br> | `null`<br> |
 | `LiveSystem` | `setAudioTimecodeInput` | `handle` : object<br>`channel` : int <br>`state` : bool <br> | `null`<br> |
 | `LiveSystem` | `triggerBackup` | `handle` : object<br>`applyControlCommand` : optional<bool> <br> | `null`<br> |
 | `LiveSystem` | `getStructureJson` | `handle` : object<br> | `string`<br> |
 | `LiveSystem` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `LiveSystem` | `getInstancePath` | `handle` : object<br> | `string`<br> |
+#### UsagePreset
+Syntax: *Pixera.LiveSystems.UsagePreset.(method)*
+| Class Name | Method Name | Parameters | Return Values |
+| --- | --- | --- | --- |
+| `UsagePreset` | `getName` | `handle` : object<br> | `string`<br> |
+| `UsagePreset` | `update` | `handle` : object<br> | `null`<br> |
+| `UsagePreset` | `apply` | `handle` : object<br>`destinationIp` : string <br> | `null`<br> |
+| `UsagePreset` | `importFromFile` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `UsagePreset` | `exportToFile` | `handle` : object<br>`path` : string <br> | `null`<br> |
+| `UsagePreset` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
+| `UsagePreset` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### GraphicsDevice
 Syntax: *Pixera.LiveSystems.GraphicsDevice.(method)*
 | Class Name | Method Name | Parameters | Return Values |
@@ -233,6 +246,10 @@ Syntax: *Pixera.LiveSystems.Output.(method)*
 | `Output` | `getAssignedProjectors` | `handle` : object<br> | `handle[]`<br> |
 | `Output` | `getEnabled` | `handle` : object<br> | `bool`<br> |
 | `Output` | `getForPreview` | `handle` : object<br> | `bool`<br> |
+| `Output` | `setIsOutputAggregate` | `handle` : object<br>`state` : bool <br> | `null`<br> |
+| `Output` | `getIsOutputAggregate` | `handle` : object<br> | `bool`<br> |
+| `Output` | `setAggregateDims` | `handle` : object<br>`horizontalCount` : int <br>`verticalCount` : int <br> | `null`<br> |
+| `Output` | `getAggregateDims` | `handle` : object<br> | `int[]`<br> |
 #### VideoStream
 Syntax: *Pixera.LiveSystems.VideoStream.(method)*
 | Class Name | Method Name | Parameters | Return Values |
@@ -278,6 +295,7 @@ Syntax: *Pixera.Screens.Screen.(method)*
 | `Screen` | `setScale` | `handle` : object<br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
 | `Screen` | `getScale` | `handle` : object<br> | `ScreenPosValues`<br> |
 | `Screen` | `setPosRot` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
+| `Screen` | `setPosRotAndPerspectivePos` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`perspXPos` : optional<double> <br>`perspYPos` : optional<double> <br>`perspZPos` : optional<double> <br> | `bool`<br> |
 | `Screen` | `setPosRotScale` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
 | `Screen` | `getPersepective` | `handle` : object<br> | `handle`<br> |
 | `Screen` | `snapPerspectiveCornersToScreen` | `handle` : object<br>`mode` : int <br> | `null`<br> |
@@ -343,7 +361,7 @@ Syntax: *Pixera.Screens.Perspective.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
 | `Perspective` | `getName` | `handle` : object<br> | `string`<br> |
-| `Perspective` | `setTransformation` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
+| `Perspective` | `setTransformation` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br>`lockLookAtPt` : optional<bool> <br> | `null`<br> |
 | `Perspective` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Perspective` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Perspective` | `getInstancePath` | `handle` : object<br> | `string`<br> |
@@ -375,7 +393,7 @@ Syntax: *Pixera.Projectors.Projector.(method)*
 | `Projector` | `getColorCorrectionWithPath` | `handle` : object<br>`path` : string <br> | `float`<br> |
 | `Projector` | `setColorCorrectionAsJsonString` | `handle` : object<br>`colorCorrection` : string <br> | `null`<br> |
 | `Projector` | `getColorCorrectionAsJsonString` | `handle` : object<br> | `string`<br> |
-| `Projector` | `getOutput` | `handle` : object<br> | `handle`<br> |
+| `Projector` | `getOutput` | `handle` : object<br>`index` : optional<int> <br> | `handle`<br> |
 | `Projector` | `setOutput` | `handle` : object<br>`outputHandle` : handle <br> | `null`<br> |
 | `Projector` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Projector` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
@@ -571,8 +589,8 @@ Syntax: *Pixera.Timelines.Timeline.(method)*
 | `Timeline` | `getCueAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
 | `Timeline` | `getCueFromName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
 | `Timeline` | `getCueFromNumber` | `handle` : object<br>`number` : int <br> | `handle`<br> |
-| `Timeline` | `applyCueWithName` | `handle` : object<br>`name` : string <br> | `null`<br> |
-| `Timeline` | `applyCueWithNumber` | `handle` : object<br>`number` : int <br> | `null`<br> |
+| `Timeline` | `applyCueWithName` | `handle` : object<br>`name` : string <br>`blendDuration` : optional<double> <br> | `null`<br> |
+| `Timeline` | `applyCueWithNumber` | `handle` : object<br>`number` : int <br>`blendDuration` : optional<double> <br> | `null`<br> |
 | `Timeline` | `createCue` | `handle` : object<br>`name` : string <br>`timeInFrames` : double <br>`operation` : int <br> | `handle`<br> |
 | `Timeline` | `removeCues` | `handle` : object<br> | `null`<br> |
 | `Timeline` | `createPauseCueBeforeSelectedClips` | `handle` : object<br> | `null`<br> |
@@ -610,7 +628,7 @@ Syntax: *Pixera.Timelines.Timeline.(method)*
 | `Timeline` | `getSpeedFactor` | `handle` : object<br> | `double`<br> |
 | `Timeline` | `setOpacity` | `handle` : object<br>`value` : double <br> | `null`<br> |
 | `Timeline` | `getOpacity` | `handle` : object<br> | `double`<br> |
-| `Timeline` | `startOpacityAnimation` | `handle` : object<br>`fadeIn` : bool <br>`durationFrames` : double <br> | `null`<br> |
+| `Timeline` | `startOpacityAnimation` | `handle` : object<br>`fadeIn` : bool <br>`fullFadeDuration` : double <br> | `null`<br> |
 | `Timeline` | `setSmpteMode` | `handle` : object<br>`mode` : int <br> | `null`<br> |
 | `Timeline` | `getSmpteMode` | `handle` : object<br> | `int`<br> |
 | `Timeline` | `storeRecordedValues` | `handle` : object<br> | `null`<br> |
@@ -740,6 +758,7 @@ Syntax: *Pixera.Timelines.Node.(method)*
 | `Node` | `storeValues` | `handle` : object<br> | `null`<br> |
 | `Node` | `mute` | `handle` : object<br> | `null`<br> |
 | `Node` | `unMute` | `handle` : object<br> | `null`<br> |
+| `Node` | `toggleMute` | `handle` : object<br> | `null`<br> |
 | `Node` | `getIsMuted` | `handle` : object<br> | `bool`<br> |
 | `Node` | `getTimeline` | `handle` : object<br> | `handle`<br> |
 | `Node` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
@@ -760,6 +779,7 @@ Syntax: *Pixera.Timelines.Param.(method)*
 | `Param` | `getAttributes` | `handle` : object<br> | `TransportAttributes`<br> |
 | `Param` | `mute` | `handle` : object<br> | `null`<br> |
 | `Param` | `unMute` | `handle` : object<br> | `null`<br> |
+| `Param` | `toggleMute` | `handle` : object<br> | `null`<br> |
 | `Param` | `getIsMuted` | `handle` : object<br> | `bool`<br> |
 | `Param` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Param` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
@@ -769,8 +789,8 @@ Syntax: *Pixera.Timelines.Cue.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
 | `Cue` | `removeThis` | `handle` : object<br> | `null`<br> |
-| `Cue` | `apply` | `handle` : object<br> | `null`<br> |
-| `Cue` | `blendToThis` | `handle` : object<br>`blendDurationInSeconds` : double <br> | `null`<br> |
+| `Cue` | `apply` | `handle` : object<br>`blendDuration` : optional<double> <br> | `null`<br> |
+| `Cue` | `blendToThis` | `handle` : object<br>`blendDuration` : double <br> | `null`<br> |
 | `Cue` | `getAttributes` | `handle` : object<br> | `CueAttributes`<br> |
 | `Cue` | `getTimeline` | `handle` : object<br> | `handle`<br> |
 | `Cue` | `getIndex` | `handle` : object<br> | `int`<br> |
@@ -877,6 +897,7 @@ Syntax: *Pixera.Direct.Screen.(method)*
 | `Screen` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
 | `Screen` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
 | `Screen` | `setPosRot` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
+| `Screen` | `setPosRotAndPerspectivePos` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`perspXPos` : optional<double> <br>`perspYPos` : optional<double> <br>`perspZPos` : optional<double> <br> | `null`<br> |
 | `Screen` | `setPosRotScale` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `null`<br> |
 | `Screen` | `enableLogging` | `handle` : object<br>`enable` : bool <br> | `null`<br> |
 #### Param

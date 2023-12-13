@@ -122,14 +122,20 @@ def generate_python_code(api_data):
 
 
 
+PATH_TO_FUNCTIONS = '../../01-Custom/03-API/PixeraPy/api_functions.py'
+
 def main():
+    print(f"Generating Python API file at {PATH_TO_FUNCTIONS}")
     version_directory = './'
     json_data = read_api_json(version_directory)
+    print(f"Reading JSON file from {version_directory}")
     if json_data:
+        print("JSON file read successfully.")
         api_data = create_dictionary(json_data)
         if api_data:
+            print("JSON data organized successfully.")
             python_code = generate_python_code(api_data)
-            with open('../../01-Custom/03-API/PixeraPy/api_functions.py', 'w') as file:
+            with open(PATH_TO_FUNCTIONS, 'w') as file:
                 file.write(python_code)
             print("Python API file generated successfully.")
         else:
