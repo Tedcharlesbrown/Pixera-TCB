@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodes>
+  <param name="Outer 1" min="0" max="300" default="10"/>
+<folder name="Folder A">
+  <param name="Inner A1" min="-20" max="30" default="10"/>
+  <param name="Inner A2" min="-20" max="30" default="10"/>
+  <param name="Inner A3" min="-20" max="30" default="10"/>
+</folder>
+</nodes>
