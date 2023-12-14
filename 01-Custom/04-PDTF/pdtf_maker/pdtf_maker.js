@@ -166,11 +166,12 @@ function generatePDTF() {
         if (child.classList.contains("folder")) {
             // Process folder
             const folder = {
-                name: child.querySelector("input[type='text']").value,
+                name: child.querySelector(".folder-name").value,
                 params: []
             };
 
-            child.querySelectorAll(".parameter").forEach((paramDiv) => {
+            // Select parameters within the folder
+            child.querySelectorAll(".child-parameter").forEach((paramDiv) => {
                 const inputs = paramDiv.querySelectorAll("input");
                 folder.params.push({
                     name: inputs[0].value,
@@ -196,6 +197,7 @@ function generatePDTF() {
     const output = document.getElementById("output");
     output.value = generatePDTFXML(pdtfData);
 }
+
 
 function generatePDTFXML(data) {
     let xml = '<?xml version="1.0" encoding="utf-8"?>\n<nodes>\n';
