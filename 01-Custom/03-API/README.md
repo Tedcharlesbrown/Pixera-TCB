@@ -6,6 +6,7 @@ Made by Ted Charles Brown<br>
 `pip install PixeraPy`
 
 ### Usage
+#### Via PyPi (Recommended)
 ```
 from PixeraPy import Pixera, API
 ip = "127.0.0.1"  # Replace with your Pixera system's IP address
@@ -14,6 +15,8 @@ port = 1400  # Replace with your Pixera system's port if different
 pixera = Pixera(ip, port)
 api = API()
 ```
+#### Manual Downlaod
+- [Download PixeraPy](01-Custom/03-API/PixeraPy) directly and place into your working directory
 
 #### Examples
 ```

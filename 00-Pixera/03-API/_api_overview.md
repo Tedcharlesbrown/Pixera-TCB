@@ -1,6 +1,6 @@
 
 # Protocol Overview
-This documentation describes revision 367 of the API.
+This documentation describes revision 381 of the API.
 
 The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
 
