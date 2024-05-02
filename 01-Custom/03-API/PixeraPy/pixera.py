@@ -12,7 +12,7 @@ class Pixera:
         self.IP_ADDRESS = ip_address
         self.PORT = port
 
-    def send(self, array=[], protocol="TCP", port=DEFAULT_PORT, verbose=False,) -> str:
+    def send(self, array=[], protocol="TCP", port=DEFAULT_PORT, raw_output=False, verbose=False) -> str:
         """
         Send a message using the specified protocol.
 
@@ -24,6 +24,15 @@ class Pixera:
         :param verbose: Print the send message and the response.
         :return: Response data.
         """
+
+        # Map protocol names to method references
+        protocol_methods = {
+            "TCP": self.send_tcp,
+            "TCP_DL": self.send_tcp_dl,
+            "HTTP": self.send_http,
+            "DIRECT": self.send_direct
+        }
+
         # Default values for method, params, and message
         method, params, message = None, None, None
 
@@ -46,21 +55,19 @@ class Pixera:
 
         self.PORT = port
 
-        if protocol == "TCP":
-            result = self.send_tcp(method, params, message, verbose)
-        elif protocol == "TCP_DL":
-            result = self.send_tcp_dl(method, params, message, verbose)
-        elif protocol == "HTTP":
-            result = self.send_http(method, params, message, verbose)
-        elif protocol == "DIRECT":
-            result = self.send_direct(method, params, message, verbose)
+        # Get the method for the specified protocol
+        send_method = protocol_methods.get(protocol)
 
-        if verbose:
+        # Check if the method exists to handle the protocol
+        if send_method:
+            result = send_method(method, params, message, verbose=verbose)
+        else:
+            return "Invalid protocol specified."
+
+        if raw_output:
             return result
-        else: 
-            result_index = result.rfind("result\":")
-            result = result[result_index + 8:-1]
-            return result
+        else:
+            return self.parse_data(result, verbose)
         
     def create_params_dict(self, params, message):
         if params is not None:
@@ -73,9 +80,43 @@ class Pixera:
 
             # Create and return the dictionary
             return {params[i]: message[i] for i in range(len(params))}
-
         
-    def send_tcp(self, method=None, params=None, message=None, verbose=False):
+    def parse_data(self, data, verbose=False):
+        def parse_to_json(data):
+            if verbose:
+                print("Received raw data:", data)
+
+            # If not already JSON, decode the data
+            if not isinstance(data, dict):
+                json_start_index = data.find(b'{')
+                if json_start_index != -1:
+                    json_data = data[json_start_index:].decode('utf-8')
+                    # Parse the JSON string into a Python dictionary
+                    try:
+                        json_object = json.loads(json_data)
+                        return json_object
+                    except:
+                        print(json_data)
+                        print("Error parsing JSON data.")
+            else:
+                return data
+            
+        json_data = parse_to_json(data)
+
+        return json_data["result"]
+
+    def receive_message(socket):
+        buffer = ""
+        while True:
+            data = socket.recv(1024).decode('utf-8')
+            if not data:
+                break
+            buffer += data
+            if '\n' in data:
+                break
+        return buffer
+        
+    def send_tcp(self, method=None, params=None, message=None, raw_output=False, verbose=False):
         params_dict = self.create_params_dict(params, message)
         
         # Create a TCP/IP socket
@@ -111,24 +152,14 @@ class Pixera:
             if verbose: print("Sending:", full_message)
             s.sendall(full_message)
 
-            # Receive the response
-            data = s.recv(1024)
-            if verbose: print("Received raw data:", data)
+            # Receive the response until the last byte is '}'
+            data = b""
+            while not data.endswith(b'}'):
+                data += s.recv(1024)
 
-            # Find the beginning of the JSON part by locating the first '{' character
-            json_start_index = data.find(b'{')
+            return data
 
-            # Only decode the JSON part
-            if json_start_index != -1:
-                json_data = data[json_start_index:].decode('utf-8')
-                if verbose: print("Decoded JSON data:", json_data)
-                return json_data
-            else:
-                if verbose: print("No JSON data found in the response.")
-                return None
-
-
-    def send_tcp_dl(self, method=None, params=None, message=None, verbose=False):
+    def send_tcp_dl(self, method=None, params=None, message=None, raw_output=False, verbose=False):
         params_dict = self.create_params_dict(params, message)
 
         # Create a TCP/IP socket
@@ -154,23 +185,17 @@ class Pixera:
             if verbose: print("Sending:", message)
             s.sendall(message)
 
-            # Receive the response
-            data = s.recv(1024)
-            if verbose: print("Received raw data:", data)
+            # Receive the response until the delimiter is found
+            data = b""
+            while not data.endswith(b'0xPX'):
+                data += s.recv(1024)
 
-            # Attempt to decode the response safely
-            try:
-                decoded_data = data.decode('utf-8')
-                if verbose: print("Decoded data:", decoded_data)
-                return decoded_data
-            except UnicodeDecodeError as e:
-                if verbose: print("Decode error:", e)
-                # Handle decoding error, return error message or None, depending on your error handling policy
-                return "Error decoding response."
-    
+            data = data[:-4]
+
+            return data
         
         
-    def send_http(self, method=None, params=None, message=None, verbose=False):
+    def send_http(self, method=None, params=None, message=None, raw_output=False, verbose=False):
         params_dict = self.create_params_dict(params, message)
 
         # Define the JSON-RPC request payload
@@ -206,7 +231,7 @@ class Pixera:
                 print("Failed to receive valid response:", response.text)
             return None
 
-    def send_direct(self, method=None, params=None, message=None, verbose=False):
+    def send_direct(self, method=None, params=None, message=None, raw_output=False, verbose=False):
         # Append ".Direct" to the method after "Pixera"
         methods = method.split('.')
         method = ""
@@ -254,15 +279,8 @@ class Pixera:
 
             # Receive and decode the response
             data = s.recv(1024)
-            try:
-                data_start = data.decode('utf-8').rfind("{")
-                data = data.decode('utf-8')[data_start:]
-            except UnicodeDecodeError as e:
-                if verbose:
-                    print("Decode error:", e)
-                return "Error decoding response."
 
-        return data
+            return data
     
     def return_array(self, input):
         output = input[1:-1].split(',')
