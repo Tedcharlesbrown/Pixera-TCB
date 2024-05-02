@@ -17,7 +17,7 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 ### Pixera API Overview
 [API 367](00-Pixera/03-API/_api_overview.md)
 
-[Python API](01-Custom/03-API/src)
+[Python API](01-Custom/03-API)
 
 ## Control
 [Script - MIDI MSC SysEx Parsing](01-Custom/01-Control/scripts/MIDI_MSC_SysEx.lua)
