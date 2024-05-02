@@ -8,11 +8,11 @@ import requests
 class Pixera:
     DEFAULT_PORT = 1400
 
-    def __init__(self, ip_address="127.0.0.1", port=DEFAULT_PORT):
+    def __init__(self, ip_address="127.0.0.1", port=None):
         self.IP_ADDRESS = ip_address
-        self.PORT = port
+        self.PORT = port if port is not None else self.DEFAULT_PORT
 
-    def send(self, array=[], protocol="TCP", port=DEFAULT_PORT, raw_output=False, verbose=False) -> str:
+    def send(self, array=[], protocol="TCP", port=None, raw_output=False, verbose=False) -> str:
         """
         Send a message using the specified protocol.
 
@@ -24,6 +24,7 @@ class Pixera:
         :param verbose: Print the send message and the response.
         :return: Response data.
         """
+
 
         # Map protocol names to method references
         protocol_methods = {
@@ -53,7 +54,10 @@ class Pixera:
 
         result = None
 
-        self.PORT = port
+        if port is not None and port != self.PORT:
+            print("PORT MISMATCH:", port, self.PORT)
+            self.PORT = port
+
 
         # Get the method for the specified protocol
         send_method = protocol_methods.get(protocol)
@@ -104,17 +108,6 @@ class Pixera:
         json_data = parse_to_json(data)
 
         return json_data["result"]
-
-    def receive_message(socket):
-        buffer = ""
-        while True:
-            data = socket.recv(1024).decode('utf-8')
-            if not data:
-                break
-            buffer += data
-            if '\n' in data:
-                break
-        return buffer
         
     def send_tcp(self, method=None, params=None, message=None, raw_output=False, verbose=False):
         params_dict = self.create_params_dict(params, message)
