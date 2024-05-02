@@ -11,6 +11,8 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 
 [v1.9.149](00-Pixera/02-Shaders/v1.9.149/_effect_overview.md)
 
+[v2.0.40](00-Pixera/02-Shaders/v2.0.40/_effect_overview.md)
+
 ## API
 ### Pixera API Overview
 [API 367](00-Pixera/03-API/_api_overview.md)
