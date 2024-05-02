@@ -54,3 +54,12 @@ for screen in screens:
 output = pixera.send(["Pixera.Utility.outputDebug", ["message"], ["Hello from Python!"]], verbose=True)
 print(output)
 ```
+
+
+#### Update Log
+```
+v0.381.3 - Fixes error where default IP was not changing
+v0.381.2 - Revised the parsing of incoming data, offers option for raw output
+v0.381.1 - Pixera API revision 381 (Pixera 2.0.40)
+v0.367.2 - Pixera API revision 367
+```

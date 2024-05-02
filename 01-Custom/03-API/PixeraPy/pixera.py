@@ -21,7 +21,8 @@ class Pixera:
         :param method: The method to use.
         :param params: Parameters for the method.
         :param message: The message to send.
-        :param verbose: Print the send message and the response.
+        :param raw_output: Skip message parsing, returns full json.
+        :param verbose: Prints debug statements to console.
         :return: Response data.
         """
 
