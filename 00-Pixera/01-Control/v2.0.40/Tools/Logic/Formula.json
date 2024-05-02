@@ -1,0 +1,77 @@
+{
+ "api": [
+  {
+   "body": "--CFv4\nlocal func = self._func;\nlocal result = {arg1}\nif func ~= nil then\n\tresult = {func(self.when, self.setIf, arg1, arg2, arg3, ...)}\nend\nif #result == 1 and result[1] == self.pixcSuppress then\n\t--Suppress answer\n\tpixc.suppressCallRefs()\n\treturn nil\nend\npixc.callRefs(table.unpack(result))\nreturn table.unpack(result)\n",
+   "kind": "func",
+   "name": "action",
+   "params": [
+    {
+     "name": "arg1",
+     "type": ""
+    },
+    {
+     "name": "arg2",
+     "type": ""
+    },
+    {
+     "name": "arg3",
+     "type": ""
+    },
+    {
+     "name": "...",
+     "type": ""
+    }
+   ]
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": ""
+   },
+   "body": "self._formula = pixcCommon.execAttribute('', self._formula, formula, doSet)\nif(formula == '' or formula == nil) then\n\tformula = 'x'\nend\nformula = 'return function(when, setIf, ...); local arg = {...}; for i, val in ipairs(arg) do; _G[\"arg\" .. i] = val; end; local x = arg1; local y = arg2; local z = arg3; return ' .. formula .. '; end'\nself._func = load(formula)()\n\n--register function \"when\" if not registered.\nif(self.when == nil) then\n\tself.when = function(bool, a, b)\n\t\tif(bool) then\n\t\t\treturn a\n\t\telse\n\t\t\treturn b\n\t\tend\n\tend\nend\n\n--register function \"setIf\" if not registered.\nif(self.pixcSuppress == nil) then\n\tself.pixcSuppress = {pixcSuppress = true}\nend\n\nif(self.setIf == nil) then\n\tself.setIf = function(bool, ans)\n\t\tif(bool) then\n\t\t\treturn ans\n\t\telse\n\t\t\treturn self.pixcSuppress\n\t\tend\n\tend\nend\n\nreturn self._formula\n",
+   "kind": "func",
+   "name": "Formula",
+   "params": [
+    {
+     "name": "formula",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 103.0,
+  "w": 336.0,
+  "x": 327.0,
+  "y": 876.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "license": "1GNTlyr7sewU1l3S6nhV4l1SKGp74kVcDJb+a3IheM98lh3QA0NLoDuBKylkt3ru+YQjDzdsczLVVVItQCnwdbQ9GtDkGC9MlwK+tQQ55/o+xz0LhvBB2mxvcE0Fz/tuWOmhcdFnZRo6oIQW6ec7zw==",
+ "name": "Formula",
+ "properties": [
+  {
+   "cont": "Applies a formula to x. Whenever action gets called the formula provided gets invoked.  The parameters of action will be available as \"x, y and z\", \"arg1, arg2, arg3,...\" or \"arg[1], arg[2], arg[3],...\".  You can manipulate these parameters with any LUA expression.    Examples:  x * 3  \tMultiplies the incoming value with 3    x * -1, z, y  \tRe arranges x, y and z and returns a negative x value.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "4",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

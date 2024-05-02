@@ -1,0 +1,39 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcProtocolHttp\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.protocol = createPixcProtocolHttp()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal to = {\"to@test.com\"}\nlocal from = \"from@test.com\"\nlocal url = \"smtp://test.com:25\"\nlocal cc = nil\nlocal subject = \"Test Subject\"\nlocal body = \"TestBody\"\nlocal customHeader = nil\nlocal curlOption = nil\nlocal success, code,headerDict,content = self.protocol:sendMail(url, from,to, cc,subject,body,customHeader,curlOption)\nif(success) then\n\tpixc.log(code)\n\tpixc.log(content)\nend\n",
+   "kind": "func",
+   "name": "testMailUnsecure"
+  },
+  {
+   "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\r\nlocal to = {\"testmail@outlook.at\"}\r\nlocal from = \"sender@gmx.at\"\r\nlocal url = \"smtp://mail.gmx.net:587\"\r\nlocal cc = nil\r\nlocal subject = \"Test Subject\"\r\nlocal body = \"TestBody\"\r\nlocal customHeader = nil\r\nlocal curlOption =  {}\r\ncurlOption[\"USERNAME\"] = \"username\"\r\ncurlOption[\"PASSWORD\"] = \"password\"\r\ncurlOption[\"USE_SSL\"] = 3\r\nlocal success, code,headerDict,content = self.protocol:sendMail(url, from,to, cc,subject,body,customHeader,curlOption)\r\nif(success) then\r\n\tpixc.log(code)\r\n\tpixc.log(content)\r\nend\r\n",
+   "kind": "func",
+   "name": "testMailSecure"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 220.0,
+  "y": 354.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "O:\\Repos\\nui\\data\\control_library_standard\\Protocols\\SimpleMailer.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4nJjXjdAhCuIyNv01WUYaYjG2N3YT8wL0DY2xqB7khmg1W7xFXjY62JXbSiNBPIQ3/xKX/mZWQ7T5ko97mBoXHo=",
+ "name": "SimpleMailer",
+ "separateCode": false,
+ "uiUrl": ""
+}

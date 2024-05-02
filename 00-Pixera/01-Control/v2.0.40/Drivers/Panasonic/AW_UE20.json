@@ -1,0 +1,967 @@
+{
+ "api": [
+  {
+   "body": "if self.helper == nil then\n\trequire \"pixcHelper\"\n\tself.helper = createPixcHelper(pixc,self())\nend\nrequire \"pixcProtocolHttp\"\nself.ip = self.helper:getProperty(\"IP\",\"127.0.0.1\")\nself.logsend = self.helper.toBool(self.helper:getProperty(\"Log Send\",\"false\"))\nself.logrec = self.helper.toBool(self.helper:getProperty(\"Log Receive\",\"false\"))\nself.protocol = createPixcProtocolHttp()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\nself.Internal.sendCam(\"QID\")\nself.Internal.sendPtz(\"O\")",
+   "functionName": "init()",
+   "kind": "fn",
+   "name": "init",
+   "path": "AW_UE20.init",
+   "signiture": "init()"
+  },
+  {
+   "body": "if self.protocol ~= nil then \r\n\tself.protocol:close()\r\n\tself.protocol = nil\r\nend\r\nself.helper = nil\r\n",
+   "functionName": "uninit()",
+   "kind": "fn",
+   "name": "uninit",
+   "path": "AW_UE20.uninit",
+   "signiture": "uninit()"
+  },
+  {
+   "elems": [
+    {
+     "body": "--if self.protocol == nil then pixc.log(\"not initialized\") return end\r\nif command == nil then return end \r\nlocal command = \"http://\" .. self.ip .. \":80/cgi-bin/aw_ptz?cmd=%23\" .. command .. \"&res=1\"\r\nif self.logsend then\r\n\tpixc.log(command)\r\nend\r\nlocal success, code, headerDict, content = self.protocol:httpPost(command,nil,nil,nil)\r\nif(success) then\r\n\tif self.logrec then\r\n\t\tpixc.log(code)\r\n\t\tpixc.log(content)\r\n\tend\r\n\tif content == \"p1\" then\r\n\t\tself.Power(\"On\")\r\n\telseif content == \"p0\" then\r\n\t\tself.Power(\"Off\")\r\n\tend\r\nend\r\n",
+     "functionName": "sendPtz(string command)",
+     "kind": "fn",
+     "name": "sendPtz",
+     "params": [
+      {
+       "name": "command",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Internal.sendPtz",
+     "signiture": "sendPtz(string command)"
+    },
+    {
+     "body": "--if self.protocol == nil then pixc.log(\"not initialized\") return end\r\nif command == nil then return end \r\nlocal command = \"http://\" .. self.ip .. \":80/cgi-bin/aw_cam?cmd=\" .. command .. \"&res=1\"\r\nif self.logsend then\r\n\tpixc.log(command)\r\nend\r\nlocal success, code, headerDict, content = self.protocol:httpPost(command,nil,nil,nil)\r\nif(success) then\r\n\tif self.logrec then\r\n\t\tpixc.log(code)\r\n\t\tpixc.log(content)\r\n\tend\r\n\t\r\n\tlocal res = self.helper.stringSplit(content,\":\")\r\n\tif res[1] == \"OID\" then -- model number\r\n\t\tself.ModelNumber(res[2],true)\r\n\tend\r\nend\r\n",
+     "functionName": "sendCam(string command)",
+     "kind": "fn",
+     "name": "sendCam",
+     "params": [
+      {
+       "name": "command",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Internal.sendCam",
+     "signiture": "sendCam(string command)"
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  },
+  {
+   "elems": [
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 4 or value < -4 then return end\r\nif value == 0 then\r\n\tself.Internal.sendCam(\"OSD:48\")\r\n\treturn\r\nend\r\n\r\nlocal v = 50 + value\r\nself.Internal.sendCam(\"OSD:48:\" .. string.format(\"%02x\", v))\r\n",
+     "documentation": "value can be -4 to 4\ndefault is 0",
+     "functionName": "PictureLevel(int value)",
+     "kind": "fn",
+     "name": "PictureLevel",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.PictureLevel",
+     "signiture": "PictureLevel(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\n\r\nif value == 24 then\r\n\tself.Internal.sendCam(\"OSD:69:04\")\r\nelseif value == 30 then\r\n\tself.Internal.sendCam(\"OSD:69:05\")\r\nelseif value == 36 then\r\n\tself.Internal.sendCam(\"OSD:69:06\")\r\nelseif value == 42 then\r\n\tself.Internal.sendCam(\"OSD:69:07\")\r\nend\r\n",
+     "documentation": "values are:\n24\n30\n36\n42",
+     "functionName": "AgcMaxGain(int value)",
+     "kind": "fn",
+     "name": "AgcMaxGain",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.AgcMaxGain",
+     "signiture": "AgcMaxGain(int value)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"OSJ:80:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"OSJ:80:1\")\r\nend",
+     "functionName": "SlowShutter(bool state)",
+     "kind": "fn",
+     "name": "SlowShutter",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.Brightness.SlowShutter",
+     "signiture": "SlowShutter(bool state)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"ORS:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"ORS:1\")\r\nend",
+     "functionName": "IrisModeAuto(bool state)",
+     "kind": "fn",
+     "name": "IrisModeAuto",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.Brightness.IrisModeAuto",
+     "signiture": "IrisModeAuto(bool state)"
+    },
+    {
+     "body": "if mode == nil then return end\r\n\r\nif mode == \"Off\" then\r\n\tself.Internal.sendCam(\"OSJ:03:0\")\r\nelseif mode == \"Step\" then\r\n\tself.Internal.sendCam(\"OSJ:03:1\")\r\nelseif mode == \"Synchro\" then\r\n\tself.Internal.sendCam(\"OSJ:03:2\")\r\nend",
+     "documentation": "Modes can be:\nOff\nStep\nSynchro",
+     "functionName": "ShutterMode(string mode)",
+     "kind": "fn",
+     "name": "ShutterMode",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Brightness.ShutterMode",
+     "signiture": "ShutterMode(string mode)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\n\r\nself.Internal.sendCam(\"OSJ:04:\" .. string.format(\"%02x\", value))\r\n",
+     "documentation": "value can be 1 to 100",
+     "functionName": "StepInc(int value)",
+     "kind": "fn",
+     "name": "StepInc",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.StepInc",
+     "signiture": "StepInc(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\n\r\nself.Internal.sendCam(\"OSJ:05:\" .. string.format(\"%02x\", value))\r\n",
+     "documentation": "value can be 1 to 100",
+     "functionName": "StepDec(int value)",
+     "kind": "fn",
+     "name": "StepDec",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.StepDec",
+     "signiture": "StepDec(int value)"
+    },
+    {
+     "body": "if mode == nil then return end\r\nlocal sendMode = nil\r\n\r\nlocal tab = {\r\n\t_1 = \"0001\",\r\n\t_2 = \"0002\",\r\n\t_3 = \"0003\",\r\n\t_6 = \"0006\",\r\n\t_7 = \"0007\",\r\n\t_12 = \"000C\",\r\n\t_15 = \"000F\",\r\n\t_25 = \"0019\",\r\n\t_30 = \"001E\",\r\n\t_50 = \"0032\",\r\n\t_60 = \"003C\",\r\n\t_100 = \"0064\",\r\n\t_120 = \"0078\",\r\n\t_240 = \"00F0\",\r\n\t_250 = \"00FA\",\r\n\t_480 = \"01E0\",\r\n\t_500 = \"01F4\",\r\n\t_1000 = \"03E8\",\r\n\t_2000 = \"07D0\",\r\n\t_4000 = \"0FA0\",\r\n\t_8000 = \"1F40\",\r\n\t_16000 = \"3E80\",\r\n}\r\n\r\nlocal v = tab[\"_\" .. mode]\r\nif v ~= nil then\r\n\tself.Internal.sendCam(\"OSJ:06:\" .. v)\r\nend",
+     "documentation": "Not all are available on 50Hz or 60Hz\nMode are:\n1\n2\n3\n6\n7\n12\n15\n25\n30\n50\n60\n100\n120\n240\n250\n480\n500\n1000\n2000\n4000\n8000\n16000",
+     "functionName": "StepVal(string mode)",
+     "kind": "fn",
+     "name": "StepVal",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Brightness.StepVal",
+     "signiture": "StepVal(string mode)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\n\r\nself.Internal.sendCam(\"OSJ:07:\" .. string.format(\"%02x\", value))\r\n",
+     "documentation": "value can be 1 to 100",
+     "functionName": "SynchroInc(int value)",
+     "kind": "fn",
+     "name": "SynchroInc",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.SynchroInc",
+     "signiture": "SynchroInc(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\n\r\nself.Internal.sendCam(\"OSJ:08:\" .. string.format(\"%02x\", value))\r\n",
+     "documentation": "value can be 1 to 100",
+     "functionName": "SynchroDec(int value)",
+     "kind": "fn",
+     "name": "SynchroDec",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.SynchroDec",
+     "signiture": "SynchroDec(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 660 or value < 50 then return end\r\n\r\nlocal val = value*10\r\n\r\nlocal data_hex = string.format('%05x', val)\r\n\r\nself.Internal.sendCam(\"OSJ:09:\" .. data_hex)\r\n",
+     "documentation": "value between 50.0Hz and 660.0Hz",
+     "functionName": "SynchroVal(int value)",
+     "kind": "fn",
+     "name": "SynchroVal",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.SynchroVal",
+     "signiture": "SynchroVal(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 42 or value < -1 then return end\r\nif value == -1 then\r\n\tself.Internal.sendCam(\"OGU:\" .. 80)\r\n\treturn\r\nend\r\nif value % 3 == 0 then\r\n\tlocal val = 8 + value\r\n\tself.Internal.sendCam(\"OGU:\" .. string.format(\"%02x\", val))\r\nend",
+     "documentation": "value are 0 to 42 in 3 steps. (3,6,9,...).\n-1 is auto",
+     "functionName": "Gain(int value)",
+     "kind": "fn",
+     "name": "Gain",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Brightness.Gain",
+     "signiture": "Gain(int value)"
+    },
+    {
+     "body": "if value == nil then return end\r\nlocal val = nil\r\nif value == \"Off\" then\r\n\tval = \"00\"\r\nelseif value == \"6\" then\r\n\tval = \"06\"\r\nelseif value == \"12\" then\r\n\tval = \"0C\"\r\nelseif value == \"18\" then\r\n\tval = \"12\"\r\nelseif value == \"24\" then\r\n\tval = \"18\"\r\nelseif value == \"Auto\" then\r\n\tval = \"80\"\r\nend\r\n\r\nif val ~= nil then\r\n\tself.Internal.sendCam(\"OSA:65:\" .. val)\r\nend",
+     "documentation": "value are:\nOff\n6\n12\n18\n24\nAuto",
+     "functionName": "FrameMix(string value)",
+     "kind": "fn",
+     "name": "FrameMix",
+     "params": [
+      {
+       "name": "value",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Brightness.FrameMix",
+     "signiture": "FrameMix(string value)"
+    },
+    {
+     "body": "if value == nil then return end\r\nlocal val = nil\r\nif value == \"Off\" then\r\n\tval = \"00\"\r\nelseif value == \"6\" then\r\n\tval = \"01\"\r\nelseif value == \"12\" then\r\n\tval = \"02\"\r\nelseif value == \"18\" then\r\n\tval = \"13\"\r\nend\r\n\r\nif val ~= nil then\r\n\tself.Internal.sendCam(\"OSE:74:\" .. val)\r\nend",
+     "documentation": "value are:\nOff\n6\n12\n18",
+     "functionName": "AutoFrameMixMaxGain(string value)",
+     "kind": "fn",
+     "name": "AutoFrameMixMaxGain",
+     "params": [
+      {
+       "name": "value",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Brightness.AutoFrameMixMaxGain",
+     "signiture": "AutoFrameMixMaxGain(string value)"
+    }
+   ],
+   "kind": "ns",
+   "name": "Brightness"
+  },
+  {
+   "elems": [
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 10 or value < 0 then return end\r\n\r\n\r\nlocal val = 3 + value\r\nself.Internal.sendCam(\"OCG:\" .. string.format(\"%02x\", val))\r\n",
+     "documentation": "value are 0 to 10",
+     "functionName": "ChromaLevel(int value)",
+     "kind": "fn",
+     "name": "ChromaLevel",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Picture.ChromaLevel",
+     "signiture": "ChromaLevel(int value)"
+    },
+    {
+     "body": "if mode == nil then return end\r\nlocal tab = {\r\n\t_ATW = \"0\",\r\n\t_AWCA = \"1\",\r\n\t_AWCB = \"2\",\r\n\t_MAN = \"3\",\r\n\t_3200 = \"4\",\r\n\t_5600 = \"5\"\r\n}\r\n\r\nlocal val = tab[\"_\" .. mode]\r\nif val ~= nil then\r\n\tself.Internal.sendCam(\"OAW:\" .. val)\r\nend",
+     "documentation": "modes are:\nATW\nAWCA\nAWCB\nMAN\n3200\n5600",
+     "functionName": "WhiteBalanceMode(string mode)",
+     "kind": "fn",
+     "name": "WhiteBalanceMode",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Picture.WhiteBalanceMode",
+     "signiture": "WhiteBalanceMode(string mode)"
+    },
+    {
+     "body": "self.Internal.sendCam(\"OWS\")",
+     "functionName": "AWB()",
+     "kind": "fn",
+     "name": "AWB",
+     "path": "AW_UE20.Picture.AWB",
+     "signiture": "AWB()"
+    },
+    {
+     "body": "self.Internal.sendCam(\"OAS\")",
+     "functionName": "ABB()",
+     "kind": "fn",
+     "name": "ABB",
+     "path": "AW_UE20.Picture.ABB",
+     "signiture": "ABB()"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 30 or value < -30 then return end\r\n\r\nlocal val = 2048 + value\r\nself.Internal.sendCam(\"OSG:39:\" .. string.format(\"%03x\", val))\r\n",
+     "documentation": "value from -30 to 30",
+     "functionName": "RGain(int value)",
+     "kind": "fn",
+     "name": "RGain",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Picture.RGain",
+     "signiture": "RGain(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 30 or value < -30 then return end\r\n\r\nlocal val = 2048 + value\r\nself.Internal.sendCam(\"OSG:3A:\" .. string.format(\"%03x\", val))\r\n",
+     "documentation": "value from -30 to 30",
+     "functionName": "BGain(int value)",
+     "kind": "fn",
+     "name": "BGain",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Picture.BGain",
+     "signiture": "BGain(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 10 or value < -10 then return end\r\n\r\nlocal val = 2048 + value\r\nself.Internal.sendCam(\"OSJ:0F:\" .. string.format(\"%03x\", val))\r\n",
+     "documentation": "value from -10 to 10",
+     "functionName": "Pedestal(int value)",
+     "kind": "fn",
+     "name": "Pedestal",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Picture.Pedestal",
+     "signiture": "Pedestal(int value)"
+    },
+    {
+     "body": "if value == nil then return end\r\nif value > 3 or value < 0 then return end\r\nlocal val = tostring(math.tointeger(value))\r\nself.Internal.sendCam(\"ODT:\" .. val)",
+     "documentation": "value from 0 to 3",
+     "functionName": "Detail(int value)",
+     "kind": "fn",
+     "name": "Detail",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Picture.Detail",
+     "signiture": "Detail(int value)"
+    },
+    {
+     "body": "if value == nil then return end\r\nif value > 4 or value < 0 then return end\r\nlocal val = tostring(math.tointeger(value))\r\nself.Internal.sendCam(\"OSD:50:\" .. val)",
+     "documentation": "value from 0 to 4",
+     "functionName": "Contrast(int value)",
+     "kind": "fn",
+     "name": "Contrast",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Picture.Contrast",
+     "signiture": "Contrast(int value)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"OSE:33:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"OSE:33:1\")\r\nend",
+     "functionName": "DRS(bool state)",
+     "kind": "fn",
+     "name": "DRS",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.Picture.DRS",
+     "signiture": "DRS(bool state)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"OSE:73:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"OSE:73:1\")\r\nend",
+     "functionName": "BackLightComp(bool state)",
+     "kind": "fn",
+     "name": "BackLightComp",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.Picture.BackLightComp",
+     "signiture": "BackLightComp(bool state)"
+    },
+    {
+     "body": "if value == nil then return end\r\n\r\nif value == \"Off\" then\r\n\tself.Internal.sendCam(\"OSD:3A:00\")\r\nelseif value == \"Low\" then\r\n\tself.Internal.sendCam(\"OSD:3A:01\")\r\nelseif value == \"High\" then\r\n\tself.Internal.sendCam(\"OSD:3A:02\")\r\nend",
+     "documentation": "value are:\nOff\nLow\nHigh",
+     "functionName": "DNR(string value)",
+     "kind": "fn",
+     "name": "DNR",
+     "params": [
+      {
+       "name": "value",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Picture.DNR",
+     "signiture": "DNR(string value)"
+    }
+   ],
+   "kind": "ns",
+   "name": "Picture"
+  },
+  {
+   "elems": [
+    {
+     "body": "if value == nil then return end\r\n\r\nif value == 59.94 then\r\n\tself.Internal.sendCam(\"OSE:77:0\")\r\nelseif value == 50 then\r\n\tself.Internal.sendCam(\"OSE:77:1\")\r\nelseif value == 60 then\r\n\tself.Internal.sendCam(\"OSE:77:4\")\r\nend",
+     "documentation": "value can be:\n59.94\n50\n60",
+     "functionName": "Frequency(int value)",
+     "kind": "fn",
+     "name": "Frequency",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.System.Frequency",
+     "signiture": "Frequency(int value)"
+    },
+    {
+     "body": "if mode == nil then return end\r\n\r\nif mode == \"720/60p\" then\r\n\tself.Internal.sendCam(\"OSA:87:0\")\r\nelseif mode == \"720/59.94p\" then\r\n\tself.Internal.sendCam(\"OSA:87:1\")\r\nelseif mode == \"720/50p\" then\r\n\tself.Internal.sendCam(\"OSA:87:2\")\r\nelseif mode == \"1080/60i\" then\r\n\tself.Internal.sendCam(\"OSA:87:3\")\r\nelseif mode == \"1080/59.94i\" then\r\n\tself.Internal.sendCam(\"OSA:87:4\")\r\nelseif mode == \"1080/50i\" then\r\n\tself.Internal.sendCam(\"OSA:87:5\")\r\nelseif mode == \"1080/59.94p\" then\r\n\tself.Internal.sendCam(\"OSA:87:10\")\r\nelseif mode == \"1080/50p\" then\r\n\tself.Internal.sendCam(\"OSA:87:11\")\r\nelseif mode == \"1080/29.97p\" then\r\n\tself.Internal.sendCam(\"OSA:87:14\")\r\nelseif mode == \"1080/25p\" then\r\n\tself.Internal.sendCam(\"OSA:87:15\")\r\nelseif mode == \"2160/29.97p\" then\r\n\tself.Internal.sendCam(\"OSA:87:17\")\r\nelseif mode == \"2160/25p\" then\r\n\tself.Internal.sendCam(\"OSA:87:18\")\r\nelseif mode == \"1080/60p\" then\r\n\tself.Internal.sendCam(\"OSA:87:20\")\r\nelseif mode == \"2160/30p\" then\r\n\tself.Internal.sendCam(\"OSA:87:24\")\r\nelseif mode == \"1080/30p\" then\r\n\tself.Internal.sendCam(\"OSA:87:25\")\r\nend\r\n",
+     "documentation": "mode are:\n720/60p\n720/59.94p\r720/50p\r1080/60i\r1080/59.94i\r1080/50i\r1080/59.94p\r1080/50p\r1080/29.97p\r1080/25p\r2160/29.97p\r2160/25p\r1080/60p\r2160/30p\r1080/30p\r",
+     "functionName": "Format(string mode)",
+     "kind": "fn",
+     "name": "Format",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.System.Format",
+     "signiture": "Format(string mode)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendPtz(\"TAE0\")\r\nelseif state == true then\r\n\tself.Internal.sendPtz(\"TAE0\")\r\nend",
+     "functionName": "TallyEnable(bool state)",
+     "kind": "fn",
+     "name": "TallyEnable",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.System.TallyEnable",
+     "signiture": "TallyEnable(bool state)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendPtz(\"DA0\")\r\nelseif state == true then\r\n\tself.Internal.sendPtz(\"DA0\")\r\nend",
+     "functionName": "TallyControl(bool state)",
+     "kind": "fn",
+     "name": "TallyControl",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.System.TallyControl",
+     "signiture": "TallyControl(bool state)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendPtz(\"LMP0\")\r\nelseif state == true then\r\n\tself.Internal.sendPtz(\"LMP0\")\r\nend",
+     "functionName": "StatusLamp(bool state)",
+     "kind": "fn",
+     "name": "StatusLamp",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.System.StatusLamp",
+     "signiture": "StatusLamp(bool state)"
+    },
+    {
+     "body": "if value == nil then return end\r\n\r\nif value == 1 then\r\n\tself.Internal.sendPtz(\"RID0\")\r\nelseif value == 2 then\r\n\tself.Internal.sendPtz(\"RID1\")\r\nelseif value == 3 then\r\n\tself.Internal.sendPtz(\"RID2\")\r\nelseif value == 4 then\r\n\tself.Internal.sendPtz(\"RID3\")\r\nend",
+     "functionName": "WirelessId(int value)",
+     "kind": "fn",
+     "name": "WirelessId",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.System.WirelessId",
+     "signiture": "WirelessId(int value)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendPtz(\"WLC0\")\r\nelseif state == true then\r\n\tself.Internal.sendPtz(\"WLC0\")\r\nend",
+     "functionName": "WirelessControl(bool state)",
+     "kind": "fn",
+     "name": "WirelessControl",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.System.WirelessControl",
+     "signiture": "WirelessControl(bool state)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"OSE:75:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"OSE:75:1\")\r\nend",
+     "functionName": "OsdOffWithTally(bool state)",
+     "kind": "fn",
+     "name": "OsdOffWithTally",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.System.OsdOffWithTally",
+     "signiture": "OsdOffWithTally(bool state)"
+    }
+   ],
+   "kind": "ns",
+   "name": "System"
+  },
+  {
+   "elems": [
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"DUS:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"DUS:1\")\r\nend",
+     "functionName": "Menu(bool state)",
+     "kind": "fn",
+     "name": "Menu",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.OSD.Menu",
+     "signiture": "Menu(bool state)"
+    },
+    {
+     "body": "self.Internal.sendCam(\"DPG:1\")",
+     "functionName": "Menu_SW()",
+     "kind": "fn",
+     "name": "Menu_SW",
+     "path": "AW_UE20.OSD.Menu_SW",
+     "signiture": "Menu_SW()"
+    },
+    {
+     "body": "self.Internal.sendCam(\"DIT:1\")",
+     "functionName": "Item_SW()",
+     "kind": "fn",
+     "name": "Item_SW",
+     "path": "AW_UE20.OSD.Item_SW",
+     "signiture": "Item_SW()"
+    },
+    {
+     "body": "self.Internal.sendCam(\"DUP:1\")",
+     "functionName": "Yes_SW()",
+     "kind": "fn",
+     "name": "Yes_SW",
+     "path": "AW_UE20.OSD.Yes_SW",
+     "signiture": "Yes_SW()"
+    },
+    {
+     "body": "self.Internal.sendCam(\"DDW:1\")",
+     "functionName": "No_SW()",
+     "kind": "fn",
+     "name": "No_SW",
+     "path": "AW_UE20.OSD.No_SW",
+     "signiture": "No_SW()"
+    },
+    {
+     "body": "self.Internal.sendCam(\"DRT:1\")",
+     "functionName": "Right_SW()",
+     "kind": "fn",
+     "name": "Right_SW",
+     "path": "AW_UE20.OSD.Right_SW",
+     "signiture": "Right_SW()"
+    },
+    {
+     "body": "self.Internal.sendCam(\"DLT:1\")",
+     "functionName": "Left_SW()",
+     "kind": "fn",
+     "name": "Left_SW",
+     "path": "AW_UE20.OSD.Left_SW",
+     "signiture": "Left_SW()"
+    }
+   ],
+   "kind": "ns",
+   "name": "OSD"
+  },
+  {
+   "elems": [
+    {
+     "body": "if value == nil then return end\r\n\r\nif value == \"Desktop\" then\r\n\tself.Internal.sendPtz(\"INS0\")\r\nelseif value == \"Hanging\" then\r\n\tself.Internal.sendPtz(\"INS2\")\r\nend",
+     "documentation": "Value are:\nDesktop\nHanging",
+     "functionName": "InstallPosition(string value)",
+     "kind": "fn",
+     "name": "InstallPosition",
+     "params": [
+      {
+       "name": "value",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.InstallPosition",
+     "signiture": "InstallPosition(string value)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendPtz(\"SWZ0\")\r\nelseif state == true then\r\n\tself.Internal.sendPtz(\"SWZ1\")\r\nend",
+     "functionName": "SpeedWithZoomPosition(bool state)",
+     "kind": "fn",
+     "name": "SpeedWithZoomPosition",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.SpeedWithZoomPosition",
+     "signiture": "SpeedWithZoomPosition(bool state)"
+    },
+    {
+     "body": "if state == nil then return end\r\n\r\nif state == false then\r\n\tself.Internal.sendCam(\"OAZ:0\")\r\nelseif state == true then\r\n\tself.Internal.sendCam(\"OAZ:1\")\r\nend",
+     "functionName": "FocusAdjustWithPtz(bool state)",
+     "kind": "fn",
+     "name": "FocusAdjustWithPtz",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.FocusAdjustWithPtz",
+     "signiture": "FocusAdjustWithPtz(bool state)"
+    },
+    {
+     "body": "if pan == nil or tilt == nil then return end\r\nif pan > 170 or pan < -170 or tilt > 90 or tilt < -30 then return end\r\n\r\nlocal range = function(val,MinIn,MaxIn,MinOut,MaxOut)\r\n\tif val ~= nil and MinIn ~= nil and MaxIn ~= nil and MinOut ~= nil and MaxOut ~= nil then\r\n\t\tlocal rangeSizeIn = MaxIn - MinIn\r\n\t\tif rangeSizeIn ~= 0 then\r\n\t\t\treturn (val - MinIn)/rangeSizeIn * (MaxOut - MinOut) + MinOut\r\n\t\tend\r\n\tend\r\nend\r\n\r\n\r\nlocal valP = math.ceil(range(pan,-170,170,12137,53399))\r\nlocal valT = math.ceil(range(tilt,-30,90,36408,21845))\r\n\r\nlocal vP = string.format(\"%04x\", valP)\r\nlocal vT = string.format(\"%04x\", valT)\r\n\r\nself.Internal.sendPtz(\"APC\" .. vP .. vT)",
+     "documentation": "absolut between pan +-170 tilt -30 + 90",
+     "functionName": "PanTiltAbsolut(int pan,int tilt)",
+     "kind": "fn",
+     "name": "PanTiltAbsolut",
+     "params": [
+      {
+       "name": "pan",
+       "type": "int"
+      },
+      {
+       "name": "tilt",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.PanTiltAbsolut",
+     "signiture": "PanTiltAbsolut(int pan,int tilt)"
+    },
+    {
+     "body": "if value == nil then return end\r\nif value > 99 or value < 1 then return end\r\n\r\nself.Internal.sendPtz(\"P\" .. string.format(\"%02s\", math.tointeger(value)))",
+     "documentation": "value between 1 - 99",
+     "functionName": "PanSpeedControl(int value)",
+     "kind": "fn",
+     "name": "PanSpeedControl",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.PanSpeedControl",
+     "signiture": "PanSpeedControl(int value)"
+    },
+    {
+     "body": "if value == nil then return end\r\nif value > 99 or value < 1 then return end\r\n\r\nself.Internal.sendPtz(\"T\" .. string.format(\"%02s\", math.tointeger(value)))",
+     "functionName": "TiltSpeedControl(int value)",
+     "kind": "fn",
+     "name": "TiltSpeedControl",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.TiltSpeedControl",
+     "signiture": "TiltSpeedControl(int value)"
+    },
+    {
+     "body": "if pan == nil or tilt == nil then return end\r\nif pan > 99 or pan < 1 then return end\r\nif tilt > 99 or tilt < 1  then return end\r\nlocal p = string.format(\"%02s\", math.tointeger(pan))\r\nlocal t = string.format(\"%02s\", math.tointeger(tilt))\r\n\r\nself.Internal.sendPtz(\"PTS\" .. p .. t)",
+     "functionName": "PanTiltSpeedControl(int pan,int tilt)",
+     "kind": "fn",
+     "name": "PanTiltSpeedControl",
+     "params": [
+      {
+       "name": "pan",
+       "type": "int"
+      },
+      {
+       "name": "tilt",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.PanTilt.PanTiltSpeedControl",
+     "signiture": "PanTiltSpeedControl(int pan,int tilt)"
+    }
+   ],
+   "kind": "ns",
+   "name": "PanTilt"
+  },
+  {
+   "elems": [
+    {
+     "body": "if mode == nil then return end\r\nif mode == \"Manual\" then\r\n\tself.Internal.sendCam(\"OAF:0\")\r\nelseif mode == \"Auto\" then\r\n\tself.Internal.sendCam(\"OAF:1\")\r\nend",
+     "documentation": "Mode are:\nManual\nAuto",
+     "functionName": "FocusMode(string mode)",
+     "kind": "fn",
+     "name": "FocusMode",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Lens.FocusMode",
+     "signiture": "FocusMode(string mode)"
+    },
+    {
+     "body": "if value == nil then return end\r\nif value > 2730 or value < 0 then return end\r\nlocal val = value + 1365\r\n\r\nself.Internal.sendPtz(\"AXZ\" .. string.format(\"%03x\", val))",
+     "documentation": "value is between 0 to 2730",
+     "functionName": "ZoomPositionControl(int value)",
+     "kind": "fn",
+     "name": "ZoomPositionControl",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Lens.ZoomPositionControl",
+     "signiture": "ZoomPositionControl(int value)"
+    }
+   ],
+   "kind": "ns",
+   "name": "Lens"
+  },
+  {
+   "elems": [
+    {
+     "body": "if value == nil then return end\r\n\r\nif value == \"Slow\" then\r\n\tself.Internal.sendPtz(\"PST0\")\r\nelseif value == \"Fast\" then\r\n\tself.Internal.sendPtz(\"PST2\")\r\nend",
+     "documentation": "Value are:\nSlow\nFast",
+     "functionName": "PresetSpeedTable(string value)",
+     "kind": "fn",
+     "name": "PresetSpeedTable",
+     "params": [
+      {
+       "name": "value",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Preset.PresetSpeedTable",
+     "signiture": "PresetSpeedTable(string value)"
+    },
+    {
+     "body": "if value == nil then return end\r\n\r\nif value == \"ModeA\" then\r\n\tself.Internal.sendCam(\"OSE:71:0\")\r\nelseif value == \"ModeB\" then\r\n\tself.Internal.sendCam(\"OSE:71:1\")\r\nelseif value == \"ModeC\" then\r\n\tself.Internal.sendCam(\"OSE:71:2\")\r\nend",
+     "documentation": "modes are:\nModeA\nModeB\nModeC",
+     "functionName": "PresetScope(string mode)",
+     "kind": "fn",
+     "name": "PresetScope",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "path": "AW_UE20.Preset.PresetScope",
+     "signiture": "PresetScope(string mode)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 30 or value < 1 then return end\r\n\r\nlocal tab = {\r\n\t\"250\",\r\n\t\"276\",\r\n\t\"302\",\r\n\t\"328\",\r\n\t\"354\",\r\n\t\"380\",\r\n\t\"405\",\r\n\t\"431\",\r\n\t\"457\",\r\n\t\"483\",\r\n\t\"509\",\r\n\t\"535\",\r\n\t\"560\",\r\n\t\"586\",\r\n\t\"612\",\r\n\t\"638\",\r\n\t\"664\",\r\n\t\"690\",\r\n\t\"715\",\r\n\t\"741\",\r\n\t\"767\",\r\n\t\"793\",\r\n\t\"819\",\r\n\t\"845\",\r\n\t\"870\",\r\n\t\"896\",\r\n\t\"922\",\r\n\t\"948\",\r\n\t\"974\",\r\n\t\"999\"\r\n}\r\nlocal val = tab[value]\r\nif val == nil then\r\n\tval = '000'\r\nend\r\n\r\nif val ~= nil then\r\n\tself.Internal.sendPtz(\"UPVS\" .. val)\r\nend",
+     "functionName": "PresetSpeed(int value)",
+     "kind": "fn",
+     "name": "PresetSpeed",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Preset.PresetSpeed",
+     "signiture": "PresetSpeed(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\nlocal val = string.format(\"%02s\",math.tointeger(value-1))\r\n\r\nself.Internal.sendPtz(\"M\" .. val)",
+     "functionName": "SavePresetMemory(int value)",
+     "kind": "fn",
+     "name": "SavePresetMemory",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Preset.SavePresetMemory",
+     "signiture": "SavePresetMemory(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\nlocal val = string.format(\"%02s\",math.tointeger(value-1))\r\n\r\nself.Internal.sendPtz(\"R\" .. val)",
+     "functionName": "RecallPreset(int value)",
+     "kind": "fn",
+     "name": "RecallPreset",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Preset.RecallPreset",
+     "signiture": "RecallPreset(int value)"
+    },
+    {
+     "body": "if value == nil or type(value) ~= \"number\" then return end\r\nif value > 100 or value < 1 then return end\r\nlocal val = string.format(\"%02s\",math.tointeger(value-1))\r\n\r\nself.Internal.sendPtz(\"C\" .. val)",
+     "functionName": "DeletePreset(int value)",
+     "kind": "fn",
+     "name": "DeletePreset",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ],
+     "path": "AW_UE20.Preset.DeletePreset",
+     "signiture": "DeletePreset(int value)"
+    }
+   ],
+   "kind": "ns",
+   "name": "Preset"
+  },
+  {
+   "elems": [
+    {
+     "body": "self.Internal.sendPtz(\"01\")\r\n",
+     "functionName": "PowerOn()",
+     "kind": "fn",
+     "name": "PowerOn",
+     "path": "AW_UE20.Others.PowerOn",
+     "signiture": "PowerOn()"
+    },
+    {
+     "body": "self.Internal.sendPtz(\"00\")",
+     "functionName": "PowerOff()",
+     "kind": "fn",
+     "name": "PowerOff",
+     "path": "AW_UE20.Others.PowerOff",
+     "signiture": "PowerOff()"
+    }
+   ],
+   "kind": "ns",
+   "name": "Others"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._ModelNumber = pixcCommon.execAttribute(0, self._ModelNumber, val, doSet)\r\n\r\nreturn self._ModelNumber",
+   "functionName": "ModelNumber(val,bool doSet)",
+   "kind": "fn",
+   "name": "ModelNumber",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "AW_UE20.ModelNumber",
+   "signiture": "ModelNumber(val,bool doSet)"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._Power = pixcCommon.execAttribute(0, self._Power, val, doSet)\r\n\r\nreturn self._Power",
+   "functionName": "Power(val,bool doSet)",
+   "kind": "fn",
+   "name": "Power",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "AW_UE20.Power",
+   "signiture": "Power(val,bool doSet)"
+  }
+ ],
+ "canHaveExternalConnections": false,
+ "cjv": {
+  "h": 732.6153846153846,
+  "w": 425.87179487179486,
+  "x": 156.0,
+  "y": 799.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Drivers/Panasonic/AW_UE20.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4ri4AusENMblKEutwdauCRqrCCNJaLW/YvIF7N+FK9UuVNTjySaMA6XA2fi6KILK4R3uQ/M0RqMSsVFh/gzDb4QgN8pfNpzEtULeDtmLjfyd83tAnJxansmnOd273U8vN0E/xhE2TWkScY7LASm+Tto=",
+ "name": "AW_UE20",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "192.168.11.60",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Log Send",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "true",
+   "name": "Log Receive",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

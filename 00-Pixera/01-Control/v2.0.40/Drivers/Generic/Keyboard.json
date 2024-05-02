@@ -1,0 +1,952 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolKeyboard\"\r\nif self.lock then return end\r\nif self.keyboard ~= nil then\r\n\tself.lock = true\r\n\tself.uninit()\r\n\tUtils.Timer.sleep(500)\r\nend\r\nself.lock = nil\r\nself.keyboard = createpixcProtocolKeyboard()\r\nself.keyboard:create(self.IsOpen)\r\nself.keyboard:start(self.Keypress)",
+   "functionName": "init()",
+   "kind": "fn",
+   "name": "init",
+   "path": "Keyboard.init",
+   "signiture": "init()"
+  },
+  {
+   "body": "if self.keyboard ~= nil then\r\n\tself.keyboard:close()\r\n\tself.keyboard = nil\r\nend",
+   "functionName": "uninit()",
+   "kind": "fn",
+   "name": "uninit",
+   "path": "Keyboard.uninit",
+   "signiture": "uninit()"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._InOpen = pixcCommon.execAttribute(0, self._InOpen, val, doSet)\r\nreturn self._InOpen\r\n",
+   "functionName": "IsOpen(val,bool doSet)",
+   "kind": "fn",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "Keyboard.IsOpen",
+   "signiture": "IsOpen(val,bool doSet)",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "if self.keyboard == nil then return end\r\nself.keyboard:send(keyCode)",
+   "functionName": "send(keyCode)",
+   "kind": "fn",
+   "name": "send",
+   "params": [
+    {
+     "name": "keyCode",
+     "type": ""
+    }
+   ],
+   "path": "Keyboard.send",
+   "signiture": "send(keyCode)"
+  },
+  {
+   "body": "--\n--dispatchBegin:#[65.00 == keyCode]# Keys.a p\nif(65.00 == keyCode) then\n\tself.Keys.a()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[66.00 == keyCode]# Keys.b p\nif(66.00 == keyCode) then\n\tself.Keys.b()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[67.00 == keyCode]# Keys.c p\nif(67.00 == keyCode) then\n\tself.Keys.c()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[68.00 == keyCode]# Keys.d p\nif(68.00 == keyCode) then\n\tself.Keys.d()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[69.00 == keyCode]# Keys.e p\nif(69.00 == keyCode) then\n\tself.Keys.e()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[70.00 == keyCode]# Keys.f p\nif(70.00 == keyCode) then\n\tself.Keys.f()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[71.00 == keyCode]# Keys.g p\nif(71.00 == keyCode) then\n\tself.Keys.g()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[72.00 == keyCode]# Keys.h p\nif(72.00 == keyCode) then\n\tself.Keys.h()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[73.00 == keyCode]# Keys.i p\nif(73.00 == keyCode) then\n\tself.Keys.i()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[74.00 == keyCode]# Keys.j p\nif(74.00 == keyCode) then\n\tself.Keys.j()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[75.00 == keyCode]# Keys.k p\nif(75.00 == keyCode) then\n\tself.Keys.k()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[76.00 == keyCode]# Keys.l p\nif(76.00 == keyCode) then\n\tself.Keys.l()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[77.00 == keyCode]# Keys.m p\nif(77.00 == keyCode) then\n\tself.Keys.m()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[78.00 == keyCode]# Keys.n p\nif(78.00 == keyCode) then\n\tself.Keys.n()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[79.00 == keyCode]# Keys.o p\nif(79.00 == keyCode) then\n\tself.Keys.o()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[80.00 == keyCode]# Keys.p p\nif(80.00 == keyCode) then\n\tself.Keys.p()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[81.00 == keyCode]# Keys.q p\nif(81.00 == keyCode) then\n\tself.Keys.q()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[82.00 == keyCode]# Keys.r p\nif(82.00 == keyCode) then\n\tself.Keys.r()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[83.00 == keyCode]# Keys.s p\nif(83.00 == keyCode) then\n\tself.Keys.s()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[84.00 == keyCode]# Keys.t p\nif(84.00 == keyCode) then\n\tself.Keys.t()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[85.00 == keyCode]# Keys.u p\nif(85.00 == keyCode) then\n\tself.Keys.u()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[86.00 == keyCode]# Keys.v p\nif(86.00 == keyCode) then\n\tself.Keys.v()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[87.00 == keyCode]# Keys.w p\nif(87.00 == keyCode) then\n\tself.Keys.w()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[88.00 == keyCode]# Keys.x p\nif(88.00 == keyCode) then\n\tself.Keys.x()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[89.00 == keyCode]# Keys.y p\nif(89.00 == keyCode) then\n\tself.Keys.y()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[90.00 == keyCode]# Keys.z p\nif(90.00 == keyCode) then\n\tself.Keys.z()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[112.00 == keyCode]# FunctionKeys.F1 p\nif(112.00 == keyCode) then\n\tself.FunctionKeys.F1()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[113.00 == keyCode]# FunctionKeys.F2 p\nif(113.00 == keyCode) then\n\tself.FunctionKeys.F2()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[114.00 == keyCode]# FunctionKeys.F3 p\nif(114.00 == keyCode) then\n\tself.FunctionKeys.F3()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[115.00 == keyCode]# FunctionKeys.F4 p\nif(115.00 == keyCode) then\n\tself.FunctionKeys.F4()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[116.00 == keyCode]# FunctionKeys.F5 p\nif(116.00 == keyCode) then\n\tself.FunctionKeys.F5()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[117.00 == keyCode]# FunctionKeys.F6 p\nif(117.00 == keyCode) then\n\tself.FunctionKeys.F6()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[118.00 == keyCode]# FunctionKeys.F7 p\nif(118.00 == keyCode) then\n\tself.FunctionKeys.F7()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[119.00 == keyCode]# FunctionKeys.F8 p\nif(119.00 == keyCode) then\n\tself.FunctionKeys.F8()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[120.00 == keyCode]# FunctionKeys.F9 p\nif(120.00 == keyCode) then\n\tself.FunctionKeys.F9()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[121.00 == keyCode]# FunctionKeys.F10 p\nif(121.00 == keyCode) then\n\tself.FunctionKeys.F10()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[122.00 == keyCode]# FunctionKeys.F11 p\nif(122.00 == keyCode) then\n\tself.FunctionKeys.F11()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[123.00 == keyCode]# FunctionKeys.F12 p\nif(123.00 == keyCode) then\n\tself.FunctionKeys.F12()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[36.00 == keyCode]# FunctionKeys.Home p\nif(36.00 == keyCode) then\n\tself.FunctionKeys.Home()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[35.00 == keyCode]# FunctionKeys.End p\nif(35.00 == keyCode) then\n\tself.FunctionKeys.End()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[34.00 == keyCode]# FunctionKeys.PageDown p\nif(34.00 == keyCode) then\n\tself.FunctionKeys.PageDown()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[33.00 == keyCode]# FunctionKeys.PageUp p\nif(33.00 == keyCode) then\n\tself.FunctionKeys.PageUp()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[13.00 == keyCode]# FunctionKeys.Enter p\nif(13.00 == keyCode) then\n\tself.FunctionKeys.Enter()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[32.00 == keyCode]# FunctionKeys.Space p\nif(32.00 == keyCode) then\n\tself.FunctionKeys.Space()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[9.00 == keyCode]# FunctionKeys.Tab p\nif(9.00 == keyCode) then\n\tself.FunctionKeys.Tab()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[46.00 == keyCode]# FunctionKeys.Delete p\nif(46.00 == keyCode) then\n\tself.FunctionKeys.Delete()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[45.00 == keyCode]# FunctionKeys.Insert p\nif(45.00 == keyCode) then\n\tself.FunctionKeys.Insert()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[40.00 == keyCode]# ArrowKeys.Down p\nif(40.00 == keyCode) then\n\tself.ArrowKeys.Down()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[37.00 == keyCode]# ArrowKeys.Left p\nif(37.00 == keyCode) then\n\tself.ArrowKeys.Left()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[39.00 == keyCode]# ArrowKeys.Right p\nif(39.00 == keyCode) then\n\tself.ArrowKeys.Right()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[38.00 == keyCode]# ArrowKeys.Up p\nif(38.00 == keyCode) then\n\tself.ArrowKeys.Up()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[27.00 == keyCode]# FunctionKeys.Escape p\nif(27.00 == keyCode) then\n\tself.FunctionKeys.Escape()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[44.00 == keyCode]# FunctionKeys.PrintScreen p\nif(44.00 == keyCode) then\n\tself.FunctionKeys.PrintScreen()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[145.00 == keyCode]# FunctionKeys.ScrollLock p\nif(145.00 == keyCode) then\n\tself.FunctionKeys.ScrollLock()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[19.00 == keyCode]# FunctionKeys.Pause p\nif(19.00 == keyCode) then\n\tself.FunctionKeys.Pause()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[49.00 == keyCode]# Keys.Digit_1 p\nif(49.00 == keyCode) then\n\tself.Keys.Digit_1()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[50.00 == keyCode]# Keys.Digit_2 p\nif(50.00 == keyCode) then\n\tself.Keys.Digit_2()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[51.00 == keyCode]# Keys.Digit_3 p\nif(51.00 == keyCode) then\n\tself.Keys.Digit_3()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[52.00 == keyCode]# Keys.Digit_4 p\nif(52.00 == keyCode) then\n\tself.Keys.Digit_4()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[53.00 == keyCode]# Keys.Digit_5 p\nif(53.00 == keyCode) then\n\tself.Keys.Digit_5()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[54.00 == keyCode]# Keys.Digit_6 p\nif(54.00 == keyCode) then\n\tself.Keys.Digit_6()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[55.00 == keyCode]# Keys.Digit_7 p\nif(55.00 == keyCode) then\n\tself.Keys.Digit_7()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[56.00 == keyCode]# Keys.Digit_8 p\nif(56.00 == keyCode) then\n\tself.Keys.Digit_8()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[57.00 == keyCode]# Keys.Digit_9 p\nif(57.00 == keyCode) then\n\tself.Keys.Digit_9()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[48.00 == keyCode]# Keys.Digit_0 p\nif(48.00 == keyCode) then\n\tself.Keys.Digit_0()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[189.00 == keyCode]# Keys.Minus p\nif(189.00 == keyCode) then\n\tself.Keys.Minus()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[8.00 == keyCode]# Keys.Backslash p\nif(8.00 == keyCode) then\n\tself.Keys.Backslash()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[187.00 == keyCode]# Keys.Plus p\nif(187.00 == keyCode) then\n\tself.Keys.Plus()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[191.00 == keyCode]# Keys.Hach p\nif(191.00 == keyCode) then\n\tself.Keys.Hach()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[188.00 == keyCode]# Keys.Comma p\nif(188.00 == keyCode) then\n\tself.Keys.Comma()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[190.00 == keyCode]# Keys.Point p\nif(190.00 == keyCode) then\n\tself.Keys.Point()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[97.00 == keyCode]# Numpad.Num_1 p\nif(97.00 == keyCode) then\n\tself.Numpad.Num_1()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[98.00 == keyCode]# Numpad.Num_2 p\nif(98.00 == keyCode) then\n\tself.Numpad.Num_2()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[99.00 == keyCode]# Numpad.Num_3 p\nif(99.00 == keyCode) then\n\tself.Numpad.Num_3()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[100.00 == keyCode]# Numpad.Num_4 p\nif(100.00 == keyCode) then\n\tself.Numpad.Num_4()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[101.00 == keyCode]# Numpad.Num_5 p\nif(101.00 == keyCode) then\n\tself.Numpad.Num_5()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[102.00 == keyCode]# Numpad.Num_6 p\nif(102.00 == keyCode) then\n\tself.Numpad.Num_6()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[103.00 == keyCode]# Numpad.Num_7 p\nif(103.00 == keyCode) then\n\tself.Numpad.Num_7()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[104.00 == keyCode]# Numpad.Num_8 p\nif(104.00 == keyCode) then\n\tself.Numpad.Num_8()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[105.00 == keyCode]# Numpad.Num_9 p\nif(105.00 == keyCode) then\n\tself.Numpad.Num_9()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[96.00 == keyCode]# Numpad.Num_0 p\nif(96.00 == keyCode) then\n\tself.Numpad.Num_0()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[107.00 == keyCode]# Numpad.Num_Plus p\nif(107.00 == keyCode) then\n\tself.Numpad.Num_Plus()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[109.00 == keyCode]# Numpad.Num_Minus p\nif(109.00 == keyCode) then\n\tself.Numpad.Num_Minus()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[106.00 == keyCode]# Numpad.Num_Multiply p\nif(106.00 == keyCode) then\n\tself.Numpad.Num_Multiply()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[111.00 == keyCode]# Numpad.Num_Divid p\nif(111.00 == keyCode) then\n\tself.Numpad.Num_Divid()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[13.00 == keyCode]# Numpad.Num_Enter p\nif(13.00 == keyCode) then\n\tself.Numpad.Num_Enter()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[110.00 == keyCode]# Numpad.Num_Comma p\nif(110.00 == keyCode) then\n\tself.Numpad.Num_Comma()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[162.00 == keyCode]# SpecialKeys.Control p\nif(162.00 == keyCode) then\n\tself.SpecialKeys.Control()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[161.00 == keyCode]# SpecialKeys.Control p\nif(161.00 == keyCode) then\n\tself.SpecialKeys.Control()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd\n--dispatchBegin:#[91.00 == keyCode]# SpecialKeys.Windows p\nif(91.00 == keyCode) then\n\tself.SpecialKeys.Windows()\n\tpixc.suppressCallRefs()\nend\n--dispatchEnd",
+   "functionName": "Keypress(keyCode)",
+   "kind": "fn",
+   "name": "Keypress",
+   "params": [
+    {
+     "name": "keyCode",
+     "type": ""
+    }
+   ],
+   "path": "Keyboard.Keypress",
+   "signiture": "Keypress(keyCode)",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "functionName": "a()",
+     "kind": "fn",
+     "name": "a",
+     "path": "Keyboard.Keys.a",
+     "signiture": "a()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "b()",
+     "kind": "fn",
+     "name": "b",
+     "path": "Keyboard.Keys.b",
+     "signiture": "b()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "c()",
+     "kind": "fn",
+     "name": "c",
+     "path": "Keyboard.Keys.c",
+     "signiture": "c()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "d()",
+     "kind": "fn",
+     "name": "d",
+     "path": "Keyboard.Keys.d",
+     "signiture": "d()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "e()",
+     "kind": "fn",
+     "name": "e",
+     "path": "Keyboard.Keys.e",
+     "signiture": "e()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "f()",
+     "kind": "fn",
+     "name": "f",
+     "path": "Keyboard.Keys.f",
+     "signiture": "f()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "g()",
+     "kind": "fn",
+     "name": "g",
+     "path": "Keyboard.Keys.g",
+     "signiture": "g()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "h()",
+     "kind": "fn",
+     "name": "h",
+     "path": "Keyboard.Keys.h",
+     "signiture": "h()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "i()",
+     "kind": "fn",
+     "name": "i",
+     "path": "Keyboard.Keys.i",
+     "signiture": "i()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "j()",
+     "kind": "fn",
+     "name": "j",
+     "path": "Keyboard.Keys.j",
+     "signiture": "j()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "k()",
+     "kind": "fn",
+     "name": "k",
+     "path": "Keyboard.Keys.k",
+     "signiture": "k()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "l()",
+     "kind": "fn",
+     "name": "l",
+     "path": "Keyboard.Keys.l",
+     "signiture": "l()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "m()",
+     "kind": "fn",
+     "name": "m",
+     "path": "Keyboard.Keys.m",
+     "signiture": "m()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "n()",
+     "kind": "fn",
+     "name": "n",
+     "path": "Keyboard.Keys.n",
+     "signiture": "n()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "o()",
+     "kind": "fn",
+     "name": "o",
+     "path": "Keyboard.Keys.o",
+     "signiture": "o()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "p()",
+     "kind": "fn",
+     "name": "p",
+     "path": "Keyboard.Keys.p",
+     "signiture": "p()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "q()",
+     "kind": "fn",
+     "name": "q",
+     "path": "Keyboard.Keys.q",
+     "signiture": "q()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "r()",
+     "kind": "fn",
+     "name": "r",
+     "path": "Keyboard.Keys.r",
+     "signiture": "r()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "s()",
+     "kind": "fn",
+     "name": "s",
+     "path": "Keyboard.Keys.s",
+     "signiture": "s()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "t()",
+     "kind": "fn",
+     "name": "t",
+     "path": "Keyboard.Keys.t",
+     "signiture": "t()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "u()",
+     "kind": "fn",
+     "name": "u",
+     "path": "Keyboard.Keys.u",
+     "signiture": "u()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "v()",
+     "kind": "fn",
+     "name": "v",
+     "path": "Keyboard.Keys.v",
+     "signiture": "v()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "w()",
+     "kind": "fn",
+     "name": "w",
+     "path": "Keyboard.Keys.w",
+     "signiture": "w()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "x()",
+     "kind": "fn",
+     "name": "x",
+     "path": "Keyboard.Keys.x",
+     "signiture": "x()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "y()",
+     "kind": "fn",
+     "name": "y",
+     "path": "Keyboard.Keys.y",
+     "signiture": "y()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "z()",
+     "kind": "fn",
+     "name": "z",
+     "path": "Keyboard.Keys.z",
+     "signiture": "z()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_1()",
+     "kind": "fn",
+     "name": "Digit_1",
+     "path": "Keyboard.Keys.Digit_1",
+     "signiture": "Digit_1()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_2()",
+     "kind": "fn",
+     "name": "Digit_2",
+     "path": "Keyboard.Keys.Digit_2",
+     "signiture": "Digit_2()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_3()",
+     "kind": "fn",
+     "name": "Digit_3",
+     "path": "Keyboard.Keys.Digit_3",
+     "signiture": "Digit_3()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_4()",
+     "kind": "fn",
+     "name": "Digit_4",
+     "path": "Keyboard.Keys.Digit_4",
+     "signiture": "Digit_4()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_5()",
+     "kind": "fn",
+     "name": "Digit_5",
+     "path": "Keyboard.Keys.Digit_5",
+     "signiture": "Digit_5()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_6()",
+     "kind": "fn",
+     "name": "Digit_6",
+     "path": "Keyboard.Keys.Digit_6",
+     "signiture": "Digit_6()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_7()",
+     "kind": "fn",
+     "name": "Digit_7",
+     "path": "Keyboard.Keys.Digit_7",
+     "signiture": "Digit_7()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_8()",
+     "kind": "fn",
+     "name": "Digit_8",
+     "path": "Keyboard.Keys.Digit_8",
+     "signiture": "Digit_8()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_9()",
+     "kind": "fn",
+     "name": "Digit_9",
+     "path": "Keyboard.Keys.Digit_9",
+     "signiture": "Digit_9()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Digit_0()",
+     "kind": "fn",
+     "name": "Digit_0",
+     "path": "Keyboard.Keys.Digit_0",
+     "signiture": "Digit_0()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Minus()",
+     "kind": "fn",
+     "name": "Minus",
+     "path": "Keyboard.Keys.Minus",
+     "signiture": "Minus()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Plus()",
+     "kind": "fn",
+     "name": "Plus",
+     "path": "Keyboard.Keys.Plus",
+     "signiture": "Plus()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Backslash()",
+     "kind": "fn",
+     "name": "Backslash",
+     "path": "Keyboard.Keys.Backslash",
+     "signiture": "Backslash()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Hach()",
+     "kind": "fn",
+     "name": "Hach",
+     "path": "Keyboard.Keys.Hach",
+     "signiture": "Hach()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Point()",
+     "kind": "fn",
+     "name": "Point",
+     "path": "Keyboard.Keys.Point",
+     "signiture": "Point()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Comma()",
+     "kind": "fn",
+     "name": "Comma",
+     "path": "Keyboard.Keys.Comma",
+     "signiture": "Comma()",
+     "slotStyle": "leftNone;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "Keys"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "functionName": "Num_1()",
+     "kind": "fn",
+     "name": "Num_1",
+     "path": "Keyboard.Numpad.Num_1",
+     "signiture": "Num_1()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_2()",
+     "kind": "fn",
+     "name": "Num_2",
+     "path": "Keyboard.Numpad.Num_2",
+     "signiture": "Num_2()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_3()",
+     "kind": "fn",
+     "name": "Num_3",
+     "path": "Keyboard.Numpad.Num_3",
+     "signiture": "Num_3()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_4()",
+     "kind": "fn",
+     "name": "Num_4",
+     "path": "Keyboard.Numpad.Num_4",
+     "signiture": "Num_4()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_5()",
+     "kind": "fn",
+     "name": "Num_5",
+     "path": "Keyboard.Numpad.Num_5",
+     "signiture": "Num_5()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_6()",
+     "kind": "fn",
+     "name": "Num_6",
+     "path": "Keyboard.Numpad.Num_6",
+     "signiture": "Num_6()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_7()",
+     "kind": "fn",
+     "name": "Num_7",
+     "path": "Keyboard.Numpad.Num_7",
+     "signiture": "Num_7()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_8()",
+     "kind": "fn",
+     "name": "Num_8",
+     "path": "Keyboard.Numpad.Num_8",
+     "signiture": "Num_8()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_9()",
+     "kind": "fn",
+     "name": "Num_9",
+     "path": "Keyboard.Numpad.Num_9",
+     "signiture": "Num_9()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_0()",
+     "kind": "fn",
+     "name": "Num_0",
+     "path": "Keyboard.Numpad.Num_0",
+     "signiture": "Num_0()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_Comma()",
+     "kind": "fn",
+     "name": "Num_Comma",
+     "path": "Keyboard.Numpad.Num_Comma",
+     "signiture": "Num_Comma()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_Minus()",
+     "kind": "fn",
+     "name": "Num_Minus",
+     "path": "Keyboard.Numpad.Num_Minus",
+     "signiture": "Num_Minus()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_Plus()",
+     "kind": "fn",
+     "name": "Num_Plus",
+     "path": "Keyboard.Numpad.Num_Plus",
+     "signiture": "Num_Plus()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_Multiply()",
+     "kind": "fn",
+     "name": "Num_Multiply",
+     "path": "Keyboard.Numpad.Num_Multiply",
+     "signiture": "Num_Multiply()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_Divid()",
+     "kind": "fn",
+     "name": "Num_Divid",
+     "path": "Keyboard.Numpad.Num_Divid",
+     "signiture": "Num_Divid()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Num_Enter()",
+     "kind": "fn",
+     "name": "Num_Enter",
+     "path": "Keyboard.Numpad.Num_Enter",
+     "signiture": "Num_Enter()",
+     "slotStyle": "leftNone;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "Numpad"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "functionName": "F1()",
+     "kind": "fn",
+     "name": "F1",
+     "path": "Keyboard.FunctionKeys.F1",
+     "signiture": "F1()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F2()",
+     "kind": "fn",
+     "name": "F2",
+     "path": "Keyboard.FunctionKeys.F2",
+     "signiture": "F2()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F3()",
+     "kind": "fn",
+     "name": "F3",
+     "path": "Keyboard.FunctionKeys.F3",
+     "signiture": "F3()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F4()",
+     "kind": "fn",
+     "name": "F4",
+     "path": "Keyboard.FunctionKeys.F4",
+     "signiture": "F4()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F5()",
+     "kind": "fn",
+     "name": "F5",
+     "path": "Keyboard.FunctionKeys.F5",
+     "signiture": "F5()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F6()",
+     "kind": "fn",
+     "name": "F6",
+     "path": "Keyboard.FunctionKeys.F6",
+     "signiture": "F6()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F7()",
+     "kind": "fn",
+     "name": "F7",
+     "path": "Keyboard.FunctionKeys.F7",
+     "signiture": "F7()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F8()",
+     "kind": "fn",
+     "name": "F8",
+     "path": "Keyboard.FunctionKeys.F8",
+     "signiture": "F8()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F9()",
+     "kind": "fn",
+     "name": "F9",
+     "path": "Keyboard.FunctionKeys.F9",
+     "signiture": "F9()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F10()",
+     "kind": "fn",
+     "name": "F10",
+     "path": "Keyboard.FunctionKeys.F10",
+     "signiture": "F10()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F11()",
+     "kind": "fn",
+     "name": "F11",
+     "path": "Keyboard.FunctionKeys.F11",
+     "signiture": "F11()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "F12()",
+     "kind": "fn",
+     "name": "F12",
+     "path": "Keyboard.FunctionKeys.F12",
+     "signiture": "F12()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Tab()",
+     "kind": "fn",
+     "name": "Tab",
+     "path": "Keyboard.FunctionKeys.Tab",
+     "signiture": "Tab()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "PageUp()",
+     "kind": "fn",
+     "name": "PageUp",
+     "path": "Keyboard.FunctionKeys.PageUp",
+     "signiture": "PageUp()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "PageDown()",
+     "kind": "fn",
+     "name": "PageDown",
+     "path": "Keyboard.FunctionKeys.PageDown",
+     "signiture": "PageDown()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Home()",
+     "kind": "fn",
+     "name": "Home",
+     "path": "Keyboard.FunctionKeys.Home",
+     "signiture": "Home()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Delete()",
+     "kind": "fn",
+     "name": "Delete",
+     "path": "Keyboard.FunctionKeys.Delete",
+     "signiture": "Delete()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Insert()",
+     "kind": "fn",
+     "name": "Insert",
+     "path": "Keyboard.FunctionKeys.Insert",
+     "signiture": "Insert()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "End()",
+     "kind": "fn",
+     "name": "End",
+     "path": "Keyboard.FunctionKeys.End",
+     "signiture": "End()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Enter()",
+     "kind": "fn",
+     "name": "Enter",
+     "path": "Keyboard.FunctionKeys.Enter",
+     "signiture": "Enter()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "ScrollLock()",
+     "kind": "fn",
+     "name": "ScrollLock",
+     "path": "Keyboard.FunctionKeys.ScrollLock",
+     "signiture": "ScrollLock()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "PrintScreen()",
+     "kind": "fn",
+     "name": "PrintScreen",
+     "path": "Keyboard.FunctionKeys.PrintScreen",
+     "signiture": "PrintScreen()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Pause()",
+     "kind": "fn",
+     "name": "Pause",
+     "path": "Keyboard.FunctionKeys.Pause",
+     "signiture": "Pause()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Escape()",
+     "kind": "fn",
+     "name": "Escape",
+     "path": "Keyboard.FunctionKeys.Escape",
+     "signiture": "Escape()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Space()",
+     "kind": "fn",
+     "name": "Space",
+     "path": "Keyboard.FunctionKeys.Space",
+     "signiture": "Space()",
+     "slotStyle": "leftNone;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "FunctionKeys"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "functionName": "Down()",
+     "kind": "fn",
+     "name": "Down",
+     "path": "Keyboard.ArrowKeys.Down",
+     "signiture": "Down()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Up()",
+     "kind": "fn",
+     "name": "Up",
+     "path": "Keyboard.ArrowKeys.Up",
+     "signiture": "Up()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Right()",
+     "kind": "fn",
+     "name": "Right",
+     "path": "Keyboard.ArrowKeys.Right",
+     "signiture": "Right()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Left()",
+     "kind": "fn",
+     "name": "Left",
+     "path": "Keyboard.ArrowKeys.Left",
+     "signiture": "Left()",
+     "slotStyle": "leftNone;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "ArrowKeys"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "functionName": "Control()",
+     "kind": "fn",
+     "name": "Control",
+     "path": "Keyboard.SpecialKeys.Control",
+     "signiture": "Control()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Shift()",
+     "kind": "fn",
+     "name": "Shift",
+     "path": "Keyboard.SpecialKeys.Shift",
+     "signiture": "Shift()",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "functionName": "Windows()",
+     "kind": "fn",
+     "name": "Windows",
+     "path": "Keyboard.SpecialKeys.Windows",
+     "signiture": "Windows()",
+     "slotStyle": "leftNone;rightOut"
+    }
+   ],
+   "kind": "ns",
+   "name": "SpecialKeys"
+  }
+ ],
+ "canHaveExternalConnections": true,
+ "cjv": {
+  "h": 388.0,
+  "w": 216.0,
+  "x": 40.0,
+  "y": 199.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Drivers/Generic/Keyboard.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4mddbOtnkHKI64KrEwqlmRfAKA65cl/U3r4OY/zPYktYq16/mrjXM8W56orhHqe7e4OLsGHwPUF6nr1DXlj6AhhXRPxBL/kwVneiOMOvbK+fZxKvHt7q3BoyyGQ3Mm6JGg==",
+ "name": "Keyboard",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "AV Stumpfl GmbH (Benni M.)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "iVBORw0KGgoAAAANSUhEUgAAAcQAAABgCAYAAACDpQJTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAABh4SURBVHic7Z15sF1VlYe/lRBGgQCCTCJCIiCDzCBtgwpqO6GigqIgyhym1irBqtZuu6tsEW0EhIQxggzdjYg2KoOIiIITQgSMNBAMzRBAZkFkCPz6j3NeTF7ee3ftM99711eVSvLe2nuvvNx7f2fvvQbT3RyHOJ6gLq5AfMCm83xTC0qaD2xYw9RPAS8DjwEPAw8BdwG3A7cCt5nZSzWs60LSx4HznebTzWxeibWOB45zms8DNjGzl4uuVxRJywH3AWs6zC8ws/1KrHUC8Nmi4xvkADM7r8wE+c/1uYr8GYsnyN5rjwB/Au4H7gT+APzOzO6qce3GkPQwsFbB4d83sz2r9GcZ25iv6G4IUayFxsWwZlbNf18NmDbG95+SdD3wA+BSM/tTY541zzeAzwBTHLbTgHeR/Vya5iP4xBCyf1PQDVbLf18D2HT0NyUtAK4FLgWuMLO/NuhbJUjaiOJiCLBTVb6MMAnANuYrGJ+revIhZ9DE0MOqwLuBWcACSZdJekvLPtWCmT0AXJIw5Oi6fOnBDKfdL83sN7V6ElTJusDHgO8AD0s6TdJYD6ldZseS49eStGEVjowwaeQPIYqVMoxiOJrJwHuBn0j6haSyL/4ucmKC7dskbVmbJ2MgaRv8Hzqn1OlLUCsrkz343CHpPEnrtO2Qkyp2eJV+rkxa/C8hipUQYrg0bwR+KWmWpBXadqYqzOy3wC8Shnh3a1VxlNNuAdlOI+hvJgH7kwnjQW0746AKMatPECFEsSQhhuMzCTgM+LWk6W07UyFfT7DdX9LqtXmyGJKmAvs4zWea2Yt1+hM0ysrAWZIukLR8286MhaQpwDYVTFXpPeJSggghigVJFkNdyzISVqdTHWRL4HpJb2jbkYr4LjDfabsi8KkafVmcA/P1evE8cHbNvgTt8DHgSkkrt+3IGGwFVHFatK2kZSqYBxhHECFEMZF0MRSTWZ/zuInK/jP7iLWAawZhp5inmZyWMORISZPr8gdAkgGHOM0vNLOH6/QnaJXdgO9WKRoV4TnqfNJhsyKwRUlfFjHhDylSMlwUE8N5fAtjX+CA+lzryZVkOxwvU8mOY1YhSyXYDnhVwbXXAC6TtLOZPVVwjq5wFvDPZD+XXrwG2JO0n3sq7wBe57SdWaMf47EQ+FIL647wu4bXmwn8NHHMamTvtdWBrcmOF4sGy+xOFgDWVqTzWHiOOi8BPHehO1LR/2nPp4YQxQkpK4ZtM8fMziwzgaRXA28nE/Y3JQ7flCy68RNlfGgbM/uzpHPxf+AcTb2C6A3euc7MbqrRj/FYaGZfbGHdtrjRzL5ddhJJ6wHvBw4GUq8cjpJ0hZldUdaPiugliE8BV+AXxFKfYyOMe2S6OHF8Oib9LoaVYGb3mdk5Zvb3wK5kFWtS2E/SHjW41jQnAd4qPW+u6w5V0gZkRQA8RKpFH2FmD5jZaWS7xQ+SVSBKYaYkz71yrUhald4nGL/Hv+urLLDGJYgQojiKy0MMl8bMfg7sAMxOGQZ8Nb/36lvMbD5plWi8KRGpHE6WA9qLe4HLavIhqBEzk5ldSnaUek3C0A3JIr3bZgd6a89csmA1z3XK6yV5rit64hZECFHMuRyxV4jh2JjZC2THHCmRi1vj39V0mZQUjI9LKlO2aikkLYs/ivVUM1tY5fpBs5jZ42TFL65LGPaZvA5rm3h2dHPNTPhOnCYB25Zz6W8TJTHkohhi6CB/Ic8AfpswrEsX/oUws+uAG53my+G7H0lhb3y1IZ8lbRcfdJS8huk+ZAXAPawHvKc+j1x4Ikzn5r/fUuGcPUkWRBhaUQwxTCBP9D6IrGK/h92r3jG1xKkJtkfkCcpV4Q2m+ZaZPVbhukGL5GkzX0gY4i3YUBeDJYgwdKIYYlgAM7sF/73aZLIIun7nP4EHnLbrAntVsWgepPNGp3kbqRZBvczG/7p7V8UPYm7yoK+1e5g9ZmYP5X9uNLCmsCDC0IhiiGE5zkqw3a02Lxoi3xmfnjCkqqPiI512V5vZbRWtGXSE/D7Y2+NxJaopm1aEnR02i6cC3Qquz971Ja1bzKW/UUoQYeBFMcSwPD8CnnHa7lKnIw1yOuDtT7eLpB3KLJbXLf2o0zxSLQaXHybYtvVe8xxtLrqHz4P0vKlcpY9NSwsiDKwohhhWQP6C/qXTfENJa9TpTxOY2aPABQlDyqZgHED21N+Lu4HLS64VdJffAM85bTer05EJ8Bxtjg7G8waqdUMQYeBEMcSwWlLKKm1YlxMNczIgp+0+knrdq4xJnr/pzS37hpl5g5yCPiM/Nv1fp/lr6/RlLPJ6qp6j2tEC2H+CCAMjiiGG1XN3gm3jb9Q6MLO5wNVO82WBQwsutQewicPuaeDcgmsE/YO3UPsGtXoxNlvS+yTjITMbHRzkFkRJpTStUkGEvhfFEMN6eCLBttBOqaOkJOrPKJgw7U21OHcAiqgHvfG+1yqp7JKIZwf3mzG+djvZA10vViarj1yYygUR+lYUQwzrw9PGZYTWay1WyFVkb2YPawEfTpk8L6zuSbIWaS2qgv7FK4htvM+K3B+SH/PPca5R6ti0FkGEvhPFEMN6SdkhDowg5hV7Tk4Y8unEJQ7F0bEGuMLM7kicO+hPvKcAbbzPkiJMnV8vssa41CaI0DeiGGJYP39JsF2+Ni/a4VvAo07bbSW5kuvzuqXe0m+RajE8eDuuNFpMX5L3OHO8dmT9L4jQeVEMMQxqJa81mdKrzZuo/0F8zZnvxB/cEwR1sQO9u7DcY2aPjPM9ryBuJWkFv1tLUrsgQmdFMcQwaIrTgBecth+StL7DzhtMc1KkWgQdwHN/OJHozQc89XenUKIKTyOCCJ0TxRDDoDHMbAHg7Zi+DD3yCiVtDrzJMdeTwPnOdYPBoKt9RcvcH47cx3u75xQ+Nm1MEKEzohhiGLTBiQm2h/Y49vFWtjnHzLxl84LBwFOxCPwnFlXhEaleglf7PWKjggiti2KIYTt4IiFHGMjjPTO7Gfi50/yVjFObNA9O8LwWXya6WgwjU5123hJvpcnTg3oV3ha9Uyu8gli480XjggitiWIxMbyb80MMS7Nagm1KRGq/cVKC7afzsmyjOYAsAbkXl5nZHxPWCwaDVZ12TZ4ceHZsd5hZr3zlsZL2x2Kjor1VWxFEaFwUi4uhv4tAMD7ep1YYbEH8H/xl7LYAdh3j694Sb5FqMZys7rR7qLdJZZQNqAEg75F4v3PN7Z12S9CaIEJjohhi2D7ep1ZIq2rTV5jZS8CpCUOWSMGQ9FZgc8e43wM/TVgnGADyE4UtneYL6vRlFFXcH45Q6z1iq4IItYtiiGE3SCkkfE9dTnSEc/BXE3mfpMWLnXtTLU7Oo/KC4WJT/NcT3q4YpZA0GdjOYeoVusEWRMhFEY6reNoQw+7g6ZI9wkDfe5nZ08Bsp/lk4HAASesAezrGPA5cVMy7oM9JEYG5tXmxJJsDr+hhsxB/izh3YM04d/AT0glBBLBpnEB1ohhi2BHyF6X3jfoU/juCfuYU/CW2Dpa0Ellu4hSH/Rlm9mxhz4J+5n0Jtt6m3WXx3B/+Pq/o5OFGfH1GVwc2ds65iM4IIlQmiiGG3WITYE2n7a+GoaqKmd1DFmDjYSpZZOmBDtuFwKxiXgX9jKT1gHc7ze8zs5QepWUolZA/mryF2bwK116CTgkilBbFEMPukfJzvaE2L7pHSq/EE4D1HHbfNbP7CvoT9DdfIGs07cH7MFYFhVo+9aC2e8TOCSIUFsUQw46RV1s5JGHI9+rypWuY2fX486q8rXpSWk0FA4Kk3YCDE4Y0csecH/Vv5jB17xAT7QdDECFZFEMMu8nRwNpO29vN7LY6nekgVeYK3mxmw7TDDgBJGwEX4/8sv9nMmro/3J7eVaqeI0sTSsEriNvkbdLcdFYQwS2KIYYdRNKmwL8kDDmnLl86zMVUF0QUu8MhQ9JOwPVASlWW42tyZyw8x6W/M7MXE+edQ3Zf3ovlga1SJu60IEJPUQwx7CCS1iA7/vT2JXuctJ6BA0H+QVBFvdE/kYlrv7C8mmEgd8ySVpN0PJkYrpMw9Abgknq8GpMqE/IXkUdR/6FCHxbReUGEcUUxxLCDSNoAuI4sutTLiXl+3jByOuXL1c0ys8aKNQfNI2kVSXtIOp2seMVxpBXNfw44rOGCDZWUbCs5LkkQU36grWLTOEFZsO1XCDHsHJImAfuRRU+mFPO+E/haLU71AWb2hKQL8NcoHc2LwFkVuhRUz26Jd1krkZU7nAqsAWxLVoWmzAbmM2aWeldXmLyQhKfRdRlB9KQiDaYgQi6Kd3EPL/A929zfzyvEsD4kTQU+SBZAk3ReT3YPcIiZuR9sBpQTyaIEi3zg/beZPVCxP0G1HJD/aouvmVnT+ame6lTPAHcUnN8rpJtKmuropAH0mSAC2PS0u5IQwwlZLY9SG4vJwCqL/X0SWfWH1cmeWjcmiyLbmeKvo8+Z2XUFxw4MZnanpKuAdxYY/o2q/QkGilOAY1tY17Mzu6lEIY7bgL/SO07ByD6nfuyZtO8EMYUQw54clv9qgzNJ6yI/6DxcYIyAR6t2JBgIniN74Gwr+rjO+0PM7EVJt+Dbie6IUxD7IqimCCGGneZs4PDoyJAhaU3gIwWGGv4OGMHw8HNgm7bEMI8n8HS4SI4wHUXlgTUDKYghhp3lJeBfye4NB75maQKHkuVMFeHAvCJIENxA1hFlNzNrpL3TOGzGktct41F4h5g43rNbBQbwyDTEsLPMAw42s5+27UiXkDSF4hGmkEUi7kt/RZouBL7UwDr3NrBG2zwOXE7W5eT6tp3J8QjQ48D8kut4BXFtSa/21PkdKEEMMewkTwMnAV9OaPEyTHwIX3j6RBwj6ew+OoJeaGZfbNuJPudqsqozPzMzT9WWJnHdH1bwer0DeJLsobAXOwHDJYjM4wNYiGFHeIgscOYUM3usbWc6zNEVzLE5sCtZQYSgezxA9n7oxQrA651zrmBmPynuUq1U2vJpPMxMkuYAb3GY74ijSs9ACaJN5xLN4ziy5P2geR4EfgR8G7iqg0+unULSdvii5DwcSQhiV5lpZv/eyyg/Pr8HWNcx55skbWdmN5V1rkokrQhs4TAtG1Azwo34BbEnAyWIsFRFm6AengAWkBWmngvcQpZTNLdVr/qPf6xwrvd770mCbpKnEswGPu8cMgNftZYm2Q6frpTeISbOs72kZXo9pA+cIEKIYgKXAp912j4BvJx3rA5KImltYG+H6QJ8O4ZlyHJK/6mMX0HrzCKrUzrFYftRScd27ErCc3/4oJktqGg9ryCuRHYcfetERgOZdgGFmwwPG0+b2R+dv54IMayUw/B1ON8ff9L+IZKKpm8EHSAXih84zVcADqrRnSJ4jia9jbF7Ymb/R9btxUNP3wZWECFEMegmeaFnT6rF7cBP8PeKfCWwT1G/gs6Q0hJshqTJtXmSjmeHWNX9Yep8wy2IEKIYdJJ9gLUddqfloelnkBU18HBMYa+CrnAN4E2s3wB4b42+uJG0Fpk/vajq/jB1vhBECFEMOsdRDptngAsAzOxesuRrD9tIqipyNWiB/CHo9IQhntdTE3hed6L6HaJXELeQ9IqJDIZCECFEMegGknYBdnCYXjTqzjalfU9XPiCD4pyLv3H0WyVtWaMvXjzHpfNrCALy3klOJustOS5DI4gQohh0Am8i/pmj/n4lcJdz7Iclred3Kega+cPQhQlDulDk3RNQU/XuEDN7BH+Zvgl9HCpBhBDFoD0krQvs5TD99eiE6/wY7WznUlPoXvRhkM5pCbb7S1q9Nk96IGmk72Avqr4/HMG7S5xQEAcyD7EXkacYtMQMfPll4x2PzibrFuJJrThU0pfN7AWvc0G3MLNbJd0A/J3DfEXgE8DX6/VqXDbBV1P0r3mFpqp5xGkXgjgWuSgKOKFtX4LBR9Jy+HZtT5KVvlsKM3tU0iXAxx3zrEO2G/0vt5NBFzkNnyACHCHp5JZaq3kDuU6t1YvevEbSOmb24FjfHLoj08WxaXwVOLZtP4Kh4GPAqxx2s83s2Qm+H8E1w8V38Bdm2Bj4hxp9mQh3E94OMG5Q21ALIoQoBo3hCXoYyTkcFzP7BXCzc81dJHnudYKOkh95e++Oob2HIHcT3g4wrngPvSBCiGJQL5J2JSt63ItrzOxOh93oCNSJ6EL0YVCOM8iaKnt4h6RN6nRmNHm5wC6kfXgJQexFiGJQI95UC+9x6IWAt67svnkFkaBPyTuYeOubGs0/BG2LL1isK+woaUztC0FcjBDFoGokbQC8z2H6IPB9z5xm9gxwvtOF5YBPOW2D7pKSgvFJSavU5snS9NNxKcCqwPSxvhGCOIoQxaBijsAXzX2Wmb2YMO9MsjtHD4dLGtqI8gHhGuAOp+3K+CKRq6KfAmpGGFPEQxDHIEQxqAJJK+Br4PoSWY6hGzO7HfiZ03wDYM+U+YNukRdmSIkwPiZPlm+CftshwjgiHk+N42DT+GqevB95ikFR9gPWcNh9P+/rlsosYDen7ZFkDaGD/uVc4EtkzW578Tpgd+DHdTokaU3gtQ7Ts0krWF6UGfiuCEIQUwlRDEpyhNMu5cl/cS4FFgDrOmzfImkrM5uwY3jQXczsKUkXAQc7hxxFzYKIf3d45ehyhHUg6Up8gvgGScuZ2fOLfzGOTHsQx6dBESTtDmzlML2bgh9a+Z3jNxOGRApG/5MSXPMeSRvV5kmG9/6w8qLeJddZFth69BdDEB2EKAYF8CZIn16y1FZK8+D92iwAHZTHzG4BbnCaTwIOq9Ed8O0QHy14JZCMmc3HX9d0Kd9DEJ2EKAZeJG0IvMdh+jxwXpm18hy1HzrNVwQOKLNe0AlmJtgeJMlz55hMHrTj6e3Z1O5wBO/R7FK72xDEBEIUAydHkTUj7cXFeS+3sqTcQc4YLyk56BsuwV/fdDXgozX5MT2fvxe13x2OwttiKgSxLCGKwURIStmFVRV1dxX+5sEbA++saN2gBfL6puckDKkrBcMbUNO0IHp3pNMkLREFHoJYgBDFYAIOADz3dLfmhbpLk+eonZUwJLpg9D+n469vugXw9zX40LWAmhG8zYKXOvINQSxIiGIwmvwp/EinedFUi/GYDTzntH27pE0rXj9okMT6plDPQ5Bnh/hI7mtjmNlDZOlIHpYQ9RDEEoQoBqN4O7CZw+4Z4KIqFzazx4CLvebA4VWuH7RCSnDN+yWtX9XCecNrT1qR9z6vagrdI4YgliREMVgM71P4+Wb25xrWT9l1Nl0AOqieH+Ovb7oM1aZgbENWOL4XTd8fjuA9pg1BrJoQxUDSNPzBKin3fW7M7Ff4P4BWJistF/Qp+d1xSmDWIXnvwiroakDNCN4d4pqSFpWeC0GsiBDFoecofO+nG8xsTo1+nJFg22QB6KAezgX+4rRdE9i7onW7GlAzwo34u8EsEvcQxAoJURxOJK0MfMJpXnUwzWguBJ5w2k4H9qjRl6BmzOxJ0u6jj6loac8O8WEze6Ci9ZIws8eB+U7zRZGmIYgVE6I4lHySrOloLx4FvlOnI2b2LHBBwhBvVGzQXVLqm24raecyi+Xl/zw1UtsKqBnBuzuNHWKdhCgOD/mRo7do9mwz86ZGlGEW/uOiJgpABzWS1zdNyWkt+xC0E1mkci/auj8cwSuI20maAtH+qTaiddTQ8C5gE4edyHrC1Y6Z3S7pOuDNDvNJZCkYn63VqSWZLOmQBtcbj2vNzFvhp+vMBHZx2u4t6Vgz8+bqjabrATUjeHeoy5MVL5gTglgjIYpDwdFOux81/OE7C58gQlYA+otm5g3OKMsU0oJ/6uIA/CXvus63gf8AXuWwnQIcBPxbwbW6HlAzwk3Ay/hOQncC5sSRac3E8engIul1wNuc5nUH04xmpHmwh6nAvjX6EtRMgfqmh0laNnWdhA4XC8zswdT5q8TMnsafp7kjxB1iI4QoDizH4LtLuR9/i6ZKMLOFpH1AHh0pGH1PSm/MdYC9CqyxMfBKh13bu8MRkhL0QxAbIkRxsJA0FdjfaX5mLlBNcybtF4AOGsLM7qX++qb9cn84gvcecTNJq4QgNkiI4kBxIPAKh91CssLbjWNm99N+AeigWVLqm+4iafvE+fvl/nAErx+TgO1CEBsmRLH/yRvselMtvtdWcnJOyt1lpQWgg1a4Gv+9GfhfxyN4d4g3J85bF3OAF522O4UgtkCIYt/zXnyJydB8MM1orgbudNpWXQA6aJi8vmlKBO++ktbyGOZBOFs7TO/PWzC1Tp73O9dpvmMIYkvkovj5tv0ICuFNtZgHXFunI73IPyDPTBhSZQHooB2+ib++6XLAp5y2b8DX4aIrx6UjeP3Z+f8B1VIFsWaGS0gAAAAASUVORK5CYII=",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "1.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

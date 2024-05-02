@@ -1,0 +1,343 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref"
+  },
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcDriver\"\r\nself.pixcHelper = createPixcHelper(pixc,self())\r\nself.driver = createPixcDriver()\r\npixc.log(self.driver)\r\npixc.log(self.pixcHelper)\r\n \r\nself.driver:setLogFunction(function (...) pixc.log(...) end)\r\nself.driver:setConnectionLifecycleCallback(self.pixcHelper.wrapCallback(self().connectionLifecycle))\r\n\r\nself.driver:createParser()\r\nself.ip = self.pixcHelper:getProperty(\"IP\",\"127.0.0.1\")\r\nself.port = tonumber(self.pixcHelper:getProperty(\"Port\",\"6451\"))\r\nself.typ = self.pixcHelper:getProperty(\"Connection Typ\",\"TCP\")\r\nself.version6 = self.pixcHelper:getProperty(\"Version 6\",\"true\")\r\nif(self.typ == \"UDP\")\r\nthen\r\n\tself.driver:set(\"udp\",self.ip,self.port);\r\nelse\r\n\tself.driver:set(\"tcp\",self.ip,self.port);\r\nend\r\nself.driver:connectAsync();\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.driver ~= nil then\r\n\tself.driver:close()\r\nend\r\nself.connectionLifecycle(false)\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "\r\nif result == true then\r\npixc.report(\"connected\")\r\nelse\r\npixc.report(\"disconnected\")\r\nend\r\n\r\npixc.log(\"connectionLifecycle: \" .. tostring(result))\r\n",
+   "kind": "func",
+   "name": "connectionLifecycle",
+   "params": [
+    {
+     "name": "result",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{\" .. lableName .. \".Text=\\\"\" .. msg .. \"\\\"}\")\r\nelse\r\n\tself.driver:send(\"(\" .. lableName .. \".Text=\" .. msg .. \")\")\r\nend\r\n",
+   "kind": "func",
+   "name": "Label",
+   "params": [
+    {
+     "name": "lableName",
+     "type": "string"
+    },
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "if self.driver == nil then\n\treturn\nend\nlocal customID = math.floor(math.abs(ID))\nif(self.version6 == \"true\")\nthen\t\n\tself.driver:send(\"{\" .. command .. \"}\")\nelse\n\tself.driver:send(\"(\" .. command .. \")\")\nend\n",
+   "kind": "func",
+   "name": "WDCommand",
+   "params": [
+    {
+     "name": "command",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "return {\"TCP\",\"UDP\"}",
+   "kind": "func",
+   "name": "getConnectionType",
+   "slotStyle": "hidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif value == nil then pixc.log(self() .. \" value was nil!\"); return end\r\nif type(value) ~= \"number\" then pixc.log(self() .. \" value was not a number!\"); return end\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDFaderValue(\" .. customID .. \",\" .. value .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDFaderValue,\" .. customID .. \" \" .. value .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "setValue",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "double"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif time == nil then pixc.log(self() .. \" time was nil!\"); return end\r\nif type(time) ~= \"number\" then pixc.log(self() .. \" time was not a number!\"); return end\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDFaderUp(\" .. customID .. \",\" .. time .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDFaderUp(,\" .. customID .. \" \" .. time .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "fadeUp",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "time",
+       "type": "double"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif time == nil then pixc.log(self() .. \" time was nil!\"); return end\r\nif type(time) ~= \"number\" then pixc.log(self() .. \" time was not a number!\"); return end\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDFaderDown(\" .. customID .. \",\" .. time .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDFaderDown(,\" .. customID .. \" \" .. time .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "fadeDown",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "time",
+       "type": "double"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Fader"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDCustomScriptClick(\" .. customID .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDCustomScriptClick,\" .. customID .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "CustomScriptClick",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDCustomScriptForcePressed(\" .. customID .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDCustomScriptForcePressed,\" .. customID .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "CustomScriptForcePressed",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDCustomScriptForceReleased(\" .. customID .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDCustomScriptForceReleased,\" .. customID .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "CustomScriptForceReleased",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Button"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif index == nil then pixc.log(self() .. \" index was nil!\"); return end\r\nif type(index) ~= \"number\" then pixc.log(self() .. \" index was not a number!\"); return end\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDDropDownListSetIndex(\" .. customID .. \",\" .. index .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDDropDownListSetIndex,\" .. customID .. \" \" .. index .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "setIndex",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "index",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif text == nil then text = \"\" end\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDDropDownListSetText(\" .. customID .. \",\" .. text .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDDropDownListSetText,\" .. customID .. \" \" .. text .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "setText",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "text",
+       "type": "string"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "DropDownList"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\nif column == nil or row == nil or value == nil then pixc.log(self() .. \" input was nil!\"); return end\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDListViewSetCell(\" .. customID .. \",\" .. column .. \",\" .. row .. \",\" .. value .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDListViewSetCell,\" .. customID .. \",\" .. column .. \",\" .. row .. \",\" .. value .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "setCell",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "column",
+       "type": "int"
+      },
+      {
+       "name": "row",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": ""
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "ListView"
+  },
+  {
+   "elems": [
+    {
+     "body": "self.Textbox.clear(ID)\r\nself.Textbox.appendText(ID,text)",
+     "kind": "func",
+     "name": "setText",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "text",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDTextboxAppend(\" .. customID .. \",\" .. text .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDTextboxAppend,\" .. customID .. \",\" .. text .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "appendText",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      },
+      {
+       "name": "text",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDTextboxClear(\" .. customID .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDTextboxClear,\" .. customID .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "clear",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "if self.driver == nil then\r\n\treturn\r\nend\r\nlocal customID = math.floor(math.abs(ID))\r\n\r\nif(self.version6 == \"true\")\r\nthen\t\r\n\tself.driver:send(\"{WDTextboxNewLine(\" .. customID .. \")}\")\r\nelse\r\n\tself.driver:send(\"(WDTextboxNewLine,\" .. customID .. \")\")\r\nend\r\n",
+     "kind": "func",
+     "name": "newLine",
+     "params": [
+      {
+       "name": "ID",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Textbox"
+  }
+ ],
+ "cjv": {
+  "h": 302.0,
+  "w": 381.0,
+  "x": 422.0,
+  "y": 75.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Drivers/Christie/WidgetDesigner.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4m6jJAucY23n1pBMqTAbGp74hGVHi5n3h+jWlSQwaIunCtkg9vhL55v/HwTE2psQdOrG53yeh0d64EZ8AJ/hgikYf5vo4KKDvR8SGoqvswDYWahK9SL4lAbFe0a+sGJYwN1wcOR/aum3eaRhJ6BT1dg=",
+ "name": "WidgetDesigner",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "TCP",
+   "name": "Connection Typ",
+   "optionsSourceFunc": "self.getConnectionType",
+   "typeHint": "string"
+  },
+  {
+   "cont": "10.4.0.97",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "12323",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "true",
+   "name": "Version 6",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "activate tcp or udp remoting in Connections Remoting",
+   "name": "Information",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

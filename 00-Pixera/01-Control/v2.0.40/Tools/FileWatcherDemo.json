@@ -1,0 +1,36 @@
+{
+ "api": [
+  {
+   "body": "if(self.hdl == nil) then\r\n\tself.hdl = pixc.getRoot().Utils.Filesystem.addWatcher(\"d:\\\\test\\\\\",function(err,dir,type,name,name1) pixc.log(err,dir,type,name,name1) end)\r\nend",
+   "kind": "func",
+   "name": "register"
+  },
+  {
+   "body": "if(self.hdl ~= nil) then\r\n\tself.hdl.remove()\r\n\tself.hdl = nil\r\nend",
+   "kind": "func",
+   "name": "remove"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 38.0,
+  "y": 303.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/REPOS/nui/data/control_library_standard/Tools/FileWatcherDemo.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4q5m2o/M+nJUvSwWaiLVG22/9qzM50IGy/iDw7+z67koxvo7GDySMB3rJBjibYsnvJJDGXrq0az0cHwtOUM6jVS/iraFJiuBUX3pE4Gg0nsTktjh0H1lcG2dCEWKEtWhGA==",
+ "name": "FileWatcherDemo",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

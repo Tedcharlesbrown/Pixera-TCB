@@ -1,0 +1,108 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.open = false\nself.ip = self.helper:getProperty(\"Broadcast IP\",\"255.255.255.255\")\nself.port = tonumber(self.helper:getProperty(\"Port Send\",\"6451\"))\nself.ipLocal = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.portLocal= tonumber(self.helper:getProperty(\"Port Receive\",\"6451\"))\nself.IsOpen(false, true)\nself.network:configureUdp(\n\tself.ip,\n\tself.port,\n\tself.ipLocal,\n\tself.portLocal,\n\tfunction (handle, data) self().receive(data) end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\nself.network:enableBroadcast();\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\nself.network:start()\n",
+   "functionName": "init()",
+   "kind": "fn",
+   "name": "init",
+   "path": "UdpBroadcast.init",
+   "signiture": "init()"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "functionName": "uninit()",
+   "kind": "fn",
+   "name": "uninit",
+   "path": "UdpBroadcast.uninit",
+   "signiture": "uninit()"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:send(msg)\r\n",
+   "functionName": "send(string msg)",
+   "kind": "fn",
+   "name": "send",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "path": "UdpBroadcast.send",
+   "signiture": "send(string msg)"
+  },
+  {
+   "body": "pixc.log(\"got data\")\r\npixc.log(msg)\r\nself.send(\"Echo: \"..msg)\r\n",
+   "functionName": "receive(string msg)",
+   "kind": "fn",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "path": "UdpBroadcast.receive",
+   "signiture": "receive(string msg)"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "functionName": "IsOpen(bool isOpen,bool doSet)",
+   "kind": "fn",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "UdpBroadcast.IsOpen",
+   "signiture": "IsOpen(bool isOpen,bool doSet)",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "canHaveExternalConnections": true,
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 435.0,
+  "y": 542.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Protocols/UdpBroadcast.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4pIAhFNTxazMliNmu/rqOOycigsTIJbiuzgW+4VRt+8Yo4wLklJCafSFWUWISpjJ+MSW4gmHoR8iApG2lWfwEs1r9t+jdPxupH5dm69fM+lG/rAVgK8Yst/ZcFHfYhgosg==",
+ "name": "UdpBroadcast",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "255.255.255.255",
+   "name": "Broadcast IP"
+  },
+  {
+   "cont": "6451",
+   "name": "Port Send"
+  },
+  {
+   "cont": "6451",
+   "name": "Port Receive"
+  },
+  {
+   "cont": "Default",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

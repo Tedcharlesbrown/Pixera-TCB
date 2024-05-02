@@ -1,0 +1,61 @@
+{
+  "api": [
+    {
+      "attKind": "standard",
+      "attReports": {
+        "0": ""
+      },
+      "body": "self.timelineName = pixcCommon.execAttribute(\"\", self.timelineName, timeline, doSet)\nreturn self.timelineName\n",
+      "kind": "func",
+      "name": "Timeline",
+      "params": [
+        {
+          "name": "timeline",
+          "type": "string"
+        }
+      ],
+      "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+      "body": "if self.timelineName == nil then\n\treturn\nend\n\nlocal timeline = Pixera.Timelines.Timeline.getInst(self.timelineName)\nif timeline == nil then\n\treturn\nend\n\nlocal cues = timeline.getCues()\nlocal cuesWithTime = {}\nfor _, cue in ipairs(cues) do\n\ttable.insert(cuesWithTime, {cue = cue, time = cue.getTime()})\nend\ntable.sort(cuesWithTime, function(a, b) return a.time < b.time end)\ncues = {}\nfor _, entry in ipairs(cuesWithTime) do\n\ttable.insert(cues, entry.cue)\nend\nself().dynamicRebuild(cues, \"getName\",\n\t\"cue_%s_applied\", \"apply\")\n",
+      "kind": "func",
+      "name": "refresh",
+      "slotStyle": "leftIn;rightNone"
+    }
+  ],
+  "cjv": {
+    "h": 200.0,
+    "w": 200.0,
+    "x": 524.0,
+    "y": 248.0
+  },
+  "definedExternally": false,
+  "hostInfo": {
+    "systemType": ""
+  },
+  "libraryExportPath": "C:/Somewhere/CueAppliedActions.json",
+  "license": "1GNTlyr7sewU1l3S6nhV4kRVqHPlCGYU02Z0TG5Glq9EUfZ/Tcg1APCykTemtfC/LMB36YME/DymNHZrCflyB3pVvqR0x9RFBZVn22JrJIAa/l669Xy3SRixVy8h+zt/CrrZcscon5HTzJz2ZQy7Yg==",
+  "name": "CueAppliedActions",
+  "properties": [
+    {
+      "cont": "Generates cue applied actions for every named cue.",
+      "name": "Description",
+      "readOnly": true,
+      "typeHint": "string"
+    },
+    {
+      "cont": "2",
+      "name": "Version",
+      "readOnly": true,
+      "typeHint": "number"
+    },
+    {
+      "cont": "AV Stumpfl GmbH (MM)",
+      "name": "Author",
+      "readOnly": true,
+      "typeHint": "string"
+    }
+  ],
+  "separateCode": false,
+  "uiUrl": ""
+}

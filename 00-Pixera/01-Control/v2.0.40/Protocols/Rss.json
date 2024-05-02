@@ -1,0 +1,106 @@
+{
+ "api": [
+  {
+   "body": "-- slotStyle:leftIn;rightOut\nrequire \"pixcHelper\"\nrequire \"pixcProtocolHttp\"\nself.xml2lua = require(\"xml2lua\")\nself.treehandler = require(\"xmlhandler.tree\")\nself.avCall = require(\"pixcCall\")\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.protocol = createPixcProtocolHttp()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\nself._intervalSec = self.helper:getProperty(\"Updateinterval In Seconds\",\"10\")\nself.url = self.helper:getProperty(\"Url\",\"https://lorem-rss.herokuapp.com/feed?unit=second\")\n\nif self.interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\n\tself.interval = nil\nend\n\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\n\tfunction()\n\tself.getRss()\n\t  end, (self._intervalSec * 1000.0))\nself.getRss()\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "-- slotStyle:leftIn;rightOut\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\n\r\nif self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\nself.xml2lua = nil;",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "-- slotStyle:leftNone;rightNone;triggerHidden\nlocal success, code, headerDict, content = self.protocol:httpGet(self.url, parameter)\nif(success) then\n\n\tlocal handler = self.treehandler:new()\n\tlocal parser = self.xml2lua.parser(handler)\n\tparser:parse(content)\n\tfor i, p in pairs(handler.root.rss.channel.item) do\n\t\tif(i == 1) then\n\t\t\tif p.title ~= nil then\n\t\t\t\tself.Titel(p.title)\n\t\t\telse\n\t\t\t\tself.Titel(\"\")\n\t\t\tend\n\t\t\tif p.description ~= nil then\n\t\t\t\tself.Description(p.description)\n\t\t\telse\n\t\t\t\tself.Description(\"\")\n\t\t\tend\n\t\t\tif p.link ~= nil then\n\t\t\t\tself.Link(p.link)\n\t\t\telse\n\t\t\t\tself.Link(\"\")\n\t\t\tend\n\t\t\tif p.category ~= nil then\n\t\t\t\tself.Category(p.category)\n\t\t\telse\n\t\t\t\tself.Category(\"\")\n\t\t\tend\n\t\tend\n\tend\n\txml2lua = nil\n\thandler = nil\n\tparser = nil\n\tcontent = nil;\n\tpixc.log(\"test\")\nend\n\n",
+   "kind": "func",
+   "name": "getRss",
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind: internal\n-- slotStyle:leftNone;rightOut;triggerHidden\npixc.callRefs(msg)",
+   "kind": "func",
+   "name": "Titel",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind: internal\n-- slotStyle:leftNone;rightOut;triggerHidden\npixc.callRefs(msg)",
+   "kind": "func",
+   "name": "Description",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind: internal\n-- slotStyle:leftNone;rightOut;triggerHidden\npixc.callRefs(msg)",
+   "kind": "func",
+   "name": "Link",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind: internal\n-- slotStyle:leftNone;rightOut;triggerHidden\npixc.callRefs(msg)",
+   "kind": "func",
+   "name": "Category",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 229.47368421052633,
+  "w": 567.3684210526317,
+  "x": 18.823529411764696,
+  "y": 18.755417956656345
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/Generic/Rss.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4oXHjynS4Mi+S/Yvntl5psDFLhB6n7NAATkYHMRP+C6nAflxG6398zzhLLcJRymINa+1cLhi/OFpnvR3RdOeI/Q=",
+ "name": "Rss",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "10",
+   "name": "Updateinterval In Seconds",
+   "typeHint": "number"
+  },
+  {
+   "cont": "https://www.sportschau.de//fussball/nationalmannschaft/fussballnationalmannschaftindex100~_type-rss.feed",
+   "name": "Url",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

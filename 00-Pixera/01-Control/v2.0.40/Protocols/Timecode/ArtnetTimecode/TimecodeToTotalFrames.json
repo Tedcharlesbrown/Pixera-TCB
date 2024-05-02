@@ -1,0 +1,42 @@
+{
+ "api": [
+  {
+   "attKind": "internal",
+   "body": "\r\n\r\nrequire \"pixcHelper\"\r\nif self.pixcHelper == nil then\r\n\tself.pixcHelper = createPixcHelper(pixc,self())\r\nend\r\n\r\nlocal timecodeTable = self.pixcHelper.stringSplit(val,\":\")\r\nlocal fps = 25\r\nlocal time = timecodeTable[1] * 3600 * fps + timecodeTable[2] * 60*fps + timecodeTable[3] * fps + timecodeTable[4]\r\npixc.log(time)\r\nself._setTimecode = pixcCommon.execAttribute(0, self._setTimecode, time, doSet)\r\nreturn self._setTimecode\r\n",
+   "kind": "func",
+   "name": "setTimecode",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 425.88235294117635,
+  "y": 415.99999999999994
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/ArtnetTimecode/TimecodeToTotalFrames.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4lizCvrirLROW092BjI+ydKyEyinxNAS5MoP0dxTw0DoIvThdG+7gPVcRUN2RHXjlYesRCuOR1tqPTW7bvqNVd2u7ToN9DwAcpIIXbaTDPDtbI/8n57MQpOH/XzNbqjjbQ==",
+ "name": "TimecodeToTotalFrames",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,389 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "functionName": "ref()",
+   "kind": "fn",
+   "name": "ref",
+   "path": "GrandMA3.ref",
+   "signiture": "ref()",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "\nrequire \"pixcHelper\"\nrequire \"pixcNetwork\"\nrequire \"pixcProtocolOsc\"\nif self.helper ~= nil then -- Init already called.\n\treturn\nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.protocol = createPixcProtocolOsc()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\nself.open = false\nself.ip = self.helper:getProperty(\"IP\",\"127.0.0.1\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"12123\"))\nself.ipLocal = self.helper:getProperty(\"IP Local, Adapter\",\"0.0.0.0\")\nself.prefix = self.helper:getProperty(\"Prefix\",\"\")\nself.syncOpacity = self.helper.toBool(self.helper:getProperty(\"Sync Opacity\",true))\nself.protocol:configure(\"packet\")\nself.protocol:create()\nself.addMatcher()\nself.network:enableBroadcast()\nself.network:enableReuseAddress()\nself.network:configureUdp(\n\tself.ip,\n\tself.port,\n\tself.ipLocal,\n\tself.port,\n\tfunction (handle, data)  end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\n\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isOpen) self().IsConnected(isOpen) end)\nself.network:setDestinationFunction(self.protocol:getInstance(),\"addInputData\")\nself.network:start()\n\n",
+   "functionName": "init()",
+   "kind": "fn",
+   "name": "init",
+   "path": "GrandMA3.init",
+   "signiture": "init()",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.helper = nil\r\nself.network:close()\r\nself.network = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\nself.IsConnected(false)\r\n",
+   "functionName": "uninit()",
+   "kind": "fn",
+   "name": "uninit",
+   "path": "GrandMA3.uninit",
+   "signiture": "uninit()",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "if self.protocol ~= nil then\r\n--generic OSC receive\r\nself.protocol:addOscMatcherWildcard(\"/\", true,function(...) self.Receive.receive(...) end)\r\n\r\n--Master_Controls\r\nself.protocol:addOscMatcher(\r\n\tself.prefix .. \"/13.12.2.1\", true,function(recCommand,recState,recValue) self().Receive.Master_Controls.GrandMaster(recCommand,recState,recValue)end)\r\nself.protocol:addOscMatcher(\r\n\tself.prefix .. \"/13.13.1.1.1\", true,function(recCommand,recState,recValue) self().Receive.Master_Controls.WorldMaster(recCommand,recState,recValue)end)\r\nself.protocol:addOscMatcher(\r\n\tself.prefix .. \"/13.18.1.1.1.1\", true,function(recCommand,recState,recValue)\r\n\tif recCommand == \"FaderHighlight\" then\r\n\t\tself().Receive.Master_Controls.GrandHighlight(recCommand,recState,recValue)\r\n\telseif recCommand == \"FaderLowlight\" then\r\n\t\tself().Receive.Master_Controls.GrandLowlight(recCommand,recState,recValue)\r\n\telseif recCommand == \"FaderSolo\" then\r\n\t\tself().Receive.Master_Controls.GrandSolo(recCommand,recState,recValue)\r\n\tend end)\r\nself.protocol:addOscMatcher(\r\n\tself.prefix .. \"/13.12.2.6\", true,function(recCommand,recState,recValue) self().Receive.Master_Controls.GrandRate(recCommand,recState,recValue)end)\r\nself.protocol:addOscMatcher(\r\n\tself.prefix .. \"/13.13.1.6.1\", true,function(recCommand,recState,recValue) self().Receive.Master_Controls.SelectedMaster(recCommand,recState,recValue)end)\r\nend\r\n",
+   "functionName": "addMatcher()",
+   "kind": "fn",
+   "name": "addMatcher",
+   "path": "GrandMA3.addMatcher",
+   "signiture": "addMatcher()",
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\r\nif result == true then\r\npixc.report(\"connected\")\r\nelse\r\npixc.report(\"disconnected\")\r\nend\r\n\r\n",
+   "functionName": "IsConnected(bool result)",
+   "kind": "fn",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "result",
+     "type": "bool"
+    }
+   ],
+   "path": "GrandMA3.IsConnected",
+   "signiture": "IsConnected(bool result)",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "attReports": {
+      "0": "w,true,true,true,true,true,true,true,true,true,true,true"
+     },
+     "body": "if self.protocol == nil or command == nil then\r\n\treturn\r\nend\r\nself.protocol:sendOscOverConnection(self.network:getSocket(),\"/cmd\", command)",
+     "functionName": "sendCMD(string command)",
+     "kind": "fn",
+     "name": "sendCMD",
+     "params": [
+      {
+       "name": "command",
+       "type": "string"
+      }
+     ],
+     "path": "GrandMA3.Send.sendCMD",
+     "signiture": "sendCMD(string command)",
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.protocol == nil or value == nil or PageNr == nil or ExecNr == nil then\r\n\treturn\r\nend\r\nlocal PageNrI = math.floor(math.abs(PageNr))\r\nlocal ExecNrI = math.floor(math.abs(ExecNr))\r\n\r\nself.protocol:sendOscOverConnection(\r\n\tself.network:getSocket(),\"/Page\" .. PageNrI .. \"/Fader\" .. ExecNrI   , value)\r\n\r\n",
+     "functionName": "ExecutorFaderAt(int value,int PageNr,int ExecNr)",
+     "kind": "fn",
+     "name": "ExecutorFaderAt",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "PageNr",
+       "type": "int"
+      },
+      {
+       "name": "ExecNr",
+       "type": "int"
+      }
+     ],
+     "path": "GrandMA3.Send.ExecutorFaderAt",
+     "signiture": "ExecutorFaderAt(int value,int PageNr,int ExecNr)",
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Send"
+  },
+  {
+   "elems": [
+    {
+     "body": "--filter prefix\r\nif self.prefix ~= \"\" then\r\n\tlocal prefix = self.helper.stringSplit(path,\"/\")[1]\r\n\tif self.prefix ~= prefix then \r\n\t\treturn \r\n\tend\r\nend\r\nlocal tab = {...}\r\n--pixc.log(table.unpack(tab))\r\nlocal tempString = nil\r\n--MasterFader Executor\r\nif tab[1] == \"FaderMaster\" then\r\n\tfindString = tab[4]\r\n\tif self.syncOpacity == false then\r\n\t\treturn\r\n\tend\r\nelseif tab[1] == \"Go+\" or tab[1] == \"Go-\" or tab[1] == \"Goto\" then\r\n\tfindString = tab[3]\r\nend\r\nif findString == nil then return end\r\nlocal t = findString:find(\"  \")\r\nfunction ltrim(s)\r\n  return s:match'^%s*(.*)'\r\nend\r\nlocal timelineDirty = ltrim(findString:sub(0,t-1))\r\nlocal cueDirty = ltrim(string.sub(findString,t))\r\nlocal timelineName = timelineDirty\r\nlocal info2 = self.helper.stringSplit(cueDirty,\" \")\r\nlocal cueName = info2[1]\r\nif timelineName ~= nil and cueName ~= nil then\r\n\r\n\tlocal handleTimeline = Pixera.Timelines.Timeline.getInst(timelineName)\r\n\tif handleTimeline == nil then return end \r\n\tif tab[1] == \"FaderMaster\" then --opacity\r\n\t--pixc.log(\"master:\" .. tonumber(tab[3]))\r\n\t\thandleTimeline.setOpacity(tonumber(tab[3])/100)\r\n\telseif tab[1] == \"Go+\" or tab[1] == \"Go-\" or tab[1] == \"Goto\" then --cueApply\r\n\t\tlocal handleCue = handleTimeline.getCueFromName(cueName)\r\n\t\tif handleCue == nil then return end\r\n\t\tlocal cueTime = handleCue.getTime()\r\n\t\tlocal timelineTime = handleTimeline.getCurrentTime()\r\n\t\tif tonumber(tab[2]) == 1 and (tab[1] == \"Go+\" or tab[1] == \"Go-\") then return end\r\n\t\tif cueTime ~= timelineTime then\r\n\t\t\thandleCue.apply()\r\n\t\tend\r\n\t\tif handleCue.getOperation ~= 1 then\r\n\t\t\thandleTimeline.play()\r\n\t\tend\r\n\tend\r\nend\r\n",
+     "functionName": "receive(string path,...)",
+     "kind": "fn",
+     "name": "receive",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      },
+      {
+       "name": "...",
+       "type": ""
+      }
+     ],
+     "path": "GrandMA3.Receive.receive",
+     "signiture": "receive(string path,...)",
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "elems": [
+      {
+       "attKind": "internal",
+       "body": "pixc.report(value)\r\npixc.callRefs(value)\r\n\r\n",
+       "functionName": "GrandMaster(string command,int state,int value)",
+       "kind": "fn",
+       "name": "GrandMaster",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.GrandMaster",
+       "signiture": "GrandMaster(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      },
+      {
+       "attKind": "internal",
+       "body": "pixc.report(value)\r\npixc.callRefs(value)\r\n",
+       "functionName": "WorldMaster(string command,int state,int value)",
+       "kind": "fn",
+       "name": "WorldMaster",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.WorldMaster",
+       "signiture": "WorldMaster(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      },
+      {
+       "attKind": "internal",
+       "body": "if command == \"FaderHighlight\" then\r\npixc.report(value)\r\npixc.callRefs(value)\r\nend\r\n",
+       "functionName": "GrandHighlight(string command,int state,int value)",
+       "kind": "fn",
+       "name": "GrandHighlight",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.GrandHighlight",
+       "signiture": "GrandHighlight(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      },
+      {
+       "attKind": "internal",
+       "body": "pixc.report(value)\r\nif command == \"FaderLowlight\" then\r\npixc.callRefs(value)\r\nend\r\n",
+       "functionName": "GrandLowlight(string command,int state,int value)",
+       "kind": "fn",
+       "name": "GrandLowlight",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.GrandLowlight",
+       "signiture": "GrandLowlight(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      },
+      {
+       "attKind": "internal",
+       "body": "pixc.report(value)\r\nif command == \"FaderSolo\" then\r\npixc.callRefs(value)\r\nend\r\n",
+       "functionName": "GrandSolo(string command,int state,int value)",
+       "kind": "fn",
+       "name": "GrandSolo",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.GrandSolo",
+       "signiture": "GrandSolo(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      },
+      {
+       "attKind": "internal",
+       "body": "pixc.report(value)\r\npixc.callRefs(value)\r\n",
+       "functionName": "GrandRate(string command,int state,int value)",
+       "kind": "fn",
+       "name": "GrandRate",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.GrandRate",
+       "signiture": "GrandRate(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      },
+      {
+       "attKind": "internal",
+       "body": "pixc.report(value)\n",
+       "functionName": "SelectedMaster(string command,int state,int value)",
+       "kind": "fn",
+       "name": "SelectedMaster",
+       "params": [
+        {
+         "name": "command",
+         "type": "string"
+        },
+        {
+         "name": "state",
+         "type": "int"
+        },
+        {
+         "name": "value",
+         "type": "int"
+        }
+       ],
+       "path": "GrandMA3.Receive.Master_Controls.SelectedMaster",
+       "signiture": "SelectedMaster(string command,int state,int value)",
+       "slotStyle": "leftNone;rightOut;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "Master_Controls"
+    }
+   ],
+   "kind": "ns",
+   "name": "Receive"
+  }
+ ],
+ "canHaveExternalConnections": true,
+ "cjv": {
+  "h": 589.0769230769231,
+  "w": 535.3846153846154,
+  "x": 217.8695652173913,
+  "y": 1005.6819221967963
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Drivers/MALighting/GrandMA3.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4ujtzIKezjj3bsROkIFbjCsztZyoD1XXU9v95b9E/M/W0oNLFh0QNKVU/sLSAQ+Pl76RKNh+SAyz8Bxf/5A7Jfv0NzMMChCnfylwuFI9WBzt6fK7VGXOGgWW2fuuutAgaIIq3VP6LRMl2HeBJ1txqP0=",
+ "name": "GrandMA3",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "",
+   "name": "Prefix"
+  },
+  {
+   "cont": "true",
+   "name": "Sync Opacity",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "127.0.0.1",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "8000",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "10.4.0.109",
+   "name": "IP Local, Adapter",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  },
+  {
+   "cont": "for receive addMatcher",
+   "name": "Information",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#MALighting-GrandMA3",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.5",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

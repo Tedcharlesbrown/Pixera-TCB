@@ -1,0 +1,65 @@
+{
+ "api": [
+  {
+   "body": "--CFv1\nlocal command = 'shutdown /s '\nif force then\n\tcommand = command .. '/f '\nend\ncommand = command .. '/t 0'\n\n--pixc.log(command)\nos.execute(command)\n",
+   "kind": "func",
+   "name": "shutdown",
+   "params": [
+    {
+     "name": "force",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "--\nlocal command = 'shutdown /r '\nif force then\n\tcommand = command .. '/f '\nend\ncommand = command .. '/t 0'\n\n--pixc.log(command)\nos.execute(command)\n",
+   "kind": "func",
+   "name": "reboot",
+   "params": [
+    {
+     "name": "force",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "--\nos.execute(command)\n",
+   "kind": "func",
+   "name": "execute",
+   "params": [
+    {
+     "name": "command",
+     "type": "string"
+    }
+   ]
+  }
+ ],
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "license": "1GNTlyr7sewU1l3S6nhV4lEpXnWrRRfX+ztrmjJbiJyN0EFeA3Rr1Nn+hbPX2l1vBFp8p1CQ+49oYhC3dGWPZgKR2drDYvGWdXSYr56M6v8=",
+ "name": "System",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "Enables System functionalities. Shutdown or reboot the system or run any command on this machine. (NOTE: Shutdown and Reboot will only work on Windows systems)",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

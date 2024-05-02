@@ -1,0 +1,225 @@
+{
+ "api": [
+  {
+   "body": "return self()\r\n",
+   "kind": "func",
+   "name": "ref"
+  },
+  {
+   "body": "if self.spNet ~= nil then \r\n\tself.uninit()\r\n\tUtils.Timer.sleep(300)\r\n\tself.init()\r\n\treturn \r\nend\r\nrequire \"pixcHelper\"\r\nrequire \"pixcProtocolSPNet\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.spNet = createPixcProtocolSPNet()\r\nself.multicastIp = self.helper:getProperty(\"MulticastIP\",\"237.37.37.37\")\r\nself.port = tonumber(self.helper:getProperty(\"Port\",\"37373\"))\r\nself.ipLocal =pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\r\nself.expectedFrequency = tonumber(self.helper:getProperty(\"Expected Frequency\",\"60\"))\r\nself.damping = tonumber(self.helper:getProperty(\"Damping\",\"0\"))\r\n--self.IsOpen(false, true)\r\nself.spNet:configure(\r\n\tself.port,\r\n\tself.multicastIp,\r\n\tself.ipLocal,\r\n\tself.expectedFrequency,\r\n\tself()..\"\",\r\n\tself.damping)\r\nself.spNet:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\nself.spNet:start()\r\n\r\nlocal success, instance = pcall(function() return pixc.getRoot().Utils.Timer.setInterval(function() self.RuntimeConfig.updateLearningState(); self.getFreq() end, \"2s\") end)\r\nif success then\r\n\tself.intervalHandle = instance\r\nend\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.spNet == nil then return end\r\nself.spNet:close()\r\nself.spNet = nil\r\nself.helper = nil\r\nif self.intervalHandle ~= nil then\r\nlocal success = pcall(function() return pixc.getRoot().Utils.Timer.clearInterval(self.intervalHandle) end)\r\n\tself.intervalHandle = nil\r\nend\r\nif self.getDataTimer ~= nil then\r\nlocal success = pcall(function() return pixc.getRoot().Utils.Timer.clearInterval(self.getDataTimer) end)\r\n\tself.getDataTimer = nil\r\nend\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "if self.spNet == nil then return end\r\npixc.report(self.spNet:getFreq())",
+   "kind": "func",
+   "name": "getFreq",
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\r\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.spNet == nil then return end\r\nself.spNet:setObjectStructureLearnMode(true)\r\nself.RuntimeConfig.learningState(true)\r\n",
+     "kind": "func",
+     "name": "enableObjectLearning"
+    },
+    {
+     "body": "if self.spNet == nil then return end\r\nself.spNet:setObjectStructureLearnMode(false)\r\nself.RuntimeConfig.learningState(false)\r\n",
+     "kind": "func",
+     "name": "disableObjectLearning"
+    },
+    {
+     "body": "if self.spNet == nil then return end\r\nself.spNet:resetObjectStructure()\r\nself.RuntimeConfig.updateData()\r\n",
+     "kind": "func",
+     "name": "resetLearnedObject"
+    },
+    {
+     "body": "self().dynamicRebuildFromDescriptions(self.RefreshFunctions.getDescription(), \"\", \"(.*)\")\r\n",
+     "kind": "func",
+     "name": "regenerateActionsFromObjects"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "learningState",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "void"
+     },
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "objectData",
+     "params": [
+      {
+       "name": "data",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "void"
+     },
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "if self.spNet == nil then return end\nlocal state = self.spNet:getObjectStructureLearnMode()\nif state == nil then\n\tself.RuntimeConfig.learningState(false)\nelse\n\tself.RuntimeConfig.learningState(state)\nend\nif state == true and self.getDataTimer == nil then\n\tlocal success, instance = pcall(function() return pixc.getRoot().Utils.Timer.setInterval(function() self.RuntimeConfig.updateData(); end, \"1s\") end)\n\tif success then\n\t\t self.getDataTimer = instance\n\tend\nelse\n\tif self.getDataTimer ~= nil then\n\t\tlocal success = pcall(function() return pixc.getRoot().Utils.Timer.clearInterval(self.getDataTimer) end)\n\t\tself.getDataTimer = nil\n\tend\nend\r\n",
+     "kind": "func",
+     "name": "updateLearningState",
+     "slotStyle": "hidden"
+    },
+    {
+     "body": "if self.spNet == nil then return end\nlocal data = self.spNet:getObjectStructureStringArray()\nif data == nil or #data == 0 then\n\tself.RuntimeConfig.objectData(\"\")\n\t\nelse\n\tself.RuntimeConfig.objectData(data)\nend\r\n",
+     "kind": "func",
+     "name": "updateData",
+     "slotStyle": "hidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "RuntimeConfig"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.spNet == nil then return end\r\nlocal dsc = self.spNet:getJsonDescription()\r\nreturn dsc\r\n",
+     "kind": "func",
+     "name": "getDescription"
+    }
+   ],
+   "kind": "ns",
+   "name": "RefreshFunctions"
+  },
+  {
+   "kind": "ns",
+   "name": "Movable"
+  },
+  {
+   "kind": "ns",
+   "name": "Camera"
+  }
+ ],
+ "cjv": {
+  "h": 383.0,
+  "w": 454.0,
+  "x": 291.0,
+  "y": 76.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Drivers/StagePrecision/SPNet.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4oUQMrXscfYIGHymvbPP3lsbGYu4IrIj7QeSzcNq0fzyTyT8Ji+c4BDLQ61zbWqvJsYOvXmqhhjCRuQRWLERvYRLrlsZz4af6ZJrxlUSe5L1WRnUUKKGaKV0N+oqUwm99w==",
+ "name": "SPNet",
+ "properties": [
+  {
+   "cont": "Supports camera and moveable types from StagePrecision.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "237.37.37.37",
+   "name": "MulticastIP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "37373",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "10.4.0.60",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  },
+  {
+   "cont": "60",
+   "name": "Expected Frequency",
+   "typeHint": "number"
+  },
+  {
+   "cont": "15",
+   "name": "Damping",
+   "typeHint": "number"
+  },
+  {
+   "area": "UI",
+   "cont": "false",
+   "name": "UI Is Editable"
+  },
+  {
+   "area": "UI",
+   "cont": "",
+   "name": "Auth Source"
+  },
+  {
+   "area": "UI",
+   "cont": "",
+   "name": "Permissions"
+  },
+  {
+   "cont": "1.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "{\"isInEditMode\":false,\"pages\":[{\"name\":\"Page1\",\"bgColor\":null,\"components\":[{\"componentId\":\"Component_1628661966807_63797\",\"label\":\"\",\"type\":\"UbControlList\",\"bgColor\":\"#555555\",\"dims\":{\"x\":40,\"y\":180,\"width\":390,\"height\":250},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"data\":{\"indicatorPos\":\"none\",\"values\":[],\"linkedAction\":[{\"kind\":\"interface\",\"name\":\"SPNet\"},{\"kind\":\"ns\",\"name\":\"RuntimeConfig\"},{\"kind\":\"func\",\"name\":\"objectData\",\"params\":[{\"type\":\"string\",\"name\":\"data\"}]}]}},{\"componentId\":\"Component_1628665865879_49471\",\"label\":\"Start Learning\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":83,\"y\":110,\"width\":110,\"height\":50},\"invoc\":[{\"kind\":\"interface\",\"name\":\"SPNet\"},{\"kind\":\"ns\",\"name\":\"RuntimeConfig\"},{\"kind\":\"func\",\"name\":\"enableObjectLearning\"}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"data\":{\"linkedAction\":[],\"toggle\":false}},{\"componentId\":\"Component_1628667002095_4768\",\"label\":\"\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":40,\"y\":120,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"background-color: rgb(73, 73, 73);\\n&.active, button.active, button:active{\\n    background-color:green;\\n}\",\"styleCache\":\"#ComponentId_Component_1628667002095_4768 > .ComponentId_Component_1628667002095_4768 {\\n  background-color: #494949; }\\n  #ComponentId_Component_1628667002095_4768 > .ComponentId_Component_1628667002095_4768.active, #ComponentId_Component_1628667002095_4768 > .ComponentId_Component_1628667002095_4768 button.active, #ComponentId_Component_1628667002095_4768 > .ComponentId_Component_1628667002095_4768 button:active {\\n    background-color: green; }\\n\",\"styleClasses\":[\"\"],\"data\":{\"linkedAction\":[{\"kind\":\"interface\",\"name\":\"SPNet\"},{\"kind\":\"ns\",\"name\":\"RuntimeConfig\"},{\"kind\":\"func\",\"name\":\"learningState\",\"params\":[{\"type\":\"bool\",\"name\":\"state\"}]}],\"toggle\":true}},{\"componentId\":\"Component_1628667120484_23487\",\"label\":\"Stop Learning\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":200,\"y\":110,\"width\":110,\"height\":50},\"invoc\":[{\"kind\":\"interface\",\"name\":\"SPNet\"},{\"kind\":\"ns\",\"name\":\"RuntimeConfig\"},{\"kind\":\"func\",\"name\":\"disableObjectLearning\"}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"data\":{\"linkedAction\":[],\"toggle\":false}},{\"componentId\":\"Component_1628667164094_18674\",\"label\":\"Update Actions from Learned Data\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":100,\"y\":450,\"width\":270,\"height\":50},\"invoc\":[{\"kind\":\"interface\",\"name\":\"SPNet\"},{\"kind\":\"ns\",\"name\":\"RuntimeConfig\"},{\"kind\":\"func\",\"name\":\"regenerateActionsFromObjects\"}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"data\":{\"linkedAction\":[],\"toggle\":false}},{\"componentId\":\"Component_1628667214881_88993\",\"label\":\"Reset Learned Data\",\"type\":\"UbControlButton\",\"bgColor\":\"#555555\",\"dims\":{\"x\":320,\"y\":110,\"width\":110,\"height\":50},\"invoc\":[{\"kind\":\"interface\",\"name\":\"SPNet\"},{\"kind\":\"ns\",\"name\":\"RuntimeConfig\"},{\"kind\":\"func\",\"name\":\"resetLearnedObject\"}],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"data\":{\"linkedAction\":[],\"toggle\":false}}],\"styleClasses\":[\"\"]}],\"settings\":{}}",
+   "name": "uib"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}
