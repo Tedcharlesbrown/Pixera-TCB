@@ -5,11 +5,14 @@
 # python setup.py sdist bdist_wheel
 # twine upload dist/*
 
+# twine upload dist/* --verbose --repository-url https://upload.pypi.org/legacy/ --username __token__ --password %PYPI_API_TOKEN%
+
+
 from setuptools import setup, find_packages
 
 setup(
     name='PixeraPy',
-    version='0.367.2',
+    version='0.381.1',
     packages=find_packages(),
     description='Python package for AVStumpfl, Pixera API',
     long_description=open('README.md').read(),
