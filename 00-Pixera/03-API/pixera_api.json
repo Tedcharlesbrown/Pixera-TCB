@@ -1834,6 +1834,17 @@
     {
      "methods": [
       {
+       "deliver": "Pixera.LiveSystems.LiveSystem",
+       "name": "ref",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "handle",
+         "type": "handle"
+        }
+       ]
+      },
+      {
        "name": "getName",
        "params": [],
        "returnValues": [
@@ -9312,6 +9323,7 @@
        ]
       },
       {
+       "deliver": "Pixera.Timelines.Cue",
        "name": "getJumpGoalCue",
        "params": [],
        "returnValues": [
@@ -9523,6 +9535,31 @@
         {
          "name": "bool",
          "type": "bool"
+        }
+       ]
+      },
+      {
+       "name": "isActive",
+       "params": [],
+       "returnValues": [
+        {
+         "name": "bool",
+         "type": "bool"
+        }
+       ]
+      },
+      {
+       "name": "setActivity",
+       "params": [
+        {
+         "name": "idState",
+         "type": "int"
+        }
+       ],
+       "returnValues": [
+        {
+         "name": "null",
+         "type": "null"
         }
        ]
       },

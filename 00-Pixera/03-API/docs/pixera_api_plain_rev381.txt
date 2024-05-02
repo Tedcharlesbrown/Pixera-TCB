@@ -1,4 +1,4 @@
-﻿This documentation describes revision 367 of the API.
+﻿This documentation describes revision 381 of the API.
 
 namespace Pixera
 {
@@ -149,6 +149,7 @@ namespace LiveSystems
 
    class LiveSystem
    {
+      handle ref();
       string getName();
       string getIp();
       string getState();
@@ -832,6 +833,8 @@ namespace Timelines
       double getTimelineTriggerApplyTime();
       boolean setTimelineTriggerApplyTime(double time);
       boolean setTimelineTriggerApplyCue(string goalCueLabel);
+      boolean isActive();
+      null setActivity(int idState);
       double getCountdown();
       string getCountdownHMSF();
       null setCommand(string conveyorName,string commandData);

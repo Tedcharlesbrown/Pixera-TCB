@@ -736,6 +736,12 @@ class API:
 
     class LiveSystem:
         @staticmethod
+        def ref(handle: handle) -> handle:
+            method = "Pixera.LiveSystems.LiveSystem.ref"
+            params = ["handle"]
+            return [method, params, [handle]]
+
+        @staticmethod
         def getName(handle: handle) -> str:
             method = "Pixera.LiveSystems.LiveSystem.getName"
             params = ["handle"]
@@ -3986,6 +3992,18 @@ class API:
             method = "Pixera.Timelines.Cue.setTimelineTriggerApplyCue"
             params = ["handle", "goalCueLabel"]
             return [method, params, [handle, goalCueLabel]]
+
+        @staticmethod
+        def isActive(handle: handle) -> bool:
+            method = "Pixera.Timelines.Cue.isActive"
+            params = ["handle"]
+            return [method, params, [handle]]
+
+        @staticmethod
+        def setActivity(handle: handle, idState: int) -> None:
+            method = "Pixera.Timelines.Cue.setActivity"
+            params = ["handle", "idState"]
+            return [method, params, [handle, idState]]
 
         @staticmethod
         def getCountdown(handle: handle) -> float:

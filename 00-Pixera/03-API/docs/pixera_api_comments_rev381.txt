@@ -1,4 +1,4 @@
-﻿This documentation describes revision 367 of the API.
+﻿This documentation describes revision 381 of the API.
 
 // All class methods imply a handle parameter in the JSON params object (see examples).
 namespace Pixera
@@ -114,6 +114,8 @@ namespace Compound
    null stopFirstTimeline();
 
    // Sets the opacity of the timeline identified by its name.
+   // timelineName: name of timeline
+   // opacity: opacity value between 0.0 and 1.0
    null setOpacityOnTimeline(string timelineName,double opacity);
 
    // Returns the opacity of the timeline identified by its name.
@@ -402,6 +404,9 @@ namespace LiveSystems
 
    class LiveSystem
    {
+      // Pixera Control self-reference function.
+      handle ref();
+
       // Get hardware name of a specified live system.
       string getName();
 
@@ -1475,6 +1480,7 @@ namespace Timelines
       double getSpeedFactor();
 
       // Sets the opacity value.
+      // value: opacity value between 0.0 and 1.0
       null setOpacity(double value);
 
       // Returns the opacity value.
@@ -2078,6 +2084,13 @@ namespace Timelines
       // that something went wrong and the cue is not changed.
       // The trigger time mode of this cue is automatically set to 'Cue'.
       boolean setTimelineTriggerApplyCue(string goalCueLabel);
+
+      // Returns whether the cue will be applied when the nowpointer passes it.
+      boolean isActive();
+
+      // Sets the acitvity state for the cue.
+      // idState: 'Active' = 1, 'Ignore' = 2, 'Ignore Once' = 3
+      null setActivity(int idState);
 
       // Returns the countdown time to this cue in frames.
       // Returns zero when this cue was already passed.

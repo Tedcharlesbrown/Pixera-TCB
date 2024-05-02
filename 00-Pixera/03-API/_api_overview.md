@@ -177,6 +177,7 @@ Syntax: *Pixera.LiveSystems.MultiUserMember.(method)*
 Syntax: *Pixera.LiveSystems.LiveSystem.(method)*
 | Class Name | Method Name | Parameters | Return Values |
 | --- | --- | --- | --- |
+| `LiveSystem` | `ref` | `handle` : object<br> | `handle`<br> |
 | `LiveSystem` | `getName` | `handle` : object<br> | `string`<br> |
 | `LiveSystem` | `getIp` | `handle` : object<br> | `string`<br> |
 | `LiveSystem` | `getState` | `handle` : object<br> | `string`<br> |
@@ -822,6 +823,8 @@ Syntax: *Pixera.Timelines.Cue.(method)*
 | `Cue` | `getTimelineTriggerApplyTime` | `handle` : object<br> | `double`<br> |
 | `Cue` | `setTimelineTriggerApplyTime` | `handle` : object<br>`time` : double <br> | `bool`<br> |
 | `Cue` | `setTimelineTriggerApplyCue` | `handle` : object<br>`goalCueLabel` : string <br> | `bool`<br> |
+| `Cue` | `isActive` | `handle` : object<br> | `bool`<br> |
+| `Cue` | `setActivity` | `handle` : object<br>`idState` : int <br> | `null`<br> |
 | `Cue` | `getCountdown` | `handle` : object<br> | `double`<br> |
 | `Cue` | `getCountdownHMSF` | `handle` : object<br> | `string`<br> |
 | `Cue` | `setCommand` | `handle` : object<br>`conveyorName` : string <br>`commandData` : string <br> | `null`<br> |
