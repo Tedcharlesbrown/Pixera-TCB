@@ -145,12 +145,6 @@ class API:
         return [method, params, [deviceName, jsonDescription, folder]]
 
     @staticmethod
-    def resetSelectiveRenderingFrameCounters() -> None:
-        method = "Pixera.Utility.resetSelectiveRenderingFrameCounters"
-        params = []
-        return [method, params, []]
-
-    @staticmethod
     def getConveyor(conveyorName: str) -> handle:
         method = "Pixera.Network.getConveyor"
         params = ["conveyorName"]
@@ -614,24 +608,6 @@ class API:
         return [method, params, []]
 
     @staticmethod
-    def toggleOutputIdentification() -> None:
-        method = "Pixera.Session.toggleOutputIdentification"
-        params = []
-        return [method, params, []]
-
-    @staticmethod
-    def toggleOnScreenStats() -> None:
-        method = "Pixera.Session.toggleOnScreenStats"
-        params = []
-        return [method, params, []]
-
-    @staticmethod
-    def setAllAssignedOutputs(active: bool) -> None:
-        method = "Pixera.Session.setAllAssignedOutputs"
-        params = ["active"]
-        return [method, params, [active]]
-
-    @staticmethod
     def getLiveSystems() -> List[handle]:
         method = "Pixera.LiveSystems.getLiveSystems"
         params = []
@@ -844,14 +820,8 @@ class API:
             return [method, params, [handle, name]]
 
         @staticmethod
-        def applyUsagePreset(handle: handle) -> None:
+        def applyUsagePreset(handle: handle, name: str) -> None:
             method = "Pixera.LiveSystems.LiveSystem.applyUsagePreset"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def applyUsagePresetWithName(handle: handle, name: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.applyUsagePresetWithName"
             params = ["handle", "name"]
             return [method, params, [handle, name]]
 
@@ -864,54 +834,6 @@ class API:
         @staticmethod
         def importUsagePreset(handle: handle, path: str) -> None:
             method = "Pixera.LiveSystems.LiveSystem.importUsagePreset"
-            params = ["handle", "path"]
-            return [method, params, [handle, path]]
-
-        @staticmethod
-        def clearExportedMappings(handle: handle, path: str, onlyServicePath: bool) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.clearExportedMappings"
-            params = ["handle", "path", "onlyServicePath"]
-            return [method, params, [handle, path, onlyServicePath]]
-
-        @staticmethod
-        def exportMappings(handle: handle, path: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.exportMappings"
-            params = ["handle", "path"]
-            return [method, params, [handle, path]]
-
-        @staticmethod
-        def importMappings(handle: handle, path: str, outputIdPathMapStr: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.importMappings"
-            params = ["handle", "path", "outputIdPathMapStr"]
-            return [method, params, [handle, path, outputIdPathMapStr]]
-
-        @staticmethod
-        def exportMappingsDirectly(handle: handle, path: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.exportMappingsDirectly"
-            params = ["handle", "path"]
-            return [method, params, [handle, path]]
-
-        @staticmethod
-        def importMappingsDirectly(handle: handle, path: str, outputIdPathMapStr: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.importMappingsDirectly"
-            params = ["handle", "path", "outputIdPathMapStr"]
-            return [method, params, [handle, path, outputIdPathMapStr]]
-
-        @staticmethod
-        def exportMappingsToLiveSystemPath(handle: handle, parentPath: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.exportMappingsToLiveSystemPath"
-            params = ["handle", "parentPath"]
-            return [method, params, [handle, parentPath]]
-
-        @staticmethod
-        def importMappingsFromLiveSystemPath(handle: handle, parentPath: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.importMappingsFromLiveSystemPath"
-            params = ["handle", "parentPath"]
-            return [method, params, [handle, parentPath]]
-
-        @staticmethod
-        def clearExportedMappingsAtLiveSystemPath(handle: handle, path: str) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.clearExportedMappingsAtLiveSystemPath"
             params = ["handle", "path"]
             return [method, params, [handle, path]]
 
@@ -1030,12 +952,6 @@ class API:
             return [method, params, [handle, applyControlCommand]]
 
         @staticmethod
-        def deleteUnusedFilesFromCache(handle: handle) -> None:
-            method = "Pixera.LiveSystems.LiveSystem.deleteUnusedFilesFromCache"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
         def getStructureJson(handle: handle) -> str:
             method = "Pixera.LiveSystems.LiveSystem.getStructureJson"
             params = ["handle"]
@@ -1112,18 +1028,6 @@ class API:
         @staticmethod
         def getAllOutputs(handle: handle) -> List[handle]:
             method = "Pixera.LiveSystems.GraphicsDevice.getAllOutputs"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def getInst(handle: handle, instancePath: str) -> handle:
-            method = "Pixera.LiveSystems.GraphicsDevice.getInst"
-            params = ["handle", "instancePath"]
-            return [method, params, [handle, instancePath]]
-
-        @staticmethod
-        def getInstancePath(handle: handle) -> str:
-            method = "Pixera.LiveSystems.GraphicsDevice.getInstancePath"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -1206,18 +1110,6 @@ class API:
             params = ["handle"]
             return [method, params, [handle]]
 
-        @staticmethod
-        def getInst(handle: handle, instancePath: str) -> handle:
-            method = "Pixera.LiveSystems.Output.getInst"
-            params = ["handle", "instancePath"]
-            return [method, params, [handle, instancePath]]
-
-        @staticmethod
-        def getInstancePath(handle: handle) -> str:
-            method = "Pixera.LiveSystems.Output.getInstancePath"
-            params = ["handle"]
-            return [method, params, [handle]]
-
     class VideoStream:
         @staticmethod
         def getName(handle: handle) -> str:
@@ -1234,36 +1126,6 @@ class API:
         @staticmethod
         def getActive(handle: handle) -> bool:
             method = "Pixera.LiveSystems.VideoStream.getActive"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def getIpAddress(handle: handle) -> str:
-            method = "Pixera.LiveSystems.VideoStream.getIpAddress"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setIpAddress(handle: handle, ipAddress: str) -> None:
-            method = "Pixera.LiveSystems.VideoStream.setIpAddress"
-            params = ["handle", "ipAddress"]
-            return [method, params, [handle, ipAddress]]
-
-        @staticmethod
-        def getDeviceType(handle: handle) -> str:
-            method = "Pixera.LiveSystems.VideoStream.getDeviceType"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def getInst(handle: handle, instancePath: str) -> handle:
-            method = "Pixera.LiveSystems.VideoStream.getInst"
-            params = ["handle", "instancePath"]
-            return [method, params, [handle, instancePath]]
-
-        @staticmethod
-        def getInstancePath(handle: handle) -> str:
-            method = "Pixera.LiveSystems.VideoStream.getInstancePath"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -1302,18 +1164,6 @@ class API:
         method = "Pixera.Settings.SettingsTranscoding.addOrChangeTranscodingPreset"
         params = ["preset"]
         return [method, params, [preset]]
-
-    @staticmethod
-    def setAutoDistributionRule(rule: int) -> None:
-        method = "Pixera.Settings.SettingsResourceDistribution.setAutoDistributionRule"
-        params = ["rule"]
-        return [method, params, [rule]]
-
-    @staticmethod
-    def getAutoDistributionRule() -> int:
-        method = "Pixera.Settings.SettingsResourceDistribution.getAutoDistributionRule"
-        params = []
-        return [method, params, []]
 
     @staticmethod
     def getScreenWithName(name: str) -> handle:
@@ -1419,18 +1269,6 @@ class API:
             return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, xScale, yScale, zScale]]
 
         @staticmethod
-        def getPerspectives(handle: handle) -> List[handle]:
-            method = "Pixera.Screens.Screen.getPerspectives"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def getPerspectiveForScreenGroup(handle: handle, screenGroupName: str) -> handle:
-            method = "Pixera.Screens.Screen.getPerspectiveForScreenGroup"
-            params = ["handle", "screenGroupName"]
-            return [method, params, [handle, screenGroupName]]
-
-        @staticmethod
         def getPersepective(handle: handle) -> handle:
             method = "Pixera.Screens.Screen.getPersepective"
             params = ["handle"]
@@ -1519,18 +1357,6 @@ class API:
             method = "Pixera.Screens.Screen.editCalibration"
             params = ["handle", "diff"]
             return [method, params, [handle, diff]]
-
-        @staticmethod
-        def finshedCalibration(handle: handle, finished: bool) -> bool:
-            method = "Pixera.Screens.Screen.finshedCalibration"
-            params = ["handle", "finished"]
-            return [method, params, [handle, finished]]
-
-        @staticmethod
-        def distributeLoadedCalibrationAndReload(handle: handle) -> None:
-            method = "Pixera.Screens.Screen.distributeLoadedCalibrationAndReload"
-            params = ["handle"]
-            return [method, params, [handle]]
 
         @staticmethod
         def resetWarpFile(handle: handle, diff: str) -> None:
@@ -1696,12 +1522,6 @@ class API:
             return [method, params, [handle, xRot, yRot, zRot]]
 
         @staticmethod
-        def setRotationQuat(handle: handle, xQuat: Optional[float], yQuat: Optional[float], zQuat: Optional[float], wQuat: Optional[float]) -> None:
-            method = "Pixera.Screens.StudioCamera.setRotationQuat"
-            params = ["handle", "xQuat", "yQuat", "zQuat", "wQuat"]
-            return [method, params, [handle, xQuat, yQuat, zQuat, wQuat]]
-
-        @staticmethod
         def getRotation(handle: handle, xPos: float, yPos: float, zPos: float) -> List[float]:
             method = "Pixera.Screens.StudioCamera.getRotation"
             params = ["handle", "xPos", "yPos", "zPos"]
@@ -1714,34 +1534,16 @@ class API:
             return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio]]
 
         @staticmethod
-        def setTransformationQuat(handle: handle, xPos: Optional[float], yPos: Optional[float], zPos: Optional[float], xQuat: Optional[float], yQuat: Optional[float], zQuat: Optional[float], wQuat: Optional[float], fov: Optional[float], aspectRatio: Optional[float]) -> None:
-            method = "Pixera.Screens.StudioCamera.setTransformationQuat"
-            params = ["handle", "xPos", "yPos", "zPos", "xQuat", "yQuat", "zQuat", "wQuat", "fov", "aspectRatio"]
-            return [method, params, [handle, xPos, yPos, zPos, xQuat, yQuat, zQuat, wQuat, fov, aspectRatio]]
-
-        @staticmethod
         def setTransformationAndLensProps(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, iris: float, k1: float, k2: float, centerX: float, centerY: float, panelWidth: float) -> None:
             method = "Pixera.Screens.StudioCamera.setTransformationAndLensProps"
             params = ["handle", "xPos", "yPos", "zPos", "xRot", "yRot", "zRot", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "iris", "k1", "k2", "centerX", "centerY", "panelWidth"]
             return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, nearClip, farClip, aperture, focus, iris, k1, k2, centerX, centerY, panelWidth]]
 
         @staticmethod
-        def setTransformationAndLensPropsQuat(handle: handle, xPos: float, yPos: float, zPos: float, xQuat: float, yQuat: float, zQuat: float, wQuat: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, iris: float, k1: float, k2: float, centerX: float, centerY: float, panelWidth: float) -> None:
-            method = "Pixera.Screens.StudioCamera.setTransformationAndLensPropsQuat"
-            params = ["handle", "xPos", "yPos", "zPos", "xQuat", "yQuat", "zQuat", "wQuat", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "iris", "k1", "k2", "centerX", "centerY", "panelWidth"]
-            return [method, params, [handle, xPos, yPos, zPos, xQuat, yQuat, zQuat, wQuat, fov, aspectRatio, nearClip, farClip, aperture, focus, iris, k1, k2, centerX, centerY, panelWidth]]
-
-        @staticmethod
-        def setTransformationAndLensPropsExt(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, focalDistance: float, zoom: float, iris: float, k1: float, k2: float, k3: float, p1: float, p2: float, centerX: float, centerY: float, panelWidth: float, overscan: float, focalLength: Optional[float], focalLengthDistorted: Optional[float]) -> None:
+        def setTransformationAndLensPropsExt(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, focalDistance: float, zoom: float, iris: float, k1: float, k2: float, k3: float, p1: float, p2: float, centerX: float, centerY: float, panelWidth: float, overscan: float) -> None:
             method = "Pixera.Screens.StudioCamera.setTransformationAndLensPropsExt"
-            params = ["handle", "xPos", "yPos", "zPos", "xRot", "yRot", "zRot", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "focalDistance", "zoom", "iris", "k1", "k2", "k3", "p1", "p2", "centerX", "centerY", "panelWidth", "overscan", "focalLength", "focalLengthDistorted"]
-            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, nearClip, farClip, aperture, focus, focalDistance, zoom, iris, k1, k2, k3, p1, p2, centerX, centerY, panelWidth, overscan, focalLength, focalLengthDistorted]]
-
-        @staticmethod
-        def setTransformationAndLensPropsExtQuat(handle: handle, xPos: float, yPos: float, zPos: float, xQuat: float, yQuat: float, zQuat: float, wQuat: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, focalDistance: float, zoom: float, iris: float, k1: float, k2: float, k3: float, p1: float, p2: float, centerX: float, centerY: float, panelWidth: float, overscan: float, focalLength: Optional[float], focalLengthDistorted: Optional[float]) -> None:
-            method = "Pixera.Screens.StudioCamera.setTransformationAndLensPropsExtQuat"
-            params = ["handle", "xPos", "yPos", "zPos", "xQuat", "yQuat", "zQuat", "wQuat", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "focalDistance", "zoom", "iris", "k1", "k2", "k3", "p1", "p2", "centerX", "centerY", "panelWidth", "overscan", "focalLength", "focalLengthDistorted"]
-            return [method, params, [handle, xPos, yPos, zPos, xQuat, yQuat, zQuat, wQuat, fov, aspectRatio, nearClip, farClip, aperture, focus, focalDistance, zoom, iris, k1, k2, k3, p1, p2, centerX, centerY, panelWidth, overscan, focalLength, focalLengthDistorted]]
+            params = ["handle", "xPos", "yPos", "zPos", "xRot", "yRot", "zRot", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "focalDistance", "zoom", "iris", "k1", "k2", "k3", "p1", "p2", "centerX", "centerY", "panelWidth", "overscan"]
+            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, nearClip, farClip, aperture, focus, focalDistance, zoom, iris, k1, k2, k3, p1, p2, centerX, centerY, panelWidth, overscan]]
 
         @staticmethod
         def setTrackingInputPause(handle: handle, pause: bool) -> None:
@@ -1776,24 +1578,6 @@ class API:
         @staticmethod
         def getUseRotationPropertiesFromTracking(handle: handle) -> bool:
             method = "Pixera.Screens.StudioCamera.getUseRotationPropertiesFromTracking"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setProjectOnAssociatedScreens(handle: handle, state: bool) -> None:
-            method = "Pixera.Screens.StudioCamera.setProjectOnAssociatedScreens"
-            params = ["handle", "state"]
-            return [method, params, [handle, state]]
-
-        @staticmethod
-        def getProjectOnAssociatedScreens(handle: handle) -> bool:
-            method = "Pixera.Screens.StudioCamera.getProjectOnAssociatedScreens"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def moveToTop(handle: handle) -> None:
-            method = "Pixera.Screens.StudioCamera.moveToTop"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -1914,18 +1698,6 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def setRenderOrderId(handle: handle, screenId: float, orderId: int) -> None:
-            method = "Pixera.Projectors.Projector.setRenderOrderId"
-            params = ["handle", "screenId", "orderId"]
-            return [method, params, [handle, screenId, orderId]]
-
-        @staticmethod
-        def getRenderOrderId(handle: handle, screenId: float) -> int:
-            method = "Pixera.Projectors.Projector.getRenderOrderId"
-            params = ["handle", "screenId"]
-            return [method, params, [handle, screenId]]
-
-        @staticmethod
         def setSoftedgeVisible(handle: handle, screenName: str, visible: bool) -> None:
             method = "Pixera.Projectors.Projector.setSoftedgeVisible"
             params = ["handle", "screenName", "visible"]
@@ -1972,90 +1744,6 @@ class API:
             method = "Pixera.Projectors.Projector.setOutput"
             params = ["handle", "outputHandle"]
             return [method, params, [handle, outputHandle]]
-
-        @staticmethod
-        def setHorizontalLensShift(handle: handle, value: float) -> None:
-            method = "Pixera.Projectors.Projector.setHorizontalLensShift"
-            params = ["handle", "value"]
-            return [method, params, [handle, value]]
-
-        @staticmethod
-        def getHorizontalLensShift(handle: handle) -> float:
-            method = "Pixera.Projectors.Projector.getHorizontalLensShift"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setVerticalLensShift(handle: handle, value: float) -> None:
-            method = "Pixera.Projectors.Projector.setVerticalLensShift"
-            params = ["handle", "value"]
-            return [method, params, [handle, value]]
-
-        @staticmethod
-        def getVerticalLensShift(handle: handle) -> float:
-            method = "Pixera.Projectors.Projector.getVerticalLensShift"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setBrightness(handle: handle, value: int) -> None:
-            method = "Pixera.Projectors.Projector.setBrightness"
-            params = ["handle", "value"]
-            return [method, params, [handle, value]]
-
-        @staticmethod
-        def getBrightness(handle: handle) -> int:
-            method = "Pixera.Projectors.Projector.getBrightness"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setFov(handle: handle, value: float) -> None:
-            method = "Pixera.Projectors.Projector.setFov"
-            params = ["handle", "value"]
-            return [method, params, [handle, value]]
-
-        @staticmethod
-        def getFov(handle: handle) -> float:
-            method = "Pixera.Projectors.Projector.getFov"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setThrowRatio(handle: handle, value: float) -> None:
-            method = "Pixera.Projectors.Projector.setThrowRatio"
-            params = ["handle", "value"]
-            return [method, params, [handle, value]]
-
-        @staticmethod
-        def getThrowRatio(handle: handle) -> float:
-            method = "Pixera.Projectors.Projector.getThrowRatio"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setLookAtPoint(handle: handle, x: float, y: float, z: float) -> None:
-            method = "Pixera.Projectors.Projector.setLookAtPoint"
-            params = ["handle", "x", "y", "z"]
-            return [method, params, [handle, x, y, z]]
-
-        @staticmethod
-        def getLookAtPoint(handle: handle) -> List[float]:
-            method = "Pixera.Projectors.Projector.getLookAtPoint"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setResolution(handle: handle, x: int, y: int) -> None:
-            method = "Pixera.Projectors.Projector.setResolution"
-            params = ["handle", "x", "y"]
-            return [method, params, [handle, x, y]]
-
-        @staticmethod
-        def getResolution(handle: handle) -> List[int]:
-            method = "Pixera.Projectors.Projector.getResolution"
-            params = ["handle"]
-            return [method, params, [handle]]
 
         @staticmethod
         def getInst(handle: handle, instancePath: str) -> handle:
@@ -2141,12 +1829,6 @@ class API:
             method = "Pixera.Resources.ResourceFolder.getResourceAtIndex"
             params = ["handle", "index"]
             return [method, params, [handle, index]]
-
-        @staticmethod
-        def getResourceByName(handle: handle, name: str) -> handle:
-            method = "Pixera.Resources.ResourceFolder.getResourceByName"
-            params = ["handle", "name"]
-            return [method, params, [handle, name]]
 
         @staticmethod
         def addResource(handle: handle, path: str) -> handle:
@@ -2883,18 +2565,6 @@ class API:
         params = ["id"]
         return [method, params, [id]]
 
-    @staticmethod
-    def getInst(instancePath: str) -> handle:
-        method = "Pixera.Timelines.getInst"
-        params = ["instancePath"]
-        return [method, params, [instancePath]]
-
-    @staticmethod
-    def getInstancePath(apEntityThisHandle: handle) -> str:
-        method = "Pixera.Timelines.getInstancePath"
-        params = ["apEntityThisHandle"]
-        return [method, params, [apEntityThisHandle]]
-
     class Timeline:
         @staticmethod
         def ref(handle: handle) -> handle:
@@ -2963,28 +2633,10 @@ class API:
             return [method, params, [handle, moveDown]]
 
         @staticmethod
-        def setRenderOrder(handle: handle, index: int) -> None:
-            method = "Pixera.Timelines.Timeline.setRenderOrder"
-            params = ["handle", "index"]
-            return [method, params, [handle, index]]
-
-        @staticmethod
-        def getRenderOrder(handle: handle) -> int:
-            method = "Pixera.Timelines.Timeline.getRenderOrder"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
         def getLayers(handle: handle) -> List[handle]:
             method = "Pixera.Timelines.Timeline.getLayers"
             params = ["handle"]
             return [method, params, [handle]]
-
-        @staticmethod
-        def getLayerFromName(handle: handle, name: str) -> handle:
-            method = "Pixera.Timelines.Timeline.getLayerFromName"
-            params = ["handle", "name"]
-            return [method, params, [handle, name]]
 
         @staticmethod
         def getLayerNames(handle: handle) -> List[str]:
@@ -3023,18 +2675,6 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def createClipsFromJsonString(handle: handle, jsonString: str) -> str:
-            method = "Pixera.Timelines.Timeline.createClipsFromJsonString"
-            params = ["handle", "jsonString"]
-            return [method, params, [handle, jsonString]]
-
-        @staticmethod
-        def removeClipsFromJsonString(handle: handle, jsonString: str) -> None:
-            method = "Pixera.Timelines.Timeline.removeClipsFromJsonString"
-            params = ["handle", "jsonString"]
-            return [method, params, [handle, jsonString]]
-
-        @staticmethod
         def getCueInfosAsJsonString(handle: handle) -> str:
             method = "Pixera.Timelines.Timeline.getCueInfosAsJsonString"
             params = ["handle"]
@@ -3043,12 +2683,6 @@ class API:
         @staticmethod
         def getCues(handle: handle) -> List[handle]:
             method = "Pixera.Timelines.Timeline.getCues"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def getCuesSelected(handle: handle) -> List[handle]:
-            method = "Pixera.Timelines.Timeline.getCuesSelected"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -3371,18 +3005,6 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def startPreviewEdit(handle: handle, goalTime: float) -> None:
-            method = "Pixera.Timelines.Timeline.startPreviewEdit"
-            params = ["handle", "goalTime"]
-            return [method, params, [handle, goalTime]]
-
-        @staticmethod
-        def endPreviewEdit(handle: handle, moveToPreview: bool, blendDurationInMs: Optional[int]) -> None:
-            method = "Pixera.Timelines.Timeline.endPreviewEdit"
-            params = ["handle", "moveToPreview", "blendDurationInMs"]
-            return [method, params, [handle, moveToPreview, blendDurationInMs]]
-
-        @staticmethod
         def getInst(handle: handle, instancePath: str) -> handle:
             method = "Pixera.Timelines.Timeline.getInst"
             params = ["handle", "instancePath"]
@@ -3416,12 +3038,6 @@ class API:
         @staticmethod
         def getNodes(handle: handle) -> List[handle]:
             method = "Pixera.Timelines.Layer.getNodes"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def getParameters(handle: handle) -> List[handle]:
-            method = "Pixera.Timelines.Layer.getParameters"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -3492,10 +3108,10 @@ class API:
             return [method, params, [handle, descrip]]
 
         @staticmethod
-        def setOpacity(handle: handle, value: float, fadeTimeMs: Optional[int]) -> None:
+        def setOpacity(handle: handle, value: float) -> None:
             method = "Pixera.Timelines.Layer.setOpacity"
-            params = ["handle", "value", "fadeTimeMs"]
-            return [method, params, [handle, value, fadeTimeMs]]
+            params = ["handle", "value"]
+            return [method, params, [handle, value]]
 
         @staticmethod
         def getOpacity(handle: handle) -> float:
@@ -3510,10 +3126,10 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def setVolume(handle: handle, value: float, fadeTimeMs: Optional[int]) -> None:
+        def setVolume(handle: handle, value: float) -> None:
             method = "Pixera.Timelines.Layer.setVolume"
-            params = ["handle", "value", "fadeTimeMs"]
-            return [method, params, [handle, value, fadeTimeMs]]
+            params = ["handle", "value"]
+            return [method, params, [handle, value]]
 
         @staticmethod
         def getVolume(handle: handle) -> float:
@@ -3602,18 +3218,6 @@ class API:
         @staticmethod
         def getTransportLoop(handle: handle) -> bool:
             method = "Pixera.Timelines.Layer.getTransportLoop"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setPlaybackSpeed(handle: handle, speed: float) -> None:
-            method = "Pixera.Timelines.Layer.setPlaybackSpeed"
-            params = ["handle", "speed"]
-            return [method, params, [handle, speed]]
-
-        @staticmethod
-        def getPlaybackSpeed(handle: handle) -> float:
-            method = "Pixera.Timelines.Layer.getPlaybackSpeed"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -3798,18 +3402,6 @@ class API:
             return [method, params, [handle, typeIndex, resetDominant, removeKeyframesClips]]
 
         @staticmethod
-        def setRenderOrder(handle: handle, index: int) -> None:
-            method = "Pixera.Timelines.Layer.setRenderOrder"
-            params = ["handle", "index"]
-            return [method, params, [handle, index]]
-
-        @staticmethod
-        def getRenderOrder(handle: handle) -> int:
-            method = "Pixera.Timelines.Layer.getRenderOrder"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
         def getInst(handle: handle, instancePath: str) -> handle:
             method = "Pixera.Timelines.Layer.getInst"
             params = ["handle", "instancePath"]
@@ -3826,12 +3418,6 @@ class API:
             method = "Pixera.Timelines.Layer.getInstancePath"
             params = ["handle"]
             return [method, params, [handle]]
-
-        @staticmethod
-        def executeJavaScriptOnCurrentWebResource(handle: handle, script: str) -> None:
-            method = "Pixera.Timelines.Layer.executeJavaScriptOnCurrentWebResource"
-            params = ["handle", "script"]
-            return [method, params, [handle, script]]
 
     class Clip:
         @staticmethod
@@ -3961,26 +3547,8 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def getAssignedResourceName(handle: handle) -> str:
-            method = "Pixera.Timelines.Clip.getAssignedResourceName"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
         def setToResourceDuration(handle: handle) -> None:
             method = "Pixera.Timelines.Clip.setToResourceDuration"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setText(handle: handle, text: str) -> None:
-            method = "Pixera.Timelines.Clip.setText"
-            params = ["handle", "text"]
-            return [method, params, [handle, text]]
-
-        @staticmethod
-        def getText(handle: handle) -> str:
-            method = "Pixera.Timelines.Clip.getText"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -4137,16 +3705,16 @@ class API:
             return [method, params, [handle]]
 
         @staticmethod
-        def setValue(handle: handle, value: timelineParamValue, fadeTimeMs: Optional[int]) -> None:
+        def setValue(handle: handle, value: timelineParamValue) -> None:
             method = "Pixera.Timelines.Param.setValue"
-            params = ["handle", "value", "fadeTimeMs"]
-            return [method, params, [handle, value, fadeTimeMs]]
+            params = ["handle", "value"]
+            return [method, params, [handle, value]]
 
         @staticmethod
-        def setValueRelativ(handle: handle, value: float, fadeTimeMs: Optional[int]) -> None:
+        def setValueRelativ(handle: handle, value: float) -> None:
             method = "Pixera.Timelines.Param.setValueRelativ"
-            params = ["handle", "value", "fadeTimeMs"]
-            return [method, params, [handle, value, fadeTimeMs]]
+            params = ["handle", "value"]
+            return [method, params, [handle, value]]
 
         @staticmethod
         def getValue(handle: handle) -> timelineParamValue:
@@ -4163,12 +3731,6 @@ class API:
         @staticmethod
         def storeValue(handle: handle) -> None:
             method = "Pixera.Timelines.Param.storeValue"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def storeValueAndRemoveOther(handle: handle) -> None:
-            method = "Pixera.Timelines.Param.storeValueAndRemoveOther"
             params = ["handle"]
             return [method, params, [handle]]
 
@@ -4402,18 +3964,6 @@ class API:
             return [method, params, [handle, nameTimeline]]
 
         @staticmethod
-        def getTimelineToTriggerMode(handle: handle) -> int:
-            method = "Pixera.Timelines.Cue.getTimelineToTriggerMode"
-            params = ["handle"]
-            return [method, params, [handle]]
-
-        @staticmethod
-        def setTimelineToTriggerTimeMode(handle: handle, mode: int) -> bool:
-            method = "Pixera.Timelines.Cue.setTimelineToTriggerTimeMode"
-            params = ["handle", "mode"]
-            return [method, params, [handle, mode]]
-
-        @staticmethod
         def getTimelineTriggerMode(handle: handle) -> int:
             method = "Pixera.Timelines.Cue.getTimelineTriggerMode"
             params = ["handle"]
@@ -4472,18 +4022,6 @@ class API:
             method = "Pixera.Timelines.Cue.setCommand"
             params = ["handle", "conveyorName", "commandData"]
             return [method, params, [handle, conveyorName, commandData]]
-
-        @staticmethod
-        def setColor(handle: handle, red: int, green: int, blue: int) -> None:
-            method = "Pixera.Timelines.Cue.setColor"
-            params = ["handle", "red", "green", "blue"]
-            return [method, params, [handle, red, green, blue]]
-
-        @staticmethod
-        def getColor(handle: handle) -> List[int]:
-            method = "Pixera.Timelines.Cue.getColor"
-            params = ["handle"]
-            return [method, params, [handle]]
 
         @staticmethod
         def getInst(handle: handle, instancePath: str) -> handle:
@@ -4570,24 +4108,6 @@ class API:
         return [method, params, [useBlocks]]
 
     @staticmethod
-    def lockUi(password: str) -> None:
-        method = "Pixera.Ui.lockUi"
-        params = ["password"]
-        return [method, params, [password]]
-
-    @staticmethod
-    def unlockUi(password: str) -> None:
-        method = "Pixera.Ui.unlockUi"
-        params = ["password"]
-        return [method, params, [password]]
-
-    @staticmethod
-    def toggleLockUi(password: str) -> None:
-        method = "Pixera.Ui.toggleLockUi"
-        params = ["password"]
-        return [method, params, [password]]
-
-    @staticmethod
     def getComboBoxWithId(id: float) -> handle:
         method = "Pixera.Ui.getComboBoxWithId"
         params = ["id"]
@@ -4616,12 +4136,6 @@ class API:
         method = "Pixera.Ui.setDisplayTestpattern"
         params = ["display"]
         return [method, params, [display]]
-
-    @staticmethod
-    def toggleOutputFreeze() -> None:
-        method = "Pixera.Ui.toggleOutputFreeze"
-        params = []
-        return [method, params, []]
 
     @staticmethod
     def getPreviewCameraAsJsonString() -> str:
@@ -4685,42 +4199,6 @@ class API:
             return [method, params, [handle]]
 
     @staticmethod
-    def setControlPage(pageName: str) -> None:
-        method = "Pixera.Ui.Control.setControlPage"
-        params = ["pageName"]
-        return [method, params, [pageName]]
-
-    @staticmethod
-    def getControlPages() -> List[str]:
-        method = "Pixera.Ui.Control.getControlPages"
-        params = []
-        return [method, params, []]
-
-    @staticmethod
-    def getCurrentControlPage() -> str:
-        method = "Pixera.Ui.Control.getCurrentControlPage"
-        params = []
-        return [method, params, []]
-
-    @staticmethod
-    def selectPreviewCameraByIndex(index: int) -> None:
-        method = "Pixera.Ui.PreviewCamera.selectPreviewCameraByIndex"
-        params = ["index"]
-        return [method, params, [index]]
-
-    @staticmethod
-    def selectPreviewCameraByName(name: str) -> None:
-        method = "Pixera.Ui.PreviewCamera.selectPreviewCameraByName"
-        params = ["name"]
-        return [method, params, [name]]
-
-    @staticmethod
-    def getPreviewCameraNames() -> List[str]:
-        method = "Pixera.Ui.PreviewCamera.getPreviewCameraNames"
-        params = []
-        return [method, params, []]
-
-    @staticmethod
     def setRegistered(hdls: List[handle], expectedFrequency: int, dampingMs: int, usageHints: List[str]) -> None:
         method = "Pixera.Direct.setRegistered"
         params = ["hdls", "expectedFrequency", "dampingMs", "usageHints"]
@@ -4731,12 +4209,6 @@ class API:
         method = "Pixera.Direct.reloadRegistered"
         params = []
         return [method, params, []]
-
-    @staticmethod
-    def registerProjector(name: str, expectedFrequency: int, dampingMs: int) -> handle:
-        method = "Pixera.Direct.registerProjector"
-        params = ["name", "expectedFrequency", "dampingMs"]
-        return [method, params, [name, expectedFrequency, dampingMs]]
 
     @staticmethod
     def registerScreen(name: str, expectedFrequency: int, dampingMs: int) -> handle:
@@ -4776,22 +4248,10 @@ class API:
             return [method, params, [handle, xRot, yRot, zRot]]
 
         @staticmethod
-        def setRotationQuat(handle: handle, xQuat: float, yQuat: float, zQuat: float, wQuat: float) -> None:
-            method = "Pixera.Direct.Camera.setRotationQuat"
-            params = ["handle", "xQuat", "yQuat", "zQuat", "wQuat"]
-            return [method, params, [handle, xQuat, yQuat, zQuat, wQuat]]
-
-        @staticmethod
         def setTransformation(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float) -> None:
             method = "Pixera.Direct.Camera.setTransformation"
             params = ["handle", "xPos", "yPos", "zPos", "xRot", "yRot", "zRot", "fov", "aspectRatio"]
             return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio]]
-
-        @staticmethod
-        def setTransformationQuat(handle: handle, xPos: float, yPos: float, zPos: float, xQuat: float, yQuat: float, zQuat: float, wQuat: float, fov: float, aspectRatio: float) -> None:
-            method = "Pixera.Direct.Camera.setTransformationQuat"
-            params = ["handle", "xPos", "yPos", "zPos", "xQuat", "yQuat", "zQuat", "wQuat", "fov", "aspectRatio"]
-            return [method, params, [handle, xPos, yPos, zPos, xQuat, yQuat, zQuat, wQuat, fov, aspectRatio]]
 
         @staticmethod
         def setTransformationAndLensProps(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, iris: float, k1: float, k2: float, centerX: float, centerY: float, panelWidth: float) -> None:
@@ -4800,22 +4260,10 @@ class API:
             return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, nearClip, farClip, aperture, focus, iris, k1, k2, centerX, centerY, panelWidth]]
 
         @staticmethod
-        def setTransformationAndLensPropsQuat(handle: handle, xPos: float, yPos: float, zPos: float, xQuat: float, yQuat: float, zQuat: float, wQuat: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, iris: float, k1: float, k2: float, centerX: float, centerY: float, panelWidth: float) -> None:
-            method = "Pixera.Direct.Camera.setTransformationAndLensPropsQuat"
-            params = ["handle", "xPos", "yPos", "zPos", "xQuat", "yQuat", "zQuat", "wQuat", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "iris", "k1", "k2", "centerX", "centerY", "panelWidth"]
-            return [method, params, [handle, xPos, yPos, zPos, xQuat, yQuat, zQuat, wQuat, fov, aspectRatio, nearClip, farClip, aperture, focus, iris, k1, k2, centerX, centerY, panelWidth]]
-
-        @staticmethod
-        def setTransformationAndLensPropsExt(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, focalDistance: float, zoom: float, iris: float, k1: float, k2: float, k3: float, p1: float, p2: float, centerX: float, centerY: float, panelWidth: float, overscan: float, focalLength: Optional[float], focalLengthDistorted: Optional[float]) -> None:
+        def setTransformationAndLensPropsExt(handle: handle, xPos: float, yPos: float, zPos: float, xRot: float, yRot: float, zRot: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, focalDistance: float, zoom: float, iris: float, k1: float, k2: float, k3: float, p1: float, p2: float, centerX: float, centerY: float, panelWidth: float, overscan: float) -> None:
             method = "Pixera.Direct.Camera.setTransformationAndLensPropsExt"
-            params = ["handle", "xPos", "yPos", "zPos", "xRot", "yRot", "zRot", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "focalDistance", "zoom", "iris", "k1", "k2", "k3", "p1", "p2", "centerX", "centerY", "panelWidth", "overscan", "focalLength", "focalLengthDistorted"]
-            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, nearClip, farClip, aperture, focus, focalDistance, zoom, iris, k1, k2, k3, p1, p2, centerX, centerY, panelWidth, overscan, focalLength, focalLengthDistorted]]
-
-        @staticmethod
-        def setTransformationAndLensPropsExtQuat(handle: handle, xPos: float, yPos: float, zPos: float, xQuat: float, yQuat: float, zQuat: float, wQuat: float, fov: float, aspectRatio: float, nearClip: float, farClip: float, aperture: float, focus: float, focalDistance: float, zoom: float, iris: float, k1: float, k2: float, k3: float, p1: float, p2: float, centerX: float, centerY: float, panelWidth: float, overscan: float, focalLength: Optional[float], focalLengthDistorted: Optional[float]) -> None:
-            method = "Pixera.Direct.Camera.setTransformationAndLensPropsExtQuat"
-            params = ["handle", "xPos", "yPos", "zPos", "xQuat", "yQuat", "zQuat", "wQuat", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "focalDistance", "zoom", "iris", "k1", "k2", "k3", "p1", "p2", "centerX", "centerY", "panelWidth", "overscan", "focalLength", "focalLengthDistorted"]
-            return [method, params, [handle, xPos, yPos, zPos, xQuat, yQuat, zQuat, wQuat, fov, aspectRatio, nearClip, farClip, aperture, focus, focalDistance, zoom, iris, k1, k2, k3, p1, p2, centerX, centerY, panelWidth, overscan, focalLength, focalLengthDistorted]]
+            params = ["handle", "xPos", "yPos", "zPos", "xRot", "yRot", "zRot", "fov", "aspectRatio", "nearClip", "farClip", "aperture", "focus", "focalDistance", "zoom", "iris", "k1", "k2", "k3", "p1", "p2", "centerX", "centerY", "panelWidth", "overscan"]
+            return [method, params, [handle, xPos, yPos, zPos, xRot, yRot, zRot, fov, aspectRatio, nearClip, farClip, aperture, focus, focalDistance, zoom, iris, k1, k2, k3, p1, p2, centerX, centerY, panelWidth, overscan]]
 
     @staticmethod
     def getSupportedUnrealPluginVersion() -> int:

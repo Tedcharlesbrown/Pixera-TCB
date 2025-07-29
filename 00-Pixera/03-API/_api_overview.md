@@ -1,6 +1,6 @@
 
 # Protocol Overview
-This documentation describes revision 451 of the API.
+This documentation describes revision 381 of the API.
 
 The Pixera API uses the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) protocol.
 
@@ -43,7 +43,6 @@ Syntax: *Pixera.Utility.(function)*
 | `setMonitoringHasDelimiter` | `hasDelimiter` : bool <br> | `bool`<br> |
 | `runJsScript` | `jsFunction` : string <br>`jsCode` : string <br> | `string`<br> |
 | `dynamicRebuildFromJsonDescription` | `deviceName` : string <br>`jsonDescription` : string <br>`folder` : string <br> | `null`<br> |
-| `resetSelectiveRenderingFrameCounters` | None | `null`<br> |
 
 ## Network
 Syntax: *Pixera.Network.(function)*
@@ -144,9 +143,6 @@ Syntax: *Pixera.Session.(function)*
 | `setVideoStreamActiveState` | `ip` : string <br>`device` : string <br>`isActive` : bool <br> | `null`<br> |
 | `getVideoStreamActiveState` | `ip` : string <br>`device` : string <br> | `bool`<br> |
 | `getDefaultClipDurationsAsJsonString` | None | `string`<br> |
-| `toggleOutputIdentification` | None | `null`<br> |
-| `toggleOnScreenStats` | None | `null`<br> |
-| `setAllAssignedOutputs` | `active` : bool <br> | `null`<br> |
 
 ## LiveSystems
 Syntax: *Pixera.LiveSystems.(function)*
@@ -197,18 +193,9 @@ Syntax: *Pixera.LiveSystems.LiveSystem.(method)*
 | `LiveSystem` | `getUsagePresetName` | `handle` : object<br> | `string`<br> |
 | `LiveSystem` | `updateUsagePreset` | `handle` : object<br> | `null`<br> |
 | `LiveSystem` | `saveUsagePresetAs` | `handle` : object<br>`name` : string <br> | `null`<br> |
-| `LiveSystem` | `applyUsagePreset` | `handle` : object<br> | `null`<br> |
-| `LiveSystem` | `applyUsagePresetWithName` | `handle` : object<br>`name` : string <br> | `null`<br> |
+| `LiveSystem` | `applyUsagePreset` | `handle` : object<br>`name` : string <br> | `null`<br> |
 | `LiveSystem` | `exportUsagePreset` | `handle` : object<br>`path` : string <br> | `null`<br> |
 | `LiveSystem` | `importUsagePreset` | `handle` : object<br>`path` : string <br> | `null`<br> |
-| `LiveSystem` | `clearExportedMappings` | `handle` : object<br>`path` : string <br>`onlyServicePath` : bool <br> | `null`<br> |
-| `LiveSystem` | `exportMappings` | `handle` : object<br>`path` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappings` | `handle` : object<br>`path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `exportMappingsDirectly` | `handle` : object<br>`path` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappingsDirectly` | `handle` : object<br>`path` : string <br>`outputIdPathMapStr` : string <br> | `null`<br> |
-| `LiveSystem` | `exportMappingsToLiveSystemPath` | `handle` : object<br>`parentPath` : string <br> | `null`<br> |
-| `LiveSystem` | `importMappingsFromLiveSystemPath` | `handle` : object<br>`parentPath` : string <br> | `null`<br> |
-| `LiveSystem` | `clearExportedMappingsAtLiveSystemPath` | `handle` : object<br>`path` : string <br> | `null`<br> |
 | `LiveSystem` | `ensureFileDistribution` | `handle` : object<br>`includeNotUsedYet` : bool <br> | `null`<br> |
 | `LiveSystem` | `shutDown` | `handle` : object<br>`mode` : int <br> | `null`<br> |
 | `LiveSystem` | `wakeUp` | `handle` : object<br> | `string`<br> |
@@ -228,7 +215,6 @@ Syntax: *Pixera.LiveSystems.LiveSystem.(method)*
 | `LiveSystem` | `toggleAudioMasterMute` | `handle` : object<br>`channel` : int <br> | `null`<br> |
 | `LiveSystem` | `setAudioTimecodeInput` | `handle` : object<br>`channel` : int <br>`state` : bool <br> | `null`<br> |
 | `LiveSystem` | `triggerBackup` | `handle` : object<br>`applyControlCommand` : optional<bool> <br> | `null`<br> |
-| `LiveSystem` | `deleteUnusedFilesFromCache` | `handle` : object<br> | `null`<br> |
 | `LiveSystem` | `getStructureJson` | `handle` : object<br> | `string`<br> |
 | `LiveSystem` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `LiveSystem` | `getInstancePath` | `handle` : object<br> | `string`<br> |
@@ -250,8 +236,6 @@ Syntax: *Pixera.LiveSystems.GraphicsDevice.(method)*
 | `GraphicsDevice` | `getName` | `handle` : object<br> | `string`<br> |
 | `GraphicsDevice` | `getEnabledOutputs` | `handle` : object<br> | `handle[]`<br> |
 | `GraphicsDevice` | `getAllOutputs` | `handle` : object<br> | `handle[]`<br> |
-| `GraphicsDevice` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
-| `GraphicsDevice` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### Output
 Syntax: *Pixera.LiveSystems.Output.(method)*
 | Class Name | Method Name | Parameters | Return Values |
@@ -269,8 +253,6 @@ Syntax: *Pixera.LiveSystems.Output.(method)*
 | `Output` | `getIsOutputAggregate` | `handle` : object<br> | `bool`<br> |
 | `Output` | `setAggregateDims` | `handle` : object<br>`horizontalCount` : int <br>`verticalCount` : int <br> | `null`<br> |
 | `Output` | `getAggregateDims` | `handle` : object<br> | `int[]`<br> |
-| `Output` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
-| `Output` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 #### VideoStream
 Syntax: *Pixera.LiveSystems.VideoStream.(method)*
 | Class Name | Method Name | Parameters | Return Values |
@@ -278,11 +260,6 @@ Syntax: *Pixera.LiveSystems.VideoStream.(method)*
 | `VideoStream` | `getName` | `handle` : object<br> | `string`<br> |
 | `VideoStream` | `setActive` | `handle` : object<br>`active` : bool <br> | `null`<br> |
 | `VideoStream` | `getActive` | `handle` : object<br> | `bool`<br> |
-| `VideoStream` | `getIpAddress` | `handle` : object<br> | `string`<br> |
-| `VideoStream` | `setIpAddress` | `handle` : object<br>`ipAddress` : string <br> | `null`<br> |
-| `VideoStream` | `getDeviceType` | `handle` : object<br> | `string`<br> |
-| `VideoStream` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
-| `VideoStream` | `getInstancePath` | `handle` : object<br> | `string`<br> |
 
 ## Settings
 Syntax: *Pixera.Settings.(function)*
@@ -295,8 +272,6 @@ Syntax: *Pixera.Settings.(function)*
 | `getFadeToTimeDelay` | None | `int`<br> |
 | `getTranscodingPresets` | None | `string[]`<br> |
 | `addOrChangeTranscodingPreset` | `preset` : string <br> | `null`<br> |
-| `setAutoDistributionRule` | `rule` : int <br> | `null`<br> |
-| `getAutoDistributionRule` | None | `int`<br> |
 
 ## Screens
 Syntax: *Pixera.Screens.(function)*
@@ -325,8 +300,6 @@ Syntax: *Pixera.Screens.Screen.(method)*
 | `Screen` | `setPosRot` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `bool`<br> |
 | `Screen` | `setPosRotAndPerspectivePos` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`perspXPos` : optional<double> <br>`perspYPos` : optional<double> <br>`perspZPos` : optional<double> <br> | `bool`<br> |
 | `Screen` | `setPosRotScale` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `bool`<br> |
-| `Screen` | `getPerspectives` | `handle` : object<br> | `handle[]`<br> |
-| `Screen` | `getPerspectiveForScreenGroup` | `handle` : object<br>`screenGroupName` : string <br> | `handle`<br> |
 | `Screen` | `getPersepective` | `handle` : object<br> | `handle`<br> |
 | `Screen` | `snapPerspectiveCornersToScreen` | `handle` : object<br>`mode` : int <br> | `null`<br> |
 | `Screen` | `setPerspectivePosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `bool`<br> |
@@ -342,8 +315,6 @@ Syntax: *Pixera.Screens.Screen.(method)*
 | `Screen` | `setContentSamplingFrustumBase` | `handle` : object<br>`x` : double <br>`y` : double <br>`width` : double <br>`height` : double <br>`rotation` : double <br>`originScreenId` : double <br> | `null`<br> |
 | `Screen` | `runCalibration` | `handle` : object<br>`mode` : string <br>`diff` : string <br> | `null`<br> |
 | `Screen` | `editCalibration` | `handle` : object<br>`diff` : string <br> | `null`<br> |
-| `Screen` | `finshedCalibration` | `handle` : object<br>`finished` : bool <br> | `bool`<br> |
-| `Screen` | `distributeLoadedCalibrationAndReload` | `handle` : object<br> | `null`<br> |
 | `Screen` | `resetWarpFile` | `handle` : object<br>`diff` : string <br> | `null`<br> |
 | `Screen` | `loadWarpFile` | `handle` : object<br>`filePath` : string <br> | `null`<br> |
 | `Screen` | `loadWarpFileWithDiff` | `handle` : object<br>`filePath` : string <br>`diff` : string <br> | `null`<br> |
@@ -375,23 +346,16 @@ Syntax: *Pixera.Screens.StudioCamera.(method)*
 | `StudioCamera` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
 | `StudioCamera` | `getPosition` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `double[]`<br> |
 | `StudioCamera` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
-| `StudioCamera` | `setRotationQuat` | `handle` : object<br>`xQuat` : optional<double> <br>`yQuat` : optional<double> <br>`zQuat` : optional<double> <br>`wQuat` : optional<double> <br> | `null`<br> |
 | `StudioCamera` | `getRotation` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `double[]`<br> |
 | `StudioCamera` | `setTransformation` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
-| `StudioCamera` | `setTransformationQuat` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xQuat` : optional<double> <br>`yQuat` : optional<double> <br>`zQuat` : optional<double> <br>`wQuat` : optional<double> <br>`fov` : optional<double> <br>`aspectRatio` : optional<double> <br> | `null`<br> |
 | `StudioCamera` | `setTransformationAndLensProps` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
-| `StudioCamera` | `setTransformationAndLensPropsQuat` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xQuat` : double <br>`yQuat` : double <br>`zQuat` : double <br>`wQuat` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
-| `StudioCamera` | `setTransformationAndLensPropsExt` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br>`focalLength` : optional<double> <br>`focalLengthDistorted` : optional<double> <br> | `null`<br> |
-| `StudioCamera` | `setTransformationAndLensPropsExtQuat` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xQuat` : double <br>`yQuat` : double <br>`zQuat` : double <br>`wQuat` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br>`focalLength` : optional<double> <br>`focalLengthDistorted` : optional<double> <br> | `null`<br> |
+| `StudioCamera` | `setTransformationAndLensPropsExt` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br> | `null`<br> |
 | `StudioCamera` | `setTrackingInputPause` | `handle` : object<br>`pause` : bool <br> | `null`<br> |
 | `StudioCamera` | `getTrackingInputPause` | `handle` : object<br> | `bool`<br> |
 | `StudioCamera` | `setUsePositionPropertiesFromTracking` | `handle` : object<br>`pause` : bool <br> | `null`<br> |
 | `StudioCamera` | `getUsePositionPropertiesFromTracking` | `handle` : object<br> | `bool`<br> |
 | `StudioCamera` | `setUseRotationPropertiesFromTracking` | `handle` : object<br>`pause` : bool <br> | `null`<br> |
 | `StudioCamera` | `getUseRotationPropertiesFromTracking` | `handle` : object<br> | `bool`<br> |
-| `StudioCamera` | `setProjectOnAssociatedScreens` | `handle` : object<br>`state` : bool <br> | `null`<br> |
-| `StudioCamera` | `getProjectOnAssociatedScreens` | `handle` : object<br> | `bool`<br> |
-| `StudioCamera` | `moveToTop` | `handle` : object<br> | `null`<br> |
 | `StudioCamera` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `StudioCamera` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `StudioCamera` | `getInstancePath` | `handle` : object<br> | `string`<br> |
@@ -426,8 +390,6 @@ Syntax: *Pixera.Projectors.Projector.(method)*
 | `Projector` | `activateScreenMapping` | `handle` : object<br>`screenId` : double <br>`isActive` : bool <br> | `null`<br> |
 | `Projector` | `setBlackout` | `handle` : object<br>`isActive` : bool <br> | `null`<br> |
 | `Projector` | `getBlackout` | `handle` : object<br> | `bool`<br> |
-| `Projector` | `setRenderOrderId` | `handle` : object<br>`screenId` : double <br>`orderId` : int <br> | `null`<br> |
-| `Projector` | `getRenderOrderId` | `handle` : object<br>`screenId` : double <br> | `int`<br> |
 | `Projector` | `setSoftedgeVisible` | `handle` : object<br>`screenName` : string <br>`visible` : bool <br> | `null`<br> |
 | `Projector` | `resetAllColorCorrections` | `handle` : object<br> | `null`<br> |
 | `Projector` | `setColorCorrectionWithPath` | `handle` : object<br>`path` : string <br>`value` : float <br> | `null`<br> |
@@ -436,20 +398,6 @@ Syntax: *Pixera.Projectors.Projector.(method)*
 | `Projector` | `getColorCorrectionAsJsonString` | `handle` : object<br> | `string`<br> |
 | `Projector` | `getOutput` | `handle` : object<br>`index` : optional<int> <br> | `handle`<br> |
 | `Projector` | `setOutput` | `handle` : object<br>`outputHandle` : handle <br> | `null`<br> |
-| `Projector` | `setHorizontalLensShift` | `handle` : object<br>`value` : double <br> | `null`<br> |
-| `Projector` | `getHorizontalLensShift` | `handle` : object<br> | `double`<br> |
-| `Projector` | `setVerticalLensShift` | `handle` : object<br>`value` : double <br> | `null`<br> |
-| `Projector` | `getVerticalLensShift` | `handle` : object<br> | `double`<br> |
-| `Projector` | `setBrightness` | `handle` : object<br>`value` : int <br> | `null`<br> |
-| `Projector` | `getBrightness` | `handle` : object<br> | `int`<br> |
-| `Projector` | `setFov` | `handle` : object<br>`value` : double <br> | `null`<br> |
-| `Projector` | `getFov` | `handle` : object<br> | `double`<br> |
-| `Projector` | `setThrowRatio` | `handle` : object<br>`value` : double <br> | `null`<br> |
-| `Projector` | `getThrowRatio` | `handle` : object<br> | `double`<br> |
-| `Projector` | `setLookAtPoint` | `handle` : object<br>`x` : double <br>`y` : double <br>`z` : double <br> | `null`<br> |
-| `Projector` | `getLookAtPoint` | `handle` : object<br> | `double[]`<br> |
-| `Projector` | `setResolution` | `handle` : object<br>`x` : int <br>`y` : int <br> | `null`<br> |
-| `Projector` | `getResolution` | `handle` : object<br> | `int[]`<br> |
 | `Projector` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Projector` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Projector` | `getInstancePath` | `handle` : object<br> | `string`<br> |
@@ -475,7 +423,6 @@ Syntax: *Pixera.Resources.ResourceFolder.(method)*
 | `ResourceFolder` | `getResourceFolders` | `handle` : object<br> | `handle[]`<br> |
 | `ResourceFolder` | `getResources` | `handle` : object<br> | `handle[]`<br> |
 | `ResourceFolder` | `getResourceAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
-| `ResourceFolder` | `getResourceByName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
 | `ResourceFolder` | `addResource` | `handle` : object<br>`path` : string <br> | `handle`<br> |
 | `ResourceFolder` | `addResourcesFromDirectory` | `handle` : object<br>`path` : string <br>`removeOthers` : bool <br>`checkRedundancy` : bool <br> | `handle[]`<br> |
 | `ResourceFolder` | `addResourcesFromDirectoryRemoveAssets` | `handle` : object<br>`path` : string <br>`removeOthers` : bool <br>`checkRedundancy` : bool <br> | `handle[]`<br> |
@@ -616,8 +563,6 @@ Syntax: *Pixera.Timelines.(function)*
 | `getTimelinesSelected` | None | `handle[]`<br> |
 | `createTimeline` | None | `handle`<br> |
 | `getNodeFromId` | `id` : double <br> | `handle`<br> |
-| `getInst` | `instancePath` : string <br> | `handle`<br> |
-| `getInstancePath` | `apEntityThisHandle` : handle <br> | `string`<br> |
 ### Classes
 #### Timeline
 Syntax: *Pixera.Timelines.Timeline.(method)*
@@ -634,21 +579,15 @@ Syntax: *Pixera.Timelines.Timeline.(method)*
 | `Timeline` | `getHorizontalScrollOffset` | `handle` : object<br> | `int`<br> |
 | `Timeline` | `setHorizontalScrollOffset` | `handle` : object<br>`offset` : int <br> | `null`<br> |
 | `Timeline` | `moveInRenderOrder` | `handle` : object<br>`moveDown` : bool <br> | `null`<br> |
-| `Timeline` | `setRenderOrder` | `handle` : object<br>`index` : int <br> | `null`<br> |
-| `Timeline` | `getRenderOrder` | `handle` : object<br> | `int`<br> |
 | `Timeline` | `getLayers` | `handle` : object<br> | `handle[]`<br> |
-| `Timeline` | `getLayerFromName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
 | `Timeline` | `getLayerNames` | `handle` : object<br> | `string[]`<br> |
 | `Timeline` | `getLayersSelected` | `handle` : object<br> | `handle[]`<br> |
 | `Timeline` | `selectLayerByIndex` | `handle` : object<br>`index` : int <br> | `null`<br> |
 | `Timeline` | `selectLayerByNames` | `handle` : object<br>`layerNames` : string[] <br> | `null`<br> |
 | `Timeline` | `getLayerAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
 | `Timeline` | `createLayer` | `handle` : object<br> | `handle`<br> |
-| `Timeline` | `createClipsFromJsonString` | `handle` : object<br>`jsonString` : string <br> | `string`<br> |
-| `Timeline` | `removeClipsFromJsonString` | `handle` : object<br>`jsonString` : string <br> | `null`<br> |
 | `Timeline` | `getCueInfosAsJsonString` | `handle` : object<br> | `string`<br> |
 | `Timeline` | `getCues` | `handle` : object<br> | `handle[]`<br> |
-| `Timeline` | `getCuesSelected` | `handle` : object<br> | `handle[]`<br> |
 | `Timeline` | `getCueNames` | `handle` : object<br> | `string[]`<br> |
 | `Timeline` | `getCueAtIndex` | `handle` : object<br>`index` : int <br> | `handle`<br> |
 | `Timeline` | `getCueFromName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
@@ -702,8 +641,6 @@ Syntax: *Pixera.Timelines.Timeline.(method)*
 | `Timeline` | `getSmpteOffset` | `handle` : object<br> | `double`<br> |
 | `Timeline` | `resetRecordedValues` | `handle` : object<br> | `null`<br> |
 | `Timeline` | `getTimelineInfosAsJsonString` | `handle` : object<br> | `string`<br> |
-| `Timeline` | `startPreviewEdit` | `handle` : object<br>`goalTime` : double <br> | `null`<br> |
-| `Timeline` | `endPreviewEdit` | `handle` : object<br>`moveToPreview` : bool <br>`blendDurationInMs` : optional<int> <br> | `null`<br> |
 | `Timeline` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Timeline` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Timeline` | `getInstancePath` | `handle` : object<br> | `string`<br> |
@@ -714,7 +651,6 @@ Syntax: *Pixera.Timelines.Layer.(method)*
 | `Layer` | `ref` | `handle` : object<br> | `handle`<br> |
 | `Layer` | `removeThis` | `handle` : object<br> | `null`<br> |
 | `Layer` | `getNodes` | `handle` : object<br> | `handle[]`<br> |
-| `Layer` | `getParameters` | `handle` : object<br> | `handle[]`<br> |
 | `Layer` | `getNodeWithName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
 | `Layer` | `getParamWithName` | `handle` : object<br>`name` : string <br> | `handle`<br> |
 | `Layer` | `getSpatialParametersAtTime` | `handle` : object<br>`time` : double <br> | `double[]`<br> |
@@ -726,10 +662,10 @@ Syntax: *Pixera.Timelines.Layer.(method)*
 | `Layer` | `setLayerJsonDescrip` | `handle` : object<br>`descrip` : string <br>`makeAllDominant` : bool <br> | `null`<br> |
 | `Layer` | `getJsonDescrip` | `handle` : object<br> | `string`<br> |
 | `Layer` | `initFromJsonDescrip` | `handle` : object<br>`descrip` : string <br> | `null`<br> |
-| `Layer` | `setOpacity` | `handle` : object<br>`value` : double <br>`fadeTimeMs` : optional<int> <br> | `null`<br> |
+| `Layer` | `setOpacity` | `handle` : object<br>`value` : double <br> | `null`<br> |
 | `Layer` | `getOpacity` | `handle` : object<br> | `double`<br> |
 | `Layer` | `resetOpacity` | `handle` : object<br> | `null`<br> |
-| `Layer` | `setVolume` | `handle` : object<br>`value` : double <br>`fadeTimeMs` : optional<int> <br> | `null`<br> |
+| `Layer` | `setVolume` | `handle` : object<br>`value` : double <br> | `null`<br> |
 | `Layer` | `getVolume` | `handle` : object<br> | `double`<br> |
 | `Layer` | `resetVolume` | `handle` : object<br> | `null`<br> |
 | `Layer` | `muteLayer` | `handle` : object<br> | `null`<br> |
@@ -745,8 +681,6 @@ Syntax: *Pixera.Timelines.Layer.(method)*
 | `Layer` | `getTransportMode` | `handle` : object<br> | `int`<br> |
 | `Layer` | `resetTransportMode` | `handle` : object<br> | `null`<br> |
 | `Layer` | `getTransportLoop` | `handle` : object<br> | `bool`<br> |
-| `Layer` | `setPlaybackSpeed` | `handle` : object<br>`speed` : double <br> | `null`<br> |
-| `Layer` | `getPlaybackSpeed` | `handle` : object<br> | `double`<br> |
 | `Layer` | `assignResource` | `handle` : object<br>`id` : double <br> | `null`<br> |
 | `Layer` | `assignResourceWithFade` | `handle` : object<br>`id` : double <br>`fadeDuration` : double <br> | `null`<br> |
 | `Layer` | `getAssignedResource` | `handle` : object<br> | `handle`<br> |
@@ -777,12 +711,9 @@ Syntax: *Pixera.Timelines.Layer.(method)*
 | `Layer` | `getOffsets` | `handle` : object<br> | `double[]`<br> |
 | `Layer` | `setOffsets` | `handle` : object<br>`x` : optional<double> <br>`y` : optional<double> <br>`z` : optional<double> <br>`xr` : optional<double> <br>`yr` : optional<double> <br>`zr` : optional<double> <br>`xScale` : optional<double> <br>`yScale` : optional<double> <br>`zScale` : optional<double> <br> | `null`<br> |
 | `Layer` | `setCurrentValuesToOffset` | `handle` : object<br>`typeIndex` : int <br>`resetDominant` : optional<bool> <br>`removeKeyframesClips` : optional<bool> <br> | `null`<br> |
-| `Layer` | `setRenderOrder` | `handle` : object<br>`index` : int <br> | `null`<br> |
-| `Layer` | `getRenderOrder` | `handle` : object<br> | `int`<br> |
 | `Layer` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Layer` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Layer` | `getInstancePath` | `handle` : object<br> | `string`<br> |
-| `Layer` | `executeJavaScriptOnCurrentWebResource` | `handle` : object<br>`script` : string <br> | `null`<br> |
 #### Clip
 Syntax: *Pixera.Timelines.Clip.(method)*
 | Class Name | Method Name | Parameters | Return Values |
@@ -808,10 +739,7 @@ Syntax: *Pixera.Timelines.Clip.(method)*
 | `Clip` | `setOutpoint` | `handle` : object<br>`inpoint` : double <br> | `null`<br> |
 | `Clip` | `assignResource` | `handle` : object<br>`resId` : double <br>`setToResourceDuration` : optional<bool> <br> | `null`<br> |
 | `Clip` | `getAssignedResource` | `handle` : object<br> | `handle`<br> |
-| `Clip` | `getAssignedResourceName` | `handle` : object<br> | `string`<br> |
 | `Clip` | `setToResourceDuration` | `handle` : object<br> | `null`<br> |
-| `Clip` | `setText` | `handle` : object<br>`text` : string <br> | `null`<br> |
-| `Clip` | `getText` | `handle` : object<br> | `string`<br> |
 | `Clip` | `createEvent` | `handle` : object<br>`namePath` : string <br>`time` : double <br>`value` : double <br> | `null`<br> |
 | `Clip` | `createEventInPixelSpace` | `handle` : object<br>`namePath` : string <br>`time` : double <br>`value` : double <br> | `null`<br> |
 | `Clip` | `removeEvent` | `handle` : object<br>`namePath` : string <br>`time` : double <br> | `null`<br> |
@@ -845,12 +773,11 @@ Syntax: *Pixera.Timelines.Param.(method)*
 | --- | --- | --- | --- |
 | `Param` | `getName` | `handle` : object<br> | `string`<br> |
 | `Param` | `getIsChannel` | `handle` : object<br> | `bool`<br> |
-| `Param` | `setValue` | `handle` : object<br>`value` : timelineParamValue <br>`fadeTimeMs` : optional<int> <br> | `null`<br> |
-| `Param` | `setValueRelativ` | `handle` : object<br>`value` : double <br>`fadeTimeMs` : optional<int> <br> | `null`<br> |
+| `Param` | `setValue` | `handle` : object<br>`value` : timelineParamValue <br> | `null`<br> |
+| `Param` | `setValueRelativ` | `handle` : object<br>`value` : double <br> | `null`<br> |
 | `Param` | `getValue` | `handle` : object<br> | `timelineParamValue`<br> |
 | `Param` | `resetValue` | `handle` : object<br> | `null`<br> |
 | `Param` | `storeValue` | `handle` : object<br> | `null`<br> |
-| `Param` | `storeValueAndRemoveOther` | `handle` : object<br> | `null`<br> |
 | `Param` | `setTransportAttributes` | `handle` : object<br>`mode` : int <br>`speed` : double <br>`loop` : bool <br>`inpoint` : int <br>`outpoint` : int <br> | `null`<br> |
 | `Param` | `getAttributes` | `handle` : object<br> | `TransportAttributes`<br> |
 | `Param` | `mute` | `handle` : object<br> | `null`<br> |
@@ -893,8 +820,6 @@ Syntax: *Pixera.Timelines.Cue.(method)*
 | `Cue` | `setTime` | `handle` : object<br>`time` : double <br> | `bool`<br> |
 | `Cue` | `getTimelineToTriggerName` | `handle` : object<br> | `string`<br> |
 | `Cue` | `setTimelineToTrigger` | `handle` : object<br>`nameTimeline` : string <br> | `bool`<br> |
-| `Cue` | `getTimelineToTriggerMode` | `handle` : object<br> | `int`<br> |
-| `Cue` | `setTimelineToTriggerTimeMode` | `handle` : object<br>`mode` : int <br> | `bool`<br> |
 | `Cue` | `getTimelineTriggerMode` | `handle` : object<br> | `int`<br> |
 | `Cue` | `setTimelineTriggerMode` | `handle` : object<br>`mode` : int <br> | `bool`<br> |
 | `Cue` | `getTimelineTriggerApplyTime` | `handle` : object<br> | `double`<br> |
@@ -905,8 +830,6 @@ Syntax: *Pixera.Timelines.Cue.(method)*
 | `Cue` | `getCountdown` | `handle` : object<br> | `double`<br> |
 | `Cue` | `getCountdownHMSF` | `handle` : object<br> | `string`<br> |
 | `Cue` | `setCommand` | `handle` : object<br>`conveyorName` : string <br>`commandData` : string <br> | `null`<br> |
-| `Cue` | `setColor` | `handle` : object<br>`red` : int <br>`green` : int <br>`blue` : int <br> | `null`<br> |
-| `Cue` | `getColor` | `handle` : object<br> | `int[]`<br> |
 | `Cue` | `getInst` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Cue` | `getHandleFromInstancePath` | `handle` : object<br>`instancePath` : string <br> | `handle`<br> |
 | `Cue` | `getInstancePath` | `handle` : object<br> | `string`<br> |
@@ -939,27 +862,17 @@ Syntax: *Pixera.Ui.(function)*
 ### Functions
 | Name | Parameters | Return Values |
 | --- | --- | --- |
-| `lockUi` | `password` : string <br> | `null`<br> |
-| `unlockUi` | `password` : string <br> | `null`<br> |
-| `toggleLockUi` | `password` : string <br> | `null`<br> |
 | `getComboBoxWithId` | `id` : double <br> | `handle`<br> |
 | `setAppMode` | `mode` : int <br> | `null`<br> |
 | `getAppMode` | None | `int`<br> |
 | `getDisplayTestpattern` | None | `bool`<br> |
 | `setDisplayTestpattern` | `display` : bool <br> | `null`<br> |
-| `toggleOutputFreeze` | None | `null`<br> |
 | `getPreviewCameraAsJsonString` | None | `string`<br> |
 | `setPreviewCameraAsJsonString` | `cameraFrustrumStateString` : string <br> | `null`<br> |
 | `setDisableContentRendering` | `state` : bool <br> | `null`<br> |
 | `getIsContentRenderingDisabled` | None | `bool`<br> |
 | `setDisableWorkspaceRendering` | `state` : bool <br> | `null`<br> |
 | `getIsWorkspaceRenderingDisabled` | None | `bool`<br> |
-| `setControlPage` | `pageName` : string <br> | `null`<br> |
-| `getControlPages` | None | `string[]`<br> |
-| `getCurrentControlPage` | None | `string`<br> |
-| `selectPreviewCameraByIndex` | `index` : int <br> | `null`<br> |
-| `selectPreviewCameraByName` | `name` : string <br> | `null`<br> |
-| `getPreviewCameraNames` | None | `string[]`<br> |
 ### Classes
 #### ComboBox
 Syntax: *Pixera.Ui.ComboBox.(method)*
@@ -977,19 +890,11 @@ Syntax: *Pixera.Direct.(function)*
 | --- | --- | --- |
 | `setRegistered` | `hdls` : handle[] <br>`expectedFrequency` : int <br>`dampingMs` : int <br>`usageHints` : string[] <br> | `null`<br> |
 | `reloadRegistered` | None | `null`<br> |
-| `registerProjector` | `name` : string <br>`expectedFrequency` : int <br>`dampingMs` : int <br> | `handle`<br> |
 | `registerScreen` | `name` : string <br>`expectedFrequency` : int <br>`dampingMs` : int <br> | `handle`<br> |
 | `registerParam` | `instancePath` : string <br> | `handle`<br> |
 | `registerCamera` | `cameraName` : string <br>`expectedFrequency` : int <br> | `handle`<br> |
 | `registerPerspective` | `screenName` : string <br>`expectedFrequency` : int <br> | `handle`<br> |
 ### Classes
-#### Projector
-Syntax: *Pixera.Direct.Projector.(method)*
-| Class Name | Method Name | Parameters | Return Values |
-| --- | --- | --- | --- |
-| `Projector` | `setPosition` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br> | `null`<br> |
-| `Projector` | `setRotation` | `handle` : object<br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
-| `Projector` | `setPosRot` | `handle` : object<br>`xPos` : optional<double> <br>`yPos` : optional<double> <br>`zPos` : optional<double> <br>`xRot` : optional<double> <br>`yRot` : optional<double> <br>`zRot` : optional<double> <br> | `null`<br> |
 #### Screen
 Syntax: *Pixera.Direct.Screen.(method)*
 | Class Name | Method Name | Parameters | Return Values |
@@ -1012,13 +917,9 @@ Syntax: *Pixera.Direct.Camera.(method)*
 | --- | --- | --- | --- |
 | `Camera` | `setPosition` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br> | `null`<br> |
 | `Camera` | `setRotation` | `handle` : object<br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br> | `null`<br> |
-| `Camera` | `setRotationQuat` | `handle` : object<br>`xQuat` : double <br>`yQuat` : double <br>`zQuat` : double <br>`wQuat` : double <br> | `null`<br> |
 | `Camera` | `setTransformation` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br> | `null`<br> |
-| `Camera` | `setTransformationQuat` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xQuat` : double <br>`yQuat` : double <br>`zQuat` : double <br>`wQuat` : double <br>`fov` : double <br>`aspectRatio` : double <br> | `null`<br> |
 | `Camera` | `setTransformationAndLensProps` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
-| `Camera` | `setTransformationAndLensPropsQuat` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xQuat` : double <br>`yQuat` : double <br>`zQuat` : double <br>`wQuat` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br> | `null`<br> |
-| `Camera` | `setTransformationAndLensPropsExt` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br>`focalLength` : optional<double> <br>`focalLengthDistorted` : optional<double> <br> | `null`<br> |
-| `Camera` | `setTransformationAndLensPropsExtQuat` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xQuat` : double <br>`yQuat` : double <br>`zQuat` : double <br>`wQuat` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br>`focalLength` : optional<double> <br>`focalLengthDistorted` : optional<double> <br> | `null`<br> |
+| `Camera` | `setTransformationAndLensPropsExt` | `handle` : object<br>`xPos` : double <br>`yPos` : double <br>`zPos` : double <br>`xRot` : double <br>`yRot` : double <br>`zRot` : double <br>`fov` : double <br>`aspectRatio` : double <br>`nearClip` : double <br>`farClip` : double <br>`aperture` : double <br>`focus` : double <br>`focalDistance` : double <br>`zoom` : double <br>`iris` : double <br>`k1` : double <br>`k2` : double <br>`k3` : double <br>`p1` : double <br>`p2` : double <br>`centerX` : double <br>`centerY` : double <br>`panelWidth` : double <br>`overscan` : double <br> | `null`<br> |
 #### Perspective
 Syntax: *Pixera.Direct.Perspective.(method)*
 | Class Name | Method Name | Parameters | Return Values |

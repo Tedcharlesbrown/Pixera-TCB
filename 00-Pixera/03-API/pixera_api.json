@@ -4,7 +4,6 @@
   {
    "functions": [
     {
-     "documentation": "Returns the current revision of the API.\r\nRelease versions have even revision numbers. Beta versions have odd revision numbers.\r\n",
      "name": "getApiRevision",
      "params": [],
      "returnValues": [
@@ -15,7 +14,6 @@
      ]
     },
     {
-     "documentation": "Returns true if the function (or class method) is available.\r\nfunctionName must be the fully qualified name of the function or method,\r\ne.g. \"Pixera.Screens.Screen.setPosition\".\r\n",
      "name": "getHasFunction",
      "params": [
       {
@@ -31,7 +29,6 @@
      ]
     },
     {
-     "documentation": "Outputs a debug string into the Pixera log and returns the same string in\r\nthe reply.\r\n",
      "name": "outputDebug",
      "params": [
       {
@@ -57,7 +54,6 @@
      ]
     },
     {
-     "documentation": "Returns the number of milliseconds since midnight Jan 1st 1970 UTC.\r\n",
      "name": "getCurrentTime",
      "params": [],
      "returnValues": [
@@ -68,7 +64,6 @@
      ]
     },
     {
-     "documentation": "Returns the current time as an ISO-8601 string (using the local timezone).\r\n",
      "name": "getCurrentTimeAsString",
      "params": [],
      "returnValues": [
@@ -79,7 +74,6 @@
      ]
     },
     {
-     "documentation": "No operation. This function does nothing. It can be used in request/response scenarios\r\n(e.g. JSON-RPC) to bookend a set of API invocations. This gives the client a way\r\nto know that the last invocation in the set has been processed by Pixera.\r\n",
      "name": "noop",
      "params": [],
      "returnValues": [
@@ -90,7 +84,6 @@
      ]
     },
     {
-     "documentation": "Experimental. Currently only relevant to Javascript interpretation within Pixera.\r\n",
      "name": "requestCallback",
      "params": [
       {
@@ -155,7 +148,6 @@
      ]
     },
     {
-     "documentation": "See the documentation PDF for more information on monitoring.\r\nThe Javascript implementation does not support monitoring.\r\nIn the JSON implementation, the result of this function is a JSON object, not a string.\r\n",
      "name": "pollMonitoring",
      "params": [],
      "returnValues": [
@@ -211,7 +203,6 @@
      ]
     },
     {
-     "documentation": "In the Control implementation this function is called when monitoring events are sent.\r\n",
      "name": "monitoringEvent",
      "params": [
       {
@@ -227,7 +218,6 @@
      ]
     },
     {
-     "documentation": "Only available in json implementation.\r\n",
      "name": "setShowContextInReplies",
      "params": [
       {
@@ -258,7 +248,6 @@
      ]
     },
     {
-     "documentation": "Runs the javascript function jsFunction with code jsCode.\r\n",
      "name": "runJsScript",
      "params": [
       {
@@ -293,16 +282,6 @@
        "type": "string"
       }
      ],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "name": "resetSelectiveRenderingFrameCounters",
-     "params": [],
      "returnValues": [
       {
        "name": "null",
@@ -359,7 +338,6 @@
   {
    "functions": [
     {
-     "documentation": "Sets the transport mode of the timeline identified by its (zero-based) index\r\nin the timeline library of the Compositing tab.<br>\r\nMode Parameter: Play = 1, Pause = 2, Stop = 3.\r\n",
      "name": "setTransportModeOnTimelineAtIndex",
      "params": [
       {
@@ -379,7 +357,6 @@
      ]
     },
     {
-     "documentation": "Sets the transport mode of the timeline identified by its name.<br>\r\nMode Parameter: Play = 1, Pause = 2, Stop = 3.\r\n",
      "name": "setTransportModeOnTimeline",
      "params": [
       {
@@ -399,7 +376,6 @@
      ]
     },
     {
-     "documentation": "Toggles the timeline transport mode of timeline identified by its name.<br>\r\nMode toggles between Play and Pause.\r\n",
      "name": "toggleTransport",
      "params": [
       {
@@ -415,7 +391,6 @@
      ]
     },
     {
-     "documentation": "Returns the current transport mode of the timeline identified by its name.<br>\r\nReturn values: Play = 1, Pause = 2, Stop = 3.\r\n",
      "name": "getTransportModeOnTimeline",
      "params": [
       {
@@ -431,7 +406,6 @@
      ]
     },
     {
-     "documentation": "Sets the transport mode of the first timeline\r\nin the timeline library of the Compositing tab to Play.\r\n",
      "name": "startFirstTimeline",
      "params": [],
      "returnValues": [
@@ -442,7 +416,6 @@
      ]
     },
     {
-     "documentation": "Sets the transport mode of the first timeline\r\nin the timeline library of the Compositing tab to Pause.\r\n",
      "name": "pauseFirstTimeline",
      "params": [],
      "returnValues": [
@@ -453,7 +426,6 @@
      ]
     },
     {
-     "documentation": "Sets the transport mode of the first timeline\r\nin the timeline library of the Compositing tab to Stop.\r\n",
      "name": "stopFirstTimeline",
      "params": [],
      "returnValues": [
@@ -464,7 +436,6 @@
      ]
     },
     {
-     "documentation": "Sets the opacity of the timeline identified by its name.<br>\r\ntimelineName: name of timeline<br>\r\nopacity: opacity value between 0.0 and 1.0\r\n",
      "name": "setOpacityOnTimeline",
      "params": [
       {
@@ -484,7 +455,6 @@
      ]
     },
     {
-     "documentation": "Returns the opacity of the timeline identified by its name.\r\n",
      "name": "getOpacityOnTimeline",
      "params": [
       {
@@ -500,7 +470,6 @@
      ]
     },
     {
-     "documentation": "Set the x position of the first layer of the first timeline.<br>\r\nPurely for demonstration, testing purposes.\r\n",
      "name": "setPosValue",
      "params": [
       {
@@ -516,7 +485,6 @@
      ]
     },
     {
-     "documentation": "Set the x/y position of the first layer of the first timeline.<br>\r\nPurely for demonstration, testing purposes.\r\n",
      "name": "setPosValueXY",
      "params": [
       {
@@ -536,7 +504,6 @@
      ]
     },
     {
-     "documentation": "Sets the current value of the parameter.\r\nThe parameter is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1.Opacity\").\r\n",
      "name": "setParamValue",
      "params": [
       {
@@ -556,7 +523,6 @@
      ]
     },
     {
-     "documentation": "Jumps to and executes the cue at the (zero-based) index in the timeline at the (zero-based) index in\r\nthe timeline library of the Compositing tab.<br>\r\ncueIndex: zero-based index of cue<br>\r\ntimelineIndex: zero-based index of timeline in library<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
      "name": "applyCueAtIndexOnTimelineAtIndex",
      "params": [
       {
@@ -580,7 +546,6 @@
      ]
     },
     {
-     "documentation": "Jumps to and executes the cue with the given number in the timeline at the (zero-based) index in\r\nthe timeline library of the Compositing tab.<br>\r\ncueNumber: number of cue<br>\r\ntimelineIndex: zero-based index of timeline in library<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
      "name": "applyCueNumberOnTimelineAtIndex",
      "params": [
       {
@@ -604,7 +569,6 @@
      ]
     },
     {
-     "documentation": "Jumps to and executes the cue with the given number in the timeline with the given timelineName.<br>\r\ntimelineName: name of timeline<br>\r\ncueNumber: number of cue<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
      "name": "applyCueNumberOnTimeline",
      "params": [
       {
@@ -628,7 +592,6 @@
      ]
     },
     {
-     "documentation": "Jumps to and executes the cue with given name in the timeline with the given timelineName.<br>\r\ntimelineName: name of timeline<br>\r\ncueName: name of cue<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
      "name": "applyCueOnTimeline",
      "params": [
       {
@@ -652,7 +615,6 @@
      ]
     },
     {
-     "documentation": "Adds the file at the path to the folder with the given name path.\r\n",
      "name": "addResourceToFolder",
      "params": [
       {
@@ -672,7 +634,6 @@
      ]
     },
     {
-     "documentation": "Assigns a resource to a layer. The resource is identified by a path build from signatures and separated by forward slashes \r\n(e.g. \"Media/Folder/video.mov\"). The layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "assignResourceToLayer",
      "params": [
       {
@@ -692,7 +653,6 @@
      ]
     },
     {
-     "documentation": "Refreshes a resource from file. The resource is identified by a path build from signatures and separated by forward slashes \r\n(e.g. \"Media/Folder/video.mov\").\r\n",
      "name": "refreshResource",
      "params": [
       {
@@ -708,7 +668,6 @@
      ]
     },
     {
-     "documentation": "Sets the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.<br>\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "setTransportModeOnLayer",
      "params": [
       {
@@ -732,7 +691,6 @@
      ]
     },
     {
-     "documentation": "Returns the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.<br>\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "getTransportModeOnLayer",
      "params": [
       {
@@ -748,7 +706,6 @@
      ]
     },
     {
-     "documentation": "Returns the resource currently assigned to the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\nThe returned string is the path build from signatures and separated by forward slashes \r\n(e.g. \"Media/Folder/video.mov\").\r\n",
      "name": "getResourceAssignedToLayer",
      "params": [
       {
@@ -764,7 +721,6 @@
      ]
     },
     {
-     "documentation": "Assign the resource with dmxfolder/dmxfile id to the clip at time in frames by layerpath\r\n",
      "name": "assignResourceToClipAtTimeByDmxId",
      "params": [
       {
@@ -792,7 +748,6 @@
      ]
     },
     {
-     "documentation": "Assign the resource with dmxfolder/dmxfile id to the clip at hmsf time by layerpath\r\n",
      "name": "assignResourceToClipAtHMSFStringByDmxId",
      "params": [
       {
@@ -820,7 +775,6 @@
      ]
     },
     {
-     "documentation": "Assign the resource with dmxfolder/dmxfile id to the clip at h m s f by layerpath\r\n",
      "name": "assignResourceToClipAtHMSFByDmxId",
      "params": [
       {
@@ -860,7 +814,6 @@
      ]
     },
     {
-     "documentation": "Sets the current time of the timeline identified by name in frames.<br>\r\nUse getFpsOfTimeline() to relate the frames to seconds.<br>\r\nname: Name of timeline.<br>\r\ntime: New time in frames.\r\n",
      "name": "setCurrentTimeOfTimeline",
      "params": [
       {
@@ -880,7 +833,6 @@
      ]
     },
     {
-     "documentation": "Sets the current time of the timeline identified by name in seconds.<br>\r\nUse getFpsOfTimeline() to relate the frames to seconds.<br>\r\nname: Name of timeline.<br>\r\ntime: New time in seconds.\r\n",
      "name": "setCurrentTimeOfTimelineInSeconds",
      "params": [
       {
@@ -900,7 +852,6 @@
      ]
     },
     {
-     "documentation": "Sets the current time in seconds and the applied playback mode of the timeline identified by name.<br>\r\nUse getFpsOfTimeline() to relate the frames to seconds.<br>\r\nname: Name of timeline.<br>\r\ntime: New time in seconds.<br>\r\nmode: New playback mode (Play = 1, Pause = 2, Stop = 3).\r\n",
      "name": "setCurrentTimeAndTransportModeOfTimelineInSeconds",
      "params": [
       {
@@ -924,7 +875,6 @@
      ]
     },
     {
-     "documentation": "Returns the frames per second of the timeline identified by name.<br>\r\nname: Name of timeline.\r\n",
      "name": "getFpsOfTimeline",
      "params": [
       {
@@ -940,7 +890,6 @@
      ]
     },
     {
-     "documentation": "Returns the current time in frames. Use getFpsOfTimeline() to relate the frames to seconds.\r\n",
      "name": "getCurrentTimeOfTimeline",
      "params": [
       {
@@ -956,7 +905,6 @@
      ]
     },
     {
-     "documentation": "Returns the current time in seconds.\r\n",
      "name": "getCurrentTimeOfTimelineInSeconds",
      "params": [
       {
@@ -972,7 +920,6 @@
      ]
     },
     {
-     "documentation": "Returns the current time of the timeline identified by name as hours, minutes, seconds, frames string.<br>\r\nname: Name of timeline.\r\n",
      "name": "getCurrentHMSFOfTimeline",
      "params": [
       {
@@ -988,7 +935,6 @@
      ]
     },
     {
-     "documentation": "Returns the current countdown to next countdown relevant cue as int (in frames).<br>\r\nUse getFpsOfTimeline() to relate the frames to seconds.<br>\r\nname: Name of timeline.\r\n",
      "name": "getCurrentCountdownOfTimeline",
      "params": [
       {
@@ -1004,7 +950,6 @@
      ]
     },
     {
-     "documentation": "Returns the current countdown to next countdown relevant cue as string (in hours:minutes:seconds:frames).<br>\r\nname: Name of timeline.\r\n",
      "name": "getCurrentCountdownHMSFOfTimeline",
      "params": [
       {
@@ -1020,7 +965,6 @@
      ]
     },
     {
-     "documentation": "Blocks timeline updates in Pixera UI.<br>\r\nUse with caution. Should exclusively be used for performance optimization<br>\r\nwhen adding multiple objects (layer, clip, keys, ...) to timelines.<br>\r\nDo never forget to unblock.<br>\r\ndoBlock: 'true' means start blocking and 'false' means unblock.<br>\r\nterminationDurationInMs: Default value is 10 sec. Duration until the blocking period is automatically terminated. We emphasize that if the default value is sufficient you should always use blockUiTimelineUpdates(false) for a controlled termination. Unit is milliseconds.\r\n",
      "name": "blockUiTimelineUpdates",
      "params": [
       {
@@ -1063,7 +1007,6 @@
      ]
     },
     {
-     "documentation": "Creates a clip at the given time in frames and assigns the resource.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\nThe resource is identified by a path build from signatures and separated by forward slashes (e.g. \"Media/Folder/video.mov\").\r\n",
      "name": "createClipOnLayerAtTimeWithResource",
      "params": [
       {
@@ -1087,7 +1030,6 @@
      ]
     },
     {
-     "documentation": "Removes the clip identified by the 0-based clipIndex on the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "removeClipOnLayerWithIndex",
      "params": [
       {
@@ -1107,7 +1049,6 @@
      ]
     },
     {
-     "documentation": "Removes all clips on the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "removeAllClipsOnLayer",
      "params": [
       {
@@ -1123,7 +1064,6 @@
      ]
     },
     {
-     "documentation": "Returns the clip duration in seconds identified by the 0-based clipIndex on the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "getClipDurationInSecondsWithIndex",
      "params": [
       {
@@ -1143,7 +1083,6 @@
      ]
     },
     {
-     "documentation": "Returns the clip duration in frames identified by the 0-based clipIndex on the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "getClipDurationInFramesWithIndex",
      "params": [
       {
@@ -1163,7 +1102,6 @@
      ]
     },
     {
-     "documentation": "Returns the clip start time in seconds identified by the 0-based clipIndex on the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "getClipTimeInSecondsWithIndex",
      "params": [
       {
@@ -1183,7 +1121,6 @@
      ]
     },
     {
-     "documentation": "Returns the clip end time in seconds identified by the 0-based clipIndex on the layer.\r\nThe layer is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1\").\r\n",
      "name": "getClipEndTimeInSecondsWithIndex",
      "params": [
       {
@@ -1203,7 +1140,6 @@
      ]
     },
     {
-     "documentation": "Returns the duration of the resource in seconds.\r\nThe resource is identified by a path build from signatures and separated by forward slashes (e.g. \"Media/Folder/video.mov\").\r\n",
      "name": "getResourceDurationInSeconds",
      "params": [
       {
@@ -1219,7 +1155,6 @@
      ]
     },
     {
-     "documentation": "Returns the current value of the parameter.\r\nThe parameter is identified by a path separated by periods (e.g. \"Timeline 1.Layer 1.Opacity\").\r\n",
      "name": "getParamValue",
      "params": [
       {
@@ -1235,7 +1170,6 @@
      ]
     },
     {
-     "documentation": "Set timecode input for midi and artnet timecode.\r\n",
      "name": "setTimecodeInput",
      "params": [
       {
@@ -1283,7 +1217,6 @@
      ]
     },
     {
-     "documentation": "akeover all clients\r\n",
      "name": "takeOverAllClients",
      "params": [],
      "returnValues": [
@@ -1294,7 +1227,6 @@
      ]
     },
     {
-     "documentation": "ute all incomming smpte inputs\r\n",
      "name": "setPauseSmpteInput",
      "params": [
       {
@@ -1415,7 +1347,6 @@
      ]
     },
     {
-     "documentation": "Shut down the local machine. There are three options for mode:<br>\r\n1: Shut down.<br>\r\n2: Shut down and turn off power (if supported).<br>\r\n3: Shut down and reboot.\r\nDefault if no mode is set is 1.\r\n",
      "name": "shutdownSystem",
      "params": [
       {
@@ -1456,7 +1387,6 @@
      ]
     },
     {
-     "documentation": "This function is called in Pixera Control when the live system's state changes.\r\n",
      "name": "liveSystemStateChange",
      "params": [
       {
@@ -1476,7 +1406,6 @@
      ]
     },
     {
-     "documentation": "Shut down the live system with the given IP. The mode options are the same as for shutdownSystem():\r\nDefault if no mode is set is 1.\r\n",
      "name": "shutdownLiveSystem",
      "params": [
       {
@@ -1496,7 +1425,6 @@
      ]
     },
     {
-     "documentation": "Wake up the live system that last had the given IP. Uses the MAC address that was last reported\r\nfor the IP.\r\n",
      "name": "wakeLiveSystem",
      "params": [
       {
@@ -1512,7 +1440,6 @@
      ]
     },
     {
-     "documentation": "Returns the last MAC address associated with the live system with the given IP.\r\n",
      "name": "getLiveSystemMacAddress",
      "params": [
       {
@@ -1528,7 +1455,6 @@
      ]
     },
     {
-     "documentation": "Start live system.\r\n",
      "name": "startLiveSystem",
      "params": [
       {
@@ -1544,7 +1470,6 @@
      ]
     },
     {
-     "documentation": "Start all live systems in mapping/live sub-tab.\r\n",
      "name": "startLiveSystems",
      "params": [],
      "returnValues": [
@@ -1555,7 +1480,6 @@
      ]
     },
     {
-     "documentation": "Stop live system.\r\n",
      "name": "stopLiveSystem",
      "params": [
       {
@@ -1571,7 +1495,6 @@
      ]
     },
     {
-     "documentation": "Stop all live systems in mapping/live sub-tab.\r\n",
      "name": "stopLiveSystems",
      "params": [],
      "returnValues": [
@@ -1582,7 +1505,6 @@
      ]
     },
     {
-     "documentation": "Restart live system.\r\n",
      "name": "restartLiveSystem",
      "params": [
       {
@@ -1598,7 +1520,6 @@
      ]
     },
     {
-     "documentation": "Restart all live systems in mapping/live sub-tab.\r\n",
      "name": "restartLiveSystems",
      "params": [],
      "returnValues": [
@@ -1609,7 +1530,6 @@
      ]
     },
     {
-     "documentation": "This action is run when remote heartbeat tracking detects a state change in the system.\r\n",
      "name": "remoteSystemStateChange",
      "params": [
       {
@@ -1704,44 +1624,6 @@
        "type": "string"
       }
      ]
-    },
-    {
-     "documentation": "oggle output identification\r\n",
-     "name": "toggleOutputIdentification",
-     "params": [],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "documentation": "oggle onscreen statistics\r\n",
-     "name": "toggleOnScreenStats",
-     "params": [],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "documentation": "ctivate/deactivate all assigned outputs\r\n",
-     "name": "setAllAssignedOutputs",
-     "params": [
-      {
-       "name": "active",
-       "type": "bool"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
     }
    ],
    "name": "Session"
@@ -1751,7 +1633,6 @@
     {
      "methods": [
       {
-       "documentation": "Get hardware name of specified multi-user member.\r\n",
        "name": "getName",
        "params": [],
        "returnValues": [
@@ -1762,7 +1643,6 @@
        ]
       },
       {
-       "documentation": "Get ip of specified multi-user member.\r\n",
        "name": "getIp",
        "params": [],
        "returnValues": [
@@ -1773,7 +1653,6 @@
        ]
       },
       {
-       "documentation": "Get a description of the state of the specified multi-user member.\r\n",
        "name": "getState",
        "params": [],
        "returnValues": [
@@ -1794,7 +1673,6 @@
        ]
       },
       {
-       "documentation": "Filter example: system,outputs,outputsIndividual,outputsTotal,unreal\r\n",
        "name": "getPerformanceMonitoringValuesJsonEx",
        "params": [
         {
@@ -1820,7 +1698,6 @@
        ]
       },
       {
-       "documentation": "Starts file distribution to the multi-user member of all files that are used in a timeline. If includeNotUsedYet is true then\r\nall files that have not been used yet in any timeline are also distributed.\r\n",
        "name": "ensureFileDistribution",
        "params": [
         {
@@ -1836,7 +1713,6 @@
        ]
       },
       {
-       "documentation": "Shut down the multi-user member's machine. There are three options for mode:<br>\r\n1: Shut down.<br>\r\n2: Shut down and turn off power (if supported).<br>\r\n3: Shut down and reboot.\r\n",
        "name": "shutDown",
        "params": [
         {
@@ -1852,7 +1728,6 @@
        ]
       },
       {
-       "documentation": "Try to wake up specified multi-user member.\r\n",
        "name": "wakeUp",
        "params": [],
        "returnValues": [
@@ -1863,7 +1738,6 @@
        ]
       },
       {
-       "documentation": "Returns the MAC address of the specified multi-user member.\r\n",
        "name": "getMacAddress",
        "params": [],
        "returnValues": [
@@ -1929,7 +1803,6 @@
        ]
       },
       {
-       "documentation": "Get a JSON description of the hardware structure of the specified multi-user member.\r\n",
        "name": "getStructureJson",
        "params": [],
        "returnValues": [
@@ -1962,7 +1835,6 @@
      "methods": [
       {
        "deliver": "Pixera.LiveSystems.LiveSystem",
-       "documentation": "Pixera Control self-reference function.\r\n",
        "name": "ref",
        "params": [],
        "returnValues": [
@@ -1973,7 +1845,6 @@
        ]
       },
       {
-       "documentation": "Get hardware name of a specified live system.\r\n",
        "name": "getName",
        "params": [],
        "returnValues": [
@@ -1984,7 +1855,6 @@
        ]
       },
       {
-       "documentation": "Get ip of a specified live system.\r\n",
        "name": "getIp",
        "params": [],
        "returnValues": [
@@ -2040,7 +1910,6 @@
        ]
       },
       {
-       "documentation": "Filter example: system,outputs,outputsIndividual,outputsTotal,unreal\r\n",
        "name": "getPerformanceMonitoringValuesJsonEx",
        "params": [
         {
@@ -2135,19 +2004,7 @@
        ]
       },
       {
-       "documentation": "Applies the currently selected usage preset.\r\n",
        "name": "applyUsagePreset",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Applies the usage preset with the matching name.\r\n",
-       "name": "applyUsagePresetWithName",
        "params": [
         {
          "name": "name",
@@ -2192,139 +2049,6 @@
        ]
       },
       {
-       "name": "clearExportedMappings",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        },
-        {
-         "name": "onlyServicePath",
-         "type": "bool"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "exportMappings",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "importMappings",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        },
-        {
-         "name": "outputIdPathMapStr",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "exportMappingsDirectly",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "importMappingsDirectly",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        },
-        {
-         "name": "outputIdPathMapStr",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "exportMappingsToLiveSystemPath",
-       "params": [
-        {
-         "name": "parentPath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "importMappingsFromLiveSystemPath",
-       "params": [
-        {
-         "name": "parentPath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "clearExportedMappingsAtLiveSystemPath",
-       "params": [
-        {
-         "name": "path",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Starts file distribution to the live system of all files that are used in a timeline. If includeNotUsedYet is true then\r\nall files that have not been used yet in any timeline are also distributed.\r\n",
        "name": "ensureFileDistribution",
        "params": [
         {
@@ -2340,7 +2064,6 @@
        ]
       },
       {
-       "documentation": "Shut down the local machine. There are three options for mode:<br>\r\n1: Shut down.<br>\r\n2: Shut down and turn off power (if supported).<br>\r\n3: Shut down and reboot.\r\n",
        "name": "shutDown",
        "params": [
         {
@@ -2356,7 +2079,6 @@
        ]
       },
       {
-       "documentation": "Try to wake up specified live system.\r\n",
        "name": "wakeUp",
        "params": [],
        "returnValues": [
@@ -2367,7 +2089,6 @@
        ]
       },
       {
-       "documentation": "Returns the MAC address of the specified Live System.\r\n",
        "name": "getMacAddress",
        "params": [],
        "returnValues": [
@@ -2379,7 +2100,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.GraphicsDevice",
-       "documentation": "Returns handles to the graphics devices of a Live System.\r\n",
        "name": "getGraphicsDevices",
        "params": [],
        "returnValues": [
@@ -2391,7 +2111,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.Output",
-       "documentation": "Returns handles to all enabled outputs.\r\n",
        "name": "getEnabledOutputs",
        "params": [],
        "returnValues": [
@@ -2403,7 +2122,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.Output",
-       "documentation": "Returns handles of all outputs even if they are not physically connected.\r\n",
        "name": "getAllOutputs",
        "params": [],
        "returnValues": [
@@ -2415,7 +2133,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.VideoStream",
-       "documentation": "Returns handles to all video stream outputs (NDI, Art-Net, etc.).\r\n",
        "name": "getVideoStreamOutputs",
        "params": [],
        "returnValues": [
@@ -2583,17 +2300,6 @@
        ]
       },
       {
-       "documentation": "Files which are not used in the current project are deleted from the RX-Cache directory.\r\n",
-       "name": "deleteUnusedFilesFromCache",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
        "name": "getStructureJson",
        "params": [],
        "returnValues": [
@@ -2742,7 +2448,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.Output",
-       "documentation": "Returns handles to all enabled outputs.\r\n",
        "name": "getEnabledOutputs",
        "params": [],
        "returnValues": [
@@ -2754,39 +2459,12 @@
       },
       {
        "deliver": "Pixera.LiveSystems.Output",
-       "documentation": "Returns handles of all outputs even if they are not physically connected.\r\n",
        "name": "getAllOutputs",
        "params": [],
        "returnValues": [
         {
          "name": "handle[]",
          "type": "handle[]"
-        }
-       ]
-      },
-      {
-       "deliver": "Pixera.LiveSystems.GraphicsDevice",
-       "name": "getInst",
-       "params": [
-        {
-         "name": "instancePath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "handle",
-         "type": "handle"
-        }
-       ]
-      },
-      {
-       "name": "getInstancePath",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
         }
        ]
       }
@@ -2806,7 +2484,6 @@
        ]
       },
       {
-       "documentation": "Set output active/inactive.\r\n",
        "name": "setActive",
        "params": [
         {
@@ -2822,7 +2499,6 @@
        ]
       },
       {
-       "documentation": "Return current active state of output.\r\n",
        "name": "getActive",
        "params": [],
        "returnValues": [
@@ -2833,7 +2509,6 @@
        ]
       },
       {
-       "documentation": "set output identify.\r\n",
        "name": "setIdentify",
        "params": [
         {
@@ -2849,7 +2524,6 @@
        ]
       },
       {
-       "documentation": "get output identify.\r\n",
        "name": "getIdentify",
        "params": [],
        "returnValues": [
@@ -2861,7 +2535,6 @@
       },
       {
        "deliver": "Pixera.Screens.Screen",
-       "documentation": "Return assigned Screens.\r\n",
        "name": "getAssignedScreens",
        "params": [],
        "returnValues": [
@@ -2873,7 +2546,6 @@
       },
       {
        "deliver": "Pixera.Projectors.Projector",
-       "documentation": "Return assigned Projectors.\r\n",
        "name": "getAssignedProjectors",
        "params": [],
        "returnValues": [
@@ -2904,7 +2576,6 @@
        ]
       },
       {
-       "documentation": "set outputs is aggregate\r\n",
        "name": "setIsOutputAggregate",
        "params": [
         {
@@ -2920,7 +2591,6 @@
        ]
       },
       {
-       "documentation": "set outputs is aggregate\r\n",
        "name": "getIsOutputAggregate",
        "params": [],
        "returnValues": [
@@ -2931,7 +2601,6 @@
        ]
       },
       {
-       "documentation": "set vertical and horizontal aggregate settings\r\n",
        "name": "setAggregateDims",
        "params": [
         {
@@ -2951,39 +2620,12 @@
        ]
       },
       {
-       "documentation": "get vertical and horizontal aggregate settings\r\n",
        "name": "getAggregateDims",
        "params": [],
        "returnValues": [
         {
          "name": "int[]",
          "type": "int[]"
-        }
-       ]
-      },
-      {
-       "deliver": "Pixera.LiveSystems.Output",
-       "name": "getInst",
-       "params": [
-        {
-         "name": "instancePath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "handle",
-         "type": "handle"
-        }
-       ]
-      },
-      {
-       "name": "getInstancePath",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
         }
        ]
       }
@@ -3003,7 +2645,6 @@
        ]
       },
       {
-       "documentation": "Set video stream active/inactive.\r\n",
        "name": "setActive",
        "params": [
         {
@@ -3019,74 +2660,12 @@
        ]
       },
       {
-       "documentation": "Get active state of video stream.\r\n",
        "name": "getActive",
        "params": [],
        "returnValues": [
         {
          "name": "bool",
          "type": "bool"
-        }
-       ]
-      },
-      {
-       "name": "getIpAddress",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
-        }
-       ]
-      },
-      {
-       "name": "setIpAddress",
-       "params": [
-        {
-         "name": "ipAddress",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "getDeviceType",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
-        }
-       ]
-      },
-      {
-       "deliver": "Pixera.LiveSystems.VideoStream",
-       "name": "getInst",
-       "params": [
-        {
-         "name": "instancePath",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "handle",
-         "type": "handle"
-        }
-       ]
-      },
-      {
-       "name": "getInstancePath",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
         }
        ]
       }
@@ -3097,7 +2676,6 @@
    "functions": [
     {
      "deliver": "Pixera.LiveSystems.LiveSystem",
-     "documentation": "Get the handles of the live systems.\r\nThis will also return handles of live systems that are no longer connected.\r\n",
      "name": "getLiveSystems",
      "params": [],
      "returnValues": [
@@ -3108,7 +2686,6 @@
      ]
     },
     {
-     "documentation": "Called when the live system has become unavailable.\r\n",
      "name": "liveSystemNotAvailable",
      "params": [
       {
@@ -3158,7 +2735,6 @@
     {
      "functions": [
       {
-       "documentation": "If this is true, the values for transformation and scale, set in Node::setValues have to be in pixels.\r\n",
        "name": "getShowDimsInPixels",
        "params": [],
        "returnValues": [
@@ -3169,7 +2745,6 @@
        ]
       },
       {
-       "documentation": "If this is true, the nodes will be using size instead of scale.\r\n",
        "name": "getShowScaleAsSize",
        "params": [],
        "returnValues": [
@@ -3210,7 +2785,6 @@
     {
      "functions": [
       {
-       "documentation": "Get Transcoding presets as a vector of Json-Strings<br>\r\nWith the stucture:<br>\r\nAvailable container/codec strings:<br>\r\nvp9: mkv, mp4<br>\r\nH264: mp4<br>\r\nH265: mp4<br>\r\nHAP: mov<br>\r\nHAP Alpha: mov<br>\r\nHAP Q: mov<br>\r\nImage: png, tiff, dpx<br>\r\n<br>\r\nCompression settings:<br>\r\nLossless : 0<br>\r\nLow : 1<br>\r\nMedium : 2<br>\r\nHigh : 3<br>\r\n<br>\r\nHap compression settings:<br>\r\nNone : 0<br>\r\nSnappy : 1<br>\r\n<br>\r\nH264 Presets:<br>\r\nDefault : 1<br>\r\nSlow : 2<br>\r\nMedium : 3<br>\r\nFast : 4<br>\r\nHp (High Performance): 5<br>\r\nHq : 6<br>\r\nBd : 7<br>\r\nLl (Low latency) : 8<br>\r\nLlHq : 9<br>\r\nLlHp : 10<br>\r\nLossless : 11<br>\r\nLossless Hp : 12\r\n",
        "name": "getTranscodingPresets",
        "params": [],
        "returnValues": [
@@ -3221,7 +2795,6 @@
        ]
       },
       {
-       "documentation": "Search for preset with given name if found it will be set to the given setup,\r\nif not a new one will be created.\r\n",
        "name": "addOrChangeTranscodingPreset",
        "params": [
         {
@@ -3238,38 +2811,6 @@
       }
      ],
      "name": "SettingsTranscoding"
-    },
-    {
-     "functions": [
-      {
-       "documentation": "Defines the rule for the automatic distribution of newly added resources. 0: None, 1: On Import, 2: On Use\r\n",
-       "name": "setAutoDistributionRule",
-       "params": [
-        {
-         "name": "rule",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns the rule for the automatic distribution of newly added resources. 0: None, 1: On Import, 2: On Use\r\n",
-       "name": "getAutoDistributionRule",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int",
-         "type": "int"
-        }
-       ]
-      }
-     ],
-     "name": "SettingsResourceDistribution"
     }
    ]
   },
@@ -3278,7 +2819,6 @@
     {
      "methods": [
       {
-       "documentation": "Returns an id based on the handle. This is currently necessary in some situations\r\nbecause some API implementations can not yet consume handles as parameters. \r\n",
        "name": "getId",
        "params": [],
        "returnValues": [
@@ -3299,7 +2839,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters.\r\n",
        "name": "setPosition",
        "params": [
         {
@@ -3323,7 +2862,6 @@
        ]
       },
       {
-       "documentation": "Returns the position in meters.\r\n",
        "name": "getPosition",
        "params": [],
        "returnValues": [
@@ -3334,7 +2872,6 @@
        ]
       },
       {
-       "documentation": "Sets the rotation in degrees.\r\n",
        "name": "setRotation",
        "params": [
         {
@@ -3358,7 +2895,6 @@
        ]
       },
       {
-       "documentation": "Returns the Rotation in degrees.\r\n",
        "name": "getRotation",
        "params": [],
        "returnValues": [
@@ -3369,7 +2905,6 @@
        ]
       },
       {
-       "documentation": "Scales the screen proportionally (a value of 1.0 leaves the size unchanged). \r\n",
        "name": "setScale",
        "params": [
         {
@@ -3393,7 +2928,6 @@
        ]
       },
       {
-       "documentation": "Returns the Scale.\r\n",
        "name": "getScale",
        "params": [],
        "returnValues": [
@@ -3404,7 +2938,6 @@
        ]
       },
       {
-       "documentation": "Sets position and rotation in one API call.\r\n",
        "name": "setPosRot",
        "params": [
         {
@@ -3440,7 +2973,6 @@
        ]
       },
       {
-       "documentation": "Sets position, rotation and the perspective position for the first screen group in one API call.\r\n",
        "name": "setPosRotAndPerspectivePos",
        "params": [
         {
@@ -3488,7 +3020,6 @@
        ]
       },
       {
-       "documentation": "Sets position, rotation and scale in one API call.\r\n",
        "name": "setPosRotScale",
        "params": [
         {
@@ -3537,36 +3068,6 @@
       },
       {
        "deliver": "Pixera.Screens.Perspective",
-       "documentation": "Returns handles to all perspectives currently available for the screen.\r\n",
-       "name": "getPerspectives",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "handle[]",
-         "type": "handle[]"
-        }
-       ]
-      },
-      {
-       "deliver": "Pixera.Screens.Perspective",
-       "documentation": "Returns the perspective for the Screen Group with the given name.\r\n",
-       "name": "getPerspectiveForScreenGroup",
-       "params": [
-        {
-         "name": "screenGroupName",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "handle",
-         "type": "handle"
-        }
-       ]
-      },
-      {
-       "deliver": "Pixera.Screens.Perspective",
-       "documentation": "Returns the perspective for the first Screen Group.\r\n",
        "name": "getPersepective",
        "params": [],
        "returnValues": [
@@ -3577,7 +3078,6 @@
        ]
       },
       {
-       "documentation": "Snap the Perspective to Screen<br>.\r\n0 : Snap Mode to Bounding Box<br>\r\n1 : Snap Mode to UV Coords<br>\r\n2 : Snap Mode to Vertices<br>\r\n3 : Snap Mode to Bounding Box in View<br>\r\n4 : Snap Mode to Vertices with Projection\r\n",
        "name": "snapPerspectiveCornersToScreen",
        "params": [
         {
@@ -3593,7 +3093,6 @@
        ]
       },
       {
-       "documentation": "Sets the position of the perspective in meters.\r\n",
        "name": "setPerspectivePosition",
        "params": [
         {
@@ -3617,7 +3116,6 @@
        ]
       },
       {
-       "documentation": "Sets the position of the perspective in meters and moves the look-at point so that the\r\nrelationship between eye and look-at point is maintained. Look-at point will not be moved\r\nif generalized perspective projection is being used.\r\n",
        "name": "setPerspectivePositionWithLookAt",
        "params": [
         {
@@ -3641,7 +3139,6 @@
        ]
       },
       {
-       "documentation": "Returns the position of the perspective in meters.\r\n",
        "name": "getPerspectivePosition",
        "params": [],
        "returnValues": [
@@ -3652,7 +3149,6 @@
        ]
       },
       {
-       "documentation": "Sets the rotation around the view axis of the screen's perspective in degrees.\r\n",
        "name": "setPerspectiveRotation",
        "params": [
         {
@@ -3676,7 +3172,6 @@
        ]
       },
       {
-       "documentation": "Returns the rotation around the view axis of the screen's perspective in degrees.\r\n",
        "name": "getPerspectiveRotation",
        "params": [],
        "returnValues": [
@@ -3687,7 +3182,6 @@
        ]
       },
       {
-       "documentation": "This method is deprecated. Please use setPerspectivePosition(.) instead.\r\n",
        "name": "setCameraPosition",
        "params": [
         {
@@ -3711,7 +3205,6 @@
        ]
       },
       {
-       "documentation": "This method is deprecated. Please use setPerspectivePositionWithLookAt(.) instead.\r\n",
        "name": "setCameraPositionWithLookAt",
        "params": [
         {
@@ -3735,7 +3228,6 @@
        ]
       },
       {
-       "documentation": "This method is deprecated. Please use getPerspectivePosition(.) instead.\r\n",
        "name": "getCameraPosition",
        "params": [],
        "returnValues": [
@@ -3746,7 +3238,6 @@
        ]
       },
       {
-       "documentation": "This method is deprecated. Please use setPerspectiveRotation(.) instead.\r\n",
        "name": "setCameraRotation",
        "params": [
         {
@@ -3770,7 +3261,6 @@
        ]
       },
       {
-       "documentation": "This method is deprecated. Please use getPerspectiveRotation(.) instead.\r\n",
        "name": "getCameraRotation",
        "params": [],
        "returnValues": [
@@ -3781,7 +3271,6 @@
        ]
       },
       {
-       "documentation": "Sets the frustum base of the screen's perspective in pixels. The frustum base is positioned in the X/Y plane of the content compositing\r\nspace so that its center is at the position given by the x and y parameters. The origin the position relates to is that of the screen given\r\nby originScreenId  (use Screen.getId() to access this id or pass a handle to the origin screen). This makes it possible to relate\r\nmultiple perspective pixel positions  to the same origin.<br>\r\nThe width and height of the frustum base are set to pixel dimensions as given by the width and height parameters.<br>\r\nThe rotation parameter rotates the frustum base around the Z axis the given number of degrees.\r\n",
        "name": "setContentSamplingFrustumBase",
        "params": [
         {
@@ -3817,7 +3306,6 @@
        ]
       },
       {
-       "documentation": "Launches a calibration tool for the screen. The mode and diff strings \r\ndepend on the tool. If they are left empty appropriate defaults will be used.<br>\r\nmode options:<br>\r\n\"newCalib\": Launches \"New Calibration\" dialog.<br>\r\n\"autoRecalib\": Launches re-calibration without user interaction. Dialog is closed automatically afterwards.<br>\r\ndiff options:<br>\r\n\"vioso\"\r\n",
        "name": "runCalibration",
        "params": [
         {
@@ -3837,7 +3325,6 @@
        ]
       },
       {
-       "documentation": "Relaunches a calibration tool for the screen for further editing. The diff string\r\ndepends on the tool. If it is left empty an appropriate default will be used.\r\n",
        "name": "editCalibration",
        "params": [
         {
@@ -3853,34 +3340,6 @@
        ]
       },
       {
-       "documentation": "Notifiy if Calibration is finshed\r\nFinished Parameter: True = Finished, False = Not Finished\r\n",
-       "name": "finshedCalibration",
-       "params": [
-        {
-         "name": "finished",
-         "type": "bool"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "bool",
-         "type": "bool"
-        }
-       ]
-      },
-      {
-       "documentation": "Same functionality as pressing Button \"Distribute Loaded Calibrations\"\r\n",
-       "name": "distributeLoadedCalibrationAndReload",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Resets a warp that originated with a calibration tool. The diff string depends\r\non the tool. If it is empty an appropriate default will be used.\r\n",
        "name": "resetWarpFile",
        "params": [
         {
@@ -3896,7 +3355,6 @@
        ]
       },
       {
-       "documentation": "Loads the warp file at the specified path for the screen.\r\n",
        "name": "loadWarpFile",
        "params": [
         {
@@ -3912,7 +3370,6 @@
        ]
       },
       {
-       "documentation": "Like loadWarpFile() except diff string can be used to control the format. Use \"mpcdi\"\r\nto load MPCDI files.\r\n",
        "name": "loadWarpFileWithDiff",
        "params": [
         {
@@ -3932,7 +3389,6 @@
        ]
       },
       {
-       "documentation": "Adds the warp file at the specified path to those loaded for the screen.\r\n",
        "name": "addWarpFile",
        "params": [
         {
@@ -3948,7 +3404,6 @@
        ]
       },
       {
-       "documentation": "Like loadWarpFile() except diff string can be used to control the format. Use \"mpcdi\"\r\nto add MPCDI files.\r\n",
        "name": "addWarpFileWithDiff",
        "params": [
         {
@@ -3993,7 +3448,6 @@
        ]
       },
       {
-       "documentation": "Sets the screen visibility in the workspace.\r\n",
        "name": "setIsVisible",
        "params": [
         {
@@ -4009,7 +3463,6 @@
        ]
       },
       {
-       "documentation": "Get the screen visibility in the workspace.\r\n",
        "name": "getIsVisible",
        "params": [],
        "returnValues": [
@@ -4020,7 +3473,6 @@
        ]
       },
       {
-       "documentation": "Sets if a screen can be used as a projection surface. \r\n",
        "name": "setIsProjectable",
        "params": [
         {
@@ -4036,7 +3488,6 @@
        ]
       },
       {
-       "documentation": "Get if the screen can be used as a projection surface.\r\n",
        "name": "getIsProjectable",
        "params": [],
        "returnValues": [
@@ -4047,7 +3498,6 @@
        ]
       },
       {
-       "documentation": "Triggers a manual update of the mappings between this screen and the projectors. \r\n",
        "name": "triggerRefreshMapping",
        "params": [],
        "returnValues": [
@@ -4058,7 +3508,6 @@
        ]
       },
       {
-       "documentation": "Reset all color correction\r\n",
        "name": "resetAllColorCorrections",
        "params": [],
        "returnValues": [
@@ -4069,7 +3518,6 @@
        ]
       },
       {
-       "documentation": "et ColorCorrection Value by Path\r\n",
        "name": "setColorCorrectionWithPath",
        "params": [
         {
@@ -4089,7 +3537,6 @@
        ]
       },
       {
-       "documentation": "et ColorCorrection Value by Path\r\n",
        "name": "getColorCorrectionWithPath",
        "params": [
         {
@@ -4105,7 +3552,6 @@
        ]
       },
       {
-       "documentation": "et colorcorrection with jsonstring\r\n",
        "name": "setColorCorrectionAsJsonString",
        "params": [
         {
@@ -4121,7 +3567,6 @@
        ]
       },
       {
-       "documentation": "et colorcorrection as jsonstring\r\n",
        "name": "getColorCorrectionAsJsonString",
        "params": [],
        "returnValues": [
@@ -4133,7 +3578,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.Output",
-       "documentation": "et outputs\r\n",
        "name": "getOutput",
        "params": [],
        "returnValues": [
@@ -4144,7 +3588,6 @@
        ]
       },
       {
-       "documentation": "Set the active state of a active screen Blackout. \r\n",
        "name": "setBlackout",
        "params": [
         {
@@ -4160,7 +3603,6 @@
        ]
       },
       {
-       "documentation": "Get the active state of a active screen blackout. \r\n",
        "name": "getBlackout",
        "params": [],
        "returnValues": [
@@ -4228,7 +3670,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters.\r\n",
        "name": "setPosition",
        "params": [
         {
@@ -4252,7 +3693,6 @@
        ]
       },
       {
-       "documentation": "Returns the position in meters.\r\n",
        "name": "getPosition",
        "params": [
         {
@@ -4276,7 +3716,6 @@
        ]
       },
       {
-       "documentation": "Sets the euler rotation in degrees.\r\n",
        "name": "setRotation",
        "params": [
         {
@@ -4300,35 +3739,6 @@
        ]
       },
       {
-       "documentation": "Sets rotation in quaternions.\r\n",
-       "name": "setRotationQuat",
-       "params": [
-        {
-         "name": "xQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "wQuat",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns the euler rotation in degrees.\r\n",
        "name": "getRotation",
        "params": [
         {
@@ -4352,7 +3762,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation and fov in degrees.\r\n",
        "name": "setTransformation",
        "params": [
         {
@@ -4396,55 +3805,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation in quaternions, fov in degrees.\r\n",
-       "name": "setTransformationQuat",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "xQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "wQuat",
-         "type": "optional<double>"
-        },
-        {
-         "name": "fov",
-         "type": "optional<double>"
-        },
-        {
-         "name": "aspectRatio",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
        "name": "setTransformationAndLensProps",
        "params": [
         {
@@ -4528,95 +3888,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
-       "name": "setTransformationAndLensPropsQuat",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "double"
-        },
-        {
-         "name": "yPos",
-         "type": "double"
-        },
-        {
-         "name": "zPos",
-         "type": "double"
-        },
-        {
-         "name": "xQuat",
-         "type": "double"
-        },
-        {
-         "name": "yQuat",
-         "type": "double"
-        },
-        {
-         "name": "zQuat",
-         "type": "double"
-        },
-        {
-         "name": "wQuat",
-         "type": "double"
-        },
-        {
-         "name": "fov",
-         "type": "double"
-        },
-        {
-         "name": "aspectRatio",
-         "type": "double"
-        },
-        {
-         "name": "nearClip",
-         "type": "double"
-        },
-        {
-         "name": "farClip",
-         "type": "double"
-        },
-        {
-         "name": "aperture",
-         "type": "double"
-        },
-        {
-         "name": "focus",
-         "type": "double"
-        },
-        {
-         "name": "iris",
-         "type": "double"
-        },
-        {
-         "name": "k1",
-         "type": "double"
-        },
-        {
-         "name": "k2",
-         "type": "double"
-        },
-        {
-         "name": "centerX",
-         "type": "double"
-        },
-        {
-         "name": "centerY",
-         "type": "double"
-        },
-        {
-         "name": "panelWidth",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
        "name": "setTransformationAndLensPropsExt",
        "params": [
         {
@@ -4714,14 +3985,6 @@
         {
          "name": "overscan",
          "type": "double"
-        },
-        {
-         "name": "focalLength",
-         "type": "optional<double>"
-        },
-        {
-         "name": "focalLengthDistorted",
-         "type": "optional<double>"
         }
        ],
        "returnValues": [
@@ -4732,127 +3995,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
-       "name": "setTransformationAndLensPropsExtQuat",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "double"
-        },
-        {
-         "name": "yPos",
-         "type": "double"
-        },
-        {
-         "name": "zPos",
-         "type": "double"
-        },
-        {
-         "name": "xQuat",
-         "type": "double"
-        },
-        {
-         "name": "yQuat",
-         "type": "double"
-        },
-        {
-         "name": "zQuat",
-         "type": "double"
-        },
-        {
-         "name": "wQuat",
-         "type": "double"
-        },
-        {
-         "name": "fov",
-         "type": "double"
-        },
-        {
-         "name": "aspectRatio",
-         "type": "double"
-        },
-        {
-         "name": "nearClip",
-         "type": "double"
-        },
-        {
-         "name": "farClip",
-         "type": "double"
-        },
-        {
-         "name": "aperture",
-         "type": "double"
-        },
-        {
-         "name": "focus",
-         "type": "double"
-        },
-        {
-         "name": "focalDistance",
-         "type": "double"
-        },
-        {
-         "name": "zoom",
-         "type": "double"
-        },
-        {
-         "name": "iris",
-         "type": "double"
-        },
-        {
-         "name": "k1",
-         "type": "double"
-        },
-        {
-         "name": "k2",
-         "type": "double"
-        },
-        {
-         "name": "k3",
-         "type": "double"
-        },
-        {
-         "name": "p1",
-         "type": "double"
-        },
-        {
-         "name": "p2",
-         "type": "double"
-        },
-        {
-         "name": "centerX",
-         "type": "double"
-        },
-        {
-         "name": "centerY",
-         "type": "double"
-        },
-        {
-         "name": "panelWidth",
-         "type": "double"
-        },
-        {
-         "name": "overscan",
-         "type": "double"
-        },
-        {
-         "name": "focalLength",
-         "type": "optional<double>"
-        },
-        {
-         "name": "focalLengthDistorted",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Set the tracking input pause.\r\n",
        "name": "setTrackingInputPause",
        "params": [
         {
@@ -4868,7 +4010,6 @@
        ]
       },
       {
-       "documentation": "Get the tracking input pause.\r\n",
        "name": "getTrackingInputPause",
        "params": [],
        "returnValues": [
@@ -4879,7 +4020,6 @@
        ]
       },
       {
-       "documentation": "Set the tracking input position pause.\r\n",
        "name": "setUsePositionPropertiesFromTracking",
        "params": [
         {
@@ -4895,7 +4035,6 @@
        ]
       },
       {
-       "documentation": "Get the tracking input position.\r\n",
        "name": "getUsePositionPropertiesFromTracking",
        "params": [],
        "returnValues": [
@@ -4906,7 +4045,6 @@
        ]
       },
       {
-       "documentation": "Set the tracking input rotation pause.\r\n",
        "name": "setUseRotationPropertiesFromTracking",
        "params": [
         {
@@ -4922,51 +4060,12 @@
        ]
       },
       {
-       "documentation": "Get the tracking input rotation pause.\r\n",
        "name": "getUseRotationPropertiesFromTracking",
        "params": [],
        "returnValues": [
         {
          "name": "bool",
          "type": "bool"
-        }
-       ]
-      },
-      {
-       "documentation": "Set the camera to project on the associated screens.\r\n",
-       "name": "setProjectOnAssociatedScreens",
-       "params": [
-        {
-         "name": "state",
-         "type": "bool"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get whether the camera projects on the associated screens.\r\n",
-       "name": "getProjectOnAssociatedScreens",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "bool",
-         "type": "bool"
-        }
-       ]
-      },
-      {
-       "documentation": "Move the projected inner frustum rendering to the top among multiple studio cameras.\r\n",
-       "name": "moveToTop",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
         }
        ]
       },
@@ -5028,7 +4127,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation and fov in degrees. The look at point is not locked by default.\r\n",
        "name": "setTransformation",
        "params": [
         {
@@ -5124,7 +4222,6 @@
    "functions": [
     {
      "deliver": "Pixera.Screens.Screen",
-     "documentation": "Screen name as shown in the inspector.\r\n",
      "name": "getScreenWithName",
      "params": [
       {
@@ -5140,7 +4237,6 @@
      ]
     },
     {
-     "documentation": "This function was introduced for test purposes, is not typical of the API\r\nand is likely to be removed soon. Do not use it in shipping products!\r\nThe function sets the position of the screen with the given name.\r\nThe recommended way of doing this is to first use getScreenWithName(.) and\r\nthen Screen.setPosition(.).\r\n",
      "name": "setNamedScreenPosition",
      "params": [
       {
@@ -5169,7 +4265,6 @@
     },
     {
      "deliver": "Pixera.Screens.Screen",
-     "documentation": "Returns handles to all screens currently used in the Screens tab.\r\n",
      "name": "getScreens",
      "params": [],
      "returnValues": [
@@ -5207,7 +4302,6 @@
     },
     {
      "deliver": "Pixera.Screens.StudioCamera",
-     "documentation": "Returns handles to all studio cameras currently used in the Screens tab.\r\n",
      "name": "getStudioCameras",
      "params": [],
      "returnValues": [
@@ -5244,7 +4338,6 @@
     {
      "methods": [
       {
-       "documentation": "The position units are as in the inspector, i.e. meters.\r\n",
        "name": "getPosition",
        "params": [],
        "returnValues": [
@@ -5255,7 +4348,6 @@
        ]
       },
       {
-       "documentation": "The position units are as in the inspector, i.e. meters.\r\n",
        "name": "setPosition",
        "params": [
         {
@@ -5279,7 +4371,6 @@
        ]
       },
       {
-       "documentation": "Get rotation of projector.\r\n",
        "name": "getRotation",
        "params": [],
        "returnValues": [
@@ -5290,7 +4381,6 @@
        ]
       },
       {
-       "documentation": "Set rotation of projector.\r\n",
        "name": "setRotation",
        "params": [
         {
@@ -5324,7 +4414,6 @@
        ]
       },
       {
-       "documentation": "Set the active state of a projector screen mapping. \r\nThe id is conceptually the handle but the handle can not be passed \r\ndirectly for some implementations of the API. \r\nTherefore, Screen.getId() should be used to fill the screenId parameter.\r\n",
        "name": "activateScreenMapping",
        "params": [
         {
@@ -5344,7 +4433,6 @@
        ]
       },
       {
-       "documentation": "Set the active state of a projector Blackout. \r\n",
        "name": "setBlackout",
        "params": [
         {
@@ -5360,7 +4448,6 @@
        ]
       },
       {
-       "documentation": "Get the active state of a projector blackout. \r\n",
        "name": "getBlackout",
        "params": [],
        "returnValues": [
@@ -5371,43 +4458,6 @@
        ]
       },
       {
-       "documentation": "set Render Order ID\r\n",
-       "name": "setRenderOrderId",
-       "params": [
-        {
-         "name": "screenId",
-         "type": "double"
-        },
-        {
-         "name": "orderId",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "get Render Order ID\r\n",
-       "name": "getRenderOrderId",
-       "params": [
-        {
-         "name": "screenId",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "int",
-         "type": "int"
-        }
-       ]
-      },
-      {
-       "documentation": "Set the softedge of a projector for a specific screen active. If screenName is empty changes will be applied to all.  \r\n",
        "name": "setSoftedgeVisible",
        "params": [
         {
@@ -5427,7 +4477,6 @@
        ]
       },
       {
-       "documentation": "Reset all color correction\r\n",
        "name": "resetAllColorCorrections",
        "params": [],
        "returnValues": [
@@ -5438,7 +4487,6 @@
        ]
       },
       {
-       "documentation": "et ColorCorrection Value by Path\r\n",
        "name": "setColorCorrectionWithPath",
        "params": [
         {
@@ -5458,7 +4506,6 @@
        ]
       },
       {
-       "documentation": "et ColorCorrection Value by Path\r\n",
        "name": "getColorCorrectionWithPath",
        "params": [
         {
@@ -5474,7 +4521,6 @@
        ]
       },
       {
-       "documentation": "et colorcorrection with jsonstring\r\n",
        "name": "setColorCorrectionAsJsonString",
        "params": [
         {
@@ -5490,7 +4536,6 @@
        ]
       },
       {
-       "documentation": "et colorcorrection as jsonstring\r\n",
        "name": "getColorCorrectionAsJsonString",
        "params": [],
        "returnValues": [
@@ -5502,7 +4547,6 @@
       },
       {
        "deliver": "Pixera.LiveSystems.Output",
-       "documentation": "Get projector output. Index is optional. By default the first output is returned.\r\n",
        "name": "getOutput",
        "params": [
         {
@@ -5518,7 +4562,6 @@
        ]
       },
       {
-       "documentation": "Set projector output.\r\n",
        "name": "setOutput",
        "params": [
         {
@@ -5530,207 +4573,6 @@
         {
          "name": "null",
          "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Set horizontal lens shift.\r\n",
-       "name": "setHorizontalLensShift",
-       "params": [
-        {
-         "name": "value",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get horizontal lens shift.\r\n",
-       "name": "getHorizontalLensShift",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "double",
-         "type": "double"
-        }
-       ]
-      },
-      {
-       "documentation": "Set vertical lens shift.\r\n",
-       "name": "setVerticalLensShift",
-       "params": [
-        {
-         "name": "value",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get vertical lens shift.\r\n",
-       "name": "getVerticalLensShift",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "double",
-         "type": "double"
-        }
-       ]
-      },
-      {
-       "documentation": "Set brightness.\r\nonly generic Projector can be set\r\n",
-       "name": "setBrightness",
-       "params": [
-        {
-         "name": "value",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get brightness.\r\n",
-       "name": "getBrightness",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int",
-         "type": "int"
-        }
-       ]
-      },
-      {
-       "documentation": "Set lens fov.\r\n",
-       "name": "setFov",
-       "params": [
-        {
-         "name": "value",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get lens fov.\r\n",
-       "name": "getFov",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "double",
-         "type": "double"
-        }
-       ]
-      },
-      {
-       "documentation": "Set lens throw Ratio.\r\n",
-       "name": "setThrowRatio",
-       "params": [
-        {
-         "name": "value",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get lens throw ratio.\r\n",
-       "name": "getThrowRatio",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "double",
-         "type": "double"
-        }
-       ]
-      },
-      {
-       "documentation": "Set look at point.\r\nvalues needs to be in meters\r\n",
-       "name": "setLookAtPoint",
-       "params": [
-        {
-         "name": "x",
-         "type": "double"
-        },
-        {
-         "name": "y",
-         "type": "double"
-        },
-        {
-         "name": "z",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Get look at point.\r\nvalues are in meters\r\n",
-       "name": "getLookAtPoint",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "double[]",
-         "type": "double[]"
-        }
-       ]
-      },
-      {
-       "documentation": "Set resolution of projector.\r\nthis can only be set if the projector is not connected to a output.\r\nif it is connected the projector has the resolution of the output.\r\n",
-       "name": "setResolution",
-       "params": [
-        {
-         "name": "x",
-         "type": "int"
-        },
-        {
-         "name": "y",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "get resolution of projector.\r\n",
-       "name": "getResolution",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int[]",
-         "type": "int[]"
         }
        ]
       },
@@ -5783,7 +4625,6 @@
    "functions": [
     {
      "deliver": "Pixera.Projectors.Projector",
-     "documentation": "Projector name as shown in the inspector.\r\n",
      "name": "getProjectorWithName",
      "params": [
       {
@@ -5800,7 +4641,6 @@
     },
     {
      "deliver": "Pixera.Projectors.Projector",
-     "documentation": "Returns handles to all screens currently used in the Mapping tab.\r\n",
      "name": "getProjectors",
      "params": [],
      "returnValues": [
@@ -5848,7 +4688,6 @@
      "methods": [
       {
        "deliver": "Pixera.Resources.ResourceFolder",
-       "documentation": "Pixera Control self-reference function.\r\n",
        "name": "ref",
        "params": [],
        "returnValues": [
@@ -5885,7 +4724,6 @@
       },
       {
        "deliver": "Pixera.Resources.ResourceFolder",
-       "documentation": "Returns the resource folders that are immediate children of this folder.\r\n",
        "name": "getResourceFolders",
        "params": [],
        "returnValues": [
@@ -5897,7 +4735,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Returns handles to all the resources that are directly in one folder (i.e. does not consider subfolders).\r\n",
        "name": "getResources",
        "params": [],
        "returnValues": [
@@ -5909,7 +4746,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Returns a handle to a resource in the current folder at index\r\n",
        "name": "getResourceAtIndex",
        "params": [
         {
@@ -5926,24 +4762,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Returns a handle to a resource in the current folder by name\r\n",
-       "name": "getResourceByName",
-       "params": [
-        {
-         "name": "name",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "handle",
-         "type": "handle"
-        }
-       ]
-      },
-      {
-       "deliver": "Pixera.Resources.Resource",
-       "documentation": "Adds the file at the path to the folder.\r\n",
        "name": "addResource",
        "params": [
         {
@@ -5960,7 +4778,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Adds the files at the directory path to the folder. If checkRedundancy == true then only files that have names\r\nthat are not currently in the folder are added. If remoteOthers == true then the missing files in the folder are removed, assets are untouched\r\n",
        "name": "addResourcesFromDirectory",
        "params": [
         {
@@ -5985,7 +4802,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Adds the files at the directory path to the folder. If checkRedundancy == true then only files that have names\r\nthat are not currently in the folder are added. If remoteOthers == true then the missing files in the folder are removed, assets are also removed\r\n",
        "name": "addResourcesFromDirectoryRemoveAssets",
        "params": [
         {
@@ -6009,8 +4825,6 @@
        ]
       },
       {
-       "deliver": "Pixera.Resources.Resource",
-       "documentation": "reates and adds a text(0), colour(1), web(2), timelinereference(3) or multi(4) resource.\r\n",
        "name": "addInternalResource",
        "params": [
         {
@@ -6030,7 +4844,6 @@
        ]
       },
       {
-       "documentation": "Creates folders hierarchically for a path as children of the specified folder.\r\nFor example if you call this against the handle of the \"Media\" folder with a path like:\r\n\"/my/new/folders\", it will result in the following structure: \"Media/my/new/folders\".\r\n",
        "name": "createFoldersFrom",
        "params": [
         {
@@ -6046,7 +4859,6 @@
        ]
       },
       {
-       "documentation": "Reloads for all resources in folder the files from disk, distributes changed files and creates new preview.\r\n",
        "name": "refreshResources",
        "params": [],
        "returnValues": [
@@ -6057,7 +4869,6 @@
        ]
       },
       {
-       "documentation": "Reloads for all resources in folder the files from disk, distributes changed files and creates new preview.\r\n",
        "name": "moveResourceToThis",
        "params": [
         {
@@ -6128,7 +4939,6 @@
        ]
       },
       {
-       "documentation": "Resets distribution targets based on the file distribution settings and if needed distributes resource.\r\n",
        "name": "resetDistributionTargets",
        "params": [],
        "returnValues": [
@@ -6139,7 +4949,6 @@
        ]
       },
       {
-       "documentation": "Changes the state of a distribution target of a resource.\r\n",
        "name": "changeDistributionTarget",
        "params": [
         {
@@ -6234,7 +5043,6 @@
        ]
       },
       {
-       "documentation": "Get DMX Id of both the resource and its parent folder as:<br>\r\nFolder Id << 16, Resource Id.\r\n",
        "name": "getCombinedDmxId",
        "params": [],
        "returnValues": [
@@ -6371,7 +5179,6 @@
      "methods": [
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Pixera Control self-reference function.\r\n",
        "name": "ref",
        "params": [],
        "returnValues": [
@@ -6382,7 +5189,6 @@
        ]
       },
       {
-       "documentation": "Removes the resource.\r\n",
        "name": "removeThis",
        "params": [],
        "returnValues": [
@@ -6393,8 +5199,6 @@
        ]
       },
       {
-       "documentation": "Permanently removes the assets associated with the resource from all systems\r\non which they are stored.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "deleteFilesOnSystems",
        "params": [],
        "returnValues": [
@@ -6405,7 +5209,6 @@
        ]
       },
       {
-       "documentation": "Removes the resource and permanently removes the assets associated with it from\r\nall systems on which they are stored.\r\n",
        "name": "removeThisIncludingAssets",
        "params": [],
        "returnValues": [
@@ -6416,8 +5219,6 @@
        ]
       },
       {
-       "documentation": "Permanently removes the asset from the given live system.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "deleteAssetFromLiveSystem",
        "params": [
         {
@@ -6433,8 +5234,6 @@
        ]
       },
       {
-       "documentation": "Resets distribution targets based on the file distribution settings and if needed distributes resource.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "resetDistributionTargets",
        "params": [],
        "returnValues": [
@@ -6445,8 +5244,6 @@
        ]
       },
       {
-       "documentation": "Changes the state of a distribution target of a resource.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "changeDistributionTarget",
        "params": [
         {
@@ -6476,7 +5273,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,LiveInput,Color,WebBrowser,LayerRef,MultiRes,Compositing,Text,Unknown",
        "name": "setName",
        "params": [
         {
@@ -6492,7 +5288,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,LiveInput,Unknown",
        "name": "getFps",
        "params": [],
        "returnValues": [
@@ -6503,7 +5298,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,LiveInput,Color,WebBrowser,LayerRef,MultiRes,3DModel,Unknown",
        "name": "getResolution",
        "params": [],
        "returnValues": [
@@ -6514,8 +5308,6 @@
        ]
       },
       {
-       "documentation": "Returns the active state of a Live Input Resource\r\n",
-       "filter": "LiveInput,Unknown",
        "name": "getIsActive",
        "params": [],
        "returnValues": [
@@ -6526,8 +5318,6 @@
        ]
       },
       {
-       "documentation": "Returns list of available Video Modes of a Live Input Resource,\r\nnot all Live Input Resources have a list of modes.\r\n",
-       "filter": "LiveInput,Unknown",
        "name": "getVideoStreamModes",
        "params": [],
        "returnValues": [
@@ -6538,8 +5328,6 @@
        ]
       },
       {
-       "documentation": "Set the Video Mode of a Live Input Resource by it's index.\r\n",
-       "filter": "LiveInput,Unknown",
        "name": "setVideoStreamMode",
        "params": [
         {
@@ -6555,7 +5343,6 @@
        ]
       },
       {
-       "documentation": "Returns an id based on the handle. This is currently necessary in some situations\r\nbecause some API implementations can not yet consume handles as parameters.\r\n",
        "name": "getId",
        "params": [],
        "returnValues": [
@@ -6566,8 +5353,6 @@
        ]
       },
       {
-       "documentation": "Returns the duration of the resource in seconds.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "getDuration",
        "params": [],
        "returnValues": [
@@ -6578,7 +5363,6 @@
        ]
       },
       {
-       "documentation": "Returns the type of the resource.\r\n",
        "name": "getType",
        "params": [],
        "returnValues": [
@@ -6589,7 +5373,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,Unknown",
        "name": "setCurrentVersion",
        "params": [
         {
@@ -6605,7 +5388,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,Unknown",
        "name": "getCurrentVersion",
        "params": [],
        "returnValues": [
@@ -6616,7 +5398,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,Unknown",
        "name": "getVersions",
        "params": [],
        "returnValues": [
@@ -6627,8 +5408,6 @@
        ]
       },
       {
-       "documentation": "et Version Suffix, First is begin\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,Unknown",
        "name": "getVersionSuffix",
        "params": [],
        "returnValues": [
@@ -6639,8 +5418,6 @@
        ]
       },
       {
-       "documentation": "et start suffex for versions\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,Unknown",
        "name": "rescanVersions",
        "params": [],
        "returnValues": [
@@ -6651,7 +5428,6 @@
        ]
       },
       {
-       "documentation": "Returns the png thumbnail data of the resource in a base 64 string. This is the\r\nimage that is shown in the resource tree. Its resolution is currently 256 * 174\r\npixels.\r\n",
        "name": "getThumbnailAsBase64",
        "params": [],
        "returnValues": [
@@ -6662,7 +5438,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,3DModel,FX,Unknown",
        "name": "getHasPendingTransfer",
        "params": [],
        "returnValues": [
@@ -6673,7 +5448,6 @@
        ]
       },
       {
-       "documentation": "Returns true if the resource is currently referred to in a timeline\r\n(via a clip or a dominant value).\r\n",
        "name": "getIsInUse",
        "params": [],
        "returnValues": [
@@ -6684,7 +5458,6 @@
        ]
       },
       {
-       "documentation": "Returns the time the resource was first referred to in a timeline (via a clip or a dominant\r\nvalue) in milliseconds since midnight Jan 1st 1970 UTC. If the time is zero then the resource\r\nhas not been used yet in any timeline.\r\n",
        "name": "getLastUsageBeginTime",
        "params": [],
        "returnValues": [
@@ -6695,7 +5468,6 @@
        ]
       },
       {
-       "documentation": "Returns the time the resource was first referred to in a timeline (via a clip or a dominant\r\nvalue) as an ISO-8601 string (using the local timezone). If the string is empty then the resource\r\nhas not been used yet in any timeline.\r\n",
        "name": "getLastUsageBeginTimeAsString",
        "params": [],
        "returnValues": [
@@ -6706,7 +5478,6 @@
        ]
       },
       {
-       "documentation": "Returns the time the resource was removed from the last timeline (whether from a clip or\r\na dominant value) in milliseconds since midnight Jan 1st 1970 UTC. If the time is zero then\r\nthe resource was either never used at all or is still in use.\r\n",
        "name": "getLastUsageEndTime",
        "params": [],
        "returnValues": [
@@ -6717,7 +5488,6 @@
        ]
       },
       {
-       "documentation": "Returns the time the resource was removed from the last timeline (whether from a clip or\r\na dominant value) as an ISO-8601 string (using the local timezone). If the time is zero then\r\nthe resource was either never used at all or is still in use.\r\n",
        "name": "getLastUsageEndTimeAsString",
        "params": [],
        "returnValues": [
@@ -6728,8 +5498,6 @@
        ]
       },
       {
-       "documentation": "get the system filepath\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,3DModel,FX,Unknown",
        "name": "getFilePath",
        "params": [],
        "returnValues": [
@@ -6740,8 +5508,6 @@
        ]
       },
       {
-       "documentation": "Sets the text of a text input resource.\r\n",
-       "filter": "Text,Unknown",
        "name": "setText",
        "params": [
         {
@@ -6757,8 +5523,6 @@
        ]
       },
       {
-       "documentation": "Returns the text of a text input resource.\r\n",
-       "filter": "Text,Unknown",
        "name": "getText",
        "params": [],
        "returnValues": [
@@ -6769,7 +5533,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "setFontWithName",
        "params": [
         {
@@ -6785,7 +5548,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "getFontName",
        "params": [],
        "returnValues": [
@@ -6796,7 +5558,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "setFontWithPath",
        "params": [
         {
@@ -6812,8 +5573,6 @@
        ]
       },
       {
-       "documentation": "0 : Align Left<br>\r\n1 : Align Center<br>\r\n2 : Align Right\r\n",
-       "filter": "Text,Unknown",
        "name": "setHorizontalTextAlignment",
        "params": [
         {
@@ -6829,8 +5588,6 @@
        ]
       },
       {
-       "documentation": "0 : Align Top<br>\r\n1 : Align Center<br>\r\n2 : Align Bottom<br>\r\n",
-       "filter": "Text,Unknown",
        "name": "getHorizontalTextAlignment",
        "params": [],
        "returnValues": [
@@ -6841,7 +5598,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "setVerticalTextAlignment",
        "params": [
         {
@@ -6857,7 +5613,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "getVerticalTextAlignment",
        "params": [],
        "returnValues": [
@@ -6868,7 +5623,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "setLineHeight",
        "params": [
         {
@@ -6884,7 +5638,6 @@
        ]
       },
       {
-       "filter": "Text,Unknown",
        "name": "getLineHeight",
        "params": [],
        "returnValues": [
@@ -6895,8 +5648,6 @@
        ]
       },
       {
-       "documentation": "Returns the text-measurements width and height of the rectangle enclosing the text. The first entry of the\r\nreturned vector represents width, the second one represents height. Unit is pixels.\r\n",
-       "filter": "Text",
        "name": "getTextMeasurementsWidthAndHeight",
        "params": [],
        "returnValues": [
@@ -6907,8 +5658,6 @@
        ]
       },
       {
-       "documentation": "Sets the url of a web browser resource.\r\n",
-       "filter": "WebBrowser,Unknown",
        "name": "setUrl",
        "params": [
         {
@@ -6924,8 +5673,6 @@
        ]
       },
       {
-       "documentation": "Returns the url of a web browser resource.\r\n",
-       "filter": "WebBrowser,Unknown",
        "name": "getUrl",
        "params": [],
        "returnValues": [
@@ -6936,7 +5683,6 @@
        ]
       },
       {
-       "documentation": "Sets the path to a color transformation file to be used with the resource.\r\n",
        "name": "setColorTransformPath",
        "params": [
         {
@@ -6952,7 +5698,6 @@
        ]
       },
       {
-       "documentation": "Returns the path of the color transformation file be used with the resource.\r\n",
        "name": "getColorTransformPath",
        "params": [],
        "returnValues": [
@@ -6963,7 +5708,6 @@
        ]
       },
       {
-       "documentation": "Clear the path to a color transformation file.\r\n",
        "name": "clearColorTransformPath",
        "params": [],
        "returnValues": [
@@ -6974,7 +5718,6 @@
        ]
       },
       {
-       "documentation": "Reloads the file from disk, distributes changed files and creates new preview.\r\n",
        "name": "refresh",
        "params": [
         {
@@ -6990,8 +5733,6 @@
        ]
       },
       {
-       "documentation": "Distribute the file to clients.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,3DModel,FX,Unknown",
        "name": "distribute",
        "params": [],
        "returnValues": [
@@ -7002,8 +5743,6 @@
        ]
       },
       {
-       "documentation": "Get the id used to access the resource through dmx.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,3DModel,Unknown",
        "name": "getDmxId",
        "params": [],
        "returnValues": [
@@ -7014,8 +5753,6 @@
        ]
       },
       {
-       "documentation": "Set the id used to access the resource through dmx.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,3DModel,Unknown",
        "name": "setDmxId",
        "params": [
         {
@@ -7031,8 +5768,6 @@
        ]
       },
       {
-       "documentation": "Remove multiresource item at index\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "removeMultiresourceIndex",
        "params": [
         {
@@ -7048,8 +5783,6 @@
        ]
       },
       {
-       "documentation": "Add multiresource item\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "addMultiresourceItem",
        "params": [
         {
@@ -7066,8 +5799,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Get multiresource items\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "getMultiresourceItems",
        "params": [],
        "returnValues": [
@@ -7078,8 +5809,6 @@
        ]
       },
       {
-       "documentation": "replace multiresource item at index\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "replaceMultiresourceItemByIndex",
        "params": [
         {
@@ -7099,8 +5828,6 @@
        ]
       },
       {
-       "documentation": "Set multiresource resolution\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "setMultiresourceResolution",
        "params": [
         {
@@ -7120,8 +5847,6 @@
        ]
       },
       {
-       "documentation": "Set multiresource items size. (1.0 = full)\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "setMultiresourceItemSizebyIndex",
        "params": [
         {
@@ -7145,8 +5870,6 @@
        ]
       },
       {
-       "documentation": "Set multiresource items position.\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "setMultiresourceItemPositionbyIndex",
        "params": [
         {
@@ -7170,8 +5893,6 @@
        ]
       },
       {
-       "documentation": "Sets a color resource to show a gradient between its assigned colors.\r\n",
-       "filter": "Color,Unknown",
        "name": "setUseGradient",
        "params": [
         {
@@ -7187,8 +5908,6 @@
        ]
       },
       {
-       "documentation": "Get if a color resource uses a gradient.\r\n",
-       "filter": "Color,Unknown",
        "name": "getUseGradient",
        "params": [],
        "returnValues": [
@@ -7199,8 +5918,6 @@
        ]
       },
       {
-       "documentation": "Set multiple colors for a color resource.\r\nColor format is ARGB encoded in one 32 bit integer\r\nwhere a << 24, r << 16, g << 8, b << 0.\r\n",
-       "filter": "Color,Unknown",
        "name": "setColors",
        "params": [
         {
@@ -7228,8 +5945,6 @@
        ]
       },
       {
-       "documentation": "Set one color of a color resource.<br>\r\nIf index does not exist the color will be appended to the end of the color list.\r\n",
-       "filter": "Color,Unknown",
        "name": "setColorAtIndex",
        "params": [
         {
@@ -7273,8 +5988,6 @@
        ]
       },
       {
-       "documentation": "Get color value as ARGB in a single 32 bit integer\r\nwhere a << 24, r << 16, g << 8, b << 0.\r\n",
-       "filter": "Color,Unknown",
        "name": "getColorAtIndex",
        "params": [
         {
@@ -7290,7 +6003,6 @@
        ]
       },
       {
-       "filter": "Color,Unknown",
        "name": "getColorPositionAtIndex",
        "params": [
         {
@@ -7306,8 +6018,6 @@
        ]
       },
       {
-       "documentation": "action = run for launch\r\naction = kill for kill\r\n",
-       "filter": "Compositing,Unknown",
        "name": "launchVirtualWorld",
        "params": [
         {
@@ -7324,7 +6034,6 @@
       },
       {
        "deliver": "Pixera.Resources.UnrealWorld",
-       "filter": "Compositing,Unknown",
        "name": "getUnrealWorld",
        "params": [],
        "returnValues": [
@@ -7335,8 +6044,6 @@
        ]
       },
       {
-       "documentation": "Sets the restrict to specific services state and the list of IPs of the services.\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "setMultiResourceItemRestrictedServiceIps",
        "params": [
         {
@@ -7356,8 +6063,6 @@
        ]
       },
       {
-       "documentation": "Returns the list of restricted service IPs in a comma separated string.\r\n",
-       "filter": "MultiRes,Unknown",
        "name": "getMultiResourceItemRestrictedServiceIps",
        "params": [
         {
@@ -7373,7 +6078,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,Compositing,3DModel,FX,Unknown",
        "name": "replace",
        "params": [
         {
@@ -7431,8 +6135,6 @@
        ]
       },
       {
-       "documentation": "Search for a transcoding preset with the given name, and if found,\r\nmoves the resource to the transcoding folder and starts transcoding it with that preset\r\nif you want to convert all frames, set 0 as start and -1 as end frame.<br>\r\nserviceId is currently not used.\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "transcodeWithExisitngPreset",
        "params": [
         {
@@ -7468,8 +6170,6 @@
        ]
       },
       {
-       "documentation": "Move the resource to the transcoding folder and start transcoding with a preset\r\nin JSON format. See \"Transcoding::addOrChangePreset\" on how to build the JSON string\r\n",
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "transcodeWithSettings",
        "params": [
         {
@@ -7505,7 +6205,6 @@
        ]
       },
       {
-       "filter": "Video,ImageSequence,Image,Audio,Unknown",
        "name": "moveToTranscodingFolder",
        "params": [
         {
@@ -7664,7 +6363,6 @@
    "functions": [
     {
      "deliver": "Pixera.Resources.Resource",
-     "documentation": "Returns handles to all resources (including within subfolders) in the resource\r\ntree in the Compositing tab.\r\n",
      "name": "getResources",
      "params": [],
      "returnValues": [
@@ -7676,7 +6374,6 @@
     },
     {
      "deliver": "Pixera.Resources.ResourceFolder",
-     "documentation": "Returns a handle to a folder in the resource tree. The namePath\r\nspecifies the folder by starting from the root and then listing\r\nall the names as seen in the resources tree separated by forward\r\nslashes, e.g. \"Media/Std Backgrounds/Atmospherics\".\r\n",
      "name": "getResourceFolderWithNamePath",
      "params": [
       {
@@ -7693,7 +6390,6 @@
     },
     {
      "deliver": "Pixera.Resources.ResourceFolder",
-     "documentation": "Returns the top level resource folders.\r\n",
      "name": "getResourceFolders",
      "params": [],
      "returnValues": [
@@ -7733,7 +6429,6 @@
      "methods": [
       {
        "deliver": "Pixera.Timelines.Timeline",
-       "documentation": "Pixera Control self-reference function.\r\n",
        "name": "ref",
        "params": [],
        "returnValues": [
@@ -7744,7 +6439,6 @@
        ]
       },
       {
-       "documentation": "Removes the timeline.\r\n",
        "name": "removeThis",
        "params": [],
        "returnValues": [
@@ -7756,7 +6450,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Timeline",
-       "documentation": "Duplicate the timeline. withoutClipsCues is optional and on default false\r\n",
        "name": "duplicateThis",
        "params": [
         {
@@ -7772,7 +6465,6 @@
        ]
       },
       {
-       "documentation": "Select the timeline.\r\n",
        "name": "selectThis",
        "params": [],
        "returnValues": [
@@ -7783,7 +6475,6 @@
        ]
       },
       {
-       "documentation": "Get zoom factor of the timeline.\r\n",
        "name": "getZoomFactor",
        "params": [],
        "returnValues": [
@@ -7794,7 +6485,6 @@
        ]
       },
       {
-       "documentation": "Set zoom factor of the timeline.\r\n",
        "name": "setZoomFactor",
        "params": [
         {
@@ -7810,7 +6500,6 @@
        ]
       },
       {
-       "documentation": "Get vertical scroll offset of the timeline.\r\n",
        "name": "getVerticalScrollOffset",
        "params": [],
        "returnValues": [
@@ -7821,7 +6510,6 @@
        ]
       },
       {
-       "documentation": "Get vertical scroll offset of the timeline.\r\n",
        "name": "setVerticalScrollOffset",
        "params": [
         {
@@ -7837,7 +6525,6 @@
        ]
       },
       {
-       "documentation": "Get vertical scroll offset of the timeline.\r\n",
        "name": "getHorizontalScrollOffset",
        "params": [],
        "returnValues": [
@@ -7848,7 +6535,6 @@
        ]
       },
       {
-       "documentation": "Get vertical scroll offset of the timeline.\r\n",
        "name": "setHorizontalScrollOffset",
        "params": [
         {
@@ -7864,7 +6550,6 @@
        ]
       },
       {
-       "documentation": "Moves the timeline up or down in the render order, depending on whether moveDown is true.\r\n",
        "name": "moveInRenderOrder",
        "params": [
         {
@@ -7880,33 +6565,7 @@
        ]
       },
       {
-       "name": "setRenderOrder",
-       "params": [
-        {
-         "name": "index",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "getRenderOrder",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int",
-         "type": "int"
-        }
-       ]
-      },
-      {
        "deliver": "Pixera.Timelines.Layer",
-       "documentation": "Returns handles to all layers of the timeline.\r\n",
        "name": "getLayers",
        "params": [],
        "returnValues": [
@@ -7917,24 +6576,6 @@
        ]
       },
       {
-       "deliver": "Pixera.Timelines.Layer",
-       "documentation": "Returns the handle from a layer with name.\r\n",
-       "name": "getLayerFromName",
-       "params": [
-        {
-         "name": "name",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "handle",
-         "type": "handle"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns names to all layers of the timeline.\r\n",
        "name": "getLayerNames",
        "params": [],
        "returnValues": [
@@ -7946,7 +6587,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Layer",
-       "documentation": "Returns handles to all selected layers of the timeline.\r\n",
        "name": "getLayersSelected",
        "params": [],
        "returnValues": [
@@ -7957,7 +6597,6 @@
        ]
       },
       {
-       "documentation": "Select Layer by index of the timeline.\r\n",
        "name": "selectLayerByIndex",
        "params": [
         {
@@ -7973,7 +6612,6 @@
        ]
       },
       {
-       "documentation": "Select Layers of the timeline by Names.\r\n",
        "name": "selectLayerByNames",
        "params": [
         {
@@ -7990,7 +6628,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Layer",
-       "documentation": "Returns a handle to the layer in the timeline at the (zero-based) index in\r\nthe order as shown in the Pixera Timeline interface.\r\n",
        "name": "getLayerAtIndex",
        "params": [
         {
@@ -8007,45 +6644,12 @@
       },
       {
        "deliver": "Pixera.Timelines.Layer",
-       "documentation": "Creates a layer and returns a handle to it.\r\n",
        "name": "createLayer",
        "params": [],
        "returnValues": [
         {
          "name": "handle",
          "type": "handle"
-        }
-       ]
-      },
-      {
-       "documentation": "Batch-create clips on multiple layers.\r\n",
-       "name": "createClipsFromJsonString",
-       "params": [
-        {
-         "name": "jsonString",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
-        }
-       ]
-      },
-      {
-       "documentation": "Batch-remove clips as efficiently as possible.\r\n",
-       "name": "removeClipsFromJsonString",
-       "params": [
-        {
-         "name": "jsonString",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
         }
        ]
       },
@@ -8061,7 +6665,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns the handles of all cues in chronological order.\r\n",
        "name": "getCues",
        "params": [],
        "returnValues": [
@@ -8072,18 +6675,6 @@
        ]
       },
       {
-       "deliver": "Pixera.Timelines.Cue",
-       "name": "getCuesSelected",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "handle[]",
-         "type": "handle[]"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns names to all cues.\r\n",
        "name": "getCueNames",
        "params": [],
        "returnValues": [
@@ -8095,7 +6686,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns the handle of the cue with the given index. \r\nIndices are in chronological order.\r\n",
        "name": "getCueAtIndex",
        "params": [
         {
@@ -8112,7 +6702,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns the handle of the cue with the given name.\r\nIf multiple cues have the same name, the handle to the first match will be returned.<br>\r\nname: name of cue<br>\r\n",
        "name": "getCueFromName",
        "params": [
         {
@@ -8129,7 +6718,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns the handle of the cue with the given number.\r\nIf multiple cues have the same number, the handle to the first match will be returned.<br>\r\nnumber: number of cue<br>\r\n",
        "name": "getCueFromNumber",
        "params": [
         {
@@ -8145,7 +6733,6 @@
        ]
       },
       {
-       "documentation": "Jumps to and executes the cue with the given name.<br>\r\nname: name of cue<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
        "name": "applyCueWithName",
        "params": [
         {
@@ -8165,7 +6752,6 @@
        ]
       },
       {
-       "documentation": "Jumps to and executes the cue with the given number.<br>\r\nnumber: number of cue<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
        "name": "applyCueWithNumber",
        "params": [
         {
@@ -8186,7 +6772,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Creates a cue and returns its handle.<br>\r\nname: Name of the cue<br>\r\ntimeInFrames: Time on timeline in total frames<br>\r\noperation:<br>\r\n1:Play<br>\r\n2:Pause<br>\r\n3:Jump<br>\r\n4:Stop\r\n",
        "name": "createCue",
        "params": [
         {
@@ -8210,7 +6795,6 @@
        ]
       },
       {
-       "documentation": "Removes all cues.\r\n",
        "name": "removeCues",
        "params": [],
        "returnValues": [
@@ -8221,7 +6805,6 @@
        ]
       },
       {
-       "documentation": "Create pause cue before selected clips\r\n",
        "name": "createPauseCueBeforeSelectedClips",
        "params": [],
        "returnValues": [
@@ -8232,7 +6815,6 @@
        ]
       },
       {
-       "documentation": "Starts the timeline at the current time.\r\n",
        "name": "play",
        "params": [],
        "returnValues": [
@@ -8243,7 +6825,6 @@
        ]
       },
       {
-       "documentation": "Pauses the timeline at the current time.\r\n",
        "name": "pause",
        "params": [],
        "returnValues": [
@@ -8254,7 +6835,6 @@
        ]
       },
       {
-       "documentation": "Stops the timeline.\r\n",
        "name": "stop",
        "params": [],
        "returnValues": [
@@ -8265,7 +6845,6 @@
        ]
       },
       {
-       "documentation": "Toggles the timeline transport mode between play and pause.\r\n",
        "name": "toggleTransport",
        "params": [],
        "returnValues": [
@@ -8276,7 +6855,6 @@
        ]
       },
       {
-       "documentation": "Stores all domination values. I.e. events are created at the current time.\r\n",
        "name": "store",
        "params": [],
        "returnValues": [
@@ -8287,7 +6865,6 @@
        ]
       },
       {
-       "documentation": "Resets all domination values.\r\n",
        "name": "reset",
        "params": [],
        "returnValues": [
@@ -8298,7 +6875,6 @@
        ]
       },
       {
-       "documentation": "Returns the attributes of the timeline (see TimelineAttributes struct).\r\n",
        "name": "getAttributes",
        "params": [],
        "returnValues": [
@@ -8309,7 +6885,6 @@
        ]
       },
       {
-       "documentation": "Sets the current time in frames. Use getFps(.) to relate the frames to seconds.<br>\r\nThis method is deprecated. setCurrentTime(int time) should be used instead.<br>\r\ntime: Time in frames.\r\n",
        "name": "setCurrentFrame",
        "params": [
         {
@@ -8325,7 +6900,6 @@
        ]
       },
       {
-       "documentation": "Sets the current time in frames. Use getFps() to relate the frames to seconds.<br>\r\ntime: Time in frames.\r\n",
        "name": "setCurrentTime",
        "params": [
         {
@@ -8341,7 +6915,6 @@
        ]
       },
       {
-       "documentation": "Returns the current time in frames. Use getFps() to relate the frames to seconds.\r\n",
        "name": "getCurrentTime",
        "params": [],
        "returnValues": [
@@ -8352,7 +6925,6 @@
        ]
       },
       {
-       "documentation": "Scrub frames up or down from current time.\r\n",
        "name": "scrubCurrentTime",
        "params": [
         {
@@ -8368,7 +6940,6 @@
        ]
       },
       {
-       "documentation": "Returns the current time and allows to change it.<br>\r\nIf the parameter doSet is equal to true, the timeline time is set to the value of the parameter time.\r\nTime unit is frames.<br>\r\ntime: Time in frames.\r\ndoSet: Determines whether the timeline time is changed to parameter time.\r\n",
        "name": "CurrentTime",
        "params": [
         {
@@ -8388,7 +6959,6 @@
        ]
       },
       {
-       "documentation": "Returns the current time as a hours, minutes, seconds, frames string.\r\n",
        "name": "getCurrentHMSF",
        "params": [],
        "returnValues": [
@@ -8399,7 +6969,6 @@
        ]
       },
       {
-       "documentation": "Sets the transport mode of the timeline.<br>\r\nMode Parameter: Play = 1, Pause = 2, Stop = 3.\r\n",
        "name": "setTransportMode",
        "params": [
         {
@@ -8415,7 +6984,6 @@
        ]
       },
       {
-       "documentation": "Returns the transport mode of the timeline.<br>\r\nReturn values: Play = 1, Pause = 2, Stop = 3.\r\n",
        "name": "getTransportMode",
        "params": [],
        "returnValues": [
@@ -8426,7 +6994,6 @@
        ]
       },
       {
-       "documentation": "Set timecode input for midi and artnet timecode.\r\n",
        "name": "setTimecodeInput",
        "params": [
         {
@@ -8474,7 +7041,6 @@
        ]
       },
       {
-       "documentation": "Returns the frames per second value used as a time base.\r\n",
        "name": "getFps",
        "params": [],
        "returnValues": [
@@ -8485,7 +7051,6 @@
        ]
       },
       {
-       "documentation": "Returns the name of the timeline with the given handle.\r\n",
        "name": "getName",
        "params": [],
        "returnValues": [
@@ -8496,7 +7061,6 @@
        ]
       },
       {
-       "documentation": "Rename the timeline.\r\n",
        "name": "setName",
        "params": [
         {
@@ -8512,7 +7076,6 @@
        ]
       },
       {
-       "documentation": "Moves to next cue on timeline\r\n",
        "name": "moveToNextCue",
        "params": [],
        "returnValues": [
@@ -8523,7 +7086,6 @@
        ]
       },
       {
-       "documentation": "Moves to next cue on timeline and ignores cue properties.\r\n",
        "name": "moveToNextCueIgnoreProperties",
        "params": [],
        "returnValues": [
@@ -8535,7 +7097,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns handle to next cue on timeline.\r\n",
        "name": "getCueNext",
        "params": [],
        "returnValues": [
@@ -8546,7 +7107,6 @@
        ]
       },
       {
-       "documentation": "Moves to previous cue on timeline.\r\n",
        "name": "moveToPreviousCue",
        "params": [],
        "returnValues": [
@@ -8557,7 +7117,6 @@
        ]
       },
       {
-       "documentation": "Moves to previous cue on timeline and ignore cue properties\r\n",
        "name": "moveToPreviousCueIgnoreProperties",
        "params": [],
        "returnValues": [
@@ -8569,7 +7128,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns previous cue on timeline.\r\n",
        "name": "getCuePrevious",
        "params": [],
        "returnValues": [
@@ -8580,7 +7138,6 @@
        ]
       },
       {
-       "documentation": "Sets the next cue to be ignored when its reached.\r\n",
        "name": "ignoreNextCue",
        "params": [],
        "returnValues": [
@@ -8591,7 +7148,6 @@
        ]
       },
       {
-       "documentation": "Sets next cue with a specific operation to be ignored when reached.<br>\r\n1: Play<br>\r\n2: Pause<br>\r\n3: Stop<br>\r\n4: Jump\r\n",
        "name": "ignoreNextCueWithOperation",
        "params": [
         {
@@ -8607,7 +7163,6 @@
        ]
       },
       {
-       "documentation": "Fades between current and goal time. Time unit is frames.<br>\r\nif preloadDelayInMilliseconds is not set system fade to time delay is used\r\n",
        "name": "blendToTime",
        "params": [
         {
@@ -8631,7 +7186,6 @@
        ]
       },
       {
-       "documentation": "Fades between current and goal time. Time unit is frames. The transport mode at goal time is set to\r\nplay (transportMode = 1) or pause (transportMode = 2).<br>\r\nif preloadDelayInMilliseconds is not set system fade to time delay is used\r\n",
        "name": "blendToTimeWithTransportMode",
        "params": [
         {
@@ -8659,7 +7213,6 @@
        ]
       },
       {
-       "documentation": "Sets the blend-to-time mode.<br>\r\n1: Cross fade<br>\r\n2: Dip to transparent\r\n",
        "name": "setBlendToTimeMode",
        "params": [
         {
@@ -8675,7 +7228,6 @@
        ]
       },
       {
-       "documentation": "Sets the speed factor. The value of 'factor' has to be larger than 0. Use this method carefully.\r\nTo manipulate playback speed we recommend to use setTransportAttributes(.) for the \"Transport\"\r\nparameters of each layer.\r\n",
        "name": "setSpeedFactor",
        "params": [
         {
@@ -8691,7 +7243,6 @@
        ]
       },
       {
-       "documentation": "Returns the speed factor.\r\n",
        "name": "getSpeedFactor",
        "params": [],
        "returnValues": [
@@ -8702,7 +7253,6 @@
        ]
       },
       {
-       "documentation": "Sets the opacity value.<br>\r\nvalue: opacity value between 0.0 and 1.0\r\n",
        "name": "setOpacity",
        "params": [
         {
@@ -8718,7 +7268,6 @@
        ]
       },
       {
-       "documentation": "Returns the opacity value.\r\n",
        "name": "getOpacity",
        "params": [],
        "returnValues": [
@@ -8729,7 +7278,6 @@
        ]
       },
       {
-       "documentation": "Starts opacity animation from current opacity to 1 (fadeIn == true) or 0 (fadeIn == false).\r\nThe parameter fullFadeDuration represents the time a complete animation from 0 to 1 or vice versa would\r\nlast. If the current opacity is inbetween, the executed fade would last less time. E.g. a fade out\r\nstarting at opacity 0.3 would last fullFadeDuration * 0.3.<br>\r\nTime unit is frames.\r\n",
        "name": "startOpacityAnimation",
        "params": [
         {
@@ -8749,7 +7297,6 @@
        ]
       },
       {
-       "documentation": "Sets the SMPTE timecode mode.<br>\r\n0: None<br>\r\n1: Receive<br>\r\n2: Send\r\n",
        "name": "setSmpteMode",
        "params": [
         {
@@ -8765,7 +7312,6 @@
        ]
       },
       {
-       "documentation": "Returns the SMPTE timecode mode.\r\n",
        "name": "getSmpteMode",
        "params": [],
        "returnValues": [
@@ -8776,7 +7322,6 @@
        ]
       },
       {
-       "documentation": "Stores recorded domination values using the current settings.\r\n",
        "name": "storeRecordedValues",
        "params": [],
        "returnValues": [
@@ -8787,7 +7332,6 @@
        ]
       },
       {
-       "documentation": "Sets the SMPTE timecode input behaviour.<br>\r\n1: Continue<br>\r\n2: Pause<br>\r\n3: Stop\r\n",
        "name": "setSmpteInputBehaviour",
        "params": [
         {
@@ -8803,7 +7347,6 @@
        ]
       },
       {
-       "documentation": "Returns the SMPTE timecode input behaviour.\r\n",
        "name": "getSmpteInputBehaviour",
        "params": [],
        "returnValues": [
@@ -8814,7 +7357,6 @@
        ]
       },
       {
-       "documentation": "Sets the SMPTE timecode offset.\r\n",
        "name": "setSmpteOffset",
        "params": [
         {
@@ -8830,7 +7372,6 @@
        ]
       },
       {
-       "documentation": "Returns the SMPTE timecode offset.\r\n",
        "name": "getSmpteOffset",
        "params": [],
        "returnValues": [
@@ -8841,7 +7382,6 @@
        ]
       },
       {
-       "documentation": "Clears the recorded domination values and resets the reference time.\r\n",
        "name": "resetRecordedValues",
        "params": [],
        "returnValues": [
@@ -8858,42 +7398,6 @@
         {
          "name": "string",
          "type": "string"
-        }
-       ]
-      },
-      {
-       "documentation": "Starts preview editing.<br>\r\ngoalTime: Sets the preview nowpointer to the given time.\r\n",
-       "name": "startPreviewEdit",
-       "params": [
-        {
-         "name": "goalTime",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "End preview editing.<br>\r\nmoveToPreview: define whether normal playback should be moved to preview nowpointer or not.<br>\r\nblendDurationInMs: Optional parameter to set blend duration in frames. If not set the time defined in settings is used.\r\n",
-       "name": "endPreviewEdit",
-       "params": [
-        {
-         "name": "moveToPreview",
-         "type": "bool"
-        },
-        {
-         "name": "blendDurationInMs",
-         "type": "optional<int>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
         }
        ]
       },
@@ -8946,7 +7450,6 @@
      "methods": [
       {
        "deliver": "Pixera.Timelines.Layer",
-       "documentation": "Pixera Control self-reference function.\r\n",
        "name": "ref",
        "params": [],
        "returnValues": [
@@ -8957,7 +7460,6 @@
        ]
       },
       {
-       "documentation": "Removes the layer.\r\n",
        "name": "removeThis",
        "params": [],
        "returnValues": [
@@ -8979,19 +7481,7 @@
        ]
       },
       {
-       "deliver": "Pixera.Timelines.Param",
-       "name": "getParameters",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "handle[]",
-         "type": "handle[]"
-        }
-       ]
-      },
-      {
        "deliver": "Pixera.Timelines.Node",
-       "documentation": "Returns a node immediately below the layer based on the name displayed in the \r\nTimeline UI (e.g. the \"Position\" node below a standard layer).\r\n",
        "name": "getNodeWithName",
        "params": [
         {
@@ -9008,7 +7498,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Param",
-       "documentation": "Returns a handle to a parameter node child with the given name. At the level of the\r\nlayer, this will deliver those parameters (e.g. \"Transport\") that are direct children\r\nof the layer. Other parameters can be accessed via the node children of the layer\r\n(e.g. the x position is a child of the \"Position\" node).\r\n",
        "name": "getParamWithName",
        "params": [
         {
@@ -9024,7 +7513,6 @@
        ]
       },
       {
-       "documentation": "Returns the current position, rotation and scale values (array with 9 entries) \r\nof the layer as determined by the clip at the given time. If no clip is found\r\nthen the returned array will be empty.\r\n",
        "name": "getSpatialParametersAtTime",
        "params": [
         {
@@ -9041,7 +7529,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Timeline",
-       "documentation": "Returns the parent timeline.\r\n",
        "name": "getTimeline",
        "params": [],
        "returnValues": [
@@ -9052,7 +7539,6 @@
        ]
       },
       {
-       "documentation": "Sets the name of the layer.\r\n",
        "name": "setName",
        "params": [
         {
@@ -9068,7 +7554,6 @@
        ]
       },
       {
-       "documentation": "Returns the name of the layer.\r\n",
        "name": "getName",
        "params": [],
        "returnValues": [
@@ -9079,7 +7564,6 @@
        ]
       },
       {
-       "documentation": "Resets all dominant parameters of the layer.\r\nI.e. after execution the output of the\r\nlayer is determined by default values, keys and clips.\r\n",
        "name": "resetLayer",
        "params": [],
        "returnValues": [
@@ -9090,7 +7574,6 @@
        ]
       },
       {
-       "documentation": "Returns all parameter values of the layer as json.\r\n",
        "name": "getLayerJsonDescrip",
        "params": [],
        "returnValues": [
@@ -9101,7 +7584,6 @@
        ]
       },
       {
-       "documentation": "Set all parameter values as of the layer.\r\n",
        "name": "setLayerJsonDescrip",
        "params": [
         {
@@ -9146,16 +7628,11 @@
        ]
       },
       {
-       "documentation": "Sets the opacity of the layer.\r\n",
        "name": "setOpacity",
        "params": [
         {
          "name": "value",
          "type": "double"
-        },
-        {
-         "name": "fadeTimeMs",
-         "type": "optional<int>"
         }
        ],
        "returnValues": [
@@ -9166,7 +7643,6 @@
        ]
       },
       {
-       "documentation": "Returns the opacity of the layer.\r\n",
        "name": "getOpacity",
        "params": [],
        "returnValues": [
@@ -9177,7 +7653,6 @@
        ]
       },
       {
-       "documentation": "Resets the dominant opacity of the layer.\r\n",
        "name": "resetOpacity",
        "params": [],
        "returnValues": [
@@ -9188,16 +7663,11 @@
        ]
       },
       {
-       "documentation": "Sets the volume of the layer.\r\n",
        "name": "setVolume",
        "params": [
         {
          "name": "value",
          "type": "double"
-        },
-        {
-         "name": "fadeTimeMs",
-         "type": "optional<int>"
         }
        ],
        "returnValues": [
@@ -9208,7 +7678,6 @@
        ]
       },
       {
-       "documentation": "Returns the volume of the layer.\r\n",
        "name": "getVolume",
        "params": [],
        "returnValues": [
@@ -9219,7 +7688,6 @@
        ]
       },
       {
-       "documentation": "Resets the dominant volume of the layer.\r\n",
        "name": "resetVolume",
        "params": [],
        "returnValues": [
@@ -9230,7 +7698,6 @@
        ]
       },
       {
-       "documentation": "Mutes the layer.\r\n",
        "name": "muteLayer",
        "params": [],
        "returnValues": [
@@ -9241,7 +7708,6 @@
        ]
       },
       {
-       "documentation": "Un-Mutes the layer.\r\n",
        "name": "unMuteLayer",
        "params": [],
        "returnValues": [
@@ -9252,7 +7718,6 @@
        ]
       },
       {
-       "documentation": "Returns whether the layer is muted.\r\n",
        "name": "getIsLayerMuted",
        "params": [],
        "returnValues": [
@@ -9263,7 +7728,6 @@
        ]
       },
       {
-       "documentation": "Mutes the Audio.\r\n",
        "name": "muteAudio",
        "params": [],
        "returnValues": [
@@ -9274,7 +7738,6 @@
        ]
       },
       {
-       "documentation": "Un-Mutes the Audio.\r\n",
        "name": "unMuteAudio",
        "params": [],
        "returnValues": [
@@ -9285,7 +7748,6 @@
        ]
       },
       {
-       "documentation": "Returns whether the audio is muted.\r\n",
        "name": "getIsAudioMuted",
        "params": [],
        "returnValues": [
@@ -9296,7 +7758,6 @@
        ]
       },
       {
-       "documentation": "The Dmx mute state is encoded in a single 32-Bit value.\r\nMuting and unMuting is done by performing bitwise operations.\r\nThe first 18 FX can be muted individually.\r\nThe Value for those is: (2^fxIndex)<br>\r\nNone: 0x0 or 0<br>\r\nTransport: 0x1 or 1<br>\r\nOpacity: 0x2 or 2<br>\r\nPosition: 0x4 or 4<br>\r\nRotation: 0x8 or 8<br>\r\nScale: 0x10 or 16<br>\r\nFxStart = 0x20 or 32<br>\r\nFxEnd = 0x400000 or 4194304<br>\r\nFxAll = 0x7FFFE0 or 8388576<br>\r\nAll = 0x7FFFFF or 8388607\r\n",
        "name": "getDmxMuteState",
        "params": [],
        "returnValues": [
@@ -9337,7 +7798,6 @@
        ]
       },
       {
-       "documentation": "Sets the mode and loop state of the layer's transport parameter.\r\n",
        "name": "setTransport",
        "params": [
         {
@@ -9357,7 +7817,6 @@
        ]
       },
       {
-       "documentation": "Returns the mode of the layer's transport parameter.\r\n",
        "name": "getTransportMode",
        "params": [],
        "returnValues": [
@@ -9368,7 +7827,6 @@
        ]
       },
       {
-       "documentation": "Resets the dominant state of the layer's transport parameter.\r\n",
        "name": "resetTransportMode",
        "params": [],
        "returnValues": [
@@ -9379,7 +7837,6 @@
        ]
       },
       {
-       "documentation": "Returns the loop state of the layer's transport parameter.\r\n",
        "name": "getTransportLoop",
        "params": [],
        "returnValues": [
@@ -9390,34 +7847,6 @@
        ]
       },
       {
-       "documentation": "Sets playback speed of the layer.\r\n",
-       "name": "setPlaybackSpeed",
-       "params": [
-        {
-         "name": "speed",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns playback speed of the layer.\r\n",
-       "name": "getPlaybackSpeed",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "double",
-         "type": "double"
-        }
-       ]
-      },
-      {
-       "documentation": "Assigns a resource to the layer. The id is conceptually the handle but the\r\nhandle can not be passed directly for some implementations of the API. Therefore,\r\nResource.getId() should be used to fill this parameter.<br>\r\nNote that, up to and including API revision 14, this function took effect by\r\nchanging the resource assignment of the current clip. From revision 15 onwards,\r\nthe function works by assigning the resource to the layer as a dominant value\r\nindependent of the clips in the layer.\r\n",
        "name": "assignResource",
        "params": [
         {
@@ -9433,7 +7862,6 @@
        ]
       },
       {
-       "documentation": "Assigns a resource to the layer while besides the resource id also a fade duration\r\nhas to be passed to the function. The id is conceptually the handle but the handle\r\ncan not be passed directly for some implementations of the API. Therefore,\r\nResource.getId() should be used to fill this parameter. The unit of the parameter\r\nfadeDuration is seconds. Only pass values >= 0. While 0 means 'no fade'.\r\n",
        "name": "assignResourceWithFade",
        "params": [
         {
@@ -9454,7 +7882,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Returns the resource currently assigned to the layer.\r\n",
        "name": "getAssignedResource",
        "params": [],
        "returnValues": [
@@ -9465,7 +7892,6 @@
        ]
       },
       {
-       "documentation": "Resets the currently assigned dominant resource of the layer.\r\nI.e. after execution no resource is dominant and the output of the\r\nlayer is determined by its clips.\r\n",
        "name": "resetAssignedResource",
        "params": [],
        "returnValues": [
@@ -9477,7 +7903,6 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Returns the resource currently assigned to the layer.\r\n",
        "name": "getAssignedModelResource",
        "params": [],
        "returnValues": [
@@ -9488,7 +7913,6 @@
        ]
       },
       {
-       "documentation": "Reset the resource currently assigned to the layer.\r\n",
        "name": "resetAssignedModelResource",
        "params": [],
        "returnValues": [
@@ -9499,7 +7923,6 @@
        ]
       },
       {
-       "documentation": "get assigend fx names.\r\n",
        "name": "getFxNames",
        "params": [],
        "returnValues": [
@@ -9510,7 +7933,6 @@
        ]
       },
       {
-       "documentation": "Sets the duration of the fade that is applied when the dominant resource of the layer is changed, \r\nsee API function Layer.assignResource(.). The unit of the value parameter is seconds.\r\n",
        "name": "setFadeDurationDominantResourceChange",
        "params": [
         {
@@ -9526,7 +7948,6 @@
        ]
       },
       {
-       "documentation": "Returns the duration of the fade that is applied when the dominant resource of the layer is changed.\r\nThe unit of the returned value is seconds.\r\n",
        "name": "getFadeDurationDominantResourceChange",
        "params": [],
        "returnValues": [
@@ -9538,7 +7959,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Clip",
-       "documentation": "Creates a clip at current time and returns a handle to it.\r\n",
        "name": "createClip",
        "params": [],
        "returnValues": [
@@ -9550,7 +7970,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Clip",
-       "documentation": "Creates a clip at the given time and returns a handle to it.\r\nTime in frames.\r\n",
        "name": "createClipAtTime",
        "params": [
         {
@@ -9594,7 +8013,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Clip",
-       "documentation": "Returns the clip at the given index. Index is 0-based.\r\n",
        "name": "getClipAtIndex",
        "params": [
         {
@@ -9611,7 +8029,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Clip",
-       "documentation": "Returns all clips.\r\n",
        "name": "getClips",
        "params": [],
        "returnValues": [
@@ -9623,7 +8040,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Clip",
-       "documentation": "Returns current clip\r\n",
        "name": "getClipCurrent",
        "params": [
         {
@@ -9640,7 +8056,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Clip",
-       "documentation": "Returns all clips.\r\n",
        "name": "getClipsSelected",
        "params": [],
        "returnValues": [
@@ -9651,7 +8066,6 @@
        ]
       },
       {
-       "documentation": "Removes all clips.\r\n",
        "name": "removeClips",
        "params": [],
        "returnValues": [
@@ -9662,7 +8076,6 @@
        ]
       },
       {
-       "documentation": "Sets the screen with name given as layer's home screen.\r\n",
        "name": "setHomeScreenFromScreenName",
        "params": [
         {
@@ -9678,7 +8091,6 @@
        ]
       },
       {
-       "documentation": "Returns the name of the current home screen.\r\n",
        "name": "getHomeScreenName",
        "params": [],
        "returnValues": [
@@ -9689,7 +8101,6 @@
        ]
       },
       {
-       "documentation": "Set the blend mode of the layer by name.\r\n",
        "name": "setBlendMode",
        "params": [
         {
@@ -9705,7 +8116,6 @@
        ]
       },
       {
-       "documentation": "Get the blend mode of the fayer.\r\n",
        "name": "getBlendMode",
        "params": [],
        "returnValues": [
@@ -9716,7 +8126,6 @@
        ]
       },
       {
-       "documentation": "Add effect by resource id.\r\nUse Pixera.Resources.Resource.getInst(resourcePath).getId() to get resource id.\r\n",
        "name": "addEffectById",
        "params": [
         {
@@ -9732,7 +8141,6 @@
        ]
       },
       {
-       "documentation": "Sets the 'preload permanently' status of the layer.\r\n",
        "name": "setPreloadPermanently",
        "params": [
         {
@@ -9748,7 +8156,6 @@
        ]
       },
       {
-       "documentation": "Returns the 'preload permanently' status of the layer.\r\n",
        "name": "getPreloadPermanently",
        "params": [],
        "returnValues": [
@@ -9759,7 +8166,6 @@
        ]
       },
       {
-       "documentation": "Sets the restrict to specific services state and the list of IPs of the services.\r\n",
        "name": "setRestrictToServiceWithIps",
        "params": [
         {
@@ -9779,7 +8185,6 @@
        ]
       },
       {
-       "documentation": "Returns the restrict to service state.\r\n",
        "name": "getRestrictToService",
        "params": [],
        "returnValues": [
@@ -9790,7 +8195,6 @@
        ]
       },
       {
-       "documentation": "Returns the list of restricted service IPs in a comma separated string.\r\n",
        "name": "getRestrictedServiceIps",
        "params": [],
        "returnValues": [
@@ -9801,7 +8205,6 @@
        ]
       },
       {
-       "documentation": "Get offsets.\r\n",
        "name": "getOffsets",
        "params": [],
        "returnValues": [
@@ -9812,7 +8215,6 @@
        ]
       },
       {
-       "documentation": "Set offsets.\r\n",
        "name": "setOffsets",
        "params": [
         {
@@ -9860,7 +8262,6 @@
        ]
       },
       {
-       "documentation": "Sets the current dominant value or clip value to offset by typeindex<br>\r\nresetDominant and removeKeyframesClips are optional and false on default<br>\r\ntypeIndex 0 = position,<br>\r\ntypeIndex 1 = rotation,<br>\r\ntypeIndex 2 = scale\r\n",
        "name": "setCurrentValuesToOffset",
        "params": [
         {
@@ -9880,32 +8281,6 @@
         {
          "name": "null",
          "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Set the render order of the layer. index 0 = top\r\nto send the layer to the last you can use -1 as index\r\n",
-       "name": "setRenderOrder",
-       "params": [
-        {
-         "name": "index",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "getRenderOrder",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int",
-         "type": "int"
         }
        ]
       },
@@ -9950,21 +8325,6 @@
          "type": "string"
         }
        ]
-      },
-      {
-       "name": "executeJavaScriptOnCurrentWebResource",
-       "params": [
-        {
-         "name": "script",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
       }
      ],
      "name": "Layer"
@@ -9972,7 +8332,6 @@
     {
      "methods": [
       {
-       "documentation": "Returns an id based on the handle. This is currently necessary in some situations\r\nbecause some API implementations can not yet consume handles as parameters. \r\n",
        "name": "getId",
        "params": [],
        "returnValues": [
@@ -9983,7 +8342,6 @@
        ]
       },
       {
-       "documentation": "Removes the clip.\r\n",
        "name": "removeThis",
        "params": [],
        "returnValues": [
@@ -9995,7 +8353,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Timeline",
-       "documentation": "Returns a handle to the timeline in which the clip is situated.\r\n",
        "name": "getTimeline",
        "params": [],
        "returnValues": [
@@ -10081,7 +8438,6 @@
        ]
       },
       {
-       "documentation": "Play modes:<br>\r\n1: Lock to time<br>\r\n2: Play once<br>\r\n3: Loop<br>\r\n4: Pause at endpoint<br>\r\n5: Lock to time no loop\r\n",
        "name": "getPlayMode",
        "params": [],
        "returnValues": [
@@ -10107,7 +8463,6 @@
        ]
       },
       {
-       "documentation": "Get the speed \r\n",
        "name": "getSpeed",
        "params": [],
        "returnValues": [
@@ -10133,7 +8488,6 @@
        ]
       },
       {
-       "documentation": "Get if frameblending is on or off\r\n",
        "name": "getBlendFrames",
        "params": [],
        "returnValues": [
@@ -10159,7 +8513,6 @@
        ]
       },
       {
-       "documentation": "Get the inpoint of clip\r\n",
        "name": "getInpoint",
        "params": [],
        "returnValues": [
@@ -10185,7 +8538,6 @@
        ]
       },
       {
-       "documentation": "Get the outpoint of clip\r\n",
        "name": "getOutpoint",
        "params": [],
        "returnValues": [
@@ -10211,7 +8563,6 @@
        ]
       },
       {
-       "documentation": "Assigns a resource to the resource parameter within the clip.<br>\r\nConceptually, the resId is a handle but the handle can not be passed directly for\r\nsome implementations of the API. Therefore, Resource.getId() should be used to\r\nfill this parameter.<br>\r\nsetToResourceDuration is optional and true if not set\r\n",
        "name": "assignResource",
        "params": [
         {
@@ -10232,24 +8583,12 @@
       },
       {
        "deliver": "Pixera.Resources.Resource",
-       "documentation": "Assigns a resource to the resource parameter within the clip.<br>\r\nConceptually, the resId is a handle but the handle can not be passed directly for\r\nsome implementations of the API. Therefore, Resource.getId() should be used to\r\nfill this parameter.\r\n",
        "name": "getAssignedResource",
        "params": [],
        "returnValues": [
         {
          "name": "handle",
          "type": "handle"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns the name of the resource assigned to the clip.<br>\r\nIf no resource is assigned an empty string is returned.\r\n",
-       "name": "getAssignedResourceName",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
         }
        ]
       },
@@ -10264,32 +8603,6 @@
        ]
       },
       {
-       "name": "setText",
-       "params": [
-        {
-         "name": "text",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "getText",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
-        }
-       ]
-      },
-      {
-       "documentation": "Creates a key at the given time with the given value in the clip parameter specified by\r\nnamePath, with the parts of namePath consisting of the strings shown in the timeline UI.\r\nE.g. \"Position/x\" refers to the parameter responsible for the x position of the layer.\r\nThe name of this method may be changed in future versions of the API to reflect the \r\n\"key\" (instead of \"event\") terminology.\r\n",
        "name": "createEvent",
        "params": [
         {
@@ -10313,7 +8626,6 @@
        ]
       },
       {
-       "documentation": "Creates a key at the given time with the given value in the clip parameter specified by\r\nnamePath, with the parts of namePath consisting of the strings shown in the timeline UI.\r\nE.g. \"Position/x\" refers to the parameter responsible for the x position of the layer.\r\nThe name of this method may be changed in future versions of the API to reflect the \r\n\"key\" (instead of \"event\") terminology.\r\n",
        "name": "createEventInPixelSpace",
        "params": [
         {
@@ -10337,7 +8649,6 @@
        ]
       },
       {
-       "documentation": "Remove a key at the given time with the given by namePath,\r\nwith the parts of namePath consisting of the strings shown in the timeline UI.\r\nE.g. \"Position/x\" refers to the parameter responsible for the x position of the layer.\r\nThe name of this method may be changed in future versions of the API to reflect the \r\n\"key\" (instead of \"event\") terminology.\r\n",
        "name": "removeEvent",
        "params": [
         {
@@ -10358,7 +8669,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Param",
-       "documentation": "Creates a Cue Before Clip\r\n",
        "name": "createPauseCueBeforeClip",
        "params": [],
        "returnValues": [
@@ -10369,7 +8679,6 @@
        ]
       },
       {
-       "documentation": "et look up table\r\n",
        "name": "setColorTransformPath",
        "params": [
         {
@@ -10385,7 +8694,6 @@
        ]
       },
       {
-       "documentation": "et look up table\r\n",
        "name": "getColorTransformPath",
        "params": [],
        "returnValues": [
@@ -10396,7 +8704,6 @@
        ]
       },
       {
-       "documentation": "lear look up table\r\n",
        "name": "clearColorTransformPath",
        "params": [],
        "returnValues": [
@@ -10407,7 +8714,6 @@
        ]
       },
       {
-       "documentation": "eturn all keyframes with time and value of this clip as json string\r\n",
        "name": "getKeyframesAsJsonString",
        "params": [],
        "returnValues": [
@@ -10445,7 +8751,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Param",
-       "documentation": "Returns a handle to a parameter node child with the given name. E.g. if the current\r\nnode is the \"Position\" folder then the name \"x\" would return the parameter node\r\nrepresenting the x position of the layer.\r\n",
        "name": "getParamWithName",
        "params": [
         {
@@ -10461,7 +8766,6 @@
        ]
       },
       {
-       "documentation": "Sets the values of the children of the node in the order that they are displayed\r\nin the timeline. This allows e.g. setting the x, y, and z values of a node with\r\none invocation.\r\n",
        "name": "setValues",
        "params": [
         {
@@ -10477,7 +8781,6 @@
        ]
       },
       {
-       "documentation": "Returns the values of the children of the node in the order that they are displayed\r\nin the timeline. This allows e.g. setting the x, y, and z values of a node with\r\none invocation.\r\n",
        "name": "getValues",
        "params": [],
        "returnValues": [
@@ -10488,7 +8791,6 @@
        ]
       },
       {
-       "documentation": "Resets the dominant values of the children of the node in the timeline.\r\n",
        "name": "resetValues",
        "params": [],
        "returnValues": [
@@ -10499,7 +8801,6 @@
        ]
       },
       {
-       "documentation": "Stores all node values in the Timeline.\r\n",
        "name": "storeValues",
        "params": [],
        "returnValues": [
@@ -10551,7 +8852,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Timeline",
-       "documentation": "Returns a handle to the timeline that holds the node.\r\n",
        "name": "getTimeline",
        "params": [],
        "returnValues": [
@@ -10629,16 +8929,11 @@
        ]
       },
       {
-       "documentation": "et parameter value. can be double or string\r\n",
        "name": "setValue",
        "params": [
         {
          "name": "value",
          "type": "timelineParamValue"
-        },
-        {
-         "name": "fadeTimeMs",
-         "type": "optional<int>"
         }
        ],
        "returnValues": [
@@ -10654,10 +8949,6 @@
         {
          "name": "value",
          "type": "double"
-        },
-        {
-         "name": "fadeTimeMs",
-         "type": "optional<int>"
         }
        ],
        "returnValues": [
@@ -10668,7 +8959,6 @@
        ]
       },
       {
-       "documentation": "eturn can be double or string\r\n",
        "name": "getValue",
        "params": [],
        "returnValues": [
@@ -10689,7 +8979,6 @@
        ]
       },
       {
-       "documentation": "Store parameter value in the Timeline.\r\n",
        "name": "storeValue",
        "params": [],
        "returnValues": [
@@ -10700,18 +8989,6 @@
        ]
       },
       {
-       "documentation": "Store parameter value in the Timeline and remove other keys.\r\n",
-       "name": "storeValueAndRemoveOther",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the transport state. Only effective for the \"Transport\" parameter of each layer.\r\nMode is as defined for Timelines.Timeline.setTransportMode().\r\ninpoint and outpoint are in frames. Inpoint of zero is ignored at pause. Outpoint of zero is always ignored.\r\n",
        "name": "setTransportAttributes",
        "params": [
         {
@@ -10743,7 +9020,6 @@
        ]
       },
       {
-       "documentation": "Returns the attributes of the current transport state.\r\n",
        "name": "getAttributes",
        "params": [],
        "returnValues": [
@@ -10841,7 +9117,6 @@
     {
      "methods": [
       {
-       "documentation": "Removes cue.\r\n",
        "name": "removeThis",
        "params": [],
        "returnValues": [
@@ -10852,7 +9127,6 @@
        ]
       },
       {
-       "documentation": "Jumps to and executes the cue.<br>\r\nblendDuration: optional parameter to set blend duration in seconds.\r\n",
        "name": "apply",
        "params": [
         {
@@ -10868,7 +9142,6 @@
        ]
       },
       {
-       "documentation": "Blends to and executes the cue. Deprecated method. Use apply().<br>\r\nblendDuration: blend duration in seconds.\r\n",
        "name": "blendToThis",
        "params": [
         {
@@ -10884,7 +9157,6 @@
        ]
       },
       {
-       "documentation": "Returns the attributes of the cue (see CueAttributes struct).\r\n",
        "name": "getAttributes",
        "params": [],
        "returnValues": [
@@ -10896,7 +9168,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Timeline",
-       "documentation": "Returns a handle to the timeline in which the cue is situated.\r\n",
        "name": "getTimeline",
        "params": [],
        "returnValues": [
@@ -10907,7 +9178,6 @@
        ]
       },
       {
-       "documentation": "Returns the time-ordered index of the cue in the timeline (-1 if the cue is not found).\r\n",
        "name": "getIndex",
        "params": [],
        "returnValues": [
@@ -10918,7 +9188,6 @@
        ]
       },
       {
-       "documentation": "Returns the name of the cue.\r\n",
        "name": "getName",
        "params": [],
        "returnValues": [
@@ -10929,7 +9198,6 @@
        ]
       },
       {
-       "documentation": "Sets the name of the cue.\r\n",
        "name": "setName",
        "params": [
         {
@@ -10945,7 +9213,6 @@
        ]
       },
       {
-       "documentation": "Returns the info of the cue.\r\n",
        "name": "getNote",
        "params": [],
        "returnValues": [
@@ -10956,7 +9223,6 @@
        ]
       },
       {
-       "documentation": "Sets the info of the cue.\r\n",
        "name": "setNote",
        "params": [
         {
@@ -10972,7 +9238,6 @@
        ]
       },
       {
-       "documentation": "Returns the operation mode of the cue.<br>\r\n1: Play<br>\r\n2: Pause<br>\r\n3: Stop<br>\r\n4: Jump\r\n",
        "name": "getOperation",
        "params": [],
        "returnValues": [
@@ -10983,7 +9248,6 @@
        ]
       },
       {
-       "documentation": "Sets the operation mode for the cue.<br>\r\n1: Play<br>\r\n2: Pause<br>\r\n3: Stop<br>\r\n4: Jump\r\n",
        "name": "setOperation",
        "params": [
         {
@@ -10999,7 +9263,6 @@
        ]
       },
       {
-       "documentation": "Returns the jump mode of the cue.<br>\r\n0: None<br>\r\n1: To time<br>\r\n2: To cue\r\n",
        "name": "getJumpMode",
        "params": [],
        "returnValues": [
@@ -11010,7 +9273,6 @@
        ]
       },
       {
-       "documentation": "Sets the jump mode of the cue with given handle (this only affects the cue\r\nif it has its operation set to \"jump\").<br>\r\n0: None<br>\r\n1: To time<br>\r\n2: To cue\r\n",
        "name": "setJumpMode",
        "params": [
         {
@@ -11026,7 +9288,6 @@
        ]
       },
       {
-       "documentation": "Returns the time in frames of the jump goal of the cue.\r\n",
        "name": "getJumpGoalTime",
        "params": [],
        "returnValues": [
@@ -11037,7 +9298,6 @@
        ]
       },
       {
-       "documentation": "Sets the time the timline should jump to if the cue is reached.<br>\r\nThis only affects the cue if it's set to jumpToTime.\r\n",
        "name": "setJumpGoalTime",
        "params": [
         {
@@ -11053,7 +9313,6 @@
        ]
       },
       {
-       "documentation": "Returns the name of the cue the timeline should jump to if the cue is reached.\r\n",
        "name": "getJumpGoalLabel",
        "params": [],
        "returnValues": [
@@ -11065,7 +9324,6 @@
       },
       {
        "deliver": "Pixera.Timelines.Cue",
-       "documentation": "Returns the handle of the cue the timeline should jump to if the cue is reached.\r\n",
        "name": "getJumpGoalCue",
        "params": [],
        "returnValues": [
@@ -11076,7 +9334,6 @@
        ]
       },
       {
-       "documentation": "Sets the name of the cue to which the timeline should jump if the cue is reached.<br>\r\nThis only affects the cue if it's set to jumpToLabel.\r\n",
        "name": "setJumpGoalLabel",
        "params": [
         {
@@ -11092,7 +9349,6 @@
        ]
       },
       {
-       "documentation": "Returns the number of the cue.\r\n",
        "name": "getNumber",
        "params": [],
        "returnValues": [
@@ -11103,7 +9359,6 @@
        ]
       },
       {
-       "documentation": "Sets the number of the cue.\r\n",
        "name": "setNumber",
        "params": [
         {
@@ -11119,7 +9374,6 @@
        ]
       },
       {
-       "documentation": "Returns the time in frames that the cue will cause the timeline to wait when\r\nit is reached before the cue is applied.\r\n",
        "name": "getWaitDuration",
        "params": [],
        "returnValues": [
@@ -11130,7 +9384,6 @@
        ]
       },
       {
-       "documentation": "Sets the time in frames that the cue will cause the timeline to wait when\r\nit is reached before the cue is applied.\r\n",
        "name": "setWaitDuration",
        "params": [
         {
@@ -11146,7 +9399,6 @@
        ]
       },
       {
-       "documentation": "Returns the time in frames, the blending between this cue and its jump target takes.\r\n",
        "name": "getBlendDuration",
        "params": [],
        "returnValues": [
@@ -11157,7 +9409,6 @@
        ]
       },
       {
-       "documentation": "Sets the blend duration of a cue.<br>\r\nTime in Frames\r\n",
        "name": "setBlendDuration",
        "params": [
         {
@@ -11173,7 +9424,6 @@
        ]
       },
       {
-       "documentation": "Returns the time in frames for the cue.\r\n",
        "name": "getTime",
        "params": [],
        "returnValues": [
@@ -11184,7 +9434,6 @@
        ]
       },
       {
-       "documentation": "Sets the time of the cue.\r\nThe unit of the parameter 'time' is frames.\r\n",
        "name": "setTime",
        "params": [
         {
@@ -11200,7 +9449,6 @@
        ]
       },
       {
-       "documentation": "Returns the name of the timeline that is triggered by this cue. An empty string is returned\r\nwhen no timeline is triggered.\r\n",
        "name": "getTimelineToTriggerName",
        "params": [],
        "returnValues": [
@@ -11211,7 +9459,6 @@
        ]
       },
       {
-       "documentation": "Sets the timeline that is triggered by this cue. Returns a boolean. A return value false means\r\nthat something went wrong and the cue is not changed.\r\nWhen the string parameter 'nameTimeline' is empty, the cue property 'Timeline to Trigger' is cleared.\r\nI.e. the cue will not trigger any timeline.\r\n",
        "name": "setTimelineToTrigger",
        "params": [
         {
@@ -11227,34 +9474,6 @@
        ]
       },
       {
-       "documentation": "Returns the applied playback time mode of the timeline that is triggered by this cue.\r\nThe return value corresponds to: Current Time = 1, Time = 2, Cue = 3.\r\n0 is returned when no timeline is triggered. \r\n",
-       "name": "getTimelineToTriggerMode",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int",
-         "type": "int"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the applied playback time mode of the timeline that is triggered by this cue. A return value false means\r\nthat something went wrong and the cue is not changed.\r\nMode Parameter: Current Time = 1, Time = 2, Cue = 3.\r\n",
-       "name": "setTimelineToTriggerTimeMode",
-       "params": [
-        {
-         "name": "mode",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "bool",
-         "type": "bool"
-        }
-       ]
-      },
-      {
-       "documentation": "Returns the applied playback mode of the timeline that is triggered by this cue.\r\nThe return value corresponds to: Play = 1, Pause = 2, Stop = 3.\r\n0 is returned when no timeline is triggered. \r\n",
        "name": "getTimelineTriggerMode",
        "params": [],
        "returnValues": [
@@ -11265,7 +9484,6 @@
        ]
       },
       {
-       "documentation": "Sets the applied playback mode of the timeline that is triggered by this cue. A return value false means\r\nthat something went wrong and the cue is not changed.\r\nMode Parameter: Play = 1, Pause = 2, Stop = 3.\r\n",
        "name": "setTimelineTriggerMode",
        "params": [
         {
@@ -11281,7 +9499,6 @@
        ]
       },
       {
-       "documentation": "Returns the applied time of the timeline that is triggered by this cue in frames.\r\n-1 is returned when no timeline is triggered or no time is applied. \r\n",
        "name": "getTimelineTriggerApplyTime",
        "params": [],
        "returnValues": [
@@ -11292,7 +9509,6 @@
        ]
       },
       {
-       "documentation": "Sets the applied time of the timeline that is triggered by this cue. A return value false means\r\nthat something went wrong and the cue is not changed.\r\nThe unit of the parameter 'time' is frames. The trigger time mode of this cue is set to 'Time'.\r\nHowever, a value < 0. means that the apply time is resetted. I.e. no\r\ntime will be applied and the time mode of the cue is set to 'Current Time'.\r\n",
        "name": "setTimelineTriggerApplyTime",
        "params": [
         {
@@ -11308,7 +9524,6 @@
        ]
       },
       {
-       "documentation": "Sets the apply cue of the timeline that is triggered by this cue. A return value false means\r\nthat something went wrong and the cue is not changed.\r\nThe trigger time mode of this cue is automatically set to 'Cue'.\r\n",
        "name": "setTimelineTriggerApplyCue",
        "params": [
         {
@@ -11324,7 +9539,6 @@
        ]
       },
       {
-       "documentation": "Returns whether the cue will be applied when the nowpointer passes it.\r\n",
        "name": "isActive",
        "params": [],
        "returnValues": [
@@ -11335,7 +9549,6 @@
        ]
       },
       {
-       "documentation": "Sets the acitvity state for the cue.<br>\r\nidState: 'Active' = 1, 'Ignore' = 2, 'Ignore Once' = 3\r\n",
        "name": "setActivity",
        "params": [
         {
@@ -11351,7 +9564,6 @@
        ]
       },
       {
-       "documentation": "Returns the countdown time to this cue in frames.<br>\r\nReturns zero when this cue was already passed.\r\n",
        "name": "getCountdown",
        "params": [],
        "returnValues": [
@@ -11362,7 +9574,6 @@
        ]
       },
       {
-       "documentation": "Returns the countdown time to this cue as a hours, minutes, seconds, frames string.<br>\r\nReturns zero string when this cue was already passed.\r\n",
        "name": "getCountdownHMSF",
        "params": [],
        "returnValues": [
@@ -11373,7 +9584,6 @@
        ]
       },
       {
-       "documentation": "Sets the \"Network Command\" information for the cue. conveyorName must be one of the entries in the \"API Output\" dropdown of the cue inspector.\r\ncommandData is the string to be executed.\r\n",
        "name": "setCommand",
        "params": [
         {
@@ -11389,41 +9599,6 @@
         {
          "name": "null",
          "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "etColor\r\n",
-       "name": "setColor",
-       "params": [
-        {
-         "name": "red",
-         "type": "int"
-        },
-        {
-         "name": "green",
-         "type": "int"
-        },
-        {
-         "name": "blue",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "etColor\r\n",
-       "name": "getColor",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "int[]",
-         "type": "int[]"
         }
        ]
       },
@@ -11476,7 +9651,6 @@
    "functions": [
     {
      "deliver": "Pixera.Timelines.Timeline",
-     "documentation": "Returns the handle of the timeline at the (zero-based) index in\r\nthe timeline library of the Compositing tab.\r\n",
      "name": "getTimelineAtIndex",
      "params": [
       {
@@ -11493,7 +9667,6 @@
     },
     {
      "deliver": "Pixera.Timelines.Timeline",
-     "documentation": "Returns the handle of the timeline with the given name (as shown in the \r\ntimeline library).\r\n",
      "name": "getTimelineFromName",
      "params": [
       {
@@ -11510,7 +9683,6 @@
     },
     {
      "deliver": "Pixera.Timelines.Timeline",
-     "documentation": "Returns handles to all timelines.\r\n",
      "name": "getTimelines",
      "params": [],
      "returnValues": [
@@ -11521,7 +9693,6 @@
      ]
     },
     {
-     "documentation": "Returns names to all timelines.\r\n",
      "name": "getTimelineNames",
      "params": [],
      "returnValues": [
@@ -11533,7 +9704,6 @@
     },
     {
      "deliver": "Pixera.Timelines.Timeline",
-     "documentation": "Returns handles to all selected timelines\r\n",
      "name": "getTimelinesSelected",
      "params": [],
      "returnValues": [
@@ -11545,7 +9715,6 @@
     },
     {
      "deliver": "Pixera.Timelines.Timeline",
-     "documentation": "Create Timeline\r\n",
      "name": "createTimeline",
      "params": [],
      "returnValues": [
@@ -11557,7 +9726,6 @@
     },
     {
      "deliver": "Pixera.Timelines.Node",
-     "documentation": "Returns a handle for the node specified by id after checking that a node with the id exists.<br>\r\nConceptually, the id and the handle are the same but some implementations of the API can not\r\nyet consume handles as parameters, making it necessary to translate between the two occasionally.\r\n",
      "name": "getNodeFromId",
      "params": [
       {
@@ -11569,36 +9737,6 @@
       {
        "name": "handle",
        "type": "handle"
-      }
-     ]
-    },
-    {
-     "name": "getInst",
-     "params": [
-      {
-       "name": "instancePath",
-       "type": "string"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "handle",
-       "type": "handle"
-      }
-     ]
-    },
-    {
-     "name": "getInstancePath",
-     "params": [
-      {
-       "name": "apEntityThisHandle",
-       "type": "handle"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "string",
-       "type": "string"
       }
      ]
     }
@@ -11689,10 +9827,6 @@
       {
        "name": "waitDuration",
        "type": "double"
-      },
-      {
-       "name": "note",
-       "type": "string"
       }
      ]
     }
@@ -11701,7 +9835,6 @@
   {
    "functions": [
     {
-     "documentation": "Sets the marker positions for projector calibration with external data.\r\nPositions must contain the marker coordinates in world space in consecutive order \r\nlike this: x1, y1, z1, x2, y2, z2, x3, y3, z3, ...<br>\r\nmarkerIds must contain a unique integer id for each marker in the same order as \r\nthe marker positions. The markerIds matching the coordinates example are 1,2,3.\r\n",
      "name": "setMarkerPositions",
      "params": [
       {
@@ -11943,51 +10076,6 @@
    ],
    "functions": [
     {
-     "name": "lockUi",
-     "params": [
-      {
-       "name": "password",
-       "type": "string"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "name": "unlockUi",
-     "params": [
-      {
-       "name": "password",
-       "type": "string"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "name": "toggleLockUi",
-     "params": [
-      {
-       "name": "password",
-       "type": "string"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
      "deliver": "Pixera.Ui.ComboBox",
      "name": "getComboBoxWithId",
      "params": [
@@ -12004,7 +10092,6 @@
      ]
     },
     {
-     "documentation": "Set the current AppMode<br>\r\n1 = Screens<br>\r\n2 = Mapping<br>\r\n3 = Compositing<br>\r\n4 = Compositing Inside<br>\r\n5 = Settings<br>\r\n6 = Mapping Screens Feedarea<br>\r\n7 = Control\r\n",
      "name": "setAppMode",
      "params": [
       {
@@ -12020,7 +10107,6 @@
      ]
     },
     {
-     "documentation": "Get the current AppMode\r\n",
      "name": "getAppMode",
      "params": [],
      "returnValues": [
@@ -12031,7 +10117,6 @@
      ]
     },
     {
-     "documentation": "Get display Testpattern\r\n",
      "name": "getDisplayTestpattern",
      "params": [],
      "returnValues": [
@@ -12042,7 +10127,6 @@
      ]
     },
     {
-     "documentation": "Get display Testpattern\r\n",
      "name": "setDisplayTestpattern",
      "params": [
       {
@@ -12058,18 +10142,6 @@
      ]
     },
     {
-     "documentation": "oggle the output freeze\r\n",
-     "name": "toggleOutputFreeze",
-     "params": [],
-     "returnValues": [
-      {
-       "name": "null",
-       "type": "null"
-      }
-     ]
-    },
-    {
-     "documentation": "Get the current AppMode\r\n",
      "name": "getPreviewCameraAsJsonString",
      "params": [],
      "returnValues": [
@@ -12145,99 +10217,7 @@
      ]
     }
    ],
-   "name": "Ui",
-   "namespaces": [
-    {
-     "functions": [
-      {
-       "documentation": "et current control page\r\n",
-       "name": "setControlPage",
-       "params": [
-        {
-         "name": "pageName",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "et control pages\r\n",
-       "name": "getControlPages",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string[]",
-         "type": "string[]"
-        }
-       ]
-      },
-      {
-       "documentation": "et current control page\r\n",
-       "name": "getCurrentControlPage",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string",
-         "type": "string"
-        }
-       ]
-      }
-     ],
-     "name": "Control"
-    },
-    {
-     "functions": [
-      {
-       "documentation": "elect the preview camera for the preview. first starts at 0\r\n",
-       "name": "selectPreviewCameraByIndex",
-       "params": [
-        {
-         "name": "index",
-         "type": "int"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "elect the preview camera by name\r\n",
-       "name": "selectPreviewCameraByName",
-       "params": [
-        {
-         "name": "name",
-         "type": "string"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "name": "getPreviewCameraNames",
-       "params": [],
-       "returnValues": [
-        {
-         "name": "string[]",
-         "type": "string[]"
-        }
-       ]
-      }
-     ],
-     "name": "PreviewCamera"
-    }
-   ]
+   "name": "Ui"
   },
   {
    "classes": [
@@ -12323,98 +10303,8 @@
          "type": "null"
         }
        ]
-      }
-     ],
-     "name": "Projector"
-    },
-    {
-     "methods": [
-      {
-       "documentation": "Sets the position in meters.\r\n",
-       "name": "setPosition",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zPos",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
       },
       {
-       "documentation": "Sets the rotation in degrees.\r\n",
-       "name": "setRotation",
-       "params": [
-        {
-         "name": "xRot",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yRot",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zRot",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets position and rotation in one API call.\r\n",
-       "name": "setPosRot",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zPos",
-         "type": "optional<double>"
-        },
-        {
-         "name": "xRot",
-         "type": "optional<double>"
-        },
-        {
-         "name": "yRot",
-         "type": "optional<double>"
-        },
-        {
-         "name": "zRot",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets position, rotation and the perspective position for the first screen group in one API call.\r\n",
        "name": "setPosRotAndPerspectivePos",
        "params": [
         {
@@ -12462,7 +10352,6 @@
        ]
       },
       {
-       "documentation": "Sets position, rotation and scale in one API call.\r\n",
        "name": "setPosRotScale",
        "params": [
         {
@@ -12510,7 +10399,6 @@
        ]
       },
       {
-       "documentation": "Enables time logging for the screen. Every 10 seconds values are printed to the pixera log\r\nshowing the number of messages and the minimum and maximum time between two messages for every second.\r\n",
        "name": "enableLogging",
        "params": [
         {
@@ -12531,7 +10419,6 @@
     {
      "methods": [
       {
-       "documentation": "Sets the param value. Note that this will bypass conversions and offsets determined by the GUI. \r\nE.g. layer-level offsets will not be taken into account and neither will resource-dependent scaling.\r\n",
        "name": "setValue",
        "params": [
         {
@@ -12547,7 +10434,6 @@
        ]
       },
       {
-       "documentation": "Enables time logging for the param. Every 10 seconds values are printed to the pixera log\r\nshowing the number of messages and the minimum and maximum time between two messages for every second.\r\n",
        "name": "enableLogging",
        "params": [
         {
@@ -12568,7 +10454,6 @@
     {
      "methods": [
       {
-       "documentation": "Sets the position in meters.\r\n",
        "name": "setPosition",
        "params": [
         {
@@ -12592,7 +10477,6 @@
        ]
       },
       {
-       "documentation": "Sets the euler rotation in degrees.\r\n",
        "name": "setRotation",
        "params": [
         {
@@ -12616,35 +10500,6 @@
        ]
       },
       {
-       "documentation": "Sets the rotation in quaternions.\r\n",
-       "name": "setRotationQuat",
-       "params": [
-        {
-         "name": "xQuat",
-         "type": "double"
-        },
-        {
-         "name": "yQuat",
-         "type": "double"
-        },
-        {
-         "name": "zQuat",
-         "type": "double"
-        },
-        {
-         "name": "wQuat",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the position in meters, rotation and fov in degrees.\r\n",
        "name": "setTransformation",
        "params": [
         {
@@ -12688,55 +10543,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation in quaternions, fov in degrees.\r\n",
-       "name": "setTransformationQuat",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "double"
-        },
-        {
-         "name": "yPos",
-         "type": "double"
-        },
-        {
-         "name": "zPos",
-         "type": "double"
-        },
-        {
-         "name": "xQuat",
-         "type": "double"
-        },
-        {
-         "name": "yQuat",
-         "type": "double"
-        },
-        {
-         "name": "zQuat",
-         "type": "double"
-        },
-        {
-         "name": "wQuat",
-         "type": "double"
-        },
-        {
-         "name": "fov",
-         "type": "double"
-        },
-        {
-         "name": "aspectRatio",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
        "name": "setTransformationAndLensProps",
        "params": [
         {
@@ -12820,95 +10626,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
-       "name": "setTransformationAndLensPropsQuat",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "double"
-        },
-        {
-         "name": "yPos",
-         "type": "double"
-        },
-        {
-         "name": "zPos",
-         "type": "double"
-        },
-        {
-         "name": "xQuat",
-         "type": "double"
-        },
-        {
-         "name": "yQuat",
-         "type": "double"
-        },
-        {
-         "name": "zQuat",
-         "type": "double"
-        },
-        {
-         "name": "wQuat",
-         "type": "double"
-        },
-        {
-         "name": "fov",
-         "type": "double"
-        },
-        {
-         "name": "aspectRatio",
-         "type": "double"
-        },
-        {
-         "name": "nearClip",
-         "type": "double"
-        },
-        {
-         "name": "farClip",
-         "type": "double"
-        },
-        {
-         "name": "aperture",
-         "type": "double"
-        },
-        {
-         "name": "focus",
-         "type": "double"
-        },
-        {
-         "name": "iris",
-         "type": "double"
-        },
-        {
-         "name": "k1",
-         "type": "double"
-        },
-        {
-         "name": "k2",
-         "type": "double"
-        },
-        {
-         "name": "centerX",
-         "type": "double"
-        },
-        {
-         "name": "centerY",
-         "type": "double"
-        },
-        {
-         "name": "panelWidth",
-         "type": "double"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
        "name": "setTransformationAndLensPropsExt",
        "params": [
         {
@@ -13006,134 +10723,6 @@
         {
          "name": "overscan",
          "type": "double"
-        },
-        {
-         "name": "focalLength",
-         "type": "optional<double>"
-        },
-        {
-         "name": "focalLengthDistorted",
-         "type": "optional<double>"
-        }
-       ],
-       "returnValues": [
-        {
-         "name": "null",
-         "type": "null"
-        }
-       ]
-      },
-      {
-       "documentation": "Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.\r\n",
-       "name": "setTransformationAndLensPropsExtQuat",
-       "params": [
-        {
-         "name": "xPos",
-         "type": "double"
-        },
-        {
-         "name": "yPos",
-         "type": "double"
-        },
-        {
-         "name": "zPos",
-         "type": "double"
-        },
-        {
-         "name": "xQuat",
-         "type": "double"
-        },
-        {
-         "name": "yQuat",
-         "type": "double"
-        },
-        {
-         "name": "zQuat",
-         "type": "double"
-        },
-        {
-         "name": "wQuat",
-         "type": "double"
-        },
-        {
-         "name": "fov",
-         "type": "double"
-        },
-        {
-         "name": "aspectRatio",
-         "type": "double"
-        },
-        {
-         "name": "nearClip",
-         "type": "double"
-        },
-        {
-         "name": "farClip",
-         "type": "double"
-        },
-        {
-         "name": "aperture",
-         "type": "double"
-        },
-        {
-         "name": "focus",
-         "type": "double"
-        },
-        {
-         "name": "focalDistance",
-         "type": "double"
-        },
-        {
-         "name": "zoom",
-         "type": "double"
-        },
-        {
-         "name": "iris",
-         "type": "double"
-        },
-        {
-         "name": "k1",
-         "type": "double"
-        },
-        {
-         "name": "k2",
-         "type": "double"
-        },
-        {
-         "name": "k3",
-         "type": "double"
-        },
-        {
-         "name": "p1",
-         "type": "double"
-        },
-        {
-         "name": "p2",
-         "type": "double"
-        },
-        {
-         "name": "centerX",
-         "type": "double"
-        },
-        {
-         "name": "centerY",
-         "type": "double"
-        },
-        {
-         "name": "panelWidth",
-         "type": "double"
-        },
-        {
-         "name": "overscan",
-         "type": "double"
-        },
-        {
-         "name": "focalLength",
-         "type": "optional<double>"
-        },
-        {
-         "name": "focalLengthDistorted",
-         "type": "optional<double>"
         }
        ],
        "returnValues": [
@@ -13149,7 +10738,6 @@
     {
      "methods": [
       {
-       "documentation": "Sets the position in meters, rotation and fov in degrees.\r\n",
        "name": "setTransformation",
        "params": [
         {
@@ -13193,7 +10781,6 @@
        ]
       },
       {
-       "documentation": "Sets the position in meters, rotation and fov in degrees.\r\n",
        "name": "setTransformationAndLensProps",
        "params": [
         {
@@ -13282,7 +10869,6 @@
    ],
    "functions": [
     {
-     "documentation": "Sets all entities registered in the current thread. Entities that were previously\r\nregistered that are not in the handle array are removed.\r\nusageHints is either empty or it contains one entry for each handle. Possible entries are:<br>\r\n   \"screen\"<br>\r\n   \"perspective\"<br>\r\n   \"parameter\"<br>\r\n   \"studioCamera\"\r\n",
      "name": "setRegistered",
      "params": [
       {
@@ -13310,7 +10896,6 @@
      ]
     },
     {
-     "documentation": "Updates the representation of all registered entities.\r\n",
      "name": "reloadRegistered",
      "params": [],
      "returnValues": [
@@ -13321,31 +10906,6 @@
      ]
     },
     {
-     "documentation": "Register projector for use with the Direct API.\r\n",
-     "name": "registerProjector",
-     "params": [
-      {
-       "name": "name",
-       "type": "string"
-      },
-      {
-       "name": "expectedFrequency",
-       "type": "int"
-      },
-      {
-       "name": "dampingMs",
-       "type": "int"
-      }
-     ],
-     "returnValues": [
-      {
-       "name": "handle",
-       "type": "handle"
-      }
-     ]
-    },
-    {
-     "documentation": "Register the screen for use with the Direct API.\r\n",
      "name": "registerScreen",
      "params": [
       {
@@ -13369,7 +10929,6 @@
      ]
     },
     {
-     "documentation": "Register the parameter for use with the Direct API. At the time when this function is executed\r\nthe layer should already have been displayed at least once. Otherwise the relevant underlying\r\nattributes may not have been initialized yet and can not be cached.<br>\r\nThe instance path traces the name hierarchy in the timeline tree. E.g. \"Timeline 1.Position.x\".\r\n",
      "name": "registerParam",
      "params": [
       {
@@ -13385,7 +10944,6 @@
      ]
     },
     {
-     "documentation": "Register the camera with the screen group name for use with the Direct API.\r\n",
      "name": "registerCamera",
      "params": [
       {
@@ -13405,7 +10963,6 @@
      ]
     },
     {
-     "documentation": "Register the perspective with the screen name for use with the Direct API.\r\n",
      "name": "registerPerspective",
      "params": [
       {

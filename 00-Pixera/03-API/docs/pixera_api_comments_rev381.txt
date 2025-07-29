@@ -1,4 +1,4 @@
-﻿This documentation describes revision 451 of the API.
+﻿This documentation describes revision 381 of the API.
 
 // All class methods imply a handle parameter in the JSON params object (see examples).
 namespace Pixera
@@ -7,54 +7,53 @@ namespace Utility
 {
    // Returns the current revision of the API.
    // Release versions have even revision numbers. Beta versions have odd revision numbers.
-   int getApiRevision()
+   int getApiRevision();
 
    // Returns true if the function (or class method) is available.
    // functionName must be the fully qualified name of the function or method,
    // e.g. "Pixera.Screens.Screen.setPosition".
-   boolean getHasFunction(string functionName)
+   boolean getHasFunction(string functionName);
 
    // Outputs a debug string into the Pixera log and returns the same string in
    // the reply.
-   string outputDebug(string message)
-   string getLicenseJson()
+   string outputDebug(string message);
+   string getLicenseJson();
 
    // Returns the number of milliseconds since midnight Jan 1st 1970 UTC.
-   double getCurrentTime()
+   double getCurrentTime();
 
    // Returns the current time as an ISO-8601 string (using the local timezone).
-   string getCurrentTimeAsString()
+   string getCurrentTimeAsString();
 
    // No operation. This function does nothing. It can be used in request/response scenarios
    // (e.g. JSON-RPC) to bookend a set of API invocations. This gives the client a way
    // to know that the last invocation in the set has been processed by Pixera.
-   null noop()
+   null noop();
 
    // Experimental. Currently only relevant to Javascript interpretation within Pixera.
-   null requestCallback(string functionName)
-   string readFileString(string path)
-   null writeFileString(string path,string fileStr)
-   string getAccessRecipe(string hdlPath)
+   null requestCallback(string functionName);
+   string readFileString(string path);
+   null writeFileString(string path,string fileStr);
+   string getAccessRecipe(string hdlPath);
 
    // See the documentation PDF for more information on monitoring.
    // The Javascript implementation does not support monitoring.
    // In the JSON implementation, the result of this function is a JSON object, not a string.
-   string pollMonitoring()
-   boolean unsubscribeMonitoringSubject(string subject)
-   boolean subscribeMonitoringSubject(string subject)
-   boolean setMonitoringEventMode(string mode)
+   string pollMonitoring();
+   boolean unsubscribeMonitoringSubject(string subject);
+   boolean subscribeMonitoringSubject(string subject);
+   boolean setMonitoringEventMode(string mode);
 
    // In the Control implementation this function is called when monitoring events are sent.
-   null monitoringEvent(string eventDescription)
+   null monitoringEvent(string eventDescription);
 
    // Only available in json implementation.
-   boolean setShowContextInReplies(boolean doShow)
-   boolean setMonitoringHasDelimiter(boolean hasDelimiter)
+   boolean setShowContextInReplies(boolean doShow);
+   boolean setMonitoringHasDelimiter(boolean hasDelimiter);
 
    // Runs the javascript function jsFunction with code jsCode.
-   string runJsScript(string jsFunction,string jsCode)
-   null dynamicRebuildFromJsonDescription(string deviceName,string jsonDescription,string folder)
-   null resetSelectiveRenderingFrameCounters()
+   string runJsScript(string jsFunction,string jsCode);
+   null dynamicRebuildFromJsonDescription(string deviceName,string jsonDescription,string folder);
 }
 
 // The Network namespace establishes a bridge between the network connections defined in the API
@@ -62,12 +61,12 @@ namespace Utility
 // send data on the connections defined in the API tab.
 namespace Network
 {
-   handle getConveyor(string conveyorName)
+   handle getConveyor(string conveyorName);
 
    // An input or output access as defined in the API.
    class Conveyor
    {
-      null sendString(string str)
+      null sendString(string str);
    }
 }
 
@@ -88,153 +87,150 @@ namespace Compound
    // Sets the transport mode of the timeline identified by its (zero-based) index
    // in the timeline library of the Compositing tab.
    // Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-   boolean setTransportModeOnTimelineAtIndex(int index,int mode)
+   boolean setTransportModeOnTimelineAtIndex(int index,int mode);
 
    // Sets the transport mode of the timeline identified by its name.
    // Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-   null setTransportModeOnTimeline(string timelineName,int mode)
+   null setTransportModeOnTimeline(string timelineName,int mode);
 
    // Toggles the timeline transport mode of timeline identified by its name.
    // Mode toggles between Play and Pause.
-   null toggleTransport(string timelineName)
+   null toggleTransport(string timelineName);
 
    // Returns the current transport mode of the timeline identified by its name.
    // Return values: Play = 1, Pause = 2, Stop = 3.
-   int getTransportModeOnTimeline(string timelineName)
+   int getTransportModeOnTimeline(string timelineName);
 
    // Sets the transport mode of the first timeline
    // in the timeline library of the Compositing tab to Play.
-   null startFirstTimeline()
+   null startFirstTimeline();
 
    // Sets the transport mode of the first timeline
    // in the timeline library of the Compositing tab to Pause.
-   null pauseFirstTimeline()
+   null pauseFirstTimeline();
 
    // Sets the transport mode of the first timeline
    // in the timeline library of the Compositing tab to Stop.
-   null stopFirstTimeline()
+   null stopFirstTimeline();
 
    // Sets the opacity of the timeline identified by its name.
    // timelineName: name of timeline
    // opacity: opacity value between 0.0 and 1.0
-   null setOpacityOnTimeline(string timelineName,double opacity)
+   null setOpacityOnTimeline(string timelineName,double opacity);
 
    // Returns the opacity of the timeline identified by its name.
-   double getOpacityOnTimeline(string timelineName)
+   double getOpacityOnTimeline(string timelineName);
 
    // Set the x position of the first layer of the first timeline.
    // Purely for demonstration, testing purposes.
-   null setPosValue(double val)
+   null setPosValue(double val);
 
    // Set the x/y position of the first layer of the first timeline.
    // Purely for demonstration, testing purposes.
-   null setPosValueXY(double valX,double valY)
+   null setPosValueXY(double valX,double valY);
 
    // Sets the current value of the parameter.
    // The parameter is identified by a path separated by periods (e.g. "Timeline 1.Layer 1.Opacity").
-   null setParamValue(string path,double value)
+   null setParamValue(string path,double value);
 
    // Jumps to and executes the cue at the (zero-based) index in the timeline at the (zero-based) index in
    // the timeline library of the Compositing tab.
    // cueIndex: zero-based index of cue
    // timelineIndex: zero-based index of timeline in library
    // blendDuration: optional parameter to set blend duration in seconds.
-   null applyCueAtIndexOnTimelineAtIndex(int cueIndex,int timelineIndex,optional<double> blendDuration)
+   null applyCueAtIndexOnTimelineAtIndex(int cueIndex,int timelineIndex,optional<double> blendDuration);
 
    // Jumps to and executes the cue with the given number in the timeline at the (zero-based) index in
    // the timeline library of the Compositing tab.
    // cueNumber: number of cue
    // timelineIndex: zero-based index of timeline in library
    // blendDuration: optional parameter to set blend duration in seconds.
-   null applyCueNumberOnTimelineAtIndex(int cueNumber,int timelineIndex,optional<double> blendDuration)
+   null applyCueNumberOnTimelineAtIndex(int cueNumber,int timelineIndex,optional<double> blendDuration);
 
    // Jumps to and executes the cue with the given number in the timeline with the given timelineName.
    // timelineName: name of timeline
    // cueNumber: number of cue
    // blendDuration: optional parameter to set blend duration in seconds.
-   null applyCueNumberOnTimeline(string timelineName,int cueNumber,optional<double> blendDuration)
+   null applyCueNumberOnTimeline(string timelineName,int cueNumber,optional<double> blendDuration);
 
    // Jumps to and executes the cue with given name in the timeline with the given timelineName.
    // timelineName: name of timeline
    // cueName: name of cue
    // blendDuration: optional parameter to set blend duration in seconds.
-   null applyCueOnTimeline(string timelineName,string cueName,optional<double> blendDuration)
+   null applyCueOnTimeline(string timelineName,string cueName,optional<double> blendDuration);
 
    // Adds the file at the path to the folder with the given name path.
-   handle addResourceToFolder(string namePath,string filePath)
+   handle addResourceToFolder(string namePath,string filePath);
 
    // Assigns a resource to a layer. The resource is identified by a path build from signatures and separated by forward slashes 
    // (e.g. "Media/Folder/video.mov"). The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   null assignResourceToLayer(string resourcePath,string layerPath)
+   null assignResourceToLayer(string resourcePath,string layerPath);
 
    // Refreshes a resource from file. The resource is identified by a path build from signatures and separated by forward slashes 
    // (e.g. "Media/Folder/video.mov").
-   null refreshResource(string resourcePath)
+   null refreshResource(string resourcePath);
 
    // Sets the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   null setTransportModeOnLayer(string layerPath,int mode,boolean loop)
+   null setTransportModeOnLayer(string layerPath,int mode,boolean loop);
 
    // Returns the transport mode of a layer: Play = 1, Pause = 2, Stop = 3.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   int getTransportModeOnLayer(string layerPath)
+   int getTransportModeOnLayer(string layerPath);
 
    // Returns the resource currently assigned to the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
    // The returned string is the path build from signatures and separated by forward slashes 
    // (e.g. "Media/Folder/video.mov").
-   string getResourceAssignedToLayer(string layerPath)
+   string getResourceAssignedToLayer(string layerPath);
 
    // Assign the resource with dmxfolder/dmxfile id to the clip at time in frames by layerpath
-   null assignResourceToClipAtTimeByDmxId(string layerPath,int dmxFolderId,int dmxFileId,double time)
+   null assignResourceToClipAtTimeByDmxId(string layerPath,int dmxFolderId,int dmxFileId,double time);
 
    // Assign the resource with dmxfolder/dmxfile id to the clip at hmsf time by layerpath
-   null assignResourceToClipAtHMSFStringByDmxId(string layerPath,int dmxFolderId,int dmxFileId,string hmsf)
+   null assignResourceToClipAtHMSFStringByDmxId(string layerPath,int dmxFolderId,int dmxFileId,string hmsf);
 
    // Assign the resource with dmxfolder/dmxfile id to the clip at h m s f by layerpath
-   null assignResourceToClipAtHMSFByDmxId(string layerPath,int dmxFolderId,int dmxFileId,int h,int m,int s,int f)
+   null assignResourceToClipAtHMSFByDmxId(string layerPath,int dmxFolderId,int dmxFileId,int h,int m,int s,int f);
 
    // Sets the current time of the timeline identified by name in frames.
    // Use getFpsOfTimeline() to relate the frames to seconds.
    // name: Name of timeline.
    // time: New time in frames.
-   null setCurrentTimeOfTimeline(string name,int time)
+   null setCurrentTimeOfTimeline(string name,int time);
 
    // Sets the current time of the timeline identified by name in seconds.
    // Use getFpsOfTimeline() to relate the frames to seconds.
    // name: Name of timeline.
    // time: New time in seconds.
-   null setCurrentTimeOfTimelineInSeconds(string name,double time)
+   null setCurrentTimeOfTimelineInSeconds(string name,double time);
 
    // Sets the current time in seconds and the applied playback mode of the timeline identified by name.
    // Use getFpsOfTimeline() to relate the frames to seconds.
    // name: Name of timeline.
    // time: New time in seconds.
    // mode: New playback mode (Play = 1, Pause = 2, Stop = 3).
-   null setCurrentTimeAndTransportModeOfTimelineInSeconds(string name,double time,int mode)
+   null setCurrentTimeAndTransportModeOfTimelineInSeconds(string name,double time,int mode);
 
    // Returns the frames per second of the timeline identified by name.
    // name: Name of timeline.
-   double getFpsOfTimeline(string name)
+   double getFpsOfTimeline(string name);
 
    // Returns the current time in frames. Use getFpsOfTimeline() to relate the frames to seconds.
-   int getCurrentTimeOfTimeline(string name)
+   int getCurrentTimeOfTimeline(string name);
 
    // Returns the current time in seconds.
-   double getCurrentTimeOfTimelineInSeconds(string name)
+   double getCurrentTimeOfTimelineInSeconds(string name);
 
    // Returns the current time of the timeline identified by name as hours, minutes, seconds, frames string.
    // name: Name of timeline.
-   string getCurrentHMSFOfTimeline(string name)
+   string getCurrentHMSFOfTimeline(string name);
 
-   // Returns the current countdown to next countdown relevant cue as int (in frames).
-   // Use getFpsOfTimeline() to relate the frames to seconds.
-   // name: Name of timeline.
-   int getCurrentCountdownOfTimeline(string name)
+   // Returns the current countdown in frames. Use getFpsOfTimeline() to relate the frames to seconds.
+   int getCurrentCountdownOfTimeline(string name);
 
-   // Returns the current countdown to next countdown relevant cue as string (in hours:minutes:seconds:frames).
-   // name: Name of timeline.
-   string getCurrentCountdownHMSFOfTimeline(string name)
+   // Returns the current countdown as a hours, minutes, seconds, frames string.
+   string getCurrentCountdownHMSFOfTimeline(string name);
 
    // Blocks timeline updates in Pixera UI.
    // Use with caution. Should exclusively be used for performance optimization
@@ -242,342 +238,308 @@ namespace Compound
    // Do never forget to unblock.
    // doBlock: 'true' means start blocking and 'false' means unblock.
    // terminationDurationInMs: Default value is 10 sec. Duration until the blocking period is automatically terminated. We emphasize that if the default value is sufficient you should always use blockUiTimelineUpdates(false) for a controlled termination. Unit is milliseconds.
-   null blockUiTimelineUpdates(boolean doBlock,optional<int> terminationDurationInMs)
-   null startOpacityAnimationOfTimeline(string name,boolean fadeIn,double fullFadeDuration)
+   null blockUiTimelineUpdates(boolean doBlock,optional<int> terminationDurationInMs);
+   null startOpacityAnimationOfTimeline(string name,boolean fadeIn,double fullFadeDuration);
 
    // Creates a clip at the given time in frames and assigns the resource.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
    // The resource is identified by a path build from signatures and separated by forward slashes (e.g. "Media/Folder/video.mov").
-   null createClipOnLayerAtTimeWithResource(string layerPath,double time,string resourcePath)
+   null createClipOnLayerAtTimeWithResource(string layerPath,double time,string resourcePath);
 
    // Removes the clip identified by the 0-based clipIndex on the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   null removeClipOnLayerWithIndex(string layerPath,int clipIndex)
+   null removeClipOnLayerWithIndex(string layerPath,int clipIndex);
 
    // Removes all clips on the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   null removeAllClipsOnLayer(string layerPath)
+   null removeAllClipsOnLayer(string layerPath);
 
    // Returns the clip duration in seconds identified by the 0-based clipIndex on the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   double getClipDurationInSecondsWithIndex(string layerPath,int clipIndex)
+   double getClipDurationInSecondsWithIndex(string layerPath,int clipIndex);
 
    // Returns the clip duration in frames identified by the 0-based clipIndex on the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   int getClipDurationInFramesWithIndex(string layerPath,int clipIndex)
+   int getClipDurationInFramesWithIndex(string layerPath,int clipIndex);
 
    // Returns the clip start time in seconds identified by the 0-based clipIndex on the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   double getClipTimeInSecondsWithIndex(string layerPath,int clipIndex)
+   double getClipTimeInSecondsWithIndex(string layerPath,int clipIndex);
 
    // Returns the clip end time in seconds identified by the 0-based clipIndex on the layer.
    // The layer is identified by a path separated by periods (e.g. "Timeline 1.Layer 1").
-   double getClipEndTimeInSecondsWithIndex(string layerPath,int clipIndex)
+   double getClipEndTimeInSecondsWithIndex(string layerPath,int clipIndex);
 
    // Returns the duration of the resource in seconds.
    // The resource is identified by a path build from signatures and separated by forward slashes (e.g. "Media/Folder/video.mov").
-   double getResourceDurationInSeconds(string resourcePath)
+   double getResourceDurationInSeconds(string resourcePath);
 
    // Returns the current value of the parameter.
    // The parameter is identified by a path separated by periods (e.g. "Timeline 1.Layer 1.Opacity").
-   double getParamValue(string path)
+   double getParamValue(string path);
 
    // Set timecode input for midi and artnet timecode.
-   double setTimecodeInput(int hour,int minute,int second,int frame,double elapsedTime,boolean running,int freshMode,int stateToken,int format)
+   double setTimecodeInput(int hour,int minute,int second,int frame,double elapsedTime,boolean running,int freshMode,int stateToken,int format);
 
    //takeover all clients
-   null takeOverAllClients()
+   null takeOverAllClients();
 
    //mute all incomming smpte inputs
-   null setPauseSmpteInput(boolean doPause)
+   null setPauseSmpteInput(boolean doPause);
 }
 
 namespace Session
 {
-   null closeApp(boolean saveProject)
-   null loadProject(string path)
-   null saveProject()
-   null saveProjectAs(string path)
-   string getProjectName()
-   null setProjectName(string name)
-   string getProjectDirectory()
-   string getControlMultiUserSessionName()
+   null closeApp(boolean saveProject);
+   null loadProject(string path);
+   null saveProject();
+   null saveProjectAs(string path);
+   string getProjectName();
+   null setProjectName(string name);
+   string getProjectDirectory();
+   string getControlMultiUserSessionName();
 
    // Shut down the local machine. There are three options for mode:
    // 1: Shut down.
    // 2: Shut down and turn off power (if supported).
    // 3: Shut down and reboot.
    // Default if no mode is set is 1.
-   null shutdownSystem(optional<int> mode)
-   string[] getLiveSystemIps()
-   string getLiveSystemState(string ip)
+   null shutdownSystem(optional<int> mode);
+   string[] getLiveSystemIps();
+   string getLiveSystemState(string ip);
 
    // This function is called in Pixera Control when the live system's state changes.
-   null liveSystemStateChange(string ip,string state)
+   null liveSystemStateChange(string ip,string state);
 
    // Shut down the live system with the given IP. The mode options are the same as for shutdownSystem():
    // Default if no mode is set is 1.
-   null shutdownLiveSystem(string ip,optional<int> mode)
+   null shutdownLiveSystem(string ip,optional<int> mode);
 
    // Wake up the live system that last had the given IP. Uses the MAC address that was last reported
    // for the IP.
-   string wakeLiveSystem(string ip)
+   string wakeLiveSystem(string ip);
 
    // Returns the last MAC address associated with the live system with the given IP.
-   string getLiveSystemMacAddress(string ip)
+   string getLiveSystemMacAddress(string ip);
 
    // Start live system.
-   null startLiveSystem(string ip)
+   null startLiveSystem(string ip);
 
    // Start all live systems in mapping/live sub-tab.
-   null startLiveSystems()
+   null startLiveSystems();
 
    // Stop live system.
-   null stopLiveSystem(string ip)
+   null stopLiveSystem(string ip);
 
    // Stop all live systems in mapping/live sub-tab.
-   null stopLiveSystems()
+   null stopLiveSystems();
 
    // Restart live system.
-   null restartLiveSystem(string ip)
+   null restartLiveSystem(string ip);
 
    // Restart all live systems in mapping/live sub-tab.
-   null restartLiveSystems()
+   null restartLiveSystems();
 
    // This action is run when remote heartbeat tracking detects a state change in the system.
-   null remoteSystemStateChange(string ip,string state)
-   string[] getRemoteSystemIps()
-   string getRemoteSystemState(string ip)
-   null setVideoStreamActiveState(string ip,string device,boolean isActive)
-   boolean getVideoStreamActiveState(string ip,string device)
-   string getDefaultClipDurationsAsJsonString()
-
-   //toggle output identification
-   null toggleOutputIdentification()
-
-   //toggle onscreen statistics
-   null toggleOnScreenStats()
-
-   //activate/deactivate all assigned outputs
-   null setAllAssignedOutputs(boolean active)
+   null remoteSystemStateChange(string ip,string state);
+   string[] getRemoteSystemIps();
+   string getRemoteSystemState(string ip);
+   null setVideoStreamActiveState(string ip,string device,boolean isActive);
+   boolean getVideoStreamActiveState(string ip,string device);
+   string getDefaultClipDurationsAsJsonString();
 }
 
 namespace LiveSystems
 {
    // Get the handles of the live systems.
    // This will also return handles of live systems that are no longer connected.
-   handle[] getLiveSystems()
+   handle[] getLiveSystems();
 
    // Called when the live system has become unavailable.
-   null liveSystemNotAvailable(int reason,handle system)
-   handle[] getMultiUserMembers()
-   handle[] getUsagePresets()
+   null liveSystemNotAvailable(int reason,handle system);
+   handle[] getMultiUserMembers();
+   handle[] getUsagePresets();
 
    class MultiUserMember
    {
       // Get hardware name of specified multi-user member.
-      string getName()
+      string getName();
 
       // Get ip of specified multi-user member.
-      string getIp()
+      string getIp();
 
       // Get a description of the state of the specified multi-user member.
-      string getState()
-      string getPerformanceMonitoringValuesJson()
+      string getState();
+      string getPerformanceMonitoringValuesJson();
 
       // Filter example: system,outputs,outputsIndividual,outputsTotal,unreal
-      string getPerformanceMonitoringValuesJsonEx(string filter)
-      null resetCumulativePerformanceMonitoringValues()
+      string getPerformanceMonitoringValuesJsonEx(string filter);
+      null resetCumulativePerformanceMonitoringValues();
 
       // Starts file distribution to the multi-user member of all files that are used in a timeline. If includeNotUsedYet is true then
       // all files that have not been used yet in any timeline are also distributed.
-      null ensureFileDistribution(boolean includeNotUsedYet)
+      null ensureFileDistribution(boolean includeNotUsedYet);
 
       // Shut down the multi-user member's machine. There are three options for mode:
       // 1: Shut down.
       // 2: Shut down and turn off power (if supported).
       // 3: Shut down and reboot.
-      null shutDown(int mode)
+      null shutDown(int mode);
 
       // Try to wake up specified multi-user member.
-      string wakeUp()
+      string wakeUp();
 
       // Returns the MAC address of the specified multi-user member.
-      string getMacAddress()
-      null resetEngine()
-      null restartEngine()
-      null startEngine()
-      null closeEngine()
-      null triggerBackup(optional<bool> applyControlCommand)
+      string getMacAddress();
+      null resetEngine();
+      null restartEngine();
+      null startEngine();
+      null closeEngine();
+      null triggerBackup(optional<bool> applyControlCommand);
 
       // Get a JSON description of the hardware structure of the specified multi-user member.
-      string getStructureJson()
-   handle getInst(string instancePath)
+      string getStructureJson();
+   handle getInst(string instancePath);
    }
 
    class LiveSystem
    {
       // Pixera Control self-reference function.
-      handle ref()
+      handle ref();
 
       // Get hardware name of a specified live system.
-      string getName()
+      string getName();
 
       // Get ip of a specified live system.
-      string getIp()
-      string getState()
-      null setBackupRole(int role)
-      int getBackupRole()
-      string getPerformanceMonitoringValuesJson()
+      string getIp();
+      string getState();
+      null setBackupRole(int role);
+      int getBackupRole();
+      string getPerformanceMonitoringValuesJson();
 
       // Filter example: system,outputs,outputsIndividual,outputsTotal,unreal
-      string getPerformanceMonitoringValuesJsonEx(string filter)
-      null resetCumulativePerformanceMonitoringValues()
-      null moveMappingsToOutputs(handle hdlSrc,string outputIdPathMapStr)
-      null setUsagePresetName(string name)
-      string getUsagePresetName()
-      null updateUsagePreset()
-      null saveUsagePresetAs(string name)
-
-      // Applies the currently selected usage preset.
-      null applyUsagePreset()
-
-      // Applies the usage preset with the matching name.
-      null applyUsagePresetWithName(string name)
-      null exportUsagePreset(string path)
-      null importUsagePreset(string path)
-      null clearExportedMappings(string path,boolean onlyServicePath)
-      null exportMappings(string path)
-      null importMappings(string path,string outputIdPathMapStr)
-      null exportMappingsDirectly(string path)
-      null importMappingsDirectly(string path,string outputIdPathMapStr)
-      null exportMappingsToLiveSystemPath(string parentPath)
-      null importMappingsFromLiveSystemPath(string parentPath)
-      null clearExportedMappingsAtLiveSystemPath(string path)
+      string getPerformanceMonitoringValuesJsonEx(string filter);
+      null resetCumulativePerformanceMonitoringValues();
+      null moveMappingsToOutputs(handle hdlSrc,string outputIdPathMapStr);
+      null setUsagePresetName(string name);
+      string getUsagePresetName();
+      null updateUsagePreset();
+      null saveUsagePresetAs(string name);
+      null applyUsagePreset(string name);
+      null exportUsagePreset(string path);
+      null importUsagePreset(string path);
 
       // Starts file distribution to the live system of all files that are used in a timeline. If includeNotUsedYet is true then
       // all files that have not been used yet in any timeline are also distributed.
-      null ensureFileDistribution(boolean includeNotUsedYet)
+      null ensureFileDistribution(boolean includeNotUsedYet);
 
       // Shut down the local machine. There are three options for mode:
       // 1: Shut down.
       // 2: Shut down and turn off power (if supported).
       // 3: Shut down and reboot.
-      null shutDown(int mode)
+      null shutDown(int mode);
 
       // Try to wake up specified live system.
-      string wakeUp()
+      string wakeUp();
 
       // Returns the MAC address of the specified Live System.
-      string getMacAddress()
+      string getMacAddress();
 
       // Returns handles to the graphics devices of a Live System.
-      handle[] getGraphicsDevices()
+      handle[] getGraphicsDevices();
 
       // Returns handles to all enabled outputs.
-      handle[] getEnabledOutputs()
+      handle[] getEnabledOutputs();
 
       // Returns handles of all outputs even if they are not physically connected.
-      handle[] getAllOutputs()
+      handle[] getAllOutputs();
 
       // Returns handles to all video stream outputs (NDI, Art-Net, etc.).
-      handle[] getVideoStreamOutputs()
-      null resetEngine()
-      null restartEngine()
-      null startEngine()
-      null closeEngine()
-      null setAudioMasterVolume(int channel,double volume)
-      double getAudioMasterVolume(int channel)
-      null setAudioMasterMute(int channel,boolean state)
-      boolean getAudioMasterMute(int channel)
-      null toggleAudioMasterMute(int channel)
-      null setAudioTimecodeInput(int channel,boolean state)
-      null triggerBackup(optional<bool> applyControlCommand)
-
-      // Files which are not used in the current project are deleted from the RX-Cache directory.
-      null deleteUnusedFilesFromCache()
-      string getStructureJson()
-   handle getInst(string instancePath)
-      string getInstancePath()
+      handle[] getVideoStreamOutputs();
+      null resetEngine();
+      null restartEngine();
+      null startEngine();
+      null closeEngine();
+      null setAudioMasterVolume(int channel,double volume);
+      double getAudioMasterVolume(int channel);
+      null setAudioMasterMute(int channel,boolean state);
+      boolean getAudioMasterMute(int channel);
+      null toggleAudioMasterMute(int channel);
+      null setAudioTimecodeInput(int channel,boolean state);
+      null triggerBackup(optional<bool> applyControlCommand);
+      string getStructureJson();
+   handle getInst(string instancePath);
+      string getInstancePath();
    }
 
    class UsagePreset
    {
-      string getName()
-      null update()
-      null apply(string destinationIp)
-      null importFromFile(string path)
-      null exportToFile(string path)
-   handle getInst(string instancePath)
-      string getInstancePath()
+      string getName();
+      null update();
+      null apply(string destinationIp);
+      null importFromFile(string path);
+      null exportToFile(string path);
+   handle getInst(string instancePath);
+      string getInstancePath();
    }
 
    class GraphicsDevice
    {
-      string getName()
+      string getName();
 
       // Returns handles to all enabled outputs.
-      handle[] getEnabledOutputs()
+      handle[] getEnabledOutputs();
 
       // Returns handles of all outputs even if they are not physically connected.
-      handle[] getAllOutputs()
-   handle getInst(string instancePath)
-      string getInstancePath()
+      handle[] getAllOutputs();
    }
 
    class Output
    {
-      string getName()
+      string getName();
 
       // Set output active/inactive.
-      null setActive(boolean active)
+      null setActive(boolean active);
 
       // Return current active state of output.
-      boolean getActive()
+      boolean getActive();
 
       // set output identify.
-      null setIdentify(boolean state)
+      null setIdentify(boolean state);
 
       // get output identify.
-      boolean getIdentify()
+      boolean getIdentify();
 
       // Return assigned Screens.
-      handle[] getAssignedScreens()
+      handle[] getAssignedScreens();
 
       // Return assigned Projectors.
-      handle[] getAssignedProjectors()
-      boolean getEnabled()
-      boolean getForPreview()
+      handle[] getAssignedProjectors();
+      boolean getEnabled();
+      boolean getForPreview();
 
       // set outputs is aggregate
-      null setIsOutputAggregate(boolean state)
+      null setIsOutputAggregate(boolean state);
 
       // set outputs is aggregate
-      boolean getIsOutputAggregate()
+      boolean getIsOutputAggregate();
 
       // set vertical and horizontal aggregate settings
-      null setAggregateDims(int horizontalCount,int verticalCount)
+      null setAggregateDims(int horizontalCount,int verticalCount);
 
       // get vertical and horizontal aggregate settings
-      int[] getAggregateDims()
-   handle getInst(string instancePath)
-      string getInstancePath()
+      int[] getAggregateDims();
    }
 
    class VideoStream
    {
-      string getName()
+      string getName();
 
       // Set video stream active/inactive.
-      null setActive(boolean active)
+      null setActive(boolean active);
 
       // Get active state of video stream.
-      boolean getActive()
-      string getIpAddress()
-      null setIpAddress(string ipAddress)
-      string getDeviceType()
-   handle getInst(string instancePath)
-      string getInstancePath()
+      boolean getActive();
    }
 }
 
@@ -585,13 +547,13 @@ namespace Settings
 {
 namespace SettingsGeneral
 {
-   // If this is true, the values for transformation and scale, set in Node::setValues have to be in pixels.
-   boolean getShowDimsInPixels()
+   //If this is true, the values for transformation and scale, set in Node::setValues have to be in pixels.
+   boolean getShowDimsInPixels();
 
-   // If this is true, the nodes will be using size instead of scale.
-   boolean getShowScaleAsSize()
-   null setFadeToTimeDelay(int timeInMilliseconds)
-   int getFadeToTimeDelay()
+   //If this is true, the nodes will be using size instead of scale.
+   boolean getShowScaleAsSize();
+   null setFadeToTimeDelay(int timeInMilliseconds);
+   int getFadeToTimeDelay();
 }
 
 namespace SettingsTranscoding
@@ -630,20 +592,11 @@ namespace SettingsTranscoding
    // LlHp : 10
    // Lossless : 11
    // Lossless Hp : 12
-   string[] getTranscodingPresets()
+   string[] getTranscodingPresets();
 
    // Search for preset with given name if found it will be set to the given setup,
    // if not a new one will be created.
-   null addOrChangeTranscodingPreset(string preset)
-}
-
-namespace SettingsResourceDistribution
-{
-   // Defines the rule for the automatic distribution of newly added resources. 0: None, 1: On Import, 2: On Use
-   null setAutoDistributionRule(int rule)
-
-   // Returns the rule for the automatic distribution of newly added resources. 0: None, 1: On Import, 2: On Use
-   int getAutoDistributionRule()
+   null addOrChangeTranscodingPreset(string preset);
 }
 
 }
@@ -651,22 +604,22 @@ namespace SettingsResourceDistribution
 namespace Screens
 {
    // Screen name as shown in the inspector.
-   handle getScreenWithName(string name)
+   handle getScreenWithName(string name);
 
    // This function was introduced for test purposes, is not typical of the API
    // and is likely to be removed soon. Do not use it in shipping products!
    // The function sets the position of the screen with the given name.
    // The recommended way of doing this is to first use getScreenWithName(.) and
    // then Screen.setPosition(.).
-   null setNamedScreenPosition(string name,optional<double> xPos,optional<double> yPos,optional<double> zPos)
+   null setNamedScreenPosition(string name,optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
    // Returns handles to all screens currently used in the Screens tab.
-   handle[] getScreens()
-   string[] getScreenNames()
-   handle getFirstTimelineWithHomeScreen(string screenName)
+   handle[] getScreens();
+   string[] getScreenNames();
+   handle getFirstTimelineWithHomeScreen(string screenName);
 
    // Returns handles to all studio cameras currently used in the Screens tab.
-   handle[] getStudioCameras()
+   handle[] getStudioCameras();
 
    struct ScreenPosValues
    {
@@ -679,84 +632,75 @@ namespace Screens
    {
       // Returns an id based on the handle. This is currently necessary in some situations
       // because some API implementations can not yet consume handles as parameters. 
-      double getId()
-      string getName()
+      double getId();
+      string getName();
 
       // Sets the position in meters.
-      boolean setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      boolean setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // Returns the position in meters.
-      null getPosition()
+      null getPosition();
 
       // Sets the rotation in degrees.
-      boolean setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      boolean setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
       // Returns the Rotation in degrees.
-      null getRotation()
+      null getRotation();
 
       // Scales the screen proportionally (a value of 1.0 leaves the size unchanged). 
-      boolean setScale(optional<double> xScale,optional<double> yScale,optional<double> zScale)
+      boolean setScale(optional<double> xScale,optional<double> yScale,optional<double> zScale);
 
       // Returns the Scale.
-      null getScale()
+      null getScale();
 
       // Sets position and rotation in one API call.
-      boolean setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      boolean setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
       // Sets position, rotation and the perspective position for the first screen group in one API call.
-      boolean setPosRotAndPerspectivePos(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> perspXPos,optional<double> perspYPos,optional<double> perspZPos)
+      boolean setPosRotAndPerspectivePos(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> perspXPos,optional<double> perspYPos,optional<double> perspZPos);
 
       // Sets position, rotation and scale in one API call.
-      boolean setPosRotScale(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> xScale,optional<double> yScale,optional<double> zScale)
-
-      // Returns handles to all perspectives currently available for the screen.
-      handle[] getPerspectives()
-
-      // Returns the perspective for the Screen Group with the given name.
-      handle getPerspectiveForScreenGroup(string screenGroupName)
-
-      // Returns the perspective for the first Screen Group.
-      handle getPersepective()
+      boolean setPosRotScale(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> xScale,optional<double> yScale,optional<double> zScale);
+      handle getPersepective();
 
       // Snap the Perspective to Screen
       // 0 : Snap Mode to Bounding Box
       // 1 : Snap Mode to UV Coords
       // 2 : Snap Mode to Vertices
       // 3 : Snap Mode to Bounding Box in View
-      // 4 : Snap Mode to Vertices with Projection
-      null snapPerspectiveCornersToScreen(int mode)
+      null snapPerspectiveCornersToScreen(int mode);
 
       // Sets the position of the perspective in meters.
-      boolean setPerspectivePosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      boolean setPerspectivePosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // Sets the position of the perspective in meters and moves the look-at point so that the
       // relationship between eye and look-at point is maintained. Look-at point will not be moved
       // if generalized perspective projection is being used.
-      boolean setPerspectivePositionWithLookAt(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      boolean setPerspectivePositionWithLookAt(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // Returns the position of the perspective in meters.
-      null getPerspectivePosition()
+      null getPerspectivePosition();
 
       // Sets the rotation around the view axis of the screen's perspective in degrees.
-      boolean setPerspectiveRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      boolean setPerspectiveRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
       // Returns the rotation around the view axis of the screen's perspective in degrees.
-      null getPerspectiveRotation()
+      null getPerspectiveRotation();
 
       // This method is deprecated. Please use setPerspectivePosition(.) instead.
-      boolean setCameraPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      boolean setCameraPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // This method is deprecated. Please use setPerspectivePositionWithLookAt(.) instead.
-      boolean setCameraPositionWithLookAt(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      boolean setCameraPositionWithLookAt(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // This method is deprecated. Please use getPerspectivePosition(.) instead.
-      null getCameraPosition()
+      null getCameraPosition();
 
       // This method is deprecated. Please use setPerspectiveRotation(.) instead.
-      boolean setCameraRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      boolean setCameraRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
       // This method is deprecated. Please use getPerspectiveRotation(.) instead.
-      null getCameraRotation()
+      null getCameraRotation();
 
       // Sets the frustum base of the screen's perspective in pixels. The frustum base is positioned in the X/Y plane of the content compositing
       // space so that its center is at the position given by the x and y parameters. The origin the position relates to is that of the screen given
@@ -764,7 +708,7 @@ namespace Screens
       // multiple perspective pixel positions  to the same origin.
       // The width and height of the frustum base are set to pixel dimensions as given by the width and height parameters.
       // The rotation parameter rotates the frustum base around the Z axis the given number of degrees.
-      null setContentSamplingFrustumBase(double x,double y,double width,double height,double rotation,double originScreenId)
+      null setContentSamplingFrustumBase(double x,double y,double width,double height,double rotation,double originScreenId);
 
       // Launches a calibration tool for the screen. The mode and diff strings 
       // depend on the tool. If they are left empty appropriate defaults will be used.
@@ -773,170 +717,142 @@ namespace Screens
       // "autoRecalib": Launches re-calibration without user interaction. Dialog is closed automatically afterwards.
       // diff options:
       // "vioso"
-      null runCalibration(string mode,string diff)
+      null runCalibration(string mode,string diff);
 
       // Relaunches a calibration tool for the screen for further editing. The diff string
       // depends on the tool. If it is left empty an appropriate default will be used.
-      null editCalibration(string diff)
-
-      // Notifiy if Calibration is finshed
-      // Finished Parameter: True = Finished, False = Not Finished
-      boolean finshedCalibration(boolean finished)
-
-      // Same functionality as pressing Button "Distribute Loaded Calibrations"
-      null distributeLoadedCalibrationAndReload()
+      null editCalibration(string diff);
 
       // Resets a warp that originated with a calibration tool. The diff string depends
       // on the tool. If it is empty an appropriate default will be used.
-      null resetWarpFile(string diff)
+      null resetWarpFile(string diff);
 
       // Loads the warp file at the specified path for the screen.
-      null loadWarpFile(string filePath)
+      null loadWarpFile(string filePath);
 
       // Like loadWarpFile() except diff string can be used to control the format. Use "mpcdi"
       // to load MPCDI files.
-      null loadWarpFileWithDiff(string filePath,string diff)
+      null loadWarpFileWithDiff(string filePath,string diff);
 
       // Adds the warp file at the specified path to those loaded for the screen.
-      null addWarpFile(string filePath)
+      null addWarpFile(string filePath);
 
       // Like loadWarpFile() except diff string can be used to control the format. Use "mpcdi"
       // to add MPCDI files.
-      null addWarpFileWithDiff(string filePath,string diff)
-      null loadColorCalibration(string calibrationName)
-      null runColorCalibration()
+      null addWarpFileWithDiff(string filePath,string diff);
+      null loadColorCalibration(string calibrationName);
+      null runColorCalibration();
 
       // Sets the screen visibility in the workspace.
-      null setIsVisible(boolean isVisible)
+      null setIsVisible(boolean isVisible);
 
       // Get the screen visibility in the workspace.
-      boolean getIsVisible()
+      boolean getIsVisible();
 
       // Sets if a screen can be used as a projection surface. 
-      null setIsProjectable(boolean isProjectable)
+      null setIsProjectable(boolean isProjectable);
 
       // Get if the screen can be used as a projection surface.
-      boolean getIsProjectable()
+      boolean getIsProjectable();
 
       // Triggers a manual update of the mappings between this screen and the projectors. 
-      null triggerRefreshMapping()
+      null triggerRefreshMapping();
 
       // Reset all color correction
-      null resetAllColorCorrections()
+      null resetAllColorCorrections();
 
       //Set ColorCorrection Value by Path
-      null setColorCorrectionWithPath(string path,float value)
+      null setColorCorrectionWithPath(string path,float value);
 
       //Get ColorCorrection Value by Path
-      float getColorCorrectionWithPath(string path)
+      float getColorCorrectionWithPath(string path);
 
       //Set colorcorrection with jsonstring
-      null setColorCorrectionAsJsonString(string colorCorrection)
+      null setColorCorrectionAsJsonString(string colorCorrection);
 
       //Get colorcorrection as jsonstring
-      string getColorCorrectionAsJsonString()
+      string getColorCorrectionAsJsonString();
 
       //get outputs
-      handle[] getOutput()
+      handle[] getOutput();
 
       // Set the active state of a active screen Blackout. 
-      null setBlackout(boolean isActive)
+      null setBlackout(boolean isActive);
 
       // Get the active state of a active screen blackout. 
-      boolean getBlackout()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      boolean getBlackout();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 
    class StudioCamera
    {
-      string getName()
+      string getName();
 
       // Sets the position in meters.
-      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // Returns the position in meters.
-      double[] getPosition(double xPos,double yPos,double zPos)
+      double[] getPosition(double xPos,double yPos,double zPos);
 
-      // Sets the euler rotation in degrees.
-      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      // Sets rotation degrees.
+      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
-      // Sets rotation in quaternions.
-      null setRotationQuat(optional<double> xQuat,optional<double> yQuat,optional<double> zQuat,optional<double> wQuat)
-
-      // Returns the euler rotation in degrees.
-      double[] getRotation(double xPos,double yPos,double zPos)
+      // Returns the rotation in degrees.
+      double[] getRotation(double xPos,double yPos,double zPos);
 
       // Sets the position in meters, rotation and fov in degrees.
-      null setTransformation(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> fov,optional<double> aspectRatio)
-
-      // Sets the position in meters, rotation in quaternions, fov in degrees.
-      null setTransformationQuat(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xQuat,optional<double> yQuat,optional<double> zQuat,optional<double> wQuat,optional<double> fov,optional<double> aspectRatio)
+      null setTransformation(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> fov,optional<double> aspectRatio);
 
       // Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth)
-
-      // Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensPropsQuat(double xPos,double yPos,double zPos,double xQuat,double yQuat,double zQuat,double wQuat,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth)
+      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth);
 
       // Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensPropsExt(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan,optional<double> focalLength,optional<double> focalLengthDistorted)
-
-      // Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensPropsExtQuat(double xPos,double yPos,double zPos,double xQuat,double yQuat,double zQuat,double wQuat,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan,optional<double> focalLength,optional<double> focalLengthDistorted)
+      null setTransformationAndLensPropsExt(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan);
 
       // Set the tracking input pause.
-      null setTrackingInputPause(boolean pause)
+      null setTrackingInputPause(boolean pause);
 
       // Get the tracking input pause.
-      boolean getTrackingInputPause()
+      boolean getTrackingInputPause();
 
       // Set the tracking input position pause.
-      null setUsePositionPropertiesFromTracking(boolean pause)
+      null setUsePositionPropertiesFromTracking(boolean pause);
 
       // Get the tracking input position.
-      boolean getUsePositionPropertiesFromTracking()
+      boolean getUsePositionPropertiesFromTracking();
 
       // Set the tracking input rotation pause.
-      null setUseRotationPropertiesFromTracking(boolean pause)
+      null setUseRotationPropertiesFromTracking(boolean pause);
 
       // Get the tracking input rotation pause.
-      boolean getUseRotationPropertiesFromTracking()
-
-      // Set the camera to project on the associated screens.
-      null setProjectOnAssociatedScreens(boolean state)
-
-      // Get whether the camera projects on the associated screens.
-      boolean getProjectOnAssociatedScreens()
-
-      // Move the projected inner frustum rendering to the top among multiple studio cameras.
-      null moveToTop()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      boolean getUseRotationPropertiesFromTracking();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 
    class Perspective
    {
-      string getName()
+      string getName();
 
       // Sets the position in meters, rotation and fov in degrees. The look at point is not locked by default.
-      null setTransformation(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> fov,optional<double> aspectRatio,optional<bool> lockLookAtPt)
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      null setTransformation(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> fov,optional<double> aspectRatio,optional<bool> lockLookAtPt);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 }
 
 namespace Projectors
 {
    // Projector name as shown in the inspector.
-   handle getProjectorWithName(string name)
+   handle getProjectorWithName(string name);
 
    // Returns handles to all screens currently used in the Mapping tab.
-   handle[] getProjectors()
-   string[] getProjectorNames()
+   handle[] getProjectors();
+   string[] getProjectorNames();
 
    struct ProjectorPosValues
    {
@@ -948,109 +864,56 @@ namespace Projectors
    class Projector
    {
       // The position units are as in the inspector, i.e. meters.
-      null getPosition()
+      null getPosition();
 
       // The position units are as in the inspector, i.e. meters.
-      boolean setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      boolean setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // Get rotation of projector.
-      null getRotation()
+      null getRotation();
 
       // Set rotation of projector.
-      boolean setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
-      string getName()
+      boolean setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
+      string getName();
 
       // Set the active state of a projector screen mapping. 
       // The id is conceptually the handle but the handle can not be passed 
       // directly for some implementations of the API. 
       // Therefore, Screen.getId() should be used to fill the screenId parameter.
-      null activateScreenMapping(double screenId,boolean isActive)
+      null activateScreenMapping(double screenId,boolean isActive);
 
       // Set the active state of a projector Blackout. 
-      null setBlackout(boolean isActive)
+      null setBlackout(boolean isActive);
 
       // Get the active state of a projector blackout. 
-      boolean getBlackout()
-
-      // set Render Order ID
-      null setRenderOrderId(double screenId,int orderId)
-
-      // get Render Order ID
-      int getRenderOrderId(double screenId)
+      boolean getBlackout();
 
       // Set the softedge of a projector for a specific screen active. If screenName is empty changes will be applied to all.  
-      null setSoftedgeVisible(string screenName,boolean visible)
+      null setSoftedgeVisible(string screenName,boolean visible);
 
       // Reset all color correction
-      null resetAllColorCorrections()
+      null resetAllColorCorrections();
 
       //Set ColorCorrection Value by Path
-      null setColorCorrectionWithPath(string path,float value)
+      null setColorCorrectionWithPath(string path,float value);
 
       //Get ColorCorrection Value by Path
-      float getColorCorrectionWithPath(string path)
+      float getColorCorrectionWithPath(string path);
 
       //Set colorcorrection with jsonstring
-      null setColorCorrectionAsJsonString(string colorCorrection)
+      null setColorCorrectionAsJsonString(string colorCorrection);
 
       //Get colorcorrection as jsonstring
-      string getColorCorrectionAsJsonString()
+      string getColorCorrectionAsJsonString();
 
       // Get projector output. Index is optional. By default the first output is returned.
-      handle getOutput(optional<int> index)
+      handle getOutput(optional<int> index);
 
       // Set projector output.
-      null setOutput(handle outputHandle)
-
-      // Set horizontal lens shift.
-      null setHorizontalLensShift(double value)
-
-      // Get horizontal lens shift.
-      double getHorizontalLensShift()
-
-      // Set vertical lens shift.
-      null setVerticalLensShift(double value)
-
-      // Get vertical lens shift.
-      double getVerticalLensShift()
-
-      // Set brightness.
-      // only generic Projector can be set
-      null setBrightness(int value)
-
-      // Get brightness.
-      int getBrightness()
-
-      // Set lens fov.
-      null setFov(double value)
-
-      // Get lens fov.
-      double getFov()
-
-      // Set lens throw Ratio.
-      null setThrowRatio(double value)
-
-      // Get lens throw ratio.
-      double getThrowRatio()
-
-      // Set look at point.
-      // values needs to be in meters
-      null setLookAtPoint(double x,double y,double z)
-
-      // Get look at point.
-      // values are in meters
-      double[] getLookAtPoint()
-
-      // Set resolution of projector.
-      // this can only be set if the projector is not connected to a output.
-      // if it is connected the projector has the resolution of the output.
-      null setResolution(int x,int y)
-
-      // get resolution of projector.
-      int[] getResolution()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      null setOutput(handle outputHandle);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 }
 
@@ -1058,323 +921,318 @@ namespace Resources
 {
    // Returns handles to all resources (including within subfolders) in the resource
    // tree in the Compositing tab.
-   handle[] getResources()
+   handle[] getResources();
 
    // Returns a handle to a folder in the resource tree. The namePath
    // specifies the folder by starting from the root and then listing
    // all the names as seen in the resources tree separated by forward
    // slashes, e.g. "Media/Std Backgrounds/Atmospherics".
-   handle getResourceFolderWithNamePath(string namePath)
+   handle getResourceFolderWithNamePath(string namePath);
 
    // Returns the top level resource folders.
-   handle[] getResourceFolders()
-   handle[] getTranscodingFolders()
-   string getJsonDescrip()
+   handle[] getResourceFolders();
+   handle[] getTranscodingFolders();
+   string getJsonDescrip();
 
    class ResourceFolder
    {
       // Pixera Control self-reference function.
-      handle ref()
-      string getName()
-      null setName(string name)
+      handle ref();
+      string getName();
+      null setName(string name);
 
       // Returns the resource folders that are immediate children of this folder.
-      handle[] getResourceFolders()
+      handle[] getResourceFolders();
 
       // Returns handles to all the resources that are directly in one folder (i.e. does not consider subfolders).
-      handle[] getResources()
-
-      // Returns a handle to a resource in the current folder at index
-      handle getResourceAtIndex(int index)
-
-      // Returns a handle to a resource in the current folder by name
-      handle getResourceByName(string name)
+      handle[] getResources();
+      handle getResourceAtIndex(int index);
 
       // Adds the file at the path to the folder.
-      handle addResource(string path)
+      handle addResource(string path);
 
       // Adds the files at the directory path to the folder. If checkRedundancy == true then only files that have names
       // that are not currently in the folder are added. If remoteOthers == true then the missing files in the folder are removed, assets are untouched
-      handle[] addResourcesFromDirectory(string path,boolean removeOthers,boolean checkRedundancy)
+      handle[] addResourcesFromDirectory(string path,boolean removeOthers,boolean checkRedundancy);
 
       // Adds the files at the directory path to the folder. If checkRedundancy == true then only files that have names
       // that are not currently in the folder are added. If remoteOthers == true then the missing files in the folder are removed, assets are also removed
-      handle[] addResourcesFromDirectoryRemoveAssets(string path,boolean removeOthers,boolean checkRedundancy)
+      handle[] addResourcesFromDirectoryRemoveAssets(string path,boolean removeOthers,boolean checkRedundancy);
 
       //Creates and adds a text(0), colour(1), web(2), timelinereference(3) or multi(4) resource.
-      handle addInternalResource(string signature,int resKind)
+      handle addInternalResource(string signature,int resKind);
 
       // Creates folders hierarchically for a path as children of the specified folder.
       // For example if you call this against the handle of the "Media" folder with a path like:
       // "/my/new/folders", it will result in the following structure: "Media/my/new/folders".
-      null createFoldersFrom(string path)
+      null createFoldersFrom(string path);
 
       // Reloads for all resources in folder the files from disk, distributes changed files and creates new preview.
-      null refreshResources()
+      null refreshResources();
 
       // Reloads for all resources in folder the files from disk, distributes changed files and creates new preview.
-      null moveResourceToThis(double id)
-      null removeThis()
-      null removeThisIncludingAssets()
-      null removeAllContents()
-      null removeAllContentsIncludingAssets()
-      null deleteAllContentsAssetsFromLiveSystem(handle apEntityLiveSystemHandle)
+      null moveResourceToThis(double id);
+      null removeThis();
+      null removeThisIncludingAssets();
+      null removeAllContents();
+      null removeAllContentsIncludingAssets();
+      null deleteAllContentsAssetsFromLiveSystem(handle apEntityLiveSystemHandle);
 
       // Resets distribution targets based on the file distribution settings and if needed distributes resource.
-      null resetDistributionTargets()
+      null resetDistributionTargets();
 
       // Changes the state of a distribution target of a resource.
-      null changeDistributionTarget(handle apEntityLiveSystemHandle,boolean shouldDistribute)
-      null replaceResourcesByString(string searchString,string replaceString,string path)
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
-      int getDmxId()
+      null changeDistributionTarget(handle apEntityLiveSystemHandle,boolean shouldDistribute);
+      null replaceResourcesByString(string searchString,string replaceString,string path);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
+      int getDmxId();
 
       // Get DMX Id of both the resource and its parent folder as:
       // Folder Id << 16, Resource Id.
-      int getCombinedDmxId()
-      null setDmxId(int id)
+      int getCombinedDmxId();
+      null setDmxId(int id);
    }
 
    class TranscodingFolder
    {
-      string getUsedTranscodingPreset()
-      null setUsedTranscodingPreset(string preset)
-      boolean getTranscodeAutomatically()
-      null setTranscodeAutomatically(boolean autoTranscode)
-      boolean getUseRxCacheAsDestination()
-      null setRxCacheAsDestination(boolean useRxCache)
-      string getDestinationDirectory()
-      null setDestinationDirectory(string path)
+      string getUsedTranscodingPreset();
+      null setUsedTranscodingPreset(string preset);
+      boolean getTranscodeAutomatically();
+      null setTranscodeAutomatically(boolean autoTranscode);
+      boolean getUseRxCacheAsDestination();
+      null setRxCacheAsDestination(boolean useRxCache);
+      string getDestinationDirectory();
+      null setDestinationDirectory(string path);
    }
 
    class Resource
    {
       // Pixera Control self-reference function.
-      handle ref()
+      handle ref();
 
       // Removes the resource.
-      null removeThis()
+      null removeThis();
 
       // Permanently removes the assets associated with the resource from all systems
       // on which they are stored.
-      null deleteFilesOnSystems()
+      null deleteFilesOnSystems();
 
       // Removes the resource and permanently removes the assets associated with it from
       // all systems on which they are stored.
-      null removeThisIncludingAssets()
+      null removeThisIncludingAssets();
 
       // Permanently removes the asset from the given live system.
-      null deleteAssetFromLiveSystem(handle apEntityLiveSystemHandle)
+      null deleteAssetFromLiveSystem(handle apEntityLiveSystemHandle);
 
       // Resets distribution targets based on the file distribution settings and if needed distributes resource.
-      null resetDistributionTargets()
+      null resetDistributionTargets();
 
       // Changes the state of a distribution target of a resource.
-      null changeDistributionTarget(handle apEntityLiveSystemHandle,boolean shouldDistribute)
-      string getName()
-      null setName(string name)
-      double getFps()
-      double[] getResolution()
+      null changeDistributionTarget(handle apEntityLiveSystemHandle,boolean shouldDistribute);
+      string getName();
+      null setName(string name);
+      double getFps();
+      double[] getResolution();
 
       // Returns the active state of a Live Input Resource
-      boolean getIsActive()
+      boolean getIsActive();
 
       // Returns list of available Video Modes of a Live Input Resource,
       // not all Live Input Resources have a list of modes.
-      string[] getVideoStreamModes()
+      string[] getVideoStreamModes();
 
       // Set the Video Mode of a Live Input Resource by it's index.
-      null setVideoStreamMode(int index)
+      null setVideoStreamMode(int index);
 
       // Returns an id based on the handle. This is currently necessary in some situations
       // because some API implementations can not yet consume handles as parameters.
-      double getId()
+      double getId();
 
       // Returns the duration of the resource in seconds.
-      double getDuration()
+      double getDuration();
 
       // Returns the type of the resource.
-      string getType()
-      null setCurrentVersion(string version)
-      string getCurrentVersion()
-      string[] getVersions()
+      string getType();
+      null setCurrentVersion(string version);
+      string getCurrentVersion();
+      string[] getVersions();
 
       //get Version Suffix, First is begin
-      string[] getVersionSuffix()
+      string[] getVersionSuffix();
 
       //get start suffex for versions
-      null rescanVersions()
+      null rescanVersions();
 
       // Returns the png thumbnail data of the resource in a base 64 string. This is the
       // image that is shown in the resource tree. Its resolution is currently 256 * 174
       // pixels.
-      string getThumbnailAsBase64()
-      boolean getHasPendingTransfer()
+      string getThumbnailAsBase64();
+      boolean getHasPendingTransfer();
 
       // Returns true if the resource is currently referred to in a timeline
       // (via a clip or a dominant value).
-      double getIsInUse()
+      double getIsInUse();
 
       // Returns the time the resource was first referred to in a timeline (via a clip or a dominant
       // value) in milliseconds since midnight Jan 1st 1970 UTC. If the time is zero then the resource
       // has not been used yet in any timeline.
-      double getLastUsageBeginTime()
+      double getLastUsageBeginTime();
 
       // Returns the time the resource was first referred to in a timeline (via a clip or a dominant
       // value) as an ISO-8601 string (using the local timezone). If the string is empty then the resource
       // has not been used yet in any timeline.
-      string getLastUsageBeginTimeAsString()
+      string getLastUsageBeginTimeAsString();
 
       // Returns the time the resource was removed from the last timeline (whether from a clip or
       // a dominant value) in milliseconds since midnight Jan 1st 1970 UTC. If the time is zero then
       // the resource was either never used at all or is still in use.
-      double getLastUsageEndTime()
+      double getLastUsageEndTime();
 
       // Returns the time the resource was removed from the last timeline (whether from a clip or
       // a dominant value) as an ISO-8601 string (using the local timezone). If the time is zero then
       // the resource was either never used at all or is still in use.
-      string getLastUsageEndTimeAsString()
+      string getLastUsageEndTimeAsString();
 
       // get the system filepath
-      string getFilePath()
+      string getFilePath();
 
       // Sets the text of a text input resource.
-      null setText(string text)
+      null setText(string text);
 
       // Returns the text of a text input resource.
-      string getText()
-      boolean setFontWithName(string fontName)
-      string getFontName()
-      boolean setFontWithPath(string fontPath)
+      string getText();
+      boolean setFontWithName(string fontName);
+      string getFontName();
+      boolean setFontWithPath(string fontPath);
 
       // 0 : Align Left
       // 1 : Align Center
       // 2 : Align Right
-      boolean setHorizontalTextAlignment(int textAlignment)
+      boolean setHorizontalTextAlignment(int textAlignment);
 
       // 0 : Align Top
       // 1 : Align Center
       // 2 : Align Bottom
-      int getHorizontalTextAlignment()
-      boolean setVerticalTextAlignment(int textAlignment)
-      int getVerticalTextAlignment()
-      boolean setLineHeight(double lineHeight)
-      double getLineHeight()
+      int getHorizontalTextAlignment();
+      boolean setVerticalTextAlignment(int textAlignment);
+      int getVerticalTextAlignment();
+      boolean setLineHeight(double lineHeight);
+      double getLineHeight();
 
       // Returns the text-measurements width and height of the rectangle enclosing the text. The first entry of the
       // returned vector represents width, the second one represents height. Unit is pixels.
-      int[] getTextMeasurementsWidthAndHeight()
+      int[] getTextMeasurementsWidthAndHeight();
 
       // Sets the url of a web browser resource.
-      null setUrl(string url)
+      null setUrl(string url);
 
       // Returns the url of a web browser resource.
-      string getUrl()
+      string getUrl();
 
       // Sets the path to a color transformation file to be used with the resource.
-      null setColorTransformPath(string colorTransformPath)
+      null setColorTransformPath(string colorTransformPath);
 
       // Returns the path of the color transformation file be used with the resource.
-      string getColorTransformPath()
+      string getColorTransformPath();
 
       // Clear the path to a color transformation file.
-      null clearColorTransformPath()
+      null clearColorTransformPath();
 
       // Reloads the file from disk, distributes changed files and creates new preview.
-      null refresh(string text)
+      null refresh(string text);
 
       // Distribute the file to clients.
-      null distribute()
+      null distribute();
 
       // Get the id used to access the resource through dmx.
-      int getDmxId()
+      int getDmxId();
 
       // Set the id used to access the resource through dmx.
-      null setDmxId(int id)
+      null setDmxId(int id);
 
       // Remove multiresource item at index
-      null removeMultiresourceIndex(int index)
+      null removeMultiresourceIndex(int index);
 
       // Add multiresource item
-      null addMultiresourceItem(double id)
+      null addMultiresourceItem(double id);
 
       // Get multiresource items
-      handle[] getMultiresourceItems()
+      handle[] getMultiresourceItems();
 
       // replace multiresource item at index
-      null replaceMultiresourceItemByIndex(int index,double id)
+      null replaceMultiresourceItemByIndex(int index,double id);
 
       // Set multiresource resolution
-      null setMultiresourceResolution(int width,int height)
+      null setMultiresourceResolution(int width,int height);
 
       // Set multiresource items size. (1.0 = full)
-      null setMultiresourceItemSizebyIndex(int index,double width,double height)
+      null setMultiresourceItemSizebyIndex(int index,double width,double height);
 
       // Set multiresource items position.
-      null setMultiresourceItemPositionbyIndex(int index,double x,double y)
+      null setMultiresourceItemPositionbyIndex(int index,double x,double y);
 
       // Sets a color resource to show a gradient between its assigned colors.
-      null setUseGradient(boolean useGradient)
+      null setUseGradient(boolean useGradient);
 
       // Get if a color resource uses a gradient.
-      boolean getUseGradient()
+      boolean getUseGradient();
 
       // Set multiple colors for a color resource.
       // Color format is ARGB encoded in one 32 bit integer
       // where a << 24, r << 16, g << 8, b << 0.
-      null setColors(uint[] argbCols,double[] positions,string[] colNames,optional<bool> useGradient)
+      null setColors(uint[] argbCols,double[] positions,string[] colNames,optional<bool> useGradient);
 
       // Set one color of a color resource.
       // If index does not exist the color will be appended to the end of the color list.
-      null setColorAtIndex(int index,int red,int green,int blue,int alpha,double position,string name,optional<bool> useGradient)
+      null setColorAtIndex(int index,int red,int green,int blue,int alpha,double position,string name,optional<bool> useGradient);
 
       // Get color value as ARGB in a single 32 bit integer
       // where a << 24, r << 16, g << 8, b << 0.
-      int getColorAtIndex(int colorIndex)
-      double getColorPositionAtIndex(int colorIndex)
+      int getColorAtIndex(int colorIndex);
+      double getColorPositionAtIndex(int colorIndex);
 
       // action = run for launch
       // action = kill for kill
-      null launchVirtualWorld(string action)
-      handle getUnrealWorld()
+      null launchVirtualWorld(string action);
+      handle getUnrealWorld();
 
       // Sets the restrict to specific services state and the list of IPs of the services.
-      null setMultiResourceItemRestrictedServiceIps(int itemIndex,string[] ipAdresses)
+      null setMultiResourceItemRestrictedServiceIps(int itemIndex,string[] ipAdresses);
 
       // Returns the list of restricted service IPs in a comma separated string.
-      string[] getMultiResourceItemRestrictedServiceIps(int itemIndex)
-      null replace(string path)
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      string[] getMultiResourceItemRestrictedServiceIps(int itemIndex);
+      null replace(string path);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
 
       // Search for a transcoding preset with the given name, and if found,
       // moves the resource to the transcoding folder and starts transcoding it with that preset
       // if you want to convert all frames, set 0 as start and -1 as end frame.
       // serviceId is currently not used.
-      null transcodeWithExisitngPreset(string presetName,boolean useRxCache,string destinationPath,int startFrame,int endFrame,uint serviceId)
+      null transcodeWithExisitngPreset(string presetName,boolean useRxCache,string destinationPath,int startFrame,int endFrame,uint serviceId);
 
       // Move the resource to the transcoding folder and start transcoding with a preset
       // in JSON format. See "Transcoding::addOrChangePreset" on how to build the JSON string
-      null transcodeWithSettings(string settings,boolean useRxCache,string destinationPath,int startFrame,int endFrame,uint serviceId)
-      null moveToTranscodingFolder(string folderPath)
+      null transcodeWithSettings(string settings,boolean useRxCache,string destinationPath,int startFrame,int endFrame,uint serviceId);
+      null moveToTranscodingFolder(string folderPath);
    }
 
    class UnrealWorld
    {
-      string[] getLevelNames()
-      null loadLevel(string levelName)
-      string[] getEventTriggerNames()
-      null triggerEventByName(string triggerName)
-      null createNDisplayConfig()
-      null runUnreal()
-      null killUnreal()
-      string getName()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      string[] getLevelNames();
+      null loadLevel(string levelName);
+      string[] getEventTriggerNames();
+      null triggerEventByName(string triggerName);
+      null createNDisplayConfig();
+      null runUnreal();
+      null killUnreal();
+      string getName();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 }
 
@@ -1382,23 +1240,23 @@ namespace Timelines
 {
    // Returns the handle of the timeline at the (zero-based) index in
    // the timeline library of the Compositing tab.
-   handle getTimelineAtIndex(int index)
+   handle getTimelineAtIndex(int index);
 
    // Returns the handle of the timeline with the given name (as shown in the 
    // timeline library).
-   handle getTimelineFromName(string name)
+   handle getTimelineFromName(string name);
 
    // Returns handles to all timelines.
-   handle[] getTimelines()
+   handle[] getTimelines();
 
    // Returns names to all timelines.
-   string[] getTimelineNames()
+   string[] getTimelineNames();
 
    // Returns handles to all selected timelines
-   handle[] getTimelinesSelected()
+   handle[] getTimelinesSelected();
 
    // Create Timeline
-   handle createTimeline()
+   handle createTimeline();
 
    struct TimelineAttributes
    {
@@ -1411,102 +1269,90 @@ namespace Timelines
    class Timeline
    {
       // Pixera Control self-reference function.
-      handle ref()
+      handle ref();
 
       // Removes the timeline.
-      null removeThis()
+      null removeThis();
 
       // Duplicate the timeline. withoutClipsCues is optional and on default false
-      handle duplicateThis(optional<bool> withoutClipsCues)
+      handle duplicateThis(optional<bool> withoutClipsCues);
 
       // Select the timeline.
-      null selectThis()
+      null selectThis();
 
       // Get zoom factor of the timeline.
-      double getZoomFactor()
+      double getZoomFactor();
 
       // Set zoom factor of the timeline.
-      null setZoomFactor(double zoomFactor)
+      null setZoomFactor(double zoomFactor);
 
       // Get vertical scroll offset of the timeline.
-      int getVerticalScrollOffset()
+      int getVerticalScrollOffset();
 
       // Get vertical scroll offset of the timeline.
-      null setVerticalScrollOffset(int offset)
+      null setVerticalScrollOffset(int offset);
 
       // Get vertical scroll offset of the timeline.
-      int getHorizontalScrollOffset()
+      int getHorizontalScrollOffset();
 
       // Get vertical scroll offset of the timeline.
-      null setHorizontalScrollOffset(int offset)
+      null setHorizontalScrollOffset(int offset);
 
       // Moves the timeline up or down in the render order, depending on whether moveDown is true.
-      null moveInRenderOrder(boolean moveDown)
-      null setRenderOrder(int index)
-      int getRenderOrder()
+      null moveInRenderOrder(boolean moveDown);
 
       // Returns handles to all layers of the timeline.
-      handle[] getLayers()
-
-      // Returns the handle from a layer with name.
-      handle getLayerFromName(string name)
+      handle[] getLayers();
 
       // Returns names to all layers of the timeline.
-      string[] getLayerNames()
+      string[] getLayerNames();
 
       // Returns handles to all selected layers of the timeline.
-      handle[] getLayersSelected()
+      handle[] getLayersSelected();
 
       // Select Layer by index of the timeline.
-      null selectLayerByIndex(int index)
+      null selectLayerByIndex(int index);
 
       // Select Layers of the timeline by Names.
-      null selectLayerByNames(string[] layerNames)
+      null selectLayerByNames(string[] layerNames);
 
       // Returns a handle to the layer in the timeline at the (zero-based) index in
       // the order as shown in the Pixera Timeline interface.
-      handle getLayerAtIndex(int index)
+      handle getLayerAtIndex(int index);
 
       // Creates a layer and returns a handle to it.
-      handle createLayer()
-
-      // Batch-create clips on multiple layers.
-      string createClipsFromJsonString(string jsonString)
-
-      // Batch-remove clips as efficiently as possible.
-      null removeClipsFromJsonString(string jsonString)
-      string getCueInfosAsJsonString()
+      handle createLayer();
+      string getCueInfosAsJsonString();
 
       // Returns the handles of all cues in chronological order.
-      handle[] getCues()
-      handle[] getCuesSelected()
+      handle[] getCues();
 
       // Returns names to all cues.
-      string[] getCueNames()
+      string[] getCueNames();
 
       // Returns the handle of the cue with the given index. 
       // Indices are in chronological order.
-      handle getCueAtIndex(int index)
+      handle getCueAtIndex(int index);
 
       // Returns the handle of the cue with the given name.
       // If multiple cues have the same name, the handle to the first match will be returned.
       // name: name of cue
-      handle getCueFromName(string name)
+      handle getCueFromName(string name);
 
       // Returns the handle of the cue with the given number.
       // If multiple cues have the same number, the handle to the first match will be returned.
       // number: number of cue
-      handle getCueFromNumber(int number)
+      handle getCueFromNumber(int number);
 
       // Jumps to and executes the cue with the given name.
       // name: name of cue
       // blendDuration: optional parameter to set blend duration in seconds.
-      null applyCueWithName(string name,optional<double> blendDuration)
+      null applyCueWithName(string name,optional<double> blendDuration);
 
       // Jumps to and executes the cue with the given number.
       // number: number of cue
       // blendDuration: optional parameter to set blend duration in seconds.
-      null applyCueWithNumber(int number,optional<double> blendDuration)
+      null applyCueWithNumber(int number,optional<double> blendDuration);
 
       // Creates a cue and returns its handle.
       // name: Name of the cue
@@ -1516,263 +1362,251 @@ namespace Timelines
       // 2:Pause
       // 3:Jump
       // 4:Stop
-      handle createCue(string name,double timeInFrames,int operation)
+      handle createCue(string name,double timeInFrames,int operation);
 
       // Removes all cues.
-      null removeCues()
+      null removeCues();
 
       // Create pause cue before selected clips
-      null createPauseCueBeforeSelectedClips()
+      null createPauseCueBeforeSelectedClips();
 
       // Starts the timeline at the current time.
-      null play()
+      null play();
 
       // Pauses the timeline at the current time.
-      null pause()
+      null pause();
 
       // Stops the timeline.
-      null stop()
+      null stop();
 
       // Toggles the timeline transport mode between play and pause.
-      null toggleTransport()
+      null toggleTransport();
 
       // Stores all domination values. I.e. events are created at the current time.
-      null store()
+      null store();
 
-      // Resets all domination values.
-      null reset()
+      // Reset all domination values.
+      null reset();
 
       // Returns the attributes of the timeline (see TimelineAttributes struct).
-      null getAttributes()
+      null getAttributes();
 
       // Sets the current time in frames. Use getFps(.) to relate the frames to seconds.
       // This method is deprecated. setCurrentTime(int time) should be used instead.
       // time: Time in frames.
-      boolean setCurrentFrame(int time)
+      boolean setCurrentFrame(int time);
 
       // Sets the current time in frames. Use getFps() to relate the frames to seconds.
       // time: Time in frames.
-      null setCurrentTime(int time)
+      null setCurrentTime(int time);
 
       // Returns the current time in frames. Use getFps() to relate the frames to seconds.
-      int getCurrentTime()
+      int getCurrentTime();
 
       // Scrub frames up or down from current time.
-      null scrubCurrentTime(int frames)
+      null scrubCurrentTime(int frames);
 
       // Returns the current time as a hours, minutes, seconds, frames string.
-      string getCurrentHMSF()
+      string getCurrentHMSF();
 
       // Sets the transport mode of the timeline.
       // Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-      boolean setTransportMode(int mode)
+      boolean setTransportMode(int mode);
 
       // Returns the transport mode of the timeline.
       // Return values: Play = 1, Pause = 2, Stop = 3.
-      int getTransportMode()
+      int getTransportMode();
 
       // Set timecode input for midi and artnet timecode.
-      double setTimecodeInput(int hour,int minute,int second,int frame,double elapsedTime,boolean running,int freshMode,int stateToken,int format)
+      double setTimecodeInput(int hour,int minute,int second,int frame,double elapsedTime,boolean running,int freshMode,int stateToken,int format);
 
       // Returns the frames per second value used as a time base.
-      double getFps()
+      double getFps();
 
       // Returns the name of the timeline with the given handle.
-      string getName()
+      string getName();
 
       // Rename the timeline.
-      null setName(string name)
+      null setName(string name);
 
       // Moves to next cue on timeline
-      null moveToNextCue()
+      null moveToNextCue();
 
       // Moves to next cue on timeline and ignores cue properties.
-      null moveToNextCueIgnoreProperties()
+      null moveToNextCueIgnoreProperties();
 
       // Returns handle to next cue on timeline.
-      handle getCueNext()
+      handle getCueNext();
 
       // Moves to previous cue on timeline.
-      null moveToPreviousCue()
+      null moveToPreviousCue();
 
       // Moves to previous cue on timeline and ignore cue properties
-      null moveToPreviousCueIgnoreProperties()
+      null moveToPreviousCueIgnoreProperties();
 
       // Returns previous cue on timeline.
-      handle getCuePrevious()
+      handle getCuePrevious();
 
       // Sets the next cue to be ignored when its reached.
-      null ignoreNextCue()
+      null ignoreNextCue();
 
       // Sets next cue with a specific operation to be ignored when reached.
       // 1: Play
       // 2: Pause
       // 3: Stop
       // 4: Jump
-      null ignoreNextCueWithOperation(int cueOperation)
+      null ignoreNextCueWithOperation(int cueOperation);
 
       // Fades between current and goal time. Time unit is frames.
       // if preloadDelayInMilliseconds is not set system fade to time delay is used
-      null blendToTime(double goalTime,double blendDuration,optional<int> preloadDelayInMilliseconds)
+      null blendToTime(double goalTime,double blendDuration,optional<int> preloadDelayInMilliseconds);
 
       // Fades between current and goal time. Time unit is frames. The transport mode at goal time is set to
       // play (transportMode = 1) or pause (transportMode = 2).
       // if preloadDelayInMilliseconds is not set system fade to time delay is used
-      null blendToTimeWithTransportMode(double goalTime,double blendDuration,int transportMode,optional<int> preloadDelayInMilliseconds)
+      null blendToTimeWithTransportMode(double goalTime,double blendDuration,int transportMode,optional<int> preloadDelayInMilliseconds);
 
       // Sets the blend-to-time mode.
       // 1: Cross fade
       // 2: Dip to transparent
-      boolean setBlendToTimeMode(int mode)
+      boolean setBlendToTimeMode(int mode);
 
       // Sets the speed factor. The value of 'factor' has to be larger than 0. Use this method carefully.
       // To manipulate playback speed we recommend to use setTransportAttributes(.) for the "Transport"
       // parameters of each layer.
-      null setSpeedFactor(double factor)
+      null setSpeedFactor(double factor);
 
       // Returns the speed factor.
-      double getSpeedFactor()
+      double getSpeedFactor();
 
       // Sets the opacity value.
       // value: opacity value between 0.0 and 1.0
-      null setOpacity(double value)
+      null setOpacity(double value);
 
       // Returns the opacity value.
-      double getOpacity()
+      double getOpacity();
 
       // Starts opacity animation from current opacity to 1 (fadeIn == true) or 0 (fadeIn == false).
       // The parameter fullFadeDuration represents the time a complete animation from 0 to 1 or vice versa would
       // last. If the current opacity is inbetween, the executed fade would last less time. E.g. a fade out
       // starting at opacity 0.3 would last fullFadeDuration * 0.3.
       // Time unit is frames.
-      null startOpacityAnimation(boolean fadeIn,double fullFadeDuration)
+      null startOpacityAnimation(boolean fadeIn,double fullFadeDuration);
 
       // Sets the SMPTE timecode mode.
       // 0: None
       // 1: Receive
       // 2: Send
-      null setSmpteMode(int mode)
+      null setSmpteMode(int mode);
 
       // Returns the SMPTE timecode mode.
-      int getSmpteMode()
+      int getSmpteMode();
 
       // Stores recorded domination values using the current settings.
-      null storeRecordedValues()
+      null storeRecordedValues();
 
       // Sets the SMPTE timecode input behaviour.
       // 1: Continue
       // 2: Pause
       // 3: Stop
-      null setSmpteInputBehaviour(int mode)
+      null setSmpteInputBehaviour(int mode);
 
       // Returns the SMPTE timecode input behaviour.
-      int getSmpteInputBehaviour()
+      int getSmpteInputBehaviour();
 
       // Sets the SMPTE timecode offset.
-      null setSmpteOffset(double time)
+      null setSmpteOffset(double time);
 
       // Returns the SMPTE timecode offset.
-      double getSmpteOffset()
+      double getSmpteOffset();
 
       // Clears the recorded domination values and resets the reference time.
-      null resetRecordedValues()
-      string getTimelineInfosAsJsonString()
-
-      // Starts preview editing.
-      // goalTime: Sets the preview nowpointer to the given time.
-      null startPreviewEdit(double goalTime)
-
-      // End preview editing.
-      // moveToPreview: define whether normal playback should be moved to preview nowpointer or not.
-      // blendDurationInMs: Optional parameter to set blend duration in frames. If not set the time defined in settings is used.
-      null endPreviewEdit(boolean moveToPreview,optional<int> blendDurationInMs)
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      null resetRecordedValues();
+      string getTimelineInfosAsJsonString();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 
    class Layer
    {
       // Pixera Control self-reference function.
-      handle ref()
+      handle ref();
 
       // Removes the layer.
-      null removeThis()
-      handle[] getNodes()
-      handle[] getParameters()
+      null removeThis();
+      handle[] getNodes();
 
       // Returns a node immediately below the layer based on the name displayed in the 
       // Timeline UI (e.g. the "Position" node below a standard layer).
-      handle getNodeWithName(string name)
+      handle getNodeWithName(string name);
 
       // Returns a handle to a parameter node child with the given name. At the level of the
       // layer, this will deliver those parameters (e.g. "Transport") that are direct children
       // of the layer. Other parameters can be accessed via the node children of the layer
       // (e.g. the x position is a child of the "Position" node).
-      handle getParamWithName(string name)
+      handle getParamWithName(string name);
 
       // Returns the current position, rotation and scale values (array with 9 entries) 
       // of the layer as determined by the clip at the given time. If no clip is found
       // then the returned array will be empty.
-      double[] getSpatialParametersAtTime(double time)
+      double[] getSpatialParametersAtTime(double time);
 
       // Returns the parent timeline.
-      handle getTimeline()
+      handle getTimeline();
 
       // Sets the name of the layer.
-      null setName(string name)
+      null setName(string name);
 
       // Returns the name of the layer.
-      string getName()
+      string getName();
 
-      // Resets all dominant parameters of the layer.
-      // I.e. after execution the output of the
-      // layer is determined by default values, keys and clips.
-      null resetLayer()
+      // Reset all dominant parameters of the layer.
+      null resetLayer();
 
-      // Returns all parameter values of the layer as json.
-      string getLayerJsonDescrip()
+      // Get all parameter valus as of the layer as json.
+      string getLayerJsonDescrip();
 
       // Set all parameter values as of the layer.
-      null setLayerJsonDescrip(string descrip,boolean makeAllDominant)
-      string getJsonDescrip()
-      null initFromJsonDescrip(string descrip)
+      null setLayerJsonDescrip(string descrip,boolean makeAllDominant);
+      string getJsonDescrip();
+      null initFromJsonDescrip(string descrip);
 
       // Sets the opacity of the layer.
-      null setOpacity(double value,optional<int> fadeTimeMs)
+      null setOpacity(double value);
 
       // Returns the opacity of the layer.
-      double getOpacity()
+      double getOpacity();
 
-      // Resets the dominant opacity of the layer.
-      null resetOpacity()
+      // Resets the opacity of the layer
+      null resetOpacity();
 
       // Sets the volume of the layer.
-      null setVolume(double value,optional<int> fadeTimeMs)
+      null setVolume(double value);
 
       // Returns the volume of the layer.
-      double getVolume()
+      double getVolume();
 
-      // Resets the dominant volume of the layer.
-      null resetVolume()
+      // Resets the volume of the layer.
+      null resetVolume();
 
       // Mutes the layer.
-      null muteLayer()
+      null muteLayer();
 
       // Un-Mutes the layer.
-      null unMuteLayer()
+      null unMuteLayer();
 
       // Returns whether the layer is muted.
-      boolean getIsLayerMuted()
+      boolean getIsLayerMuted();
 
       // Mutes the Audio.
-      null muteAudio()
+      null muteAudio();
 
       // Un-Mutes the Audio.
-      null unMuteAudio()
+      null unMuteAudio();
 
       // Returns whether the audio is muted.
-      boolean getIsAudioMuted()
+      boolean getIsAudioMuted();
 
       // The Dmx mute state is encoded in a single 32-Bit value.
       // Muting and unMuting is done by performing bitwise operations.
@@ -1788,27 +1622,21 @@ namespace Timelines
       // FxEnd = 0x400000 or 4194304
       // FxAll = 0x7FFFE0 or 8388576
       // All = 0x7FFFFF or 8388607
-      int getDmxMuteState()
-      null setDmxMuteState(uint muteState)
-      null toggleExplicitMute(uint flag)
+      int getDmxMuteState();
+      null setDmxMuteState(uint muteState);
+      null toggleExplicitMute(uint flag);
 
       // Sets the mode and loop state of the layer's transport parameter.
-      null setTransport(int mode,boolean loop)
+      null setTransport(int mode,boolean loop);
 
       // Returns the mode of the layer's transport parameter.
-      int getTransportMode()
+      int getTransportMode();
 
-      // Resets the dominant state of the layer's transport parameter.
-      null resetTransportMode()
+      // Reset the state of the layer's transport parameter.
+      null resetTransportMode();
 
       // Returns the loop state of the layer's transport parameter.
-      boolean getTransportLoop()
-
-      // Sets playback speed of the layer.
-      null setPlaybackSpeed(double speed)
-
-      // Returns playback speed of the layer.
-      double getPlaybackSpeed()
+      boolean getTransportLoop();
 
       // Assigns a resource to the layer. The id is conceptually the handle but the
       // handle can not be passed directly for some implementations of the API. Therefore,
@@ -1817,134 +1645,126 @@ namespace Timelines
       // changing the resource assignment of the current clip. From revision 15 onwards,
       // the function works by assigning the resource to the layer as a dominant value
       // independent of the clips in the layer.
-      null assignResource(double id)
+      null assignResource(double id);
 
       // Assigns a resource to the layer while besides the resource id also a fade duration
       // has to be passed to the function. The id is conceptually the handle but the handle
       // can not be passed directly for some implementations of the API. Therefore,
       // Resource.getId() should be used to fill this parameter. The unit of the parameter
       // fadeDuration is seconds. Only pass values >= 0. While 0 means 'no fade'.
-      null assignResourceWithFade(double id,double fadeDuration)
+      null assignResourceWithFade(double id,double fadeDuration);
 
       // Returns the resource currently assigned to the layer.
-      handle getAssignedResource()
-
-      // Resets the currently assigned dominant resource of the layer.
-      // I.e. after execution no resource is dominant and the output of the
-      // layer is determined by its clips.
-      null resetAssignedResource()
-
-      // Returns the resource currently assigned to the layer.
-      handle getAssignedModelResource()
+      handle getAssignedResource();
 
       // Reset the resource currently assigned to the layer.
-      null resetAssignedModelResource()
+      null resetAssignedResource();
+
+      // Returns the resource currently assigned to the layer.
+      handle getAssignedModelResource();
+
+      // Reset the resource currently assigned to the layer.
+      null resetAssignedModelResource();
 
       // get assigend fx names.
-      string[] getFxNames()
+      string[] getFxNames();
 
       // Sets the duration of the fade that is applied when the dominant resource of the layer is changed, 
       // see API function Layer.assignResource(.). The unit of the value parameter is seconds.
-      null setFadeDurationDominantResourceChange(double value)
+      null setFadeDurationDominantResourceChange(double value);
 
       // Returns the duration of the fade that is applied when the dominant resource of the layer is changed.
       // The unit of the returned value is seconds.
-      double getFadeDurationDominantResourceChange()
+      double getFadeDurationDominantResourceChange();
 
       // Creates a clip at current time and returns a handle to it.
-      handle createClip()
+      handle createClip();
 
       // Creates a clip at the given time and returns a handle to it.
       // Time in frames.
-      handle createClipAtTime(double timeInFrames)
-      null controlClipBorder(handle clip,boolean isEnter,boolean isIncremental,double entryTime)
+      handle createClipAtTime(double timeInFrames);
+      null controlClipBorder(handle clip,boolean isEnter,boolean isIncremental,double entryTime);
 
       // Returns the clip at the given index. Index is 0-based.
-      handle getClipAtIndex(int index)
+      handle getClipAtIndex(int index);
 
       // Returns all clips.
-      handle[] getClips()
+      handle[] getClips();
 
       // Returns current clip
-      handle getClipCurrent(int offset)
+      handle getClipCurrent(int offset);
 
       // Returns all clips.
-      handle[] getClipsSelected()
+      handle[] getClipsSelected();
 
       // Removes all clips.
-      null removeClips()
+      null removeClips();
 
       // Sets the screen with name given as layer's home screen.
-      null setHomeScreenFromScreenName(string screenName)
+      null setHomeScreenFromScreenName(string screenName);
 
       // Returns the name of the current home screen.
-      string getHomeScreenName()
+      string getHomeScreenName();
 
       // Set the blend mode of the layer by name.
-      null setBlendMode(string blendMode)
+      null setBlendMode(string blendMode);
 
       // Get the blend mode of the fayer.
-      string getBlendMode()
+      string getBlendMode();
 
       // Add effect by resource id.
       // Use Pixera.Resources.Resource.getInst(resourcePath).getId() to get resource id.
-      null addEffectById(double id)
+      null addEffectById(double id);
 
       // Sets the 'preload permanently' status of the layer.
-      null setPreloadPermanently(boolean doPreloadPermanently)
+      null setPreloadPermanently(boolean doPreloadPermanently);
 
       // Returns the 'preload permanently' status of the layer.
-      boolean getPreloadPermanently()
+      boolean getPreloadPermanently();
 
       // Sets the restrict to specific services state and the list of IPs of the services.
-      null setRestrictToServiceWithIps(boolean doRestrict,string[] ipAdresses)
+      null setRestrictToServiceWithIps(boolean doRestrict,string[] ipAdresses);
 
       // Returns the restrict to service state.
-      boolean getRestrictToService()
+      boolean getRestrictToService();
 
       // Returns the list of restricted service IPs in a comma separated string.
-      string[] getRestrictedServiceIps()
+      string[] getRestrictedServiceIps();
 
       // Get offsets.
-      double[] getOffsets()
+      double[] getOffsets();
 
       // Set offsets.
-      null setOffsets(optional<double> x,optional<double> y,optional<double> z,optional<double> xr,optional<double> yr,optional<double> zr,optional<double> xScale,optional<double> yScale,optional<double> zScale)
+      null setOffsets(optional<double> x,optional<double> y,optional<double> z,optional<double> xr,optional<double> yr,optional<double> zr,optional<double> xScale,optional<double> yScale,optional<double> zScale);
 
       // Sets the current dominant value or clip value to offset by typeindex
       // resetDominant and removeKeyframesClips are optional and false on default
       // typeIndex 0 = position,
       // typeIndex 1 = rotation,
       // typeIndex 2 = scale
-      null setCurrentValuesToOffset(int typeIndex,optional<bool> resetDominant,optional<bool> removeKeyframesClips)
-
-      // Set the render order of the layer. index 0 = top
-      // to send the layer to the last you can use -1 as index
-      null setRenderOrder(int index)
-      int getRenderOrder()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
-      null executeJavaScriptOnCurrentWebResource(string script)
+      null setCurrentValuesToOffset(int typeIndex,optional<bool> resetDominant,optional<bool> removeKeyframesClips);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 
    class Clip
    {
       // Returns an id based on the handle. This is currently necessary in some situations
       // because some API implementations can not yet consume handles as parameters. 
-      double getId()
+      double getId();
 
       // Removes the clip.
-      null removeThis()
+      null removeThis();
 
       // Returns a handle to the timeline in which the clip is situated.
-      handle getTimeline()
-      null setTime(double time)
-      double getTime()
-      null setDuration(double duration)
-      double getDuration()
-      null setLabel(string label)
-      string getLabel()
+      handle getTimeline();
+      null setTime(double time);
+      double getTime();
+      null setDuration(double duration);
+      double getDuration();
+      null setLabel(string label);
+      string getLabel();
 
       // Play modes:
       // 1: Lock to time
@@ -1952,125 +1772,117 @@ namespace Timelines
       // 3: Loop
       // 4: Pause at endpoint
       // 5: Lock to time no loop
-      int getPlayMode()
-      null setPlayMode(int playMode)
+      int getPlayMode();
+      null setPlayMode(int playMode);
 
       // Get the speed 
-      double getSpeed()
-      null setSpeed(double speed)
+      double getSpeed();
+      null setSpeed(double speed);
 
       // Get if frameblending is on or off
-      boolean getBlendFrames()
-      null setBlendFrames(boolean doFrameblending)
+      boolean getBlendFrames();
+      null setBlendFrames(boolean doFrameblending);
 
       // Get the inpoint of clip
-      double getInpoint()
-      null setInpoint(double inpoint)
+      double getInpoint();
+      null setInpoint(double inpoint);
 
       // Get the outpoint of clip
-      double getOutpoint()
-      null setOutpoint(double inpoint)
+      double getOutpoint();
+      null setOutpoint(double inpoint);
 
       // Assigns a resource to the resource parameter within the clip.
       // Conceptually, the resId is a handle but the handle can not be passed directly for
       // some implementations of the API. Therefore, Resource.getId() should be used to
       // fill this parameter.
       // setToResourceDuration is optional and true if not set
-      null assignResource(double resId,optional<bool> setToResourceDuration)
+      null assignResource(double resId,optional<bool> setToResourceDuration);
 
       // Assigns a resource to the resource parameter within the clip.
       // Conceptually, the resId is a handle but the handle can not be passed directly for
       // some implementations of the API. Therefore, Resource.getId() should be used to
       // fill this parameter.
-      handle getAssignedResource()
-
-      // Returns the name of the resource assigned to the clip.
-      // If no resource is assigned an empty string is returned.
-      string getAssignedResourceName()
-      null setToResourceDuration()
-      null setText(string text)
-      string getText()
+      handle getAssignedResource();
+      null setToResourceDuration();
 
       // Creates a key at the given time with the given value in the clip parameter specified by
       // namePath, with the parts of namePath consisting of the strings shown in the timeline UI.
       // E.g. "Position/x" refers to the parameter responsible for the x position of the layer.
       // The name of this method may be changed in future versions of the API to reflect the 
       // "key" (instead of "event") terminology.
-      null createEvent(string namePath,double time,double value)
+      null createEvent(string namePath,double time,double value);
 
       // Creates a key at the given time with the given value in the clip parameter specified by
       // namePath, with the parts of namePath consisting of the strings shown in the timeline UI.
       // E.g. "Position/x" refers to the parameter responsible for the x position of the layer.
       // The name of this method may be changed in future versions of the API to reflect the 
       // "key" (instead of "event") terminology.
-      null createEventInPixelSpace(string namePath,double time,double value)
+      null createEventInPixelSpace(string namePath,double time,double value);
 
       // Remove a key at the given time with the given by namePath,
       // with the parts of namePath consisting of the strings shown in the timeline UI.
       // E.g. "Position/x" refers to the parameter responsible for the x position of the layer.
       // The name of this method may be changed in future versions of the API to reflect the 
       // "key" (instead of "event") terminology.
-      null removeEvent(string namePath,double time)
+      null removeEvent(string namePath,double time);
 
       // Creates a Cue Before Clip
-      handle createPauseCueBeforeClip()
+      handle createPauseCueBeforeClip();
 
       //set look up table
-      null setColorTransformPath(string colorTransformPath)
+      null setColorTransformPath(string colorTransformPath);
 
       //get look up table
-      string getColorTransformPath()
+      string getColorTransformPath();
 
       //clear look up table
-      null clearColorTransformPath()
+      null clearColorTransformPath();
 
       //return all keyframes with time and value of this clip as json string
-      string getKeyframesAsJsonString()
+      string getKeyframesAsJsonString();
    }
 
 
    // Returns a handle for the node specified by id after checking that a node with the id exists.
    // Conceptually, the id and the handle are the same but some implementations of the API can not
    // yet consume handles as parameters, making it necessary to translate between the two occasionally.
-   handle getNodeFromId(double id)
-   handle getInst(string instancePath)
-   string getInstancePath(handle apEntityThisHandle)
+   handle getNodeFromId(double id);
 
    class Node
    {
-      handle[] getParameters()
-      string getName()
+      handle[] getParameters();
+      string getName();
 
       // Returns a handle to a parameter node child with the given name. E.g. if the current
       // node is the "Position" folder then the name "x" would return the parameter node
       // representing the x position of the layer.
-      handle getParamWithName(string name)
+      handle getParamWithName(string name);
 
       // Sets the values of the children of the node in the order that they are displayed
       // in the timeline. This allows e.g. setting the x, y, and z values of a node with
       // one invocation.
-      null setValues(double[] values)
+      null setValues(double[] values);
 
       // Returns the values of the children of the node in the order that they are displayed
       // in the timeline. This allows e.g. setting the x, y, and z values of a node with
       // one invocation.
-      double[] getValues()
+      double[] getValues();
 
-      // Resets the dominant values of the children of the node in the timeline.
-      null resetValues()
+      // Reset the values of the children of the node in the timeline.
+      null resetValues();
 
-      // Stores all node values in the Timeline.
-      null storeValues()
-      null mute()
-      null unMute()
-      null toggleMute()
-      boolean getIsMuted()
+      // Store all node values in the Timeline.
+      null storeValues();
+      null mute();
+      null unMute();
+      null toggleMute();
+      boolean getIsMuted();
 
       // Returns a handle to the timeline that holds the node.
-      handle getTimeline()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      handle getTimeline();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 
    // Attributes of the transport parameter's state (see
@@ -2086,37 +1898,34 @@ namespace Timelines
 
    class Param
    {
-      string getName()
-      boolean getIsChannel()
+      string getName();
+      boolean getIsChannel();
 
       //set parameter value. can be double or string
-      null setValue(timelineParamValue value,optional<int> fadeTimeMs)
-      null setValueRelativ(double value,optional<int> fadeTimeMs)
+      null setValue(timelineParamValue value);
+      null setValueRelativ(double value);
 
       //return can be double or string
-      timelineParamValue getValue()
-      null resetValue()
+      timelineParamValue getValue();
+      null resetValue();
 
       // Store parameter value in the Timeline.
-      null storeValue()
-
-      // Store parameter value in the Timeline and remove other keys.
-      null storeValueAndRemoveOther()
+      null storeValue();
 
       // Sets the transport state. Only effective for the "Transport" parameter of each layer.
       // Mode is as defined for Timelines.Timeline.setTransportMode().
       // inpoint and outpoint are in frames. Inpoint of zero is ignored at pause. Outpoint of zero is always ignored.
-      null setTransportAttributes(int mode,double speed,boolean loop,int inpoint,int outpoint)
+      null setTransportAttributes(int mode,double speed,boolean loop,int inpoint,int outpoint);
 
       // Returns the attributes of the current transport state.
-      null getAttributes()
-      null mute()
-      null unMute()
-      null toggleMute()
-      boolean getIsMuted()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      null getAttributes();
+      null mute();
+      null unMute();
+      null toggleMute();
+      boolean getIsMuted();
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 
    // Struct delivered by Cue.getCueAttributes.
@@ -2132,188 +1941,171 @@ namespace Timelines
       handle jumpGoalCue;
       int number;
       double waitDuration;
-      string note;
    }
 
    class Cue
    {
       // Removes cue.
-      null removeThis()
+      null removeThis();
 
       // Jumps to and executes the cue.
       // blendDuration: optional parameter to set blend duration in seconds.
-      null apply(optional<double> blendDuration)
+      null apply(optional<double> blendDuration);
 
       // Blends to and executes the cue. Deprecated method. Use apply().
       // blendDuration: blend duration in seconds.
-      null blendToThis(double blendDuration)
+      null blendToThis(double blendDuration);
 
       // Returns the attributes of the cue (see CueAttributes struct).
-      null getAttributes()
+      null getAttributes();
 
       // Returns a handle to the timeline in which the cue is situated.
-      handle getTimeline()
+      handle getTimeline();
 
       // Returns the time-ordered index of the cue in the timeline (-1 if the cue is not found).
-      int getIndex()
+      int getIndex();
 
       // Returns the name of the cue.
-      string getName()
+      string getName();
 
       // Sets the name of the cue.
-      boolean setName(string name)
+      boolean setName(string name);
 
       // Returns the info of the cue.
-      string getNote()
+      string getNote();
 
       // Sets the info of the cue.
-      boolean setNote(string note)
+      boolean setNote(string note);
 
       // Returns the operation mode of the cue.
       // 1: Play
       // 2: Pause
       // 3: Stop
       // 4: Jump
-      int getOperation()
+      int getOperation();
 
       // Sets the operation mode for the cue.
       // 1: Play
       // 2: Pause
       // 3: Stop
       // 4: Jump
-      boolean setOperation(int operation)
+      boolean setOperation(int operation);
 
       // Returns the jump mode of the cue.
       // 0: None
       // 1: To time
       // 2: To cue
-      int getJumpMode()
+      int getJumpMode();
 
       // Sets the jump mode of the cue with given handle (this only affects the cue
       // if it has its operation set to "jump").
       // 0: None
       // 1: To time
       // 2: To cue
-      boolean setJumpMode(int jumpMode)
+      boolean setJumpMode(int jumpMode);
 
       // Returns the time in frames of the jump goal of the cue.
-      double getJumpGoalTime()
+      double getJumpGoalTime();
 
       // Sets the time the timline should jump to if the cue is reached.
       // This only affects the cue if it's set to jumpToTime.
-      boolean setJumpGoalTime(double time)
+      boolean setJumpGoalTime(double time);
 
       // Returns the name of the cue the timeline should jump to if the cue is reached.
-      string getJumpGoalLabel()
+      string getJumpGoalLabel();
 
       // Returns the handle of the cue the timeline should jump to if the cue is reached.
-      handle getJumpGoalCue()
+      handle getJumpGoalCue();
 
       // Sets the name of the cue to which the timeline should jump if the cue is reached.
       // This only affects the cue if it's set to jumpToLabel.
-      boolean setJumpGoalLabel(string jumpGoalLabel)
+      boolean setJumpGoalLabel(string jumpGoalLabel);
 
       // Returns the number of the cue.
-      int getNumber()
+      int getNumber();
 
       // Sets the number of the cue.
-      null setNumber(int number)
+      null setNumber(int number);
 
       // Returns the time in frames that the cue will cause the timeline to wait when
       // it is reached before the cue is applied.
-      double getWaitDuration()
+      double getWaitDuration();
 
       // Sets the time in frames that the cue will cause the timeline to wait when
       // it is reached before the cue is applied.
-      boolean setWaitDuration(double time)
+      boolean setWaitDuration(double time);
 
       // Returns the time in frames, the blending between this cue and its jump target takes.
-      double getBlendDuration()
+      double getBlendDuration();
 
       // Sets the blend duration of a cue.
       // Time in Frames
-      boolean setBlendDuration(double timeInFrames)
+      boolean setBlendDuration(double timeInFrames);
 
       // Returns the time in frames for the cue.
-      double getTime()
+      double getTime();
 
       // Sets the time of the cue.
       // The unit of the parameter 'time' is frames.
-      boolean setTime(double time)
+      boolean setTime(double time);
 
       // Returns the name of the timeline that is triggered by this cue. An empty string is returned
       // when no timeline is triggered.
-      string getTimelineToTriggerName()
+      string getTimelineToTriggerName();
 
       // Sets the timeline that is triggered by this cue. Returns a boolean. A return value false means
       // that something went wrong and the cue is not changed.
       // When the string parameter 'nameTimeline' is empty, the cue property 'Timeline to Trigger' is cleared.
       // I.e. the cue will not trigger any timeline.
-      boolean setTimelineToTrigger(string nameTimeline)
-
-      // Returns the applied playback time mode of the timeline that is triggered by this cue.
-      // The return value corresponds to: Current Time = 1, Time = 2, Cue = 3.
-      // 0 is returned when no timeline is triggered. 
-      int getTimelineToTriggerMode()
-
-      // Sets the applied playback time mode of the timeline that is triggered by this cue. A return value false means
-      // that something went wrong and the cue is not changed.
-      // Mode Parameter: Current Time = 1, Time = 2, Cue = 3.
-      boolean setTimelineToTriggerTimeMode(int mode)
+      boolean setTimelineToTrigger(string nameTimeline);
 
       // Returns the applied playback mode of the timeline that is triggered by this cue.
       // The return value corresponds to: Play = 1, Pause = 2, Stop = 3.
       // 0 is returned when no timeline is triggered. 
-      int getTimelineTriggerMode()
+      int getTimelineTriggerMode();
 
       // Sets the applied playback mode of the timeline that is triggered by this cue. A return value false means
       // that something went wrong and the cue is not changed.
       // Mode Parameter: Play = 1, Pause = 2, Stop = 3.
-      boolean setTimelineTriggerMode(int mode)
+      boolean setTimelineTriggerMode(int mode);
 
       // Returns the applied time of the timeline that is triggered by this cue in frames.
       // -1 is returned when no timeline is triggered or no time is applied. 
-      double getTimelineTriggerApplyTime()
+      double getTimelineTriggerApplyTime();
 
       // Sets the applied time of the timeline that is triggered by this cue. A return value false means
       // that something went wrong and the cue is not changed.
       // The unit of the parameter 'time' is frames. The trigger time mode of this cue is set to 'Time'.
       // However, a value < 0. means that the apply time is resetted. I.e. no
       // time will be applied and the time mode of the cue is set to 'Current Time'.
-      boolean setTimelineTriggerApplyTime(double time)
+      boolean setTimelineTriggerApplyTime(double time);
 
       // Sets the apply cue of the timeline that is triggered by this cue. A return value false means
       // that something went wrong and the cue is not changed.
       // The trigger time mode of this cue is automatically set to 'Cue'.
-      boolean setTimelineTriggerApplyCue(string goalCueLabel)
+      boolean setTimelineTriggerApplyCue(string goalCueLabel);
 
       // Returns whether the cue will be applied when the nowpointer passes it.
-      boolean isActive()
+      boolean isActive();
 
       // Sets the acitvity state for the cue.
       // idState: 'Active' = 1, 'Ignore' = 2, 'Ignore Once' = 3
-      null setActivity(int idState)
+      null setActivity(int idState);
 
       // Returns the countdown time to this cue in frames.
       // Returns zero when this cue was already passed.
-      double getCountdown()
+      double getCountdown();
 
       // Returns the countdown time to this cue as a hours, minutes, seconds, frames string.
       // Returns zero string when this cue was already passed.
-      string getCountdownHMSF()
+      string getCountdownHMSF();
 
       // Sets the "Network Command" information for the cue. conveyorName must be one of the entries in the "API Output" dropdown of the cue inspector.
       // commandData is the string to be executed.
-      null setCommand(string conveyorName,string commandData)
-
-      //setColor
-      null setColor(int red,int green,int blue)
-
-      //getColor
-      int[] getColor()
-   handle getInst(string instancePath)
-   handle getHandleFromInstancePath(string instancePath)
-      string getInstancePath()
+      null setCommand(string conveyorName,string commandData);
+   handle getInst(string instancePath);
+   handle getHandleFromInstancePath(string instancePath);
+      string getInstancePath();
    }
 }
 
@@ -2324,53 +2116,28 @@ namespace Calibration
    // like this: x1, y1, z1, x2, y2, z2, x3, y3, z3, ...
    // markerIds must contain a unique integer id for each marker in the same order as 
    // the marker positions. The markerIds matching the coordinates example are 1,2,3.
-   null setMarkerPositions(double[] positions,int[] markerIds)
+   null setMarkerPositions(double[] positions,int[] markerIds);
 }
 
 namespace WebViews
 {
-   null loadDeviceUi(string devicePath)
-   null activatePreviousFunc()
-   null activateNextFunc()
-   string getLastActivatedFunc()
-   null deviceActivated(string devicePath,boolean withSelection)
-   null funcActivated(string funcPath,boolean withSelection)
-   null setFuncBodyState(string funcPath,string state)
-   string getFuncBodyState(string funcPath)
-   null setTag(string tag,string text)
-   null setEditorIsUsingBlocks(boolean useBlocks)
+   null loadDeviceUi(string devicePath);
+   null activatePreviousFunc();
+   null activateNextFunc();
+   string getLastActivatedFunc();
+   null deviceActivated(string devicePath,boolean withSelection);
+   null funcActivated(string funcPath,boolean withSelection);
+   null setFuncBodyState(string funcPath,string state);
+   string getFuncBodyState(string funcPath);
+   null setTag(string tag,string text);
+   null setEditorIsUsingBlocks(boolean useBlocks);
 }
 
 // Ui namespace is only accessible from plugins hosted in Pixera, i.e. it is
 // not relevant to external API access.
 namespace Ui
 {
-namespace Control
-{
-   //set current control page
-   null setControlPage(string pageName)
-
-   //get control pages
-   string[] getControlPages()
-
-   //get current control page
-   string getCurrentControlPage()
-}
-
-namespace PreviewCamera
-{
-   //select the preview camera for the preview. first starts at 0
-   null selectPreviewCameraByIndex(int index)
-
-   //select the preview camera by name
-   null selectPreviewCameraByName(string name)
-   string[] getPreviewCameraNames()
-}
-
-   null lockUi(string password)
-   null unlockUi(string password)
-   null toggleLockUi(string password)
-   handle getComboBoxWithId(double id)
+   handle getComboBoxWithId(double id);
 
    // Set the current AppMode
    // 1 = Screens
@@ -2380,34 +2147,31 @@ namespace PreviewCamera
    // 5 = Settings
    // 6 = Mapping Screens Feedarea
    // 7 = Control
-   null setAppMode(int mode)
+   null setAppMode(int mode);
 
    // Get the current AppMode
-   int getAppMode()
+   int getAppMode();
 
    // Get display Testpattern
-   boolean getDisplayTestpattern()
+   boolean getDisplayTestpattern();
 
    // Get display Testpattern
-   null setDisplayTestpattern(boolean display)
-
-   //toggle the output freeze
-   null toggleOutputFreeze()
+   null setDisplayTestpattern(boolean display);
 
    // Get the current AppMode
-   string getPreviewCameraAsJsonString()
-   null setPreviewCameraAsJsonString(string cameraFrustrumStateString)
-   null setDisableContentRendering(boolean state)
-   boolean getIsContentRenderingDisabled()
-   null setDisableWorkspaceRendering(boolean state)
-   boolean getIsWorkspaceRenderingDisabled()
+   string getPreviewCameraAsJsonString();
+   null setPreviewCameraAsJsonString(string cameraFrustrumStateString);
+   null setDisableContentRendering(boolean state);
+   boolean getIsContentRenderingDisabled();
+   null setDisableWorkspaceRendering(boolean state);
+   boolean getIsWorkspaceRenderingDisabled();
 
    class ComboBox
    {
-      null clear()
-      null addItem(string item,int id)
-      null setSelectedId(int id)
-      int getSelectedId()
+      null clear();
+      null addItem(string item,int id);
+      null setSelectedId(int id);
+      int getSelectedId();
    }
 }
 
@@ -2420,45 +2184,34 @@ namespace Direct
    //    "perspective"
    //    "parameter"
    //    "studioCamera"
-   null setRegistered(handle[] hdls,int expectedFrequency,int dampingMs,string[] usageHints)
+   null setRegistered(handle[] hdls,int expectedFrequency,int dampingMs,string[] usageHints);
 
    // Updates the representation of all registered entities.
-   null reloadRegistered()
-
-   // Register projector for use with the Direct API.
-   handle registerProjector(string name,int expectedFrequency,int dampingMs)
-
-   class Projector
-   {
-      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
-      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
-      null setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot)
-   }
-
+   null reloadRegistered();
 
    // Register the screen for use with the Direct API.
-   handle registerScreen(string name,int expectedFrequency,int dampingMs)
+   handle registerScreen(string name,int expectedFrequency,int dampingMs);
 
    class Screen
    {
       // Sets the position in meters.
-      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos)
+      null setPosition(optional<double> xPos,optional<double> yPos,optional<double> zPos);
 
       // Sets the rotation in degrees.
-      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      null setRotation(optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
       // Sets position and rotation in one API call.
-      null setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot)
+      null setPosRot(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot);
 
       // Sets position, rotation and the perspective position for the first screen group in one API call.
-      null setPosRotAndPerspectivePos(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> perspXPos,optional<double> perspYPos,optional<double> perspZPos)
+      null setPosRotAndPerspectivePos(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> perspXPos,optional<double> perspYPos,optional<double> perspZPos);
 
       // Sets position, rotation and scale in one API call.
-      null setPosRotScale(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> xScale,optional<double> yScale,optional<double> zScale)
+      null setPosRotScale(optional<double> xPos,optional<double> yPos,optional<double> zPos,optional<double> xRot,optional<double> yRot,optional<double> zRot,optional<double> xScale,optional<double> yScale,optional<double> zScale);
 
       // Enables time logging for the screen. Every 10 seconds values are printed to the pixera log
       // showing the number of messages and the minimum and maximum time between two messages for every second.
-      null enableLogging(boolean enable)
+      null enableLogging(boolean enable);
    }
 
 
@@ -2466,64 +2219,52 @@ namespace Direct
    // the layer should already have been displayed at least once. Otherwise the relevant underlying
    // attributes may not have been initialized yet and can not be cached.
    // The instance path traces the name hierarchy in the timeline tree. E.g. "Timeline 1.Position.x".
-   handle registerParam(string instancePath)
+   handle registerParam(string instancePath);
 
    class Param
    {
       // Sets the param value. Note that this will bypass conversions and offsets determined by the GUI. 
       // E.g. layer-level offsets will not be taken into account and neither will resource-dependent scaling.
-      null setValue(double value)
+      null setValue(double value);
 
       // Enables time logging for the param. Every 10 seconds values are printed to the pixera log
       // showing the number of messages and the minimum and maximum time between two messages for every second.
-      null enableLogging(boolean enable)
+      null enableLogging(boolean enable);
    }
 
 
    // Register the camera with the screen group name for use with the Direct API.
-   handle registerCamera(string cameraName,int expectedFrequency)
+   handle registerCamera(string cameraName,int expectedFrequency);
 
    class Camera
    {
       // Sets the position in meters.
-      null setPosition(double xPos,double yPos,double zPos)
+      null setPosition(double xPos,double yPos,double zPos);
 
-      // Sets the euler rotation in degrees.
-      null setRotation(double xRot,double yRot,double zRot)
-
-      // Sets the rotation in quaternions.
-      null setRotationQuat(double xQuat,double yQuat,double zQuat,double wQuat)
+      // Sets the rotation in degrees.
+      null setRotation(double xRot,double yRot,double zRot);
 
       // Sets the position in meters, rotation and fov in degrees.
-      null setTransformation(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio)
-
-      // Sets the position in meters, rotation in quaternions, fov in degrees.
-      null setTransformationQuat(double xPos,double yPos,double zPos,double xQuat,double yQuat,double zQuat,double wQuat,double fov,double aspectRatio)
+      null setTransformation(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio);
 
       // Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth)
-
-      // Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensPropsQuat(double xPos,double yPos,double zPos,double xQuat,double yQuat,double zQuat,double wQuat,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth)
+      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth);
 
       // Sets the position in meters, rotation and fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensPropsExt(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan,optional<double> focalLength,optional<double> focalLengthDistorted)
-
-      // Sets the position in meters, rotation in quaternions, fov in degrees, centerX, centerX and panelWidth in millimeters.
-      null setTransformationAndLensPropsExtQuat(double xPos,double yPos,double zPos,double xQuat,double yQuat,double zQuat,double wQuat,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan,optional<double> focalLength,optional<double> focalLengthDistorted)
+      null setTransformationAndLensPropsExt(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double focalDistance,double zoom,double iris,double k1,double k2,double k3,double p1,double p2,double centerX,double centerY,double panelWidth,double overscan);
    }
 
 
    // Register the perspective with the screen name for use with the Direct API.
-   handle registerPerspective(string screenName,int expectedFrequency)
+   handle registerPerspective(string screenName,int expectedFrequency);
 
    class Perspective
    {
       // Sets the position in meters, rotation and fov in degrees.
-      null setTransformation(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio)
+      null setTransformation(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio);
 
       // Sets the position in meters, rotation and fov in degrees.
-      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth)
+      null setTransformationAndLensProps(double xPos,double yPos,double zPos,double xRot,double yRot,double zRot,double fov,double aspectRatio,double nearClip,double farClip,double aperture,double focus,double iris,double k1,double k2,double centerX,double centerY,double panelWidth);
    }
 }
 
@@ -2531,7 +2272,7 @@ namespace Unreal
 {
 namespace Utility
 {
-   int getSupportedUnrealPluginVersion()
+   int getSupportedUnrealPluginVersion();
 }
 
 namespace Network
