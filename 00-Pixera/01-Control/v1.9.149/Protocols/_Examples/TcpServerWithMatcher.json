@@ -1,0 +1,111 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nrequire \"pixcProtocolDriver\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.protocol = createPixcProtocolDriver()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\npixc.log(self.helper)\npixc.log(self.network)\npixc.log(self.protocol)\nself.CtConn(0, true)\nself.IsOpen(false, true)\nself.ip = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6451\"))\nself.protocol:configure(\"stream\")\nself.protocol:create()\nself.protocol:addMatcher(\"test\", '\"PreString\" string(&0,{=},[5]) number(&1) \"\\r\"',\n    true,self.helper.wrapCallback(self().receiveParsed),true)\nself.network:setDestinationFunction(self.protocol:getInstance(),\"addInputData\")\nself.network:configureTcpServer(\n\tself.ip,\n\tself.port,\n\tnil,\n\tfunction (handle) pixc.log(\"accept Callback: \") end,\n\tfunction (handle, error) self.protocol:clearQueue(handle); pixc.log(\"close Callback: \"..error) end)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction (isOpen) self().IsOpen(isOpen, true) end,\n\tfunction (connectionCount) self().CtConn(false, connectionCount) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.helper = nil\r\nself.network:close()\r\nself.network = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "self.network:sendOverConnection(hdl, msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "hdl",
+     "type": "handle"
+    },
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "pixc.log(\"Parsed Data [\"..hdl.getHandleInt()..\"] P1:(\" ..param1..\") P2: (\"..param2..\")\")\r\nself.send(hdl, \"Replying to first param \" .. param1)\r\n",
+   "kind": "func",
+   "name": "receiveParsed",
+   "params": [
+    {
+     "name": "hdl",
+     "type": "handle"
+    },
+    {
+     "name": "param1",
+     "type": "string"
+    },
+    {
+     "name": "param2",
+     "type": "int"
+    }
+   ]
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\nself.connectedCount = pixcCommon.execAttribute(0, self.connectedCount, currentCount, doSet)\n",
+   "kind": "func",
+   "name": "CtConn",
+   "params": [
+    {
+     "name": "currentCount",
+     "type": "int"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 733.0,
+  "y": 261.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Protocols/TcpServerWithMatcher.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4pFNmO3dLdZSGC9MGlgkyuOwD7442IWXlfxE0zcFdYqlDhp9zTmiqUfSDsPCmrbBDwYAJZKibVvnA3n9IFDkFFQ=",
+ "name": "TcpServerWithMatcher",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "15152",
+   "name": "Port"
+  },
+  {
+   "cont": "Default",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

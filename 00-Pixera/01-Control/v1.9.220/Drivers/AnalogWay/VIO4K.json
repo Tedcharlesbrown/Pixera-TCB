@@ -1,0 +1,864 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.connected = false\npixc.log(self.helper)\npixc.log(self.network)\nself.IsConnected(false, true)\nself.ip = self.helper:getProperty(\"IP\",\"192.168.2.140\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"10600\"))\nself.network:configureTcp(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self().receive(data) end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isConnected) self().IsConnected(isConnected) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "pixc.log(\"got data\")\r\npixc.log(msg)\r\nself.data = msg",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.connected = pixcCommon.execAttribute(false, self.connected, isConnected, doSet)\n",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "isConnected",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"1PCtra\\n\"\r\nself.network:send\"1PCrprL\\n\"",
+     "kind": "func",
+     "name": "FadeThroughBlack"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0PCtra\\n\"\r\nself.network:send\"1PCrprL\\n\"",
+     "kind": "func",
+     "name": "CleanCut"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"2PCtra\\n\"\r\nself.network:send\"1PCrprL\\n\"",
+     "kind": "func",
+     "name": "CleanFade"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"3PCtra\\n\"\r\nself.network:send\"1PCrprL\\n\"",
+     "kind": "func",
+     "name": "FadeThroughFrame"
+    }
+   ],
+   "kind": "ns",
+   "name": "TAKE"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"1PRinp\\n\"",
+     "kind": "func",
+     "name": "DisplayPort"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"2PRinp\\n\"",
+     "kind": "func",
+     "name": "HDMIBackpanel"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"3PRinp\\n\"",
+     "kind": "func",
+     "name": "HD15Analog"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"4PRinp\\n\"",
+     "kind": "func",
+     "name": "Optical"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"5PRinp\\n\"",
+     "kind": "func",
+     "name": "SDI"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"6PRinp\\n\"",
+     "kind": "func",
+     "name": "DVI"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"7PRinp\\n\"",
+     "kind": "func",
+     "name": "HDMIFrontpanel"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"8PRinp\\n\"",
+     "kind": "func",
+     "name": "OptionCard1"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"9PRinp\\n\"",
+     "kind": "func",
+     "name": "OptionCard2"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0PRinp\\n\"",
+     "kind": "func",
+     "name": "None"
+    }
+   ],
+   "kind": "ns",
+   "name": "SelectInput"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset1"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset2"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset3"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"3,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset4"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"4,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset5"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"5,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset6"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"6,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset7"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"7,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset8"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"8,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset9"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"9,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset10"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"10,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset11"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"11,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset12"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"12,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset13"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"13,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset14"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"14,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset15"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"15,1PKrcr\\n\"",
+     "kind": "func",
+     "name": "Preset16"
+    }
+   ],
+   "kind": "ns",
+   "name": "SelectPreset"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"1PCpum\\n\"",
+     "kind": "func",
+     "name": "On"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0PCpum\\n\"",
+     "kind": "func",
+     "name": "Off"
+    }
+   ],
+   "kind": "ns",
+   "name": "AutoTake"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"1PFfal\\n\"",
+     "kind": "func",
+     "name": "Freeze"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0PFfal\\n\"",
+     "kind": "func",
+     "name": "Release"
+    }
+   ],
+   "kind": "ns",
+   "name": "Freeze"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0QFfor\\n\"",
+     "kind": "func",
+     "name": "Hide"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"0QFtty\\n\"\r\nUtils.Timer.sleep(10)\r\nself.network:send\"1QFfor\\n\"",
+     "kind": "func",
+     "name": "TransitionTypeCut"
+    },
+    {
+     "body": "if self.network == nil then\treturn end\r\nself.network:send\"1QFtty\\n\"\r\nUtils.Timer.sleep(10)\r\nself.network:send\"1QFfor\\n\"",
+     "kind": "func",
+     "name": "TransitionTypeFade"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot1"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot2"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"3QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot3"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"4QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot4"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"5QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot5"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"6QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot6"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"7QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot7"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"8QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot8"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"9QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot9"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"10QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot10"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"11QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot11"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"12QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot12"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"13QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot13"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"14QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot14"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"15QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot15"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"16QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot16"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"17QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot17"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"18QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot18"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"19QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot19"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"20QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot20"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"21QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot21"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"22QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot22"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"23QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot23"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"24QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot24"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"25QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot25"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"26QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot26"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"27QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot27"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"28QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot28"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"29QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot29"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"30QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot30"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"31QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot31"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"32QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot32"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"33QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot33"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"34QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot34"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"35QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot35"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"36QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot36"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"37QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot37"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"38QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot38"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"39QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot39"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"40QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot40"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"41QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot41"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"42QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot42"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"43QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot43"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"44QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot44"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"45QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot45"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"46QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot46"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"47QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot47"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"48QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot48"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"49QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot49"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"50QFsel\\n\"",
+       "kind": "func",
+       "name": "Slot50"
+      }
+     ],
+     "kind": "ns",
+     "name": "SelectFrameLibrary"
+    }
+   ],
+   "kind": "ns",
+   "name": "QuickFrame"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,1OUmov\\n\"",
+       "kind": "func",
+       "name": "MoveOn"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,0OUmov\\n\"",
+       "kind": "func",
+       "name": "MoveOff"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,0OUpat\\n\"",
+       "kind": "func",
+       "name": "NoPattern"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,1OUpat\\n\"",
+       "kind": "func",
+       "name": "Color"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,2OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalGrayScale"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,3OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalGrayScale"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,4OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalColorBar"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,5OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalColorBar"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,6OUpat\\n\"",
+       "kind": "func",
+       "name": "Grid16x16"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,7OUpat\\n\"",
+       "kind": "func",
+       "name": "Grid32x32"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,8OUpat\\n\"",
+       "kind": "func",
+       "name": "GridCustomSize"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,9OUpat\\n\"",
+       "kind": "func",
+       "name": "SMPTE"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,10OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalBurst"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,11OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalBurst"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,12OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalGradient"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,13OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalGradient"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,14OUpat\\n\"",
+       "kind": "func",
+       "name": "Crosshatch"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"0,15OUpat\\n\"",
+       "kind": "func",
+       "name": "Checkerboard"
+      }
+     ],
+     "kind": "ns",
+     "name": "MainOutput"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,1OUmov\\n\"",
+       "kind": "func",
+       "name": "MoveOn"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,0OUmov\\n\"",
+       "kind": "func",
+       "name": "MoveOff"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,0OUpat\\n\"",
+       "kind": "func",
+       "name": "NoPattern"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,1OUpat\\n\"",
+       "kind": "func",
+       "name": "Color"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,2OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalGrayScale"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,3OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalGrayScale"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,4OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalColorBar"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,5OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalColorBar"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,6OUpat\\n\"",
+       "kind": "func",
+       "name": "Grid16x16"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,7OUpat\\n\"",
+       "kind": "func",
+       "name": "Grid32x32"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,8OUpat\\n\"",
+       "kind": "func",
+       "name": "GridCustomSize"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,9OUpat\\n\"",
+       "kind": "func",
+       "name": "SMPTE"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,10OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalBurst"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,11OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalBurst"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,12OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalGradient"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,13OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalGradient"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,14OUpat\\n\"",
+       "kind": "func",
+       "name": "Crosshatch"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"1,15OUpat\\n\"",
+       "kind": "func",
+       "name": "Checkerboard"
+      }
+     ],
+     "kind": "ns",
+     "name": "Option1Output"
+    },
+    {
+     "elems": [
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,1OUmov\\n\"",
+       "kind": "func",
+       "name": "MoveOn"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,0OUmov\\n\"",
+       "kind": "func",
+       "name": "MoveOff"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,0OUpat\\n\"",
+       "kind": "func",
+       "name": "NoPattern"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,1OUpat\\n\"",
+       "kind": "func",
+       "name": "Color"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,2OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalGrayScale"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,3OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalGrayScale"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,4OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalColorBar"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,5OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalColorBar"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,6OUpat\\n\"",
+       "kind": "func",
+       "name": "Grid16x16"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,7OUpat\\n\"",
+       "kind": "func",
+       "name": "Grid32x32"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,8OUpat\\n\"",
+       "kind": "func",
+       "name": "GridCustomSize"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,9OUpat\\n\"",
+       "kind": "func",
+       "name": "SMPTE"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,10OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalBurst"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,11OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalBurst"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,12OUpat\\n\"",
+       "kind": "func",
+       "name": "HorizontalGradient"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,13OUpat\\n\"",
+       "kind": "func",
+       "name": "VerticalGradient"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,14OUpat\\n\"",
+       "kind": "func",
+       "name": "Crosshatch"
+      },
+      {
+       "body": "if self.network == nil then\treturn end\r\nself.network:send\"2,15OUpat\\n\"",
+       "kind": "func",
+       "name": "Checkerboard"
+      }
+     ],
+     "kind": "ns",
+     "name": "Option2Output"
+    }
+   ],
+   "kind": "ns",
+   "name": "Testpattern"
+  }
+ ],
+ "cjv": {
+  "h": 420.0,
+  "w": 295.0,
+  "x": 342.0,
+  "y": 132.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/AnalogWayVIO4K.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4jTsOpN1UKtfwJ3ONob/sM36xzEDzhBMHFOs+HwoS4K323FK0q2+QlQtC8A1cIOSIlpJayk0F5H8BrlvhRe55H7on0syNRUOb74TKZciC5bwYsUnCYMoFJ1+2p0Gc8/3AoKAtuB9JHNCiu/oM7l/so4=",
+ "name": "AnalogWayVIO4K",
+ "properties": [
+  {
+   "cont": "192.168.2.140",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "10600",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Yosuke Kikukawa",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1.0.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "24 November. 2021",
+   "name": "Date",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

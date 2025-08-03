@@ -1,0 +1,84 @@
+{
+ "api": [
+  {
+   "body": "local res = pixc.callRefs()\nfor _, v in ipairs(res) do\n\tfor __, k in ipairs(v) do\n\t\tif k ~= nil then\n\t\t\treturn k\n\t\tend\n\tend\nend\n",
+   "kind": "func",
+   "name": "toTimeline"
+  },
+  {
+   "body": "local timeline = self.toTimeline()\r\nif timeline == nil then return end\r\nself.Internal.setTimelineOpacity(timeline, 0)\r\ntimeline.pause()\r\ntimeline.setCurrentTime(0)\r\nself.preparationComplete()\r\n",
+   "kind": "func",
+   "name": "prepare"
+  },
+  {
+   "body": "--\r\n",
+   "kind": "func",
+   "name": "preparationComplete"
+  },
+  {
+   "body": "local timeline = self.toTimeline()\r\nif timeline == nil then return end\r\ntimeline.pause()\r\nself.Internal.fadeInTimeline(timeline)\r\n",
+   "kind": "func",
+   "name": "fadeInAndRun"
+  },
+  {
+   "body": "--\r\n",
+   "kind": "func",
+   "name": "fadeInAndRunComplete"
+  },
+  {
+   "elems": [
+    {
+     "body": "if timeline == nil then return end\r\n\r\nlocal layer = timeline.getLayerAtIndex(0)\r\nif layer == nil then return end\r\n\r\nlocal timeInMillis = 8000\r\nlocal sleepTime = 10\r\nlocal sourceOpacity = layer.getOpacity()\r\nlocal targetOpacity = 1.0\r\nlocal step = (targetOpacity - sourceOpacity) * sleepTime / timeInMillis\r\nlocal value = sourceOpacity\r\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\r\n\tfunction()\r\n\t   value = value + step\r\n\t   if ((step > 0) and (value >= targetOpacity)) \r\n\t\t  or\r\n\t\t  ((step <= 0) and (value <= targetOpacity))\r\n\t   then\r\n\t\t  value = targetOpacity\r\n\t\t  layer.setOpacity(value)\r\n\t\t  pixc.getRoot().Utils.Timer.clearInterval(self.interval)\r\n\t\t  self.Internal.fadeInComplete(timeline)\r\n\t\t  return\r\n\t   end\r\n\t   layer.setOpacity(value)\r\n\tend, sleepTime)\r\n",
+     "kind": "func",
+     "name": "fadeInTimeline",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "handle"
+      }
+     ]
+    },
+    {
+     "body": "if timeline == nil then return end\r\ntimeline.play()\r\nself.fadeInAndRunComplete()\r\n",
+     "kind": "func",
+     "name": "fadeInComplete",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "handle"
+      }
+     ]
+    },
+    {
+     "body": "if timeline == nil then return end\nlocal layer = timeline.getLayerAtIndex(0)\nif layer == nil then return end\nlayer.setOpacity(value)\r\n",
+     "kind": "func",
+     "name": "setTimelineOpacity",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "handle"
+      },
+      {
+       "name": "value",
+       "type": "handle"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 686.0,
+  "y": 502.0
+ },
+ "definedExternally": false,
+ "libraryExportPath": "C:\\env\\nui\\data\\control_library_standard\\Tools\\TimelineRunner.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4lwAsSRF6mFDwUUxE2cz47lLsjHv2GM6RqAUC3RTdrJePf7Jky9ziusvA6nVKiEbZz/rdmsxsIK656maT7hXkmo=",
+ "name": "TimelineRunner",
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}

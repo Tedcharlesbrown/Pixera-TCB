@@ -1,0 +1,86 @@
+{
+ "api": [
+  {
+   "body": "--CFv2\nlocal result\nif(self.argument ~= nil) then\n\tresult = pixc.callRefs(self.argument)\nelse\n\tresult = pixc.callRefs()\nend\nif type(result) ~= 'table' or #result < 1 then\n\tpixc.warn('Module has no input!', self())\n\treturn nil\nend\nresult = result[1]\n\nif type(result) ~= 'table' or #result < 1 then\n\treturn nil\nend\nresult = result[1]\nreturn result\n",
+   "kind": "func",
+   "name": "Input",
+   "slotStyle": "leftOut;rightNone;triggerHidden"
+  },
+  {
+   "body": "--\nself._running = true\nself.poll()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "--\nself._running = false\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "\n--Call output if value changed\nlocal newVal = self.Input()\nif(newVal ~= self.oldVal) then\n\tself.oldVal = newVal\n\tself.Output()\nend\n\n--Register for the next interval.\nif self._running then\n\tlocal interval = self().getProperty(\"Interval\")\n\tself.argument = self().getProperty(\"Polling Argument\")\n\tUtils.Timer.setTimeout(self.poll, interval)\nend\n",
+   "kind": "func",
+   "name": "poll",
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": ""
+   },
+   "body": "\nlocal val = self.Input()\npixc.report(val)\npixc.callRefs(val)\nreturn val\n",
+   "kind": "func",
+   "name": "Output",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 1731.2222222222222,
+  "y": 1287.3333333333335
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Tools/Polling.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4mv3bKVGm9voZ912aHC/quASbwB682noIao+6oSdr5CxfBBV4EB5U2UcnZ+jtCoc4GF5aO4EZDvfO9TxpstXI8jbSqykJhe12k7cklLjsX5gi6+RCJTU+sFZw0tpsJfOdQ==",
+ "name": "Polling",
+ "properties": [
+  {
+   "cont": "Periodically (every Interval) calls the function referenced by input. Writes the result of input to output whenever the value changed.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "2.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "100ms",
+   "name": "Interval",
+   "typeHint": "number"
+  },
+  {
+   "cont": "",
+   "name": "Polling Argument",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

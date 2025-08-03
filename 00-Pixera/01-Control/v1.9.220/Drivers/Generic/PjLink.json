@@ -1,0 +1,890 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref"
+  },
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcDriver\"\n--lock for not double init\nif self.lock == true then return end\nself.lock = true\nif self.pixcHelper ~= nil then -- Init already called. call uninit before to reinit\n\tself.uninit()\n\tUtils.Timer.sleep(500)\nend\nself.lock = nil\n--create helper and driver\nself.pixcHelper = createPixcHelper(pixc,self())\nself.driver = createPixcDriver()\n\n--create self variable\nself._powrIsOn = false\nself._currentInpt = \"\"\nself._connected = false\nself.isAuth = false;\nself.authHash = \"\";\n\n-- set logfunction and connection state of projector\nself.driver:setLogFunction(function (...) pixc.log(...) end)\nself.driver:setConnectionLifecycleCallback(\n\tfunction(isConnected)\n\t\tself().IsConnected(isConnected, true)\t\n\tend\n)\n\n--get all propertys\nself.ip = self.pixcHelper:getProperty(\"IP\",\"127.0.0.1\")\nself.State.IP(self.ip)\nself.password = self.pixcHelper:getProperty(\"Password\",\"\")\nself.autoReconnect = self.pixcHelper:getProperty(\"AutoReconnect\",\"3s\")\nself.port = tonumber(self.pixcHelper:getProperty(\"Port\",\"4352\"))\n--create tcp connection with auto reconnect all 3sec if disconnected\nself.driver:set(\"tcp\",self.ip,self.port,nil,nil,nil,self.autoReconnect or \"3s\");\nself.driver:createParser()\n--Matcher Error\nself.driver:addMatcher(\"rError\", '\"%1ERST=\" string(&0,{\\r})',\n    true,function (a,b) self().State.receive(\"ERST\",a) end)\n--Matcher Lamp Information\nself.driver:addMatcher(\"rLamp\", '\"%1LAMP=\" string(&0,{\\r})',\n    true,function (a,b) self().State.receive(\"LAMP\",a) end)\n--Matcher %1\nself.driver:addMatcher(\"rPowr\", '\"%1\" string(&0,{=},[5]) number(&1) \"\\r\"',\n    true,function (a,b) self().State.receive(a,b) end)\n--Matcher %2\nself.driver:addMatcher(\"rVers\", '\"%2\" string(&0,{=},[5]) string(&1,{\\r})',\n    true,function (a,b) self().State.receive(a,b) end)\n--Matcher Login\nself.driver:addMatcher(\"rLoginNoAuto\", '\"PJLINK 0\\r\"',\n    true,function () self().State.receiveNoAuth() end)\n--Matcher Login Error\nself.driver:addMatcher(\"rLoginError\", '\"PJLINK ERRA\\r\"',\n    true,function () self().State.loginError() end)\n--Matcher Authentification\nself.driver:addMatcher(\"rLoginAuth\", '\"PJLINK 1 \" string(&0,[8])\"\\r\"',\n    true,function(v) self().State.receiveAuth(v) end)\n--Connect to Projector\nself.driver:connectAsync();\n--clear Interval for not add second\nif self.interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\nend\n--add Interval call check State every 5sec\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\n\tfunction()\n\t\tself.State.checkState()\n\tend, 5000)\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "--remove interval\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\n--remove helper\r\nself.pixcHelper = nil\r\nif self.driver == nil then return end\r\nself.driver:close()\r\nself.driver = nil\r\n\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._connected = pixcCommon.execAttribute(0, self._connected, isConnected, doSet)\nif(self._connected == false) then\n\tself.authHash = \"\"\n\t\nend\nif(self._connected) then\n\tself.LoginOK(\"\",true)\nend\nreturn self._connected",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "isConnected",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "bool"
+   }
+  },
+  {
+   "attKind": "internal",
+   "body": "self._LoginOK = pixcCommon.execAttribute(0, self._LoginOK, val, doSet)\r\nreturn self._LoginOK\r\n",
+   "kind": "func",
+   "name": "LoginOK",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%1POWR 1\\r\");\r\n",
+     "kind": "func",
+     "name": "powerOn"
+    },
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%1POWR 0\\r\");\r\n",
+     "kind": "func",
+     "name": "powerOff"
+    },
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%1AVMT 30\\r\");\r\n",
+     "kind": "func",
+     "name": "shutterOpen"
+    },
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%1AVMT 31\\r\");\r\n",
+     "kind": "func",
+     "name": "shutterClose"
+    },
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%2FREZ 1\\r\");\r\n",
+     "kind": "func",
+     "name": "freeze"
+    },
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%2FREZ 0\\r\");\r\n",
+     "kind": "func",
+     "name": "unfreeze"
+    },
+    {
+     "body": "if self.driver == nil or self.isAuth == false then return end\r\nself.driver:send(\"%1INPT \" .. tostring(num) .. \"\\r\");\r\n",
+     "kind": "func",
+     "name": "inputNumber",
+     "params": [
+      {
+       "name": "num",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "self.Commands.inputNumber(11)\r\n",
+     "kind": "func",
+     "name": "inputRgb1"
+    },
+    {
+     "body": "self.Commands.inputNumber(12)\r\n",
+     "kind": "func",
+     "name": "inputRgb2"
+    },
+    {
+     "body": "self.Commands.inputNumber(31)\r\n",
+     "kind": "func",
+     "name": "inputDviD"
+    },
+    {
+     "body": "self.Commands.inputNumber(32)\r\n",
+     "kind": "func",
+     "name": "inputHdmi"
+    },
+    {
+     "body": "self.Commands.inputNumber(33)\r\n",
+     "kind": "func",
+     "name": "inputDigitalLink"
+    },
+    {
+     "body": "self.Commands.inputNumber(34)\r\n",
+     "kind": "func",
+     "name": "inputSdi1"
+    },
+    {
+     "body": "self.Commands.inputNumber(35)\r\n",
+     "kind": "func",
+     "name": "inputSdi2"
+    }
+   ],
+   "kind": "ns",
+   "name": "Commands"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.driver == nil then return end\r\nif(self.isAuth) then\r\n\tself.driver:send(\"%1POWR ?\\r\");\r\n\tself.driver:send(\"%1INPT ?\\r\");\r\n\tself.driver:send(\"%1INPT ?\\r\");\r\n\tself.driver:send(\"%2FREZ ?\\r\");\r\n\tself.driver:send(\"%1AVMT ?\\r\");\r\n\tself.driver:send(\"%1ERST ?\\r\");\r\n\tself.driver:send(\"%2IRES ?\\r\");\r\n\tself.driver:send(\"%2RRES ?\\r\");\r\n\tself.driver:send(\"%2SVER ?\\r\");\r\n\tself.driver:send(\"%1LAMP ?\\r\");\r\nend\r\n",
+     "kind": "func",
+     "name": "checkState",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self._loginOK ~= \"OK\" then\r\n\tself.LoginOK(\"OK\",true)\r\nend\r\nif cmd == \"POWR\" then\r\n\tif val == 0 then\r\n\t\tself.State.PowerIsOn(false,true)\r\n\telseif val == 1 then\r\n\t\tself.State.PowerIsOn(true,true)\r\n\telseif val == 2 then\r\n\t\tself.State.PowerIsOn(\"Cooling\",true)\r\n\telseif val == 3 then\r\n\t\tself.State.PowerIsOn(\"WarmUp\",true)\r\n\tend\r\nelseif cmd == \"SVER\" then\r\n\tself.State.Version(val)\r\nelseif cmd == \"IRES\" then\r\n\tself.State.InputResolution(val)\r\nelseif cmd == \"LAMP\" then\r\n\tlocal t = self.pixcHelper.stringSplit(val,\" \")\r\n\tlocal offset = 1\r\n\tfor i=1,#t/2,1 do\r\n\t\tself.State.Lamp[\"Lamp\" .. i][\"Hour\"](t[offset])\r\n\t\tself.State.Lamp[\"Lamp\" .. i][\"On\"](t[offset+1] == \"1\",true)\r\n\t\tself.State.Lamp[\"Lamp\" .. i][\"Style\"](\"unhide\",true)\r\n\t\toffset = offset+2\r\n\tend\r\n\tfor i=#t/2+1,8,1 do\r\n\t\tlocal c = math.floor(math.abs(i))\r\n\t\tself.State.Lamp[\"Lamp\" .. c][\"Hour\"](\"\")\r\n\t\tself.State.Lamp[\"Lamp\" .. c][\"On\"](\"\")\r\n\t\tself.State.Lamp[\"Lamp\" .. c][\"Style\"](\"hide\",true)\r\n\tend\r\nelseif cmd == \"ERST\" then\r\n\tlocal errorMsg = \"\"\r\n\tlocal t={}\r\n\tval:gsub(\".\",function(c) table.insert(t,c) end)\r\n\tif t[1] == \"1\" then\r\n\t\terrorMsg = errorMsg .. \"Fan Warning \\r\"\r\n\telseif t[1] == \"2\" then\r\n\t\terrorMsg = errorMsg .. \"Fan Error \\r\"\r\n\tend\r\n\tif t[2] == \"1\" then\r\n\t\terrorMsg = errorMsg .. \"Lamp Warning \\r\"\r\n\telseif t[2] == \"2\" then\r\n\t\terrorMsg = errorMsg .. \"Lamp Error \\r\"\r\n\tend\r\n\tif t[3] == \"1\" then\r\n\t\terrorMsg = errorMsg .. \"Temp Warning \\r\"\r\n\telseif t[3] == \"2\" then\r\n\t\terrorMsg = errorMsg .. \"Temp Error \\r\"\r\n\tend\r\n\tif t[4] == \"1\" then\r\n\t\terrorMsg = errorMsg .. \"Cover Open Warning \\r\"\r\n\telseif t[4] == \"2\" then\r\n\t\terrorMsg = errorMsg .. \"Cover Open Error \\r\"\r\n\tend\r\n\tif t[5] == \"1\" then\r\n\t\terrorMsg = errorMsg .. \"Filter Warning \\r\"\r\n\telseif t[5] == \"2\" then\r\n\t\terrorMsg = errorMsg .. \"Filter Error \\r\"\r\n\tend\r\n\tif t[6] == \"1\" then\r\n\t\terrorMsg = errorMsg .. \"Other Warning \\r\"\r\n\telseif t[6] == \"2\" then\r\n\t\terrorMsg = errorMsg .. \"Other Error \\r\"\r\n\tend\r\n\tself.State.ErrorState(errorMsg)\r\nelseif cmd == \"FREZ\" then\r\n\tself.State.Freeze(val == \"1\", true)\r\nelseif cmd == \"AVMT\" then\r\n\tself.State.Shutter(val == 31, true)\r\nelseif cmd == \"RRES\" then\r\n\tself.State.RecommendedResolution(val)\r\nelseif cmd == \"INPT\" then\t\r\n\tif val == 0 then\r\n\t\tself.State.CurrentInput(\"None\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 11 then\r\n\t\tself.State.CurrentInput(\"RGB1\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 12 then\r\n\t\tself.State.CurrentInput(\"RGB2\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 31 then\r\n\t\tself.State.CurrentInput(\"DVI-D\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 32 then\r\n\t\tself.State.CurrentInput(\"HDMI\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 33 then\r\n\t\tself.State.CurrentInput(\"HDMI\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 34 then\r\n\t\tself.State.CurrentInput(\"SDI1\", true)\r\n\t\treturn\r\n\tend\r\n\tif val == 35 then\r\n\t\tself.State.CurrentInput(\"SDI2\", true)\r\n\t\treturn\r\n\tend\r\nend\r\n",
+     "kind": "func",
+     "name": "receive",
+     "params": [
+      {
+       "name": "cmd",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._IP = pixcCommon.execAttribute(0, self._IP, val, doSet)\r\nreturn self._IP\r\n",
+     "kind": "func",
+     "name": "IP",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Version = pixcCommon.execAttribute(0, self._Version, val, doSet)\r\nreturn self._Version\r\n",
+     "kind": "func",
+     "name": "Version",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._powrIsOn = pixcCommon.execAttribute(false, self._powrIsOn, isOn, doSet)\nreturn self._powrIsOn",
+     "kind": "func",
+     "name": "PowerIsOn",
+     "params": [
+      {
+       "name": "isOn",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "bool"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._currentInpt = pixcCommon.execAttribute(\"None\", self._currentInpt, currentInput, doSet)\nreturn self._currentInpt",
+     "kind": "func",
+     "name": "CurrentInput",
+     "params": [
+      {
+       "name": "currentInput",
+       "type": "string"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "string"
+     },
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Freeze = pixcCommon.execAttribute(0, self._Freeze, val, doSet)\r\nreturn self._Freeze\r\n",
+     "kind": "func",
+     "name": "Freeze",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Shutter = pixcCommon.execAttribute(0, self._Shutter, val, doSet)\r\nreturn self._Shutter\r\n",
+     "kind": "func",
+     "name": "Shutter",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._Resolution = pixcCommon.execAttribute(0, self._Resolution, val, doSet)\r\nreturn self._Resolution\r\n",
+     "kind": "func",
+     "name": "InputResolution",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._RecommendedResolution = pixcCommon.execAttribute(0, self._RecommendedResolution, val, doSet)\r\nreturn self._RecommendedResolution\r\n",
+     "kind": "func",
+     "name": "RecommendedResolution",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self._LastError = pixcCommon.execAttribute(0, self._LastError, val, doSet)\r\nif self._LastError ~= \"\" and doSet == true then\r\n\tpixc.warning(self._LastError)\r\nend\r\nreturn self._LastError\r\n",
+     "kind": "func",
+     "name": "ErrorState",
+     "params": [
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "body": "--pixc.log(\"PJ NoAuto\")\r\nself.isAuth = true;\r\nself.authHash = \"\"\r\nself.LoginOK(\"OK\",true)\r\n",
+     "kind": "func",
+     "name": "receiveNoAuth",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "--pixc.log(\"PJ Auto\",num)\r\nlocal str = num..self.password\r\n\r\nlocal md5 = require 'md5'\r\n\r\nself.authHash = md5.sumhexa(str);\r\n--pixc.log(\"MD5 Test\",str,self.authHash)\r\nself.LoginOK(\"OK\",true)\r\nself.driver:send(self.authHash..\"%1POWR ?\\r\");\r\nself.isAuth = true;\r\n",
+     "kind": "func",
+     "name": "receiveAuth",
+     "params": [
+      {
+       "name": "num",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "--pixc.log(\"loginError\")\r\nself.isAuth = false;\r\nself.LoginOK(\"Error password required or wrong\",true)\r\n\r\n",
+     "kind": "func",
+     "name": "loginError",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "elems": [
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp1"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp2"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp3"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp4"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp5"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp6"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp7"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "internal",
+         "body": "self._Hour = pixcCommon.execAttribute(0, self._Hour, val, doSet)\r\nreturn self._Hour\r\n",
+         "kind": "func",
+         "name": "Hour",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._On = pixcCommon.execAttribute(0, self._On, val, doSet)\r\nreturn self._On\r\n",
+         "kind": "func",
+         "name": "On",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightOut;triggerHidden"
+        },
+        {
+         "attKind": "internal",
+         "body": "self._Style = pixcCommon.execAttribute(0, self._Style, val, doSet)\r\nreturn self._Style\r\n",
+         "kind": "func",
+         "name": "Style",
+         "params": [
+          {
+           "name": "val",
+           "type": ""
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ],
+         "slotStyle": "leftNone;rightNone;triggerHidden"
+        }
+       ],
+       "kind": "ns",
+       "name": "Lamp8"
+      }
+     ],
+     "kind": "ns",
+     "name": "Lamp"
+    }
+   ],
+   "kind": "ns",
+   "name": "State"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 3264.0,
+  "y": 288.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/Generic/PjLink.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4tJ9IBI206A+GTpJpm1clstiveSfEoas4irJHHytpfT9sUaJAz8wG+6PgyYIsuhjlB08J72F1//Z/pCSA9L5L1lKVX8NfekHF15j4GBHDcSQ6y9yg4MQw+kKyrghLi/XEg==",
+ "name": "PjLink",
+ "properties": [
+  {
+   "cont": "127.0.01",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "4352",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "",
+   "name": "Password",
+   "typeHint": "string"
+  },
+  {
+   "cont": "3s",
+   "name": "AutoReconnect",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "true",
+   "name": "UI Is Editable",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "AVStumpfl GmbH(Benni M.)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.pixera.one",
+   "name": "URL",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "{\"isInEditMode\":false,\"pages\":[{\"name\":\"Page1\",\"bgColor\":null,\"components\":[{\"componentId\":\"Component_1666479178342_13280\",\"label\":\"\",\"preventFromClick\":true,\"type\":\"UbControlRectangle\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":90,\"width\":560,\"height\":530},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\tborder-left: 1px solid #ffffff;\\n\\tborder-top: 1px solid #ffffff;\\nborder-right: 1px solid #ffffff;\\nborder-bottom: 1px solid #ffffff;\\nborder-top-left-radius: 0px;\\nborder-top-right-radius: 0px;\\nborder-bottom-right-radius: 0px;\\nborder-bottom-left-radius: 0px;\\n\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479178342_13280 > .ComponentId_Component_1666479178342_13280 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479178342_13280 > .ComponentId_Component_1666479178342_13280.Style1 {\\n    border-left: 1px solid #ffffff;\\n    border-top: 1px solid #ffffff;\\n    border-right: 1px solid #ffffff;\\n    border-bottom: 1px solid #ffffff;\\n    border-top-left-radius: 0px;\\n    border-top-right-radius: 0px;\\n    border-bottom-right-radius: 0px;\\n    border-bottom-left-radius: 0px; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[]},{\"componentId\":\"Component_1666476862833_17053\",\"label\":\"127.0.01\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":450,\"y\":90,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"IP\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666476887098_9250\",\"label\":\"IP:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":410,\"y\":90,\"width\":30,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666476887098_9250 > .ComponentId_Component_1666476887098_9250 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666476887098_9250 > .ComponentId_Component_1666476887098_9250.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666476904264_94147\",\"label\":\"PowerOn:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":350,\"y\":120,\"width\":90,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666476904264_94147 > .ComponentId_Component_1666476904264_94147 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666476904264_94147 > .ComponentId_Component_1666476904264_94147.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666476919344_18700\",\"label\":\"false\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":450,\"y\":120,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.true{\\n\\tcolor: #00ff00;\\n\\t\\n}\\n\\n&.false{\\n\\tcolor: #d60000;\\n\\t\\n}\\n\\n&.Cooling{\\n\\tcolor: #07a4f2;\\n\\t\\n}\\n\\n&.WarmUp{\\n\\tcolor: #854700;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666476919344_18700 > .ComponentId_Component_1666476919344_18700 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666476919344_18700 > .ComponentId_Component_1666476919344_18700.true {\\n    color: #00ff00; }\\n  #ComponentId_Component_1666476919344_18700 > .ComponentId_Component_1666476919344_18700.false {\\n    color: #d60000; }\\n  #ComponentId_Component_1666476919344_18700 > .ComponentId_Component_1666476919344_18700.Cooling {\\n    color: #07a4f2; }\\n  #ComponentId_Component_1666476919344_18700 > .ComponentId_Component_1666476919344_18700.WarmUp {\\n    color: #854700; }\\n\",\"styleClasses\":[\"false\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"PowerIsOn\",\"kind\":\"func\",\"params\":[{\"name\":\"isOn\",\"type\":\"Bool\",\"value\":true},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"PowerIsOn\",\"kind\":\"func\",\"params\":[{\"name\":\"isOn\",\"type\":\"Bool\",\"value\":true},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666477317779_64584\",\"label\":\"Input:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":350,\"y\":150,\"width\":90,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477317779_64584 > .ComponentId_Component_1666477317779_64584 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477317779_64584 > .ComponentId_Component_1666477317779_64584.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666477351240_43140\",\"label\":\"\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":450,\"y\":150,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"func\",\"name\":\"CurrentInput\",\"params\":[{\"type\":\"string\",\"name\":\"currentInput\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]]}},{\"componentId\":\"Component_1666477417432_13437\",\"label\":\"Resolution:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":330,\"y\":180,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477417432_13437 > .ComponentId_Component_1666477417432_13437 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477417432_13437 > .ComponentId_Component_1666477417432_13437.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666477430596_93234\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":450,\"y\":180,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"InputResolution\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666477470320_22220\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":450,\"y\":210,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.false{\\n\\t\\n}\\n\\n&.true{\\n\\tcolor: #f20707;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477470320_22220 > .ComponentId_Component_1666477470320_22220 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477470320_22220 > .ComponentId_Component_1666477470320_22220.true {\\n    color: #f20707; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Freeze\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Freeze\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666477470357_76099\",\"label\":\"Freeze:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":330,\"y\":210,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477470357_76099 > .ComponentId_Component_1666477470357_76099 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477470357_76099 > .ComponentId_Component_1666477470357_76099.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666477548479_96900\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":450,\"y\":240,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.false{\\n\\t\\n}\\n\\n&.true{\\n\\tcolor: #f20707;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477548479_96900 > .ComponentId_Component_1666477548479_96900 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477548479_96900 > .ComponentId_Component_1666477548479_96900.true {\\n    color: #f20707; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Shutter\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Shutter\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666477548535_93566\",\"label\":\"Shutter:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":330,\"y\":240,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477548535_93566 > .ComponentId_Component_1666477548535_93566 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477548535_93566 > .ComponentId_Component_1666477548535_93566.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666477867012_53420\",\"label\":\"Error Message:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":280,\"y\":290,\"width\":160,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477867012_53420 > .ComponentId_Component_1666477867012_53420 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477867012_53420 > .ComponentId_Component_1666477867012_53420.Style1 {\\n    text-align: right; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666477867040_88560\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":310,\"y\":330,\"width\":280,\"height\":290},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\tborder-left: 1px solid #ffffff;\\n\\tborder-top: 1px solid #ffffff;\\nborder-right: 1px solid #ffffff;\\nborder-bottom: 1px solid #ffffff;\\nborder-top-left-radius: 0px;\\nborder-top-right-radius: 0px;\\nborder-bottom-right-radius: 0px;\\nborder-bottom-left-radius: 0px;\\n\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666477867040_88560 > .ComponentId_Component_1666477867040_88560 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666477867040_88560 > .ComponentId_Component_1666477867040_88560.Style1 {\\n    border-left: 1px solid #ffffff;\\n    border-top: 1px solid #ffffff;\\n    border-right: 1px solid #ffffff;\\n    border-bottom: 1px solid #ffffff;\\n    border-top-left-radius: 0px;\\n    border-top-right-radius: 0px;\\n    border-bottom-right-radius: 0px;\\n    border-bottom-left-radius: 0px; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[[]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"ErrorState\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478337277_44033\",\"label\":\"Lamp 1:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":150,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478337277_44033 > .ComponentId_Component_1666478337277_44033 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478337277_44033 > .ComponentId_Component_1666478337277_44033.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp1\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478339474_72714\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":180,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478339474_72714 > .ComponentId_Component_1666478339474_72714 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp1\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp1\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478460160_13933\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":180,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478460160_13933 > .ComponentId_Component_1666478460160_13933 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478460160_13933 > .ComponentId_Component_1666478460160_13933.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp1\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478465898_36022\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":210,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478465898_36022 > .ComponentId_Component_1666478465898_36022 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478465898_36022 > .ComponentId_Component_1666478465898_36022.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp1\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478472683_47375\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":210,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478472683_47375 > .ComponentId_Component_1666478472683_47375 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp1\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp1\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478504004_56244\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":310,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478504004_56244 > .ComponentId_Component_1666478504004_56244 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp2\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp2\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478504014_27108\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":310,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478504014_27108 > .ComponentId_Component_1666478504014_27108 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478504014_27108 > .ComponentId_Component_1666478504014_27108.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp2\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478504019_97954\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":280,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478504019_97954 > .ComponentId_Component_1666478504019_97954 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478504019_97954 > .ComponentId_Component_1666478504019_97954.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp2\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478504025_68040\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":280,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478504025_68040 > .ComponentId_Component_1666478504025_68040 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp2\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp2\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478504028_82072\",\"label\":\"Lamp 2:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":250,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478504028_82072 > .ComponentId_Component_1666478504028_82072 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478504028_82072 > .ComponentId_Component_1666478504028_82072.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp2\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478607427_99170\",\"label\":\"Lamp 3:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":350,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478607427_99170 > .ComponentId_Component_1666478607427_99170 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478607427_99170 > .ComponentId_Component_1666478607427_99170.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp3\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478607435_85929\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":380,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478607435_85929 > .ComponentId_Component_1666478607435_85929 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp3\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp3\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478607443_28478\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":380,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478607443_28478 > .ComponentId_Component_1666478607443_28478 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478607443_28478 > .ComponentId_Component_1666478607443_28478.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp3\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478607452_68654\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":410,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478607452_68654 > .ComponentId_Component_1666478607452_68654 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478607452_68654 > .ComponentId_Component_1666478607452_68654.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp3\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478607459_87612\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":410,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478607459_87612 > .ComponentId_Component_1666478607459_87612 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp3\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp3\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478729437_35306\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":510,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478729437_35306 > .ComponentId_Component_1666478729437_35306 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp4\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp4\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478729441_19860\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":510,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478729441_19860 > .ComponentId_Component_1666478729441_19860 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478729441_19860 > .ComponentId_Component_1666478729441_19860.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp4\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478729445_86568\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":480,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478729445_86568 > .ComponentId_Component_1666478729445_86568 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478729445_86568 > .ComponentId_Component_1666478729445_86568.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp4\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478729449_68708\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":740,\"y\":480,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478729449_68708 > .ComponentId_Component_1666478729449_68708 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp4\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp4\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478729453_27348\",\"label\":\"Lamp 4:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":620,\"y\":450,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478729453_27348 > .ComponentId_Component_1666478729453_27348 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478729453_27348 > .ComponentId_Component_1666478729453_27348.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp4\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478839965_83169\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":210,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478839965_83169 > .ComponentId_Component_1666478839965_83169 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp5\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp5\"},{\"kind\":\"func\",\"name\":\"On\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]]}},{\"componentId\":\"Component_1666478839974_59585\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":210,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478839974_59585 > .ComponentId_Component_1666478839974_59585 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478839974_59585 > .ComponentId_Component_1666478839974_59585.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp5\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478839978_8081\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":180,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478839978_8081 > .ComponentId_Component_1666478839978_8081 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478839978_8081 > .ComponentId_Component_1666478839978_8081.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp5\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478839982_33366\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":180,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478839982_33366 > .ComponentId_Component_1666478839982_33366 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp5\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp5\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478839987_33688\",\"label\":\"Lamp 5:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":150,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478839987_33688 > .ComponentId_Component_1666478839987_33688 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478839987_33688 > .ComponentId_Component_1666478839987_33688.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp5\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478898220_63764\",\"label\":\"Lamp 6:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":250,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478898220_63764 > .ComponentId_Component_1666478898220_63764 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478898220_63764 > .ComponentId_Component_1666478898220_63764.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp6\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478898226_90372\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":280,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478898226_90372 > .ComponentId_Component_1666478898226_90372 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp6\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp6\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478898231_38836\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":280,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478898231_38836 > .ComponentId_Component_1666478898231_38836 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478898231_38836 > .ComponentId_Component_1666478898231_38836.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp6\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478898237_14981\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":310,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478898237_14981 > .ComponentId_Component_1666478898237_14981 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478898237_14981 > .ComponentId_Component_1666478898237_14981.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp6\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478898243_50875\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":310,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478898243_50875 > .ComponentId_Component_1666478898243_50875 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp6\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp6\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478992415_55902\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":410,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478992415_55902 > .ComponentId_Component_1666478992415_55902 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp7\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp7\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478992420_64587\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":410,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478992420_64587 > .ComponentId_Component_1666478992420_64587 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478992420_64587 > .ComponentId_Component_1666478992420_64587.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp7\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478992424_69422\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":380,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478992424_69422 > .ComponentId_Component_1666478992424_69422 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478992424_69422 > .ComponentId_Component_1666478992424_69422.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp7\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666478992428_78819\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":380,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478992428_78819 > .ComponentId_Component_1666478992428_78819 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp7\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp7\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666478992434_43856\",\"label\":\"Lamp 7:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":350,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666478992434_43856 > .ComponentId_Component_1666478992434_43856 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666478992434_43856 > .ComponentId_Component_1666478992434_43856.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp7\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666479055006_15962\",\"label\":\"Lamp 8:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":450,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479055006_15962 > .ComponentId_Component_1666479055006_15962 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479055006_15962 > .ComponentId_Component_1666479055006_15962.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp8\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666479055015_88778\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":480,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479055015_88778 > .ComponentId_Component_1666479055015_88778 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp8\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp8\",\"kind\":\"ns\"},{\"name\":\"Hour\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666479055021_8147\",\"label\":\"Hour:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":480,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479055021_8147 > .ComponentId_Component_1666479055021_8147 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479055021_8147 > .ComponentId_Component_1666479055021_8147.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp8\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666479055029_51695\",\"label\":\"On:\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":890,\"y\":510,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.hide{\\n\\t\\n}\\n\\n&.unhide{\\n\\ttext-align: right;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479055029_51695 > .ComponentId_Component_1666479055029_51695 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479055029_51695 > .ComponentId_Component_1666479055029_51695.unhide {\\n    text-align: right; }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"kind\":\"interface\",\"name\":\"PjLink\"},{\"kind\":\"ns\",\"name\":\"State\"},{\"kind\":\"ns\",\"name\":\"Lamp\"},{\"kind\":\"ns\",\"name\":\"Lamp8\"},{\"kind\":\"func\",\"name\":\"Style\",\"params\":[{\"type\":\"undefined\",\"name\":\"val\"},{\"type\":\"bool\",\"name\":\"doSet\"}]}]],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666479055035_30008\",\"label\":\"0\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1010,\"y\":510,\"width\":110,\"height\":30},\"invoc\":[],\"style\":\"/* Auto generated code START */\\n&.unhide{\\n\\t\\n}\\n\\n&.hide{\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479055035_30008 > .ComponentId_Component_1666479055035_30008 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n\",\"styleClasses\":[\"\"],\"styleActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp8\",\"kind\":\"ns\"},{\"name\":\"Style\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]],\"data\":{\"linkedActions\":[[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"State\",\"kind\":\"ns\"},{\"name\":\"Lamp\",\"kind\":\"ns\"},{\"name\":\"Lamp8\",\"kind\":\"ns\"},{\"name\":\"On\",\"kind\":\"func\",\"params\":[{\"name\":\"val\",\"type\":\"Undefined\",\"value\":\"\"},{\"name\":\"doSet\",\"type\":\"Bool\",\"value\":false}]}]]}},{\"componentId\":\"Component_1666479222685_92768\",\"label\":\"Lamp State\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":660,\"y\":110,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1666479735211_39650\",\"label\":\"Power Off\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":140,\"y\":90,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"powerOff\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479735211_39650 > .ComponentId_Component_1666479735211_39650 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479735211_39650 > .ComponentId_Component_1666479735211_39650.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}},{\"componentId\":\"Component_1666479762198_29471\",\"label\":\"Power On\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":90,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"powerOn\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479762198_29471 > .ComponentId_Component_1666479762198_29471 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479762198_29471 > .ComponentId_Component_1666479762198_29471.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":[]}},{\"componentId\":\"Component_1666479772759_69931\",\"label\":\"Shutter Open\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":140,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"shutterOpen\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479772759_69931 > .ComponentId_Component_1666479772759_69931 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479772759_69931 > .ComponentId_Component_1666479772759_69931.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}},{\"componentId\":\"Component_1666479772764_39032\",\"label\":\"Shutter Close\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":140,\"y\":140,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"shutterClose\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479772764_39032 > .ComponentId_Component_1666479772764_39032 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479772764_39032 > .ComponentId_Component_1666479772764_39032.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":[]}},{\"componentId\":\"Component_1666479798241_63702\",\"label\":\"Freeze\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":140,\"y\":190,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"freeze\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479798241_63702 > .ComponentId_Component_1666479798241_63702 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479798241_63702 > .ComponentId_Component_1666479798241_63702.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}},{\"componentId\":\"Component_1666479798250_72149\",\"label\":\"UnFreeze\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":190,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"unfreeze\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479798250_72149 > .ComponentId_Component_1666479798250_72149 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479798250_72149 > .ComponentId_Component_1666479798250_72149.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":[]}},{\"componentId\":\"Component_1666479819824_25576\",\"label\":\"RGB1\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":270,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputRgb1\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479819824_25576 > .ComponentId_Component_1666479819824_25576 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479819824_25576 > .ComponentId_Component_1666479819824_25576.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}},{\"componentId\":\"Component_1666479819828_51238\",\"label\":\"RGB2\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":140,\"y\":270,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputRgb2\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479819828_51238 > .ComponentId_Component_1666479819828_51238 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479819828_51238 > .ComponentId_Component_1666479819828_51238.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":[]}},{\"componentId\":\"Component_1666479850839_8921\",\"label\":\"DVI\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":320,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputDviD\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479850839_8921 > .ComponentId_Component_1666479850839_8921 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479850839_8921 > .ComponentId_Component_1666479850839_8921.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":[]}},{\"componentId\":\"Component_1666479858831_56869\",\"label\":\"HDMI\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":140,\"y\":320,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputHdmi\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479858831_56869 > .ComponentId_Component_1666479858831_56869 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479858831_56869 > .ComponentId_Component_1666479858831_56869.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}},{\"componentId\":\"Component_1666479866809_5728\",\"label\":\"Digital Link\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":420,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputDigitalLink\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479866809_5728 > .ComponentId_Component_1666479866809_5728 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479866809_5728 > .ComponentId_Component_1666479866809_5728.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}},{\"componentId\":\"Component_1666479874508_11958\",\"label\":\"SDI 1\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":30,\"y\":370,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputSdi1\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479874508_11958 > .ComponentId_Component_1666479874508_11958 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479874508_11958 > .ComponentId_Component_1666479874508_11958.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":[]}},{\"componentId\":\"Component_1666479879678_92853\",\"label\":\"SDI 2\",\"preventFromClick\":false,\"type\":\"UbControlButton\",\"bgColor\":\"\",\"dims\":{\"x\":140,\"y\":370,\"width\":100,\"height\":30},\"invoc\":[{\"name\":\"self\",\"kind\":\"interface\"},{\"name\":\"Commands\",\"kind\":\"ns\"},{\"name\":\"inputSdi2\",\"kind\":\"func\",\"params\":[]}],\"style\":\"/* Auto generated code START */\\n&.Style1{\\n\\ttext-align: center;\\n\\t\\n}\\n\\n/* Auto generated code END */\\n\",\"styleCache\":\"#ComponentId_Component_1666479879678_92853 > .ComponentId_Component_1666479879678_92853 {\\n  /* Auto generated code START */\\n  /* Auto generated code END */ }\\n  #ComponentId_Component_1666479879678_92853 > .ComponentId_Component_1666479879678_92853.Style1 {\\n    text-align: center; }\\n\",\"styleClasses\":[\"Style1\"],\"styleActions\":[],\"data\":{\"toggle\":false,\"selectionGroup\":\"\",\"linkedActions\":[],\"toggleActions\":null}}],\"style\":\".hide{\\n  visibility: hidden;\\n}\",\"styleCache\":\"#page_Page1.type_UbPage.Page1 .hide {\\n  visibility: hidden; }\\n\",\"styleClasses\":[\"\"]}],\"devicePath\":\"PjLink\",\"version\":1,\"settings\":{},\"themeAndDesign\":{\"design\":\"Default\",\"theme\":\"Dark\",\"themes\":{}}}",
+   "name": "uib",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}

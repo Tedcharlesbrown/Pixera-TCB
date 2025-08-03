@@ -1,0 +1,241 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nself.helper = createPixcHelper(pixc,self())\r\nself.props = self.helper:loadAllProperties(self.props)\r\nself.regActions = {}\r\nlocal tag= self.props.Prefix\r\nif(self.Actions ~= nil) then\r\n\tfor k,v in pairs(self.Actions) do\r\n\t\tlocal a,b = string.find(k,tag..\"%d+\")\r\n\t\tif a ~= nil and b ~= nil then\r\n\t\t\tlocal sub = string.sub(k,a,b)\r\n\t\t\tif sub ~= nil and #sub == #k then\r\n\t\t\t\tlocal n = string.sub(k,#tag+1)\r\n\t\t\t\tlocal idx = tonumber(n);\r\n\t\t\t\tself.regActions[idx] = v\r\n\t\t\tend\r\n\t\tend\r\n\tend\r\nend",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "local max = #value;\r\nfor k,v in pairs(self.regActions) do\r\n\tif k <= max then\r\n\t\tv(string.byte(value,k),true)\r\n\tend\r\nend\r\n",
+   "kind": "func",
+   "name": "ArrayIn",
+   "params": [
+    {
+     "name": "value",
+     "type": "array"
+    }
+   ],
+   "slotStyle": "leftIn;rightIn"
+  },
+  {
+   "body": "local templateIn = [[\r\n\t{\r\n\t\t\"name\": \"##PREFIX####IDX##\",\r\n\t\t\"kind\": \"fn\",\r\n\t\t\"attKind\": \"internal\",\r\n\t\t\"slotStyle\": \"leftOut;rightOut;triggerHidden\",\r\n\t\t\"params\": [\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"value\",\r\n\t\t\t\t\"type\": \"object\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\t\"name\": \"doSet\",\r\n\t\t\t\t\"type\": \"bool\"\r\n\t\t\t}\r\n\t\t],\r\n\t\t\"result\": {\r\n\t\t},\r\n\t\t\"body\": \"self.v##IDX## = pixcCommon.execAttribute(false, self.v##IDX##, value, doSet); return self.v##IDX##\"\r\n\t}\r\n]]\r\nlocal template = templateIn;\r\nlocal res = '[';\r\nlocal sets = self.helper.stringSplit(self.props.SlotIndexes,',')\r\nlocal removeLast = false;\r\nfor _, x in ipairs(sets) do\r\n\tif x ~= nil then\r\n\t\tlocal set = self.helper.stringSplit(x,'-');\r\n\t\tlocal vBegin, vEnd\r\n\t\tvBegin = tonumber(set[1]);\r\n\t\tvEnd = tonumber(set[2]);\r\n\t\tremoveLast = true\r\n\t\tif vBegin ~= nil and vEnd ~= nil then\r\n\t\t\tfor i= vBegin, vEnd, 1 do\r\n\t\t\t\tlocal tmod = template;\r\n\t\t\t\tlocal s = tostring(i);\r\n\t\t\t\tlocal c;\r\n\r\n\t\t\t\ttmod, c = string.gsub(tmod,\"##IDX##\", s)\r\n\t\t\t\ttmod, c = string.gsub(tmod,\"##PREFIX##\", self.props.Prefix)\r\n\t\t\t\tres = res..tmod;\r\n\t\t\t\tres = res..','\r\n\t\t\tend\r\n\t\tend\r\n\tend\r\nend\r\nif removeLast == true then\r\n\tres = res:sub(1, -2)\r\nend\r\n\r\nres = res..']'\r\nreturn res;\r\n",
+   "kind": "func",
+   "name": "getDescription",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "self().dynamicRebuildFromDescriptions(self.getDescription(), \"Actions\", \"(.*)\")",
+   "kind": "func",
+   "name": "rebuild"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "self.v1 = pixcCommon.execAttribute(false, self.v1, value, doSet); return self.v1",
+     "kind": "func",
+     "name": "DMXIN_1",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v2 = pixcCommon.execAttribute(false, self.v2, value, doSet); return self.v2",
+     "kind": "func",
+     "name": "DMXIN_2",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v3 = pixcCommon.execAttribute(false, self.v3, value, doSet); return self.v3",
+     "kind": "func",
+     "name": "DMXIN_3",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v4 = pixcCommon.execAttribute(false, self.v4, value, doSet); return self.v4",
+     "kind": "func",
+     "name": "DMXIN_4",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v5 = pixcCommon.execAttribute(false, self.v5, value, doSet); return self.v5",
+     "kind": "func",
+     "name": "DMXIN_5",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v10 = pixcCommon.execAttribute(false, self.v10, value, doSet); return self.v10",
+     "kind": "func",
+     "name": "DMXIN_10",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v11 = pixcCommon.execAttribute(false, self.v11, value, doSet); return self.v11",
+     "kind": "func",
+     "name": "DMXIN_11",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v12 = pixcCommon.execAttribute(false, self.v12, value, doSet); return self.v12",
+     "kind": "func",
+     "name": "DMXIN_12",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.v13 = pixcCommon.execAttribute(false, self.v13, value, doSet); return self.v13",
+     "kind": "func",
+     "name": "DMXIN_13",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Actions"
+  }
+ ],
+ "cjv": {
+  "h": 310.0,
+  "w": 260.0,
+  "x": 736.25,
+  "y": 1215.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Tools/ConvertFromArray.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4jMh47mdtkVN04O01ttJyEAU+IYEIpmRe3b+ZWDcoH5t7T0jLYkjFjyfpYhnLlh3HnVLe9o2gzcVOQ8+PTi+7d08EyhmgqAfAp10gTyo0x7c8Wtiz82za7/JqXrbjPspnw==",
+ "name": "ConvertFromArray",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "DMXIN_",
+   "name": "Prefix",
+   "typeHint": "string"
+  },
+  {
+   "cont": "1-5,10-13",
+   "name": "SlotIndexes",
+   "typeHint": "string"
+  },
+  {
+   "cont": "Data from ArrayIn is mapped to the specific Actions. The Actions can be generated with rebuild depending on Prefix and Slotindexes. The slotindexes ar specified of ranges seperated by comma ",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl (ME)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

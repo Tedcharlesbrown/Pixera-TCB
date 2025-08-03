@@ -1,0 +1,65 @@
+{
+ "api": [
+  {
+   "body": "--CFv3\npixc.log(\n\tstring.sub(pixcCommon.toJson({...}), 3, -2)\n)\n",
+   "kind": "func",
+   "name": "info",
+   "params": [
+    {
+     "name": "...",
+     "type": ""
+    }
+   ]
+  },
+  {
+   "body": "--\npixc.warning(\n\tstring.sub(pixcCommon.toJson({...}), 3, -2)\n)",
+   "kind": "func",
+   "name": "warning",
+   "params": [
+    {
+     "name": "...",
+     "type": ""
+    }
+   ]
+  },
+  {
+   "body": "--\npixc.error(\n\tstring.sub(pixcCommon.toJson({...}), 3, -2)\n)",
+   "kind": "func",
+   "name": "error",
+   "params": [
+    {
+     "name": "...",
+     "type": ""
+    }
+   ]
+  }
+ ],
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "license": "1GNTlyr7sewU1l3S6nhV4tZXKtcSGSvzMgDEyEzuFb4CKWWQmVOfEXy0zCtj0qPi4IdJWBSwSVZPBs10C+B92BbwvjClLS0mYTtIqp+8GjQ=",
+ "name": "Logger",
+ "properties": [
+  {
+   "cont": "Logs an information, warning or error. Multiple parameters can be passed.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "3",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,24 @@
+{
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 284.0,
+  "y": 142.0
+ },
+ "definedExternally": true,
+ "hostInfo": {
+  "multiInstance": true,
+  "systemType": "Portal"
+ },
+ "libraryExportPath": "C:\\env\\nui\\data\\control_library_standard\\Tools\\Portal.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4oITjl6qkfXaC1EEA1YE2PX/0zWJbZ+n0eW5qeB6zpZuKz2BI06jjru1evjCWNCCfIKX5DmKv5TEzo3J804hqwo=",
+ "name": "Portal",
+ "properties": [
+  {
+   "cont": "",
+   "name": "uib"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/portal/portal.html"
+}

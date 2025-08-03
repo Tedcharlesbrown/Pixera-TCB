@@ -1,0 +1,369 @@
+{
+ "api": [
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Opacity\":0},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Opacity\":0.25},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Opacity\":0.5},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Opacity\":0.75},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Opacity\":1},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Opacity\":0},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "_0",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Opacity\":0.25},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "_25",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Opacity\":0.5},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "_50",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Opacity\":0.75},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "_75",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Opacity\":1},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "_100",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Opacity"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Position"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"X\":0}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"X\":90}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"X\":180}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"X\":270}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[],[],[{\"param\":{\"Rotation\":{\"Y\":0}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"Y\":90}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"Y\":180}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"Y\":270}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[],[],[{\"param\":{\"Rotation\":{\"Z\":0}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"Z\":90}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"Z\":180}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[{\"param\":{\"Rotation\":{\"Z\":270}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"X\":0}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "X0",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"X\":90}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "X90",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"X\":180}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "X180",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"X\":270}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "X270",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Y\":0}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Y0",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Y\":90}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Y90",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Y\":180}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Y180",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Y\":270}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Y270",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Z\":0}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Z0",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Z\":90}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Z90",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Z\":180}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Z180",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[{\"param\":{\"Rotation\":{\"Z\":270}},\"instPath\":\"Timeline 1.Layer 1\",\"func\":\"preset\"}]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "Z270",
+     "params": [
+      {
+       "name": "forceAll",
+       "type": "bool"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Rotation"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Size"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Effects"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "All"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Selection"
+  },
+  {
+   "elems": [
+    {
+     "body": "local json = require \"json\"\nlocal selected = false\nlocal helper = require \"pixcHelper\"\nlocal value = val\nlocal force = forceAll\nif value == nil then value = 1 end\nif force == nil then force = false end\nlocal btnValue = json.decode('[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]')\nfor i,_ in pairs(btnValue[value]) do\n\tif _.func == \"preset\" then\n\t\tif selected == false then\n\t\t\tfor l,lHandle in pairs(Pixera.Timelines.getTimelinesSelected()[1].getLayersSelected()) do\n\t\t\t\tlHandle.setLayerJsonDescrip(json.encode(_.param),true)\n\t\t\tend\n\t\telse\n\t\t\tPixera.Timelines.Layer.getHandleFromInstancePath(_.instPath).setLayerJsonDescrip(json.encode(_.param),force)\n\t\tend\n\telseif _.func == \"function\" then\n\t\tlocal element = pixc.getRoot()\n\t\tfor c,l in pairs(helper.stringSplit(_.action,\".\")) do\n\t\t\telement = element[l]\n\t\tend\n\t\tpcall(element,_.params)\n\telseif _.func == \"selection\" then\n\t\tPixera.Timelines.Timeline.getInst(_.instPath).selectLayerByNames(_.param)\n\telseif _.func == \"colorCorrection\" then\n\t\tPixera.Screens.Screen.getInst(_.instPath).setColorCorrectionAsJsonString(json.encode(_.param))\n\tend\nend\n",
+     "kind": "func",
+     "name": "DMX",
+     "params": [
+      {
+       "name": "val",
+       "type": "int"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "ColorCorrection"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 965.0,
+  "y": 817.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Tools/PresetModule.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4uehnU6wh7GOof+LTHwZdcMXvBUcedOaWEadKn6QQx+sMWuXW9fiMBCk7vnoYmENkOjDeWTklFGjd1+ZYV22qSRbRQ8lCue3yVRYfn5oUX9RZSFhqCm6FMj+XFfjJxWBlw==",
+ "name": "PresetModule",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "{\"isInEditMode\":false,\"pages\":[{\"name\":\"Page1\",\"bgColor\":null,\"components\":[{\"componentId\":\"Component_1658236127993_43327\",\"label\":\"Opacity\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":50,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1658236136109_41512\",\"label\":\"Position\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":160,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1658236143416_46727\",\"label\":\"Size\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":390,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1658236148513_77011\",\"label\":\"Rotation\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":620,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1658236150778_64379\",\"label\":\"All\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1200,\"y\":50,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1658236163765_15632\",\"label\":\"Group\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":1610,\"y\":50,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1658238204328_6995\",\"label\":\"Effects\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":850,\"width\":100,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1660203587176_79904\",\"label\":\"Color Correction\",\"preventFromClick\":false,\"type\":\"UbControlLabel\",\"bgColor\":\"\",\"dims\":{\"x\":2030,\"y\":50,\"width\":200,\"height\":30},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"linkedActions\":[]}},{\"componentId\":\"Component_1668624526663_31707\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":90,\"width\":1100,\"height\":60},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":6,\"rows\":1,\"linkedActions\":[],\"presets\":[{\"name\":\"_0\",\"value\":\"[{\\\"param\\\":{\\\"Opacity\\\":0},\\\"instPath\\\":\\\"Timeline 1.Layer 1\\\",\\\"func\\\":\\\"preset\\\"}]\",\"image\":\"\"},{\"name\":\"_25\",\"value\":\"[{\\\"param\\\":{\\\"Opacity\\\":0.25},\\\"instPath\\\":\\\"Timeline 1.Layer 1\\\",\\\"func\\\":\\\"preset\\\"}]\",\"image\":\"\"},{\"name\":\"_50\",\"value\":\"[{\\\"param\\\":{\\\"Opacity\\\":0.5},\\\"instPath\\\":\\\"Timeline 1.Layer 1\\\",\\\"func\\\":\\\"preset\\\"}]\",\"image\":\"\"},{\"name\":\"_75\",\"value\":\"[{\\\"param\\\":{\\\"Opacity\\\":0.75},\\\"instPath\\\":\\\"Timeline 1.Layer 1\\\",\\\"func\\\":\\\"preset\\\"}]\",\"image\":\"\"},{\"name\":\"_100\",\"value\":\"[{\\\"param\\\":{\\\"Opacity\\\":1},\\\"instPath\\\":\\\"Timeline 1.Layer 1\\\",\\\"func\\\":\\\"preset\\\"}]\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerOpacity\",\"presetFolder\":\"Opacity\"}},{\"componentId\":\"Component_1668624695767_58035\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":200,\"width\":1100,\"height\":170},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":6,\"rows\":3,\"linkedActions\":[],\"presets\":[{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerPosition\",\"presetFolder\":\"Position\"}},{\"componentId\":\"Component_1668624778355_19181\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":440,\"width\":1100,\"height\":170},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":6,\"rows\":3,\"linkedActions\":[],\"presets\":[{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerScale\",\"presetFolder\":\"Size\"}},{\"componentId\":\"Component_1668624796253_74224\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":670,\"width\":1100,\"height\":170},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":6,\"rows\":3,\"linkedActions\":[],\"presets\":[{\"name\":\"X0\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"X\\\": 0\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"X90\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"X\\\": 90\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"X180\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"X\\\": 180\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"X270\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"X\\\": 270\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"name\":\"Y0\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Y\\\": 0\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"Y90\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Y\\\": 90\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"Y180\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Y\\\": 180\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"Y270\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Y\\\": 270\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"name\":\"Z0\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Z\\\": 0\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"Z90\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Z\\\": 90\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"Z180\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Z\\\": 180\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"name\":\"Z270\",\"value\":\"[\\n    {\\n        \\\"param\\\": {\\n            \\\"Rotation\\\": {\\n                \\\"Z\\\": 270\\n            }\\n        },\\n        \\\"instPath\\\": \\\"Timeline 1.Layer 1\\\",\\n        \\\"func\\\": \\\"preset\\\"\\n    }\\n]\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerRotation\",\"presetFolder\":\"Rotation\"}},{\"componentId\":\"Component_1668624815236_40745\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":50,\"y\":900,\"width\":1100,\"height\":170},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":6,\"rows\":3,\"linkedActions\":[],\"presets\":[{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerEffects\",\"presetFolder\":\"Effects\"}},{\"componentId\":\"Component_1668625304334_47553\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":1190,\"y\":90,\"width\":390,\"height\":750},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":2,\"rows\":11,\"linkedActions\":[],\"presets\":[{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerValues\",\"presetFolder\":\"All\"}},{\"componentId\":\"Component_1668625412158_89543\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":1610,\"y\":90,\"width\":390,\"height\":750},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":2,\"rows\":11,\"linkedActions\":[],\"presets\":[{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerSelection\",\"presetFolder\":\"Selection\"}},{\"componentId\":\"Component_1668625417293_29283\",\"label\":\"unnamed\",\"preventFromClick\":false,\"type\":\"UbControlPresetGrid\",\"bgColor\":\"\",\"dims\":{\"x\":2030,\"y\":90,\"width\":390,\"height\":750},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":2,\"rows\":11,\"linkedActions\":[],\"presets\":[{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"name\":\"\",\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"outputColorCorrection\",\"presetFolder\":\"ColorCorrection\"}}],\"styleClasses\":[\"\"]},{\"name\":\"page2\",\"bgColor\":null,\"components\":[{\"componentId\":\"Component_1668549735607_79744\",\"preventFromClick\":false,\"label\":\"unnamed\",\"type\":\"UbControlPresetList\",\"bgColor\":\"\",\"dims\":{\"x\":320,\"y\":150,\"width\":1110,\"height\":410},\"invoc\":[],\"style\":\"\",\"styleCache\":\"\",\"styleClasses\":[\"\"],\"styleActions\":[],\"data\":{\"cols\":4,\"rows\":4,\"linkedActions\":[],\"presets\":[{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"},{\"value\":\"\",\"image\":\"\"}],\"presetSelector\":\"layerValues\",\"presetFolder\":\"Presets\"}}],\"styleClasses\":[\"\"]}],\"devicePath\":\"PresetModule\",\"settings\":{},\"themeAndDesign\":{\"design\":\"Default\",\"theme\":\"Dark\",\"themes\":{}}}",
+   "name": "uib",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "UI Is Editable",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "",
+   "name": "Auth Source",
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "name": "Permissions",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}

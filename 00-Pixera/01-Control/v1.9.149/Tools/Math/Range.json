@@ -1,0 +1,238 @@
+{
+ "api": [
+  {
+   "attKind": "standard1",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "local out = 0\r\nlocal useLimit = self._getLimit\r\nif useLimit == nil then\r\n\tuseLimit = self.getLimit()\r\nend\r\n\r\nif val ~= nil and self._MinIn ~= nil and self._MaxIn ~= nil and self._MinOut ~= nil and self._MaxOut ~= nil then\r\n\tlocal rangeSizeIn = self._MaxIn - self._MinIn\r\n\tif rangeSizeIn ~= 0 then\r\n\t\tout = (val - self._MinIn)/rangeSizeIn * (self._MaxOut - self._MinOut) + self._MinOut\r\n\tend\r\nend\r\nif useLimit == \"true\" then\r\n\tif out < self._MinOut then\r\n\t\tout = self._MinOut\r\n\telseif out > self._MaxOut then\r\n\t\tout = self._MaxOut\r\n\tend\r\nend\r\nself._In = pixcCommon.execAttribute(0, self._In, val, doSet)\r\nself.Out(out)\r\n\r\n\r\nreturn self._In\r\n",
+   "kind": "func",
+   "name": "In",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._Out = pixcCommon.execAttribute(0, self._Out, val, doSet)\r\nreturn self._Out\r\n",
+   "kind": "func",
+   "name": "Out",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "0.00"
+     },
+     "body": "self._MinIn = pixcCommon.execAttribute(0, self._MinIn, val, doSet)\r\nself.Config.setProp(\"Min In\", self._MinIn)\r\nreturn self._MinIn\r\n",
+     "kind": "func",
+     "name": "MinIn",
+     "params": [
+      {
+       "name": "val",
+       "type": "double"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "255.00"
+     },
+     "body": "self._MaxIn = pixcCommon.execAttribute(0, self._MaxIn, val, doSet)\r\nself.Config.setProp(\"Max In\", self._MaxIn)\r\nreturn self._MaxIn\r\n",
+     "kind": "func",
+     "name": "MaxIn",
+     "params": [
+      {
+       "name": "val",
+       "type": "double"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "0.00"
+     },
+     "body": "self._MinOut = pixcCommon.execAttribute(0, self._MinOut, val, doSet)\r\nself.Config.setProp(\"Min Out\", self._MinOut)\r\nreturn self._MinOut\r\n",
+     "kind": "func",
+     "name": "MinOut",
+     "params": [
+      {
+       "name": "val",
+       "type": "double"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "1.00"
+     },
+     "body": "self._MaxOut = pixcCommon.execAttribute(0, self._MaxOut, val, doSet)\r\nself.Config.setProp(\"Max Out\", self._MaxOut)\r\nreturn self._MaxOut\r\n",
+     "kind": "func",
+     "name": "MaxOut",
+     "params": [
+      {
+       "name": "val",
+       "type": "double"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.pixcHelper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.pixcHelper = createPixcHelper(pixc,self())\r\nend\r\nself.In(self._In,true)\r\nself.pixcHelper:setProperty(name, tostring(value))\r\n",
+     "kind": "func",
+     "name": "setProp",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "value",
+       "type": ""
+      }
+     ],
+     "slotStyle": "hidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Config"
+  },
+  {
+   "attKind": "internal",
+   "body": "if self.pixcHelper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.pixcHelper = createPixcHelper(pixc,self())\r\nend\r\nif val == nil and self._getLimit == nil then\r\n\tval = self.pixcHelper:getProperty(\"Use Limit?\")\r\n\tdoSet = true\r\nend\r\nself._getLimit = pixcCommon.execAttribute(0, self._getLimit, val, doSet)\r\n\r\nreturn self._getLimit\r\n",
+   "kind": "func",
+   "name": "getLimit",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 100.0,
+  "y": 666.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Tools/Math/Range.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4uu73e7ez7JKIuqpmGed/0K521Jx3SeLsRGLrnlP9/+idBDjUIRUf2zJkl1XQjC/hGRP9W7TM5uVg/N2lcfwBErgn/EpagigSfUU4XXvh6sHvl2yy5STZXr8vje8evYAsKTi26ngVhTliPOIVgZE2xA=",
+ "name": "Range",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Use Limit?",
+   "optionsAction": "self.getLimit",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "area": "Config",
+   "cont": "0.0",
+   "name": "Min In",
+   "optionsAction": "self.Config.MinIn",
+   "typeHint": "number"
+  },
+  {
+   "area": "Config",
+   "cont": "255.0",
+   "name": "Max In",
+   "optionsAction": "self.Config.MaxIn",
+   "typeHint": "number"
+  },
+  {
+   "area": "Config",
+   "cont": "0.0",
+   "name": "Min Out",
+   "optionsAction": "self.Config.MinOut",
+   "typeHint": "number"
+  },
+  {
+   "area": "Config",
+   "cont": "1.0",
+   "name": "Max Out",
+   "optionsAction": "self.Config.MaxOut",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.3",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

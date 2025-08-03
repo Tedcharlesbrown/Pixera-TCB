@@ -1,0 +1,149 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolSerial\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.serial = createPixcProtocolSerial()\r\npixc.log(self.helper)\r\nself.open = false\r\nself.port = self.helper:getProperty(\"Port\",\"\")\r\nself.baud = self.helper:getProperty(\"Baudrate\",\"9600\")\r\nself.stopBits = self.helper:getProperty(\"Stopbits\",\"1\")\r\nself.bits = self.helper:getProperty(\"Bits\",\"8\")\r\nself.parity = self.helper:getProperty(\"Parity\",\"None\")\r\nself.flowControl = self.helper:getProperty(\"Flowcontrol\",\"None\")\r\nself.timeout = {0,0,0,0,0}\r\nself.IsOpen(false, true)\r\nself.serial:configure(\r\n\tself.port,\r\n\tself.baud,\r\n\tself.parity,\r\n\tself.stopBits,\r\n\tself.bits,\r\n\tself.flowControl,\r\n\tself.timeout,\r\n\tfunction ( data) self().receive(data) end,\r\n\tfunction( error) pixc.log(\"closeCallback: \"..error) end)\r\nself.serial:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\nself.serial:start()\r\n\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.serial == nil then return end\r\nself.serial:close()\r\nself.serial = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "\t-- slotStyle:leftIn;rightNone;\r\n\tif self.serial == nil then return end\r\nself.serial:send(msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;"
+  },
+  {
+   "body": "-- slotStyle:leftNone;rightOut;triggerHidden\r\npixc.log(msg)",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\n-- slotStyle:leftNone;rightOut;triggerHidden\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "-- slotStyle:hidden;\nrequire \"pixcProtocolSerial\"\nif self.protocol == nil then\n\tself.protocol = createPixcProtocolSerial()\nend\nreturn self.protocol:listSerialDevices();",
+   "kind": "func",
+   "name": "listCom",
+   "slotStyle": "hidden;"
+  },
+  {
+   "body": "-- slotStyle:hidden;\nreturn {\"1\",\"1.5\",\"2\"}",
+   "kind": "func",
+   "name": "stopBits",
+   "slotStyle": "hidden;"
+  },
+  {
+   "body": "-- slotStyle:hidden;\nreturn {\"8\",\"7\",\"6\",\"5\"}",
+   "kind": "func",
+   "name": "bits",
+   "slotStyle": "hidden;"
+  },
+  {
+   "body": "-- slotStyle:hidden;\nreturn {\"None\",\"Odd\",\"Event\",\"Mark\",\"Space\"}",
+   "kind": "func",
+   "name": "parity",
+   "slotStyle": "hidden;"
+  },
+  {
+   "body": "-- slotStyle:hidden;\nreturn {\"None\",\"Software\",\"Hardware\"}",
+   "kind": "func",
+   "name": "flowcontrol",
+   "slotStyle": "hidden;"
+  },
+  {
+   "body": "-- slotStyle:hidden;\nreturn {\"110\",\"300\",\"600\",\"1200\",\"2400\",\"4800\",\"9600\",\"14400\",\"19200\",\"38400\",\"56000\",\"57600\",\"115200\",\"128000\",\"256000\"}",
+   "kind": "func",
+   "name": "baudrate",
+   "slotStyle": "hidden;"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 105.0,
+  "y": 408.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Protocols/PlainSerial.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4pQMtPgNpKDlTyrC3HKAglaiOggqxNzTsvTs7TCC8l0qme0ZwKnLS1Jp2FjpO+bKlSrZMztMA6cDW+gL8CAW8Uc=",
+ "name": "PlainSerial",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "COM1",
+   "name": "Port",
+   "optionsSourceFunc": "self.listCom",
+   "typeHint": "string"
+  },
+  {
+   "cont": "9600",
+   "name": "Baudrate",
+   "optionsSourceFunc": "self.baudrate",
+   "typeHint": "string"
+  },
+  {
+   "cont": "None",
+   "name": "Parity",
+   "optionsSourceFunc": "self.parity",
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Stopbits",
+   "optionsSourceFunc": "self.stopBits",
+   "typeHint": "string"
+  },
+  {
+   "cont": "8",
+   "name": "Bits",
+   "optionsSourceFunc": "self.bits",
+   "typeHint": "string"
+  },
+  {
+   "cont": "None",
+   "name": "Flowcontrol",
+   "optionsSourceFunc": "self.flowcontrol",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

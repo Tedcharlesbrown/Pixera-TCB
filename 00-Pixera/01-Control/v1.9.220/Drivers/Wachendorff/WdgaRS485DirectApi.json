@@ -1,0 +1,187 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolWdgaDirect\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.wdgaDirect = createPixcProtocolWdgaDirect()\r\npixc.log(self.helper)\r\npixc.log(self.wdgaDirect)\r\nself.open = false\r\nself.com = self.helper:getProperty(\"Comport\",\"\")\r\nself.baud = tonumber(self.helper:getProperty(\"Baudrate\",\"9600\"))\r\nself.offset = tonumber(self.helper:getProperty(\"Offset\",\"0\"))\r\nself.invert = self.helper:getProperty(\"Invert Rotation Value\",\"false\")\r\nself.damping = tonumber(self.helper:getProperty(\"Damping\",\"0\"))\r\n\r\nif(self.invert ~= \"true\") then\r\n\tself.invert = false;\r\nelse\r\n\tself.invert = true;\r\nend\r\nself.IsOpen(false, true)\r\nlocal timings = { 1,1,1,1,1}\r\n,self.wdgaDirect:configure(\r\n\tself.com,\r\n\tself.baud,\r\n\tself.expectedFrequency,\r\n\tself.offset,\r\n\tself.invert,\r\n\ttimings,\r\n\tself()..\"\",\r\n\tself.damping)\r\nself.wdgaDirect:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) self().IsOpen(isOpen, true) end)\r\nself.wdgaDirect:start()\r\n\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.wdgaDirect == nil then return end\r\nself.wdgaDirect:close()\r\nself.wdgaDirect = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "self().dynamicRebuildFromDescriptions(self.RefreshFunctions.getDescription(), \"Rotation\", \"(.*)\")\r\n\r\n",
+     "kind": "func",
+     "name": "regenerateActionsFromObjects"
+    }
+   ],
+   "kind": "ns",
+   "name": "RuntimeConfig"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.wdgaDirect == nil then return end\r\nlocal dsc = self.wdgaDirect:getJsonDescription()\r\npixc.log(dsc)\r\nreturn dsc\r\n",
+     "kind": "func",
+     "name": "getDescription"
+    }
+   ],
+   "kind": "ns",
+   "name": "RefreshFunctions"
+  },
+  {
+   "elems": [
+    {
+     "body": "pixc.suppressCallRefs()",
+     "kind": "func",
+     "name": "rotationX",
+     "params": [
+      {
+       "name": "xr",
+       "type": "double"
+      },
+      {
+       "name": "yr",
+       "type": "double"
+      },
+      {
+       "name": "zr",
+       "type": "double"
+      }
+     ]
+    },
+    {
+     "body": "pixc.suppressCallRefs()",
+     "kind": "func",
+     "name": "rotationY",
+     "params": [
+      {
+       "name": "xr",
+       "type": "double"
+      },
+      {
+       "name": "yr",
+       "type": "double"
+      },
+      {
+       "name": "zr",
+       "type": "double"
+      }
+     ]
+    },
+    {
+     "body": "pixc.suppressCallRefs()",
+     "kind": "func",
+     "name": "rotationZ",
+     "params": [
+      {
+       "name": "xr",
+       "type": "double"
+      },
+      {
+       "name": "yr",
+       "type": "double"
+      },
+      {
+       "name": "zr",
+       "type": "double"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Rotation"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 378.46153846153845,
+  "y": 290.7692307692308
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/Wachendorff/WdgaRS485DirectApi.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4uQasFwJqHzYQse5ubgJKvCkWCs9+V9ZVu7bdY4mGSwS1bPONFpI/2+kYCk+V0eQMr0+y3dceILzocQy9owozOkJ0D+FSLuWGlNJ466jTUUIDLjdDBHKNPXqd1y+YVerkw==",
+ "name": "WdgaRS485DirectApi",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (ME)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "50",
+   "name": "Expected Frequency",
+   "typeHint": "number"
+  },
+  {
+   "cont": "9600",
+   "name": "Baudrate",
+   "typeHint": "number"
+  },
+  {
+   "cont": "0",
+   "name": "Offset",
+   "typeHint": "number"
+  },
+  {
+   "cont": "true",
+   "name": "Invert Rotation Value",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "COM4",
+   "name": "Comport",
+   "optionsSourceFunc": "Utils.Serial.list",
+   "typeHint": "string"
+  },
+  {
+   "cont": "0",
+   "name": "Damping",
+   "typeHint": "number"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

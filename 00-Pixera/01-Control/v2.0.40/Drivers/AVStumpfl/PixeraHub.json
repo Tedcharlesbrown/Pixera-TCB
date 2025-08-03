@@ -1,0 +1,346 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn"
+  },
+  {
+   "body": "require \"pixcProtocolHttp\"\r\nif self.doubleInit ~= nil then return end\r\nif self.protocol ~= nil then\r\n\tself.doubleInit = true\r\n\tself.uninit()\r\n\tUtils.Timer.sleep(1000)\r\nend\r\nself.doubleInit = nil\r\nself.json = require \"json\" \r\nself.protocol = createPixcProtocolHttp()\r\nself.Internal.updateMac()\r\nself.Internal.updateStats()\r\nself.installs = self().getProperty(\"Installs\")\r\nself.timer = tonumber(self().getProperty(\"Refresh Time in sec\",5))\r\nself._interval = pixc.getRoot().Utils.Timer.setInterval(\r\n\tfunction()\r\n\t\tself.Internal.updateStats()\r\n\t  end,self.timer * 1000)",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.protocol ~= nil then\r\n\tself.protocol:close()\r\nend\r\nif self._interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self._interval);\r\n\tself._interval = nil\r\nend\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "self.uninit()\r\nUtils.Timer.sleep(100)\r\nself.init()\r\n",
+   "kind": "func",
+   "name": "reconnect"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._IP = pixcCommon.execAttribute(0, self._IP, val, doSet)\r\nreturn self._IP\r\n",
+   "kind": "func",
+   "name": "IP",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._PORT = pixcCommon.execAttribute(0, self._PORT, val, doSet)\r\nreturn self._PORT\r\n",
+   "kind": "func",
+   "name": "PORT",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": ""
+   },
+   "body": "self._MAC = pixcCommon.execAttribute(\"\", self._MAC, val, doSet)\r\nreturn self._MAC\r\n",
+   "kind": "func",
+   "name": "MAC",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "string"
+   },
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "if ans == nil then pixc.report(false) pixc.callRefs(false) return false end\r\nif ans.type ~= 'pixera' then\r\n\tpixc.report(false)\r\n\tpixc.callRefs(false)\r\nelse\r\n\tpixc.report(true)\r\n\tpixc.callRefs(true)\r\n\tself.startetVersion(ans.version.str,true)\r\nend\r\nreturn ans.type == 'pixera'\r\n",
+   "kind": "func",
+   "name": "isPixeraRunning",
+   "params": [
+    {
+     "name": "ans",
+     "type": "table"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "local ans = self.Internal.query('pixera.running')\r\nif ans == nil then pixc.report(false) pixc.callRefs(false) return false end\r\nif ans.type ~= 'presence' then\r\n\tpixc.report(false)\r\n\tpixc.callRefs(false)\r\nelse\r\n\tpixc.report(true)\r\n\tpixc.callRefs(true)\r\n\tself.startetVersion(ans.version.str,true)\r\nend\r\nreturn ans.type == 'presence'",
+   "kind": "func",
+   "name": "isPresenceRunning",
+   "params": [
+    {
+     "name": "ans",
+     "type": "table"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._getStartetVersion = pixcCommon.execAttribute(0, self._getStartetVersion, val, doSet)\r\nreturn self._getStartetVersion\r\n",
+   "kind": "func",
+   "name": "startetVersion",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "local ans = self.Internal.query('pixera.defaultVersion')\r\npixc.report(ans)\r\npixc.callRefs(ans)\r\nreturn ans\r\n",
+   "kind": "func",
+   "name": "getDefaultVersion",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "local ans = self.Internal.query('pixera.installs')\r\nlocal res = {}\r\ntable.insert(res, 'Default')\r\nif ans ~= nil then\r\n\tfor _, entry in ipairs(ans) do\r\n   \t\ttable.insert(res, entry.version.str)\r\n\tend\r\nend\r\nreturn res\r\n",
+   "kind": "func",
+   "name": "getInstalls",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "if force == nil then\r\n    force = false\r\nend\r\nlocal body = {type = \"reboot\", force = force}\r\nself.Internal.mutate('system.shutdown', body)\r\n",
+   "kind": "func",
+   "name": "reboot",
+   "params": [
+    {
+     "name": "force",
+     "type": "boolean"
+    }
+   ]
+  },
+  {
+   "body": "if force == nil then\r\n    force = false\r\nend\r\nlocal body = {type = \"shutdown\", force = force}\r\nself.Internal.mutate('system.shutdown', body)\r\n",
+   "kind": "func",
+   "name": "shutdown",
+   "params": [
+    {
+     "name": "force",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "if version == nil then\r\n\tif self.installs == nil or self.installs == 'Default' then\r\n    \tversion = self.getDefaultVersion()\r\n\telse\r\n\t\tversion = self.installs\r\n\tend\r\nend\r\nlocal body = {type = \"pixera\", version = version}\r\nself.Internal.mutate('pixera.launch', body)\r\n",
+   "kind": "func",
+   "name": "startPixera",
+   "params": [
+    {
+     "name": "version",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "if version == nil then\r\n    version = self.getDefaultVersion()\r\nend\r\nlocal body = {type = \"presence\", version = version}\r\nself.Internal.mutate('pixera.launch', body)\r\n",
+   "kind": "func",
+   "name": "startPresence",
+   "params": [
+    {
+     "name": "version",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "local body = {type = \"pixera\"}\r\nself.Internal.mutate('pixera.close', body)\r\n",
+   "kind": "func",
+   "name": "stopPixera"
+  },
+  {
+   "body": "local body = {type = \"presence\"}\r\nself.Internal.mutate('pixera.close', body)\r\n",
+   "kind": "func",
+   "name": "stopPresence"
+  },
+  {
+   "body": "--\r\nlocal mac = self.MAC(nil, false)\r\nif type(mac)~= 'string' then\r\n\tpixc.log(\"mac has invalid type\")\r\n\treturn\r\nend \r\nlocal bytes = {string.match(mac, '(%x+)[-:](%x+)[-:](%x+)[-:](%x+)[-:](%x+)[-:](%x+)')}\r\nif bytes == nil then\r\n\tpixc.log(\"invalid  Mac format\")\r\n\treturn\r\nend\r\nfor i = 1, 6 do\r\n\tif bytes[i] == nil then\r\n\t\tpixc.log(\"invalid  Mac format, had nil\")\r\n\tend\r\n\tbytes[i] = tonumber(bytes[i], 16)\r\n\tif  bytes[i] < 0 or bytes[i] > 0xFF then\r\n\t\tpixc.log(\"invalid  Mac format, byte invalid\")\r\n\tend\r\nend\r\nlocal magicPacket = {};\r\nlocal count = 1;\r\nfor i = 1, 6, 1 do\r\n\tmagicPacket[count] = 0xFF;\r\n\tcount = count + 1\r\nend\r\nfor i = 1, 16, 1 do\r\n\tfor j = 1, 6, 1 do\r\n\t\tmagicPacket[count] = bytes[j];\r\n\t\tcount = count + 1\r\n\tend\r\nend\r\n\r\nlocal adapter = self().getProperty(\"Adapter IP\") or \"Any\"\r\nadapter = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(adapter)\r\nrequire \"pixcNetwork\"\r\nlocal network = createPixcNetwork()\r\nnetwork:enableBroadcast();\r\nnetwork:configureUdp(\"255.255.255.255\", 9, adapter)\r\nnetwork:start()\r\nnetwork:send(magicPacket)\r\nnetwork:close()\r\n",
+   "kind": "func",
+   "name": "wake"
+  },
+  {
+   "elems": [
+    {
+     "body": "return self().getProperty(\"IP\") or \"127.0.0.1\"\r\n",
+     "kind": "func",
+     "name": "getIp",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "return tonumber(self().getProperty(\"Port\") or \"4000\")\r\n",
+     "kind": "func",
+     "name": "getPort",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.protocol == nil then\r\n    self.init()\r\nend\r\n\r\nlocal url = \"http://\" .. self.Internal.getIp() .. \":\" ..self.Internal.getPort() .. \"/api/\" .. method\r\nif data ~= nil then\r\n    local rawBody = self.json.encode({json = data})\r\n    url = url .. \"?input=\"..rawBody\r\nend\r\n\r\nlocal success, code, headerDict, content = self.protocol:httpGet(url, nil, nil, customHeader)\r\n\r\nif(content == '') then return end\r\nlocal __, res = nil\r\n__, res = pcall(function()\r\n    return self.json.decode(content).result.data.json\r\nend)\r\nreturn res, code\r\n",
+     "kind": "func",
+     "name": "query",
+     "params": [
+      {
+       "name": "method",
+       "type": ""
+      },
+      {
+       "name": "data",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.protocol == nil then\r\n    self.init()\r\nend\r\nlocal customHeader={\"Content-Type=application/json\"}\r\nlocal url = \"http://\" .. self.Internal.getIp() .. \":\" ..self.Internal.getPort() .. \"/api/\" .. method\r\npixc.log(url)\r\nlocal rawBody = self.json.encode({json = data})\r\nlocal success, code, headerDict, content = self.protocol:httpPost(url, rawBody, nil, customHeader)\r\nlocal __, res = nil\r\n__, res = pcall(function()\r\n    return self.json.decode(content).result.data.json\r\nend)\r\nreturn res, code\r\n",
+     "kind": "func",
+     "name": "mutate",
+     "params": [
+      {
+       "name": "method",
+       "type": ""
+      },
+      {
+       "name": "data",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local ans = self.Internal.query(\"system.network\")\r\nif ans == nil then pixc.log(self() .. \" Module get no response from HUB\"); return end \r\nlocal ip = self.Internal.getIp()\r\n\r\nlocal mac = nil\r\nfor _, v in ipairs(ans) do\r\n    for __, addr in ipairs(v.ipv4Addresses) do\r\n        if addr == ip then\r\n            mac = v.macAddress\r\n            break\r\n        end\r\n    end\r\n    if mac ~= nil then\r\n        break\r\n    end\r\nend\r\nif mac ~= nil then\r\n    self.MAC(mac, true)\r\nend\r\n",
+     "kind": "func",
+     "name": "updateMac",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local ip = self.Internal.getIp()\r\nlocal port = tostring(math.floor(math.abs(self.Internal.getPort())))\r\nself.IP(ip,true)\r\nself.PORT(port,true)\r\nlocal ans = self.Internal.query('pixera.running')\r\nself.startetVersion('none',true)\r\nself.isPixeraRunning(ans)\r\nself.isPresenceRunning(ans)\r\nif ans == nil then return end\r\nself.getDefaultVersion()\r\n\r\n",
+     "kind": "func",
+     "name": "updateStats",
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  }
+ ],
+ "cjv": {
+  "h": 450.0,
+  "w": 388.0,
+  "x": 228.0,
+  "y": 236.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/AVStumpfl/PixeraHub.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4nFEJRqUbLbJktvOqVd4wWkAe1arSpiF2gtEXbTSZprOVWKk3MGjNyeUpsYBQZ6h4CU/WJnDzxk7EOFNih5m7lfBJQI7AS2EdWbloYd6uansGADgU3n9NyJoiZg1uHZiwQ==",
+ "name": "PixeraHub",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "127.0.0.1",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "Localhost",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  },
+  {
+   "cont": "4000",
+   "name": "Port",
+   "typeHint": "string"
+  },
+  {
+   "cont": "Default",
+   "name": "Installs",
+   "optionsSourceFunc": "self.getInstalls",
+   "typeHint": "string"
+  },
+  {
+   "cont": "5",
+   "name": "Refresh Time in sec",
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.pixera.one",
+   "name": "URL",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1.4",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "http://${properties[\"IP\"]}:${properties[\"Port\"]}/"
+}

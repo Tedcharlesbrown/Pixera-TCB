@@ -1,0 +1,1045 @@
+{
+ "api": [
+  {
+   "body": "return self()\r\n",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcProtocolAds\"\r\nif self.ads ~= nil then\r\n\treturn \r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.ads = createPixcProtocolAds()\r\npixc.log(self.helper)\r\nself.open = false\r\nself.connectCount = 0\r\nself.ip = self.helper:getProperty(\"IP\",\"\")\r\nself.readInitVal = self.helper:getProperty(\"Read InitialValues\",\"true\")\r\nself.remoteNetId = self.helper:getProperty(\"RemoteNetId\",\"\")\r\nself.digitalInOverride = tonumber(self.helper:getProperty(\"Digital In Count Override\",\"-1\"))\r\nself.digitalOutOverride = tonumber(self.helper:getProperty(\"Digital Out Count Override\",\"-1\"))\r\nself.analog16BitInOverride = tonumber(self.helper:getProperty(\"Analog16Bit In Count Override\",\"-1\"))\r\nself.analog16BitOutOverride = tonumber(self.helper:getProperty(\"Analog16Bit Out Count Override\",\"-1\"))\r\nself.analog32BitInOverride = tonumber(self.helper:getProperty(\"Analog32Bit In Count Override\",\"-1\"))\r\nself.analog32BitOutOverride = tonumber(self.helper:getProperty(\"Analog32Bit Out Count Override\",\"-1\"))\r\nself.a16InCt = tonumber(self.helper:getProperty(\"Analog16Bit In Cycletime ms\",\"100\"))\r\nself.a32InCt = tonumber(self.helper:getProperty(\"Analog32Bit In Cycletime ms\",\"100\"))\r\nself.dInCt = tonumber(self.helper:getProperty(\"Digital In Cycletime ms\",\"0\"))\r\nself.dmxInCt = tonumber(self.helper:getProperty(\"Dmx In Cycletime ms\",\"100\"))\r\n\r\nself.a16InMaxScale = tonumber(self.helper:getProperty(\"Analog16Bit Input Scale Maximum\",\"100\"))\r\nself.a16OutMaxScale = tonumber(self.helper:getProperty(\"Analog16Bit Output Scale Maximum\",\"100\"))\r\nself.a32InMaxScale = tonumber(self.helper:getProperty(\"Analog32Bit Input Scale Maximum\",\"100\"))\r\nself.a32OutMaxScale = tonumber(self.helper:getProperty(\"Analog32Bit Output Scale Maximum\",\"100\"))\r\n\r\nself.IsOpen(false, true)\r\nself.ads:configureMagicGateway(\r\n\tself.ip,\r\n\tself.remoteNetId,\r\n\tself.a16InCt,\r\n\tself.a32InCt,\r\n\tself.dInCt,\r\n\tself.dmxInCt,\r\n\tself.a16InMaxScale,\r\n\tself.a16OutMaxScale,\r\n\tself.a32InMaxScale,\r\n\tself.a32OutMaxScale)\r\nself.ads:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen) \r\n\t\t\tself.IsOpen(isOpen, true); \r\n\t\t\tif isOpen == true then \r\n\t\t\t\tself.ConnectCounter(self.connectCount+1,true);\r\n\t\t\t\tself.refreshNrValues();\r\n\t\t\t\tif self.readInitVal == true or self.readInitVal == \"true\" then\r\n\t\t\t\t\tself.readInitialValues();\r\n\t\t\t\tend\r\n\t\t\t\tself.setCallbacks() \r\n\t\t\tend \r\n\r\nend)\r\nself.ads:start()\r\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.ads == nil then return end\r\nself.ads:close()\r\nself.IsOpen(false, true)\r\nself.ads = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if self.ads == nil then return; end;\r\nself.ads:setCallback16BitAnalogMG(nil ,function(index , value) self.InputHandler.Analog16Bit(index, value) end)\r\nself.ads:setCallback32BitAnalogMG(nil ,function(index , value) self.InputHandler.Analog32Bit(index, value) end)\r\nself.ads:setCallbackDigitalMG(nil ,function(index , value) self.InputHandler.Digital(index, value) end)\r\nself.ads:setCallbackDmxMG(nil ,function(index , value) self.InputHandler.Dmx(index, value) end)\r\n",
+   "kind": "func",
+   "name": "setCallbacks",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "\r\nself.IsOpen(false, true)\r\nself.refreshNrValues()\r\nlocal dsc = self.getDescription()\r\nif self.ads ~= nil then \r\n\tself.ads:close()\r\nend\r\n\r\nself().dynamicRebuildFromDescriptions(dsc, \"\", \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "refresh"
+  },
+  {
+   "body": "\r\nself.IsOpen(false, true)\r\nself.refreshNrValues()\r\nlocal dsc = self.getDescriptionClean()\r\nif self.ads ~= nil then \r\n\tself.ads:close()\r\nend\r\n\r\nself().dynamicRebuildFromDescriptions(dsc, \"\", \"(.*)\")\r\n",
+   "kind": "func",
+   "name": "refreshClean"
+  },
+  {
+   "body": "--\r\nif self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\nself.digitalInOverride = tonumber(self.helper:getProperty(\"Digital In Count Override\",\"-1\"))\r\nself.digitalOutOverride = tonumber(self.helper:getProperty(\"Digital Out Count Override\",\"-1\"))\r\nself.analog16BitInOverride = tonumber(self.helper:getProperty(\"Analog16Bit In Count Override\",\"-1\"))\r\nself.analog16BitOutOverride = tonumber(self.helper:getProperty(\"Analog16Bit Out Count Override\",\"-1\"))\r\nself.analog32BitInOverride = tonumber(self.helper:getProperty(\"Analog32Bit In Count Override\",\"-1\"))\r\nself.analog32BitOutOverride = tonumber(self.helper:getProperty(\"Analog32Bit Out Count Override\",\"-1\"))\r\nself.dmxInOverride = tonumber(self.helper:getProperty(\"Dmx In Count Override\",\"-1\"))\r\nself.dmxOutOverride = tonumber(self.helper:getProperty(\"Dmx Out Count Override\",\"-1\"))local ioInfo = nil\r\nif self.ads ~= nil then \r\n \tioInfo = self.ads:getIoInfoMg();\r\nend;\r\nif self.digitalOutOverride >= 0 then\r\n\tself.nrDigitalOut = self.digitalOutOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nrDigitalOut = math.tointeger(ioInfo[\"UsedDigitalOutput\"])\r\n\telse\r\n\t\tself.nrDigitalOut = 0\r\n\tend\r\nend\r\nif self.analog16BitOutOverride >= 0 then\r\n\tself.nr16BitOut = self.analog16BitOutOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nr16BitOut = math.tointeger(ioInfo[\"UsedAnalog16BitOutput\"])\r\n\telse\r\n\t\tself.nr16BitOut = 0\r\n\tend\r\nend\r\nif self.analog32BitOutOverride >= 0 then\r\n\tself.nr32BitOut = self.analog32BitOutOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nr32BitOut = math.tointeger(ioInfo[\"UsedAnalog32BitOutput\"])\r\n\telse\r\n\t\tself.nr32BitOut = 0\r\n\tend\r\nend\r\nif self.digitalInOverride >= 0 then\r\n\tself.nrDigitalIn = self.digitalInOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nrDigitalIn = math.tointeger(ioInfo[\"UsedDigitalInput\"])\r\n\telse\r\n\t\tself.nrDigitalIn = 0\r\n\tend\r\nend\r\nif self.analog16BitInOverride >= 0 then\r\n\tself.nr16BitIn = self.analog16BitInOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nr16BitIn = math.tointeger(ioInfo[\"UsedAnalog16BitInput\"])\r\n\telse\r\n\t\tself.nr16BitIn = 0\r\n\tend\r\nend\r\nif self.analog32BitInOverride >= 0 then\r\n\tself.nr32BitIn = self.analog32BitInOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nr32BitIn = math.tointeger(ioInfo[\"UsedAnalog32BitInput\"])\r\n\telse\r\n\t\tself.nr32BitIn = 0\r\n\tend\r\nend\r\nif self.dmxInOverride >= 0 then\r\n\tself.nrDmxIn = self.dmxInOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nrDmxIn = math.tointeger(ioInfo[\"UsedDmxInput\"])\r\n\telse\r\n\t\tself.nrDmxIn = 0\r\n\tend\r\nend\r\nif self.dmxOutOverride >= 0 then\r\n\tself.nrDmxOut = self.dmxOutOverride\r\nelse\r\n\tif ioInfo ~= nil then\r\n\t\tself.nrDmxOut = math.tointeger(ioInfo[\"UsedDmxOutput\"])\r\n\telse\r\n\t\tself.nrDmxOut = 0\r\n\tend\r\nend\r\npixc.log(self.nrDigitalOut,self.nrDigitalIn,self.nr16BitOut,self.nr16BitIn,self.nr32BitOut,self.nr32BitIn)\r\n",
+   "kind": "func",
+   "name": "refreshNrValues",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "\tif self.ads == nil then return; end;\r\n\tlocal overrideStruct = {};\r\n\tif self.analog32BitInOverride >= 0 then\r\n\t\toverrideStruct[\"UsedAnalog32BitInput\"] = self.analog32BitInOverride\r\n\tend\r\n\tif self.analog16BitInOverride >= 0 then\r\n\t\toverrideStruct[\"UsedAnalog16BitInput\"] = self.analog16BitInOverride\r\n\tend\r\n\tif self.analog32BitOutOverride >= 0 then\r\n\t\toverrideStruct[\"UsedAnalog32BitOutput\"] = self.analog32BitOutOverride\r\n\tend\r\n\tif self.analog16BitOutOverride >= 0 then\r\n\t\toverrideStruct[\"UsedAnalog16BitOutput\"] = self.analog16BitOutOverride\r\n\tend\r\n\tif self.digitalInOverride >= 0 then\r\n\t\toverrideStruct[\"UsedDigitalInput\"] = self.digitalInOverride\r\n\tend\r\n\tif self.digitalOutOverride >= 0 then\r\n\t\toverrideStruct[\"UsedDigitalOutput\"] = self.digitalOutOverride\r\n\tend\r\n\tif self.dmxOutOverride >= 0 then\r\n\t\toverrideStruct[\"UsedDmxOutput\"] = self.dmxOutOverride\r\n\tend\r\n\tif self.dmxInOverride >= 0 then\r\n\t\toverrideStruct[\"UsedDmxInput\"] = self.dmxInOverride\r\n\tend\r\n\treturn self.ads:getDescription(overrideStruct);\r\n",
+   "kind": "func",
+   "name": "getDescription",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "\tif self.ads == nil then return; end;\r\n\tlocal overrideStruct = {};\r\n\toverrideStruct[\"UsedAnalog32BitInput\"] = 0\r\n\toverrideStruct[\"UsedAnalog16BitInput\"] = 0\r\n\toverrideStruct[\"UsedAnalog32BitOutput\"] = 0\r\n\toverrideStruct[\"UsedAnalog16BitOutput\"] = 0\r\n\toverrideStruct[\"UsedDigitalInput\"] = 0\r\n\toverrideStruct[\"UsedDigitalOutput\"] = 0\r\n\toverrideStruct[\"UsedDmxOutput\"] = 0\r\n\toverrideStruct[\"UsedDmxInput\"] = 0\r\n\treturn self.ads:getDescription(overrideStruct);\r\n",
+   "kind": "func",
+   "name": "getDescriptionClean",
+   "slotStyle": "hidden"
+  },
+  {
+   "body": "if self.ads == nil then return; end;\r\n\r\nlocal dataDigitalO = self.ads:readDigitalMG(1, self.nrDigitalOut,true)\r\n\r\nif dataDigitalO ~= nil then\r\n\tfor i= 1, self.nrDigitalOut do\r\n\t\tlocal t = \"dO\"..math.tointeger(i);\r\n\t\tlocal t2  = \"Out\"..math.tointeger(i);\r\n\t\tself[t] = dataDigitalO[i]\r\n\t\tif self.DigitalOutput ~= nil and self.DigitalOutput[t2] ~= nil then\r\n\t\t\tself.DigitalOutput[t2]();\r\n\t\tend\r\n\tend\r\nend\r\nlocal dataDigitalIn = self.ads:readDigitalMG(1, self.nrDigitalIn,false)\r\nif dataDigitalIn ~= nil then\r\n\tfor i= 1, self.nrDigitalIn do\r\n\t\tif dataDigitalIn[i] ~= nil then\r\n\t\t\tself.InputHandler.Digital(i,dataDigitalIn[i]);\r\n\t\tend\r\n\tend\r\nend\r\nlocal dataA16O = self.ads:read16BitAnalogMG(1, self.nr16BitOut,true)\r\nif dataA16O ~= nil then\r\n\tfor i= 1, self.nr16BitOut do\r\n\t\tlocal t = \"a16O\"..math.tointeger(i);\r\n\t\tlocal t2  = \"Out\"..math.tointeger(i);\r\n\t\tself[t] = dataA16O[i]\r\n\t\tif self.Analog16BitOutput ~= nil and self.Analog16BitOutput[t2] ~= nil then\r\n\t\t\tself.Analog16BitOutput[t2]();\r\n\t\tend\r\n\tend\r\nend\r\nlocal dataAnaloga16I = self.ads:read16BitAnalogMG(1, self.nr16BitIn,false)\r\nif dataAnaloga16I ~= nil then\r\n\tfor i= 1, self.nr16BitIn do\r\n\t\tif dataAnaloga16I[i] ~= nil then\r\n\t\t\tself.InputHandler.Analog16Bit(i,dataAnaloga16I[i]);\r\n\t\tend\r\n\tend\r\nend\r\nlocal dataA32O = self.ads:read32BitAnalogMG(1, self.nr32BitOut,true)\r\nif dataA32O ~= nil then\r\n\tfor i= 1, self.nr16BitOut do\r\n\t\tlocal t = \"a32O\"..math.tointeger(i);\r\n\t\tlocal t2  = \"Out\"..math.tointeger(i);\r\n\t\tself[t] = dataA32O[i]\r\n\t\tif self.Analog32BitOutput ~= nil and  self.Analog32BitOutput[t2] ~= nil then\r\n\t\t\tself.Analog32BitOutput[t2]();\r\n\t\tend\r\n\tend\r\nend\r\nlocal dataAnaloga32I = self.ads:read32BitAnalogMG(1, self.nr32BitIn,false)\r\nif dataAnaloga32I ~= nil then\r\n\tfor i= 1, self.nr32BitIn do\r\n\t\tif dataAnaloga32I[i] ~= nil then\r\n\t\t\tself.InputHandler.Analog32Bit(i,dataAnaloga32I[i]);\r\n\t\tend\r\n\tend\r\nend\r\n",
+   "kind": "func",
+   "name": "readInitialValues"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\r\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.connectCount = pixcCommon.execAttribute(false, self.connectCount, count, doSet)\r\n",
+   "kind": "func",
+   "name": "ConnectCounter",
+   "params": [
+    {
+     "name": "count",
+     "type": "int"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "\tlocal tag = \"In\"..math.tointeger(index);\r\n\tif self.Analog16BitInput == nil then return; end\r\n\tif self.Analog16BitInput[tag] ~=nil then\r\n\t\tself.Analog16BitInput[tag](value,true)\r\n\tend\r\n",
+     "kind": "func",
+     "name": "Analog16Bit",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "\tlocal tag = \"In\"..math.tointeger(index);\r\n\tif self.Analog32BitInput == nil then return; end\r\n\tif self.Analog32BitInput[tag] ~=nil then\r\n\t\tself.Analog32BitInput[tag](value,true)\r\n\tend\r\n",
+     "kind": "func",
+     "name": "Analog32Bit",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "\tlocal tag = \"In\"..math.tointeger(index);\r\n\tif self.DigitalInput == nil then return; end\r\n\tif self.DigitalInput[tag] ~=nil then\r\n\t\tself.DigitalInput[tag](value,true)\r\n\tend\r\n",
+     "kind": "func",
+     "name": "Digital",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "--\n\tpixc.log(index,#data)\n\tlocal tag = \"In\"..math.tointeger(index);\n\tif self.DmxInput == nil then return; end\n\tif self.DmxInput[tag] ~=nil then\n\t\tself.DmxInput[tag](data,true)\n\tend\n",
+     "kind": "func",
+     "name": "Dmx",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "data",
+       "type": "object"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "InputHandler"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.ads == nil then return; end;\r\nself.ads:writeDigitalMG(index,value,doNotWriteYet)\r\n",
+     "kind": "func",
+     "name": "Digital",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doNotWriteYet",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "if self.ads == nil then return; end;\r\nself.ads:write16BitAnalogMG(index,value,doNotWriteYet)\r\n",
+     "kind": "func",
+     "name": "Analog16Bit",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doNotWriteYet",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "if self.ads == nil then return; end;\r\nself.ads:write32BitAnalogMG(index,value,doNotWriteYet)\r\n",
+     "kind": "func",
+     "name": "Analog32Bit",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doNotWriteYet",
+       "type": "bool"
+      }
+     ]
+    },
+    {
+     "body": "--\nif self.ads == nil then return; end;\nself.ads:writeDmxMG(index,data,doNotWriteYet)\n",
+     "kind": "func",
+     "name": "Dmx",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "data",
+       "type": "object"
+      },
+      {
+       "name": "doNotWriteYet",
+       "type": "bool"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "OutputHandler"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "10.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O1, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(1,value,false) ; end; return self.a16O1",
+     "kind": "func",
+     "name": "Out1",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "20.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O2, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(2,value,false) ; end; return self.a16O2",
+     "kind": "func",
+     "name": "Out2",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "100.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O3, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(3,value,false) ; end; return self.a16O3",
+     "kind": "func",
+     "name": "Out3",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "0.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O4, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(4,value,false) ; end; return self.a16O4",
+     "kind": "func",
+     "name": "Out4",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "0.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O5, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(5,value,false) ; end; return self.a16O5",
+     "kind": "func",
+     "name": "Out5",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "0.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O6, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(6,value,false) ; end; return self.a16O6",
+     "kind": "func",
+     "name": "Out6",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "0.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O7, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(7,value,false) ; end; return self.a16O7",
+     "kind": "func",
+     "name": "Out7",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "10.00"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.a16O8, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Analog16Bit(8,value,false) ; end; return self.a16O8",
+     "kind": "func",
+     "name": "Out8",
+     "params": [
+      {
+       "name": "value",
+       "type": "int"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Analog16BitOutput"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I1 = pixcCommon.execAttribute(false, self.a16Ia16I1, value, doSet)",
+     "kind": "func",
+     "name": "In1",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I2 = pixcCommon.execAttribute(false, self.a16Ia16I2, value, doSet)",
+     "kind": "func",
+     "name": "In2",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I3 = pixcCommon.execAttribute(false, self.a16Ia16I3, value, doSet)",
+     "kind": "func",
+     "name": "In3",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I4 = pixcCommon.execAttribute(false, self.a16Ia16I4, value, doSet)",
+     "kind": "func",
+     "name": "In4",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I5 = pixcCommon.execAttribute(false, self.a16Ia16I5, value, doSet)",
+     "kind": "func",
+     "name": "In5",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I6 = pixcCommon.execAttribute(false, self.a16Ia16I6, value, doSet)",
+     "kind": "func",
+     "name": "In6",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I7 = pixcCommon.execAttribute(false, self.a16Ia16I7, value, doSet)",
+     "kind": "func",
+     "name": "In7",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.a16Ia16I8 = pixcCommon.execAttribute(false, self.a16Ia16I8, value, doSet)",
+     "kind": "func",
+     "name": "In8",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Analog16BitInput"
+  },
+  {
+   "kind": "ns",
+   "name": "Analog32BitOutput"
+  },
+  {
+   "kind": "ns",
+   "name": "Analog32BitInput"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "true"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO1, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(1,value,false) ; end; return self.dO1",
+     "kind": "func",
+     "name": "Out1",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "true"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO2, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(2,value,false) ; end; return self.dO2",
+     "kind": "func",
+     "name": "Out2",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "true"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO3, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(3,value,false) ; end; return self.dO3",
+     "kind": "func",
+     "name": "Out3",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "false"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO4, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(4,value,false) ; end; return self.dO4",
+     "kind": "func",
+     "name": "Out4",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "true"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO5, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(5,value,false) ; end; return self.dO5",
+     "kind": "func",
+     "name": "Out5",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "false"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO6, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(6,value,false) ; end; return self.dO6",
+     "kind": "func",
+     "name": "Out6",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "false"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO7, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(7,value,false) ; end; return self.dO7",
+     "kind": "func",
+     "name": "Out7",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "false"
+     },
+     "body": "if value == nil then doSet = false; end; \r\n pixcCommon.execAttribute(false, self.dO8, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Digital(8,value,false) ; end; return self.dO8",
+     "kind": "func",
+     "name": "Out8",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "DigitalOutput"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "self.dIdI1 = pixcCommon.execAttribute(false, self.dIdI1, value, doSet)",
+     "kind": "func",
+     "name": "In1",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI2 = pixcCommon.execAttribute(false, self.dIdI2, value, doSet)",
+     "kind": "func",
+     "name": "In2",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI3 = pixcCommon.execAttribute(false, self.dIdI3, value, doSet)",
+     "kind": "func",
+     "name": "In3",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI4 = pixcCommon.execAttribute(false, self.dIdI4, value, doSet)",
+     "kind": "func",
+     "name": "In4",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI5 = pixcCommon.execAttribute(false, self.dIdI5, value, doSet)",
+     "kind": "func",
+     "name": "In5",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI6 = pixcCommon.execAttribute(false, self.dIdI6, value, doSet)",
+     "kind": "func",
+     "name": "In6",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI7 = pixcCommon.execAttribute(false, self.dIdI7, value, doSet)",
+     "kind": "func",
+     "name": "In7",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "self.dIdI8 = pixcCommon.execAttribute(false, self.dIdI8, value, doSet)",
+     "kind": "func",
+     "name": "In8",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "DigitalInput"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "internal",
+     "body": "self.dmxI1 = pixcCommon.execAttribute(false, self.dmxI1, value, doSet)",
+     "kind": "func",
+     "name": "In1",
+     "params": [
+      {
+       "name": "value",
+       "type": "object"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftOut;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "DmxInput"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": "false"
+     },
+     "body": "if value == nil then doSet = false; end; pixcCommon.execAttribute(false, self.dmxO1, value, doSet); \r\n if self.ads ~= nil and value then self.OutputHandler.Dmx(1,value,false) ; end; return self.dmxO1",
+     "kind": "func",
+     "name": "Out1",
+     "params": [
+      {
+       "name": "value",
+       "type": "bool"
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftIn;rightIn;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "DmxOutput"
+  }
+ ],
+ "cjv": {
+  "h": 1080.0,
+  "w": 581.0,
+  "x": 43.0,
+  "y": 175.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Drivers/Beckhoff/PixeraIO.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4i8YBVqqmkNFcbuNccKrsJaZv6FCFpiN/El13q6XuCw45P91FBaL9Kydz7za8seVBubNY1p+5DzTzZueQiXRFAEuNqyx5jVZivf4n5dh/4dcjeFCNrNkP6uMzZtvYS03Aw==",
+ "name": "PixeraIO",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (ME)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "Comunicates with the AV Stumpfl Beckhof image. It detects the connected io and maps it. The Actions can be rebuild by calling refresh after the module has conencted successfully. Dmx In and Out the modules ConvertToArray and ConvertFromArray are available",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "10.1.51.68",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "5.52.92.102.1.1",
+   "name": "RemoteNetId",
+   "typeHint": "string"
+  },
+  {
+   "cont": "100",
+   "name": "Analog16Bit Input Scale Maximum"
+  },
+  {
+   "cont": "100",
+   "name": "Analog16Bit Output Scale Maximum"
+  },
+  {
+   "cont": "100",
+   "name": "Analog32Bit Input Scale Maximum"
+  },
+  {
+   "cont": "100",
+   "name": "Analog32Bit Output Scale Maximum"
+  },
+  {
+   "cont": "0",
+   "name": "Analog32Bit Out Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Digital Out Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Digital In Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Analog16Bit Out Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Analog16Bit In Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Analog32Bit In Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Dmx In Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "-1",
+   "name": "Dmx Out Count Override",
+   "typeHint": "number"
+  },
+  {
+   "cont": "true",
+   "name": "Read InitialValues",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "100",
+   "name": "Analog16Bit In Cycletime ms",
+   "typeHint": "number"
+  },
+  {
+   "cont": "100",
+   "name": "Analog32Bit In Cycletime ms",
+   "typeHint": "number"
+  },
+  {
+   "cont": "0",
+   "name": "Digital In Cycletime ms",
+   "typeHint": "number"
+  },
+  {
+   "cont": "50",
+   "name": "Dmx In Cycletime ms",
+   "typeHint": "number"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,10204 @@
+﻿{
+ "api": [
+  {
+   "elems": [
+    {
+     "kind": "func",
+     "name": "getApiRevision",
+     "params": [],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getHasFunction",
+     "params": [
+      {
+       "name": "functionName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "outputDebug",
+     "params": [
+      {
+       "name": "message",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getLicenseJson",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentTime",
+     "params": [],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentTimeAsString",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "noop",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "requestCallback",
+     "params": [
+      {
+       "name": "functionName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "readFileString",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "writeFileString",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      },
+      {
+       "name": "fileStr",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getAccessRecipe",
+     "params": [
+      {
+       "name": "hdlPath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "pollMonitoring",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "unsubscribeMonitoringSubject",
+     "params": [
+      {
+       "name": "subject",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "subscribeMonitoringSubject",
+     "params": [
+      {
+       "name": "subject",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setMonitoringEventMode",
+     "params": [
+      {
+       "name": "mode",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "monitoringEvent",
+     "params": [
+      {
+       "name": "eventDescription",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setShowContextInReplies",
+     "params": [
+      {
+       "name": "doShow",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setMonitoringHasDelimiter",
+     "params": [
+      {
+       "name": "hasDelimiter",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "runJsScript",
+     "params": [
+      {
+       "name": "jsFunction",
+       "type": "string"
+      },
+      {
+       "name": "jsCode",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "dynamicRebuildFromJsonDescription",
+     "params": [
+      {
+       "name": "deviceName",
+       "type": "string"
+      },
+      {
+       "name": "jsonDescription",
+       "type": "string"
+      },
+      {
+       "name": "folder",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Utility"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "sendString",
+       "params": [
+        {
+         "name": "str",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Conveyor"
+    },
+    {
+     "deliver": "Pixera.Network.Conveyor",
+     "kind": "func",
+     "name": "getConveyor",
+     "params": [
+      {
+       "name": "conveyorName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Network"
+  },
+  {
+   "elems": [
+    {
+     "kind": "func",
+     "name": "setTransportModeOnTimelineAtIndex",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      },
+      {
+       "name": "mode",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setTransportModeOnTimeline",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      },
+      {
+       "name": "mode",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "toggleTransport",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getTransportModeOnTimeline",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "startFirstTimeline",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "pauseFirstTimeline",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "stopFirstTimeline",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setOpacityOnTimeline",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      },
+      {
+       "name": "opacity",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getOpacityOnTimeline",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setPosValue",
+     "params": [
+      {
+       "name": "val",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setPosValueXY",
+     "params": [
+      {
+       "name": "valX",
+       "type": "double"
+      },
+      {
+       "name": "valY",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setParamValue",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      },
+      {
+       "name": "value",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "applyCueAtIndexOnTimelineAtIndex",
+     "params": [
+      {
+       "name": "cueIndex",
+       "type": "int"
+      },
+      {
+       "name": "timelineIndex",
+       "type": "int"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "applyCueNumberOnTimelineAtIndex",
+     "params": [
+      {
+       "name": "cueNumber",
+       "type": "int"
+      },
+      {
+       "name": "timelineIndex",
+       "type": "int"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "applyCueNumberOnTimeline",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      },
+      {
+       "name": "cueNumber",
+       "type": "int"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "applyCueOnTimeline",
+     "params": [
+      {
+       "name": "timelineName",
+       "type": "string"
+      },
+      {
+       "name": "cueName",
+       "type": "string"
+      },
+      {
+       "name": "blendDuration",
+       "type": "optional<double>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "addResourceToFolder",
+     "params": [
+      {
+       "name": "namePath",
+       "type": "string"
+      },
+      {
+       "name": "filePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "assignResourceToLayer",
+     "params": [
+      {
+       "name": "resourcePath",
+       "type": "string"
+      },
+      {
+       "name": "layerPath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "refreshResource",
+     "params": [
+      {
+       "name": "resourcePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setTransportModeOnLayer",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "mode",
+       "type": "int"
+      },
+      {
+       "name": "loop",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getTransportModeOnLayer",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getResourceAssignedToLayer",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "assignResourceToClipAtTimeByDmxId",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "dmxFolderId",
+       "type": "int"
+      },
+      {
+       "name": "dmxFileId",
+       "type": "int"
+      },
+      {
+       "name": "time",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "assignResourceToClipAtHMSFStringByDmxId",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "dmxFolderId",
+       "type": "int"
+      },
+      {
+       "name": "dmxFileId",
+       "type": "int"
+      },
+      {
+       "name": "hmsf",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "assignResourceToClipAtHMSFByDmxId",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "dmxFolderId",
+       "type": "int"
+      },
+      {
+       "name": "dmxFileId",
+       "type": "int"
+      },
+      {
+       "name": "h",
+       "type": "int"
+      },
+      {
+       "name": "m",
+       "type": "int"
+      },
+      {
+       "name": "s",
+       "type": "int"
+      },
+      {
+       "name": "f",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setCurrentTimeOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "time",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setCurrentTimeOfTimelineInSeconds",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "time",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setCurrentTimeAndTransportModeOfTimelineInSeconds",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "time",
+       "type": "double"
+      },
+      {
+       "name": "mode",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getFpsOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentTimeOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentTimeOfTimelineInSeconds",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentHMSFOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentCountdownOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getCurrentCountdownHMSFOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "blockUiTimelineUpdates",
+     "params": [
+      {
+       "name": "doBlock",
+       "type": "bool"
+      },
+      {
+       "name": "terminationDurationInMs",
+       "type": "optional<int>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "startOpacityAnimationOfTimeline",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "fadeIn",
+       "type": "bool"
+      },
+      {
+       "name": "fullFadeDuration",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "createClipOnLayerAtTimeWithResource",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "time",
+       "type": "double"
+      },
+      {
+       "name": "resourcePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "removeClipOnLayerWithIndex",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "clipIndex",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "removeAllClipsOnLayer",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getClipDurationInSecondsWithIndex",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "clipIndex",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getClipDurationInFramesWithIndex",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "clipIndex",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getClipTimeInSecondsWithIndex",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "clipIndex",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getClipEndTimeInSecondsWithIndex",
+     "params": [
+      {
+       "name": "layerPath",
+       "type": "string"
+      },
+      {
+       "name": "clipIndex",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getResourceDurationInSeconds",
+     "params": [
+      {
+       "name": "resourcePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getParamValue",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setTimecodeInput",
+     "params": [
+      {
+       "name": "hour",
+       "type": "int"
+      },
+      {
+       "name": "minute",
+       "type": "int"
+      },
+      {
+       "name": "second",
+       "type": "int"
+      },
+      {
+       "name": "frame",
+       "type": "int"
+      },
+      {
+       "name": "elapsedTime",
+       "type": "double"
+      },
+      {
+       "name": "running",
+       "type": "bool"
+      },
+      {
+       "name": "freshMode",
+       "type": "int"
+      },
+      {
+       "name": "stateToken",
+       "type": "int"
+      },
+      {
+       "name": "format",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "double",
+      "type": "double"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "takeOverAllClients",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setPauseSmpteInput",
+     "params": [
+      {
+       "name": "doPause",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Compound"
+  },
+  {
+   "elems": [
+    {
+     "kind": "func",
+     "name": "closeApp",
+     "params": [
+      {
+       "name": "saveProject",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "loadProject",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "saveProject",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "saveProjectAs",
+     "params": [
+      {
+       "name": "path",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getProjectName",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setProjectName",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getProjectDirectory",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getControlMultiUserSessionName",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "shutdownSystem",
+     "params": [
+      {
+       "name": "mode",
+       "type": "optional<int>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getLiveSystemIps",
+     "params": [],
+     "result": {
+      "name": "string[]",
+      "type": "string[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getLiveSystemState",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "liveSystemStateChange",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      },
+      {
+       "name": "state",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "shutdownLiveSystem",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      },
+      {
+       "name": "mode",
+       "type": "optional<int>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "wakeLiveSystem",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getLiveSystemMacAddress",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "startLiveSystem",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "startLiveSystems",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "stopLiveSystem",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "stopLiveSystems",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "restartLiveSystem",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "restartLiveSystems",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "remoteSystemStateChange",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      },
+      {
+       "name": "state",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getRemoteSystemIps",
+     "params": [],
+     "result": {
+      "name": "string[]",
+      "type": "string[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getRemoteSystemState",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setVideoStreamActiveState",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      },
+      {
+       "name": "device",
+       "type": "string"
+      },
+      {
+       "name": "isActive",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getVideoStreamActiveState",
+     "params": [
+      {
+       "name": "ip",
+       "type": "string"
+      },
+      {
+       "name": "device",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getDefaultClipDurationsAsJsonString",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Session"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIp",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getState",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPerformanceMonitoringValuesJson",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPerformanceMonitoringValuesJsonEx",
+       "params": [
+        {
+         "name": "filter",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetCumulativePerformanceMonitoringValues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "ensureFileDistribution",
+       "params": [
+        {
+         "name": "includeNotUsedYet",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "shutDown",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "wakeUp",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getMacAddress",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "restartEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "startEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "closeEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "triggerBackup",
+       "params": [
+        {
+         "name": "applyControlCommand",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getStructureJson",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.MultiUserMember",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "MultiUserMember"
+    },
+    {
+     "elems": [
+      {
+       "deliver": "Pixera.LiveSystems.LiveSystem",
+       "kind": "func",
+       "name": "ref",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIp",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getState",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBackupRole",
+       "params": [
+        {
+         "name": "role",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getBackupRole",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPerformanceMonitoringValuesJson",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPerformanceMonitoringValuesJsonEx",
+       "params": [
+        {
+         "name": "filter",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetCumulativePerformanceMonitoringValues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveMappingsToOutputs",
+       "params": [
+        {
+         "name": "hdlSrc",
+         "type": "handle"
+        },
+        {
+         "name": "outputIdPathMapStr",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setUsagePresetName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getUsagePresetName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "updateUsagePreset",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "saveUsagePresetAs",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "applyUsagePreset",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "exportUsagePreset",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "importUsagePreset",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "ensureFileDistribution",
+       "params": [
+        {
+         "name": "includeNotUsedYet",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "shutDown",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "wakeUp",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getMacAddress",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.GraphicsDevice",
+       "kind": "func",
+       "name": "getGraphicsDevices",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.Output",
+       "kind": "func",
+       "name": "getEnabledOutputs",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.Output",
+       "kind": "func",
+       "name": "getAllOutputs",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.VideoStream",
+       "kind": "func",
+       "name": "getVideoStreamOutputs",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "restartEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "startEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "closeEngine",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setAudioMasterVolume",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        },
+        {
+         "name": "volume",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getAudioMasterVolume",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setAudioMasterMute",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        },
+        {
+         "name": "state",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getAudioMasterMute",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "toggleAudioMasterMute",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setAudioTimecodeInput",
+       "params": [
+        {
+         "name": "channel",
+         "type": "int"
+        },
+        {
+         "name": "state",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "triggerBackup",
+       "params": [
+        {
+         "name": "applyControlCommand",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getStructureJson",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.LiveSystem",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "LiveSystem"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "update",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "apply",
+       "params": [
+        {
+         "name": "destinationIp",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "importFromFile",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "exportToFile",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.UsagePreset",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "UsagePreset"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.Output",
+       "kind": "func",
+       "name": "getEnabledOutputs",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.Output",
+       "kind": "func",
+       "name": "getAllOutputs",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "GraphicsDevice"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setActive",
+       "params": [
+        {
+         "name": "active",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getActive",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setIdentify",
+       "params": [
+        {
+         "name": "state",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIdentify",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.Screen",
+       "kind": "func",
+       "name": "getAssignedScreens",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Projectors.Projector",
+       "kind": "func",
+       "name": "getAssignedProjectors",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getEnabled",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getForPreview",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setIsOutputAggregate",
+       "params": [
+        {
+         "name": "state",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsOutputAggregate",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setAggregateDims",
+       "params": [
+        {
+         "name": "horizontalCount",
+         "type": "int"
+        },
+        {
+         "name": "verticalCount",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getAggregateDims",
+       "params": [],
+       "result": {
+        "name": "int[]",
+        "type": "int[]"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Output"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setActive",
+       "params": [
+        {
+         "name": "active",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getActive",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "VideoStream"
+    },
+    {
+     "deliver": "Pixera.LiveSystems.LiveSystem",
+     "kind": "func",
+     "name": "getLiveSystems",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "liveSystemNotAvailable",
+     "params": [
+      {
+       "name": "reason",
+       "type": "int"
+      },
+      {
+       "name": "system",
+       "type": "handle"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "deliver": "Pixera.LiveSystems.MultiUserMember",
+     "kind": "func",
+     "name": "getMultiUserMembers",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "deliver": "Pixera.LiveSystems.UsagePreset",
+     "kind": "func",
+     "name": "getUsagePresets",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "LiveSystems"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getShowDimsInPixels",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getShowScaleAsSize",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setFadeToTimeDelay",
+       "params": [
+        {
+         "name": "timeInMilliseconds",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFadeToTimeDelay",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      }
+     ],
+     "kind": "ns",
+     "name": "SettingsGeneral"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getTranscodingPresets",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addOrChangeTranscodingPreset",
+       "params": [
+        {
+         "name": "preset",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "ns",
+     "name": "SettingsTranscoding"
+    }
+   ],
+   "kind": "ns",
+   "name": "Settings"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getId",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPosition",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getRotation",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setScale",
+       "params": [
+        {
+         "name": "xScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zScale",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getScale",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosRot",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosRotAndPerspectivePos",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspXPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspYPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspZPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosRotScale",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zScale",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.Perspective",
+       "kind": "func",
+       "name": "getPersepective",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "snapPerspectiveCornersToScreen",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPerspectivePosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPerspectivePositionWithLookAt",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPerspectivePosition",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPerspectiveRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPerspectiveRotation",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCameraPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCameraPositionWithLookAt",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCameraPosition",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCameraRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCameraRotation",
+       "params": [],
+       "result": {
+        "name": "ScreenPosValues",
+        "type": "ScreenPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setContentSamplingFrustumBase",
+       "params": [
+        {
+         "name": "x",
+         "type": "double"
+        },
+        {
+         "name": "y",
+         "type": "double"
+        },
+        {
+         "name": "width",
+         "type": "double"
+        },
+        {
+         "name": "height",
+         "type": "double"
+        },
+        {
+         "name": "rotation",
+         "type": "double"
+        },
+        {
+         "name": "originScreenId",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "runCalibration",
+       "params": [
+        {
+         "name": "mode",
+         "type": "string"
+        },
+        {
+         "name": "diff",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "editCalibration",
+       "params": [
+        {
+         "name": "diff",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetWarpFile",
+       "params": [
+        {
+         "name": "diff",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "loadWarpFile",
+       "params": [
+        {
+         "name": "filePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "loadWarpFileWithDiff",
+       "params": [
+        {
+         "name": "filePath",
+         "type": "string"
+        },
+        {
+         "name": "diff",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addWarpFile",
+       "params": [
+        {
+         "name": "filePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addWarpFileWithDiff",
+       "params": [
+        {
+         "name": "filePath",
+         "type": "string"
+        },
+        {
+         "name": "diff",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "loadColorCalibration",
+       "params": [
+        {
+         "name": "calibrationName",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "runColorCalibration",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setIsVisible",
+       "params": [
+        {
+         "name": "isVisible",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsVisible",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setIsProjectable",
+       "params": [
+        {
+         "name": "isProjectable",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsProjectable",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "triggerRefreshMapping",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetAllColorCorrections",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorCorrectionWithPath",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        },
+        {
+         "name": "value",
+         "type": "float"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorCorrectionWithPath",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "float",
+        "type": "float"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorCorrectionAsJsonString",
+       "params": [
+        {
+         "name": "colorCorrection",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorCorrectionAsJsonString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.Output",
+       "kind": "func",
+       "name": "getOutput",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBlackout",
+       "params": [
+        {
+         "name": "isActive",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getBlackout",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.Screen",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.Screen",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Screen"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "double[]",
+        "type": "double[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getRotation",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "double[]",
+        "type": "double[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformation",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "fov",
+         "type": "optional<double>"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformationAndLensProps",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        },
+        {
+         "name": "nearClip",
+         "type": "double"
+        },
+        {
+         "name": "farClip",
+         "type": "double"
+        },
+        {
+         "name": "aperture",
+         "type": "double"
+        },
+        {
+         "name": "focus",
+         "type": "double"
+        },
+        {
+         "name": "iris",
+         "type": "double"
+        },
+        {
+         "name": "k1",
+         "type": "double"
+        },
+        {
+         "name": "k2",
+         "type": "double"
+        },
+        {
+         "name": "centerX",
+         "type": "double"
+        },
+        {
+         "name": "centerY",
+         "type": "double"
+        },
+        {
+         "name": "panelWidth",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformationAndLensPropsExt",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        },
+        {
+         "name": "nearClip",
+         "type": "double"
+        },
+        {
+         "name": "farClip",
+         "type": "double"
+        },
+        {
+         "name": "aperture",
+         "type": "double"
+        },
+        {
+         "name": "focus",
+         "type": "double"
+        },
+        {
+         "name": "focalDistance",
+         "type": "double"
+        },
+        {
+         "name": "zoom",
+         "type": "double"
+        },
+        {
+         "name": "iris",
+         "type": "double"
+        },
+        {
+         "name": "k1",
+         "type": "double"
+        },
+        {
+         "name": "k2",
+         "type": "double"
+        },
+        {
+         "name": "k3",
+         "type": "double"
+        },
+        {
+         "name": "p1",
+         "type": "double"
+        },
+        {
+         "name": "p2",
+         "type": "double"
+        },
+        {
+         "name": "centerX",
+         "type": "double"
+        },
+        {
+         "name": "centerY",
+         "type": "double"
+        },
+        {
+         "name": "panelWidth",
+         "type": "double"
+        },
+        {
+         "name": "overscan",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTrackingInputPause",
+       "params": [
+        {
+         "name": "pause",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTrackingInputPause",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setUsePositionPropertiesFromTracking",
+       "params": [
+        {
+         "name": "pause",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getUsePositionPropertiesFromTracking",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setUseRotationPropertiesFromTracking",
+       "params": [
+        {
+         "name": "pause",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getUseRotationPropertiesFromTracking",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.StudioCamera",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.StudioCamera",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "StudioCamera"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformation",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "fov",
+         "type": "optional<double>"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "optional<double>"
+        },
+        {
+         "name": "lockLookAtPt",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.Perspective",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Screens.Perspective",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Perspective"
+    },
+    {
+     "deliver": "Pixera.Screens.Screen",
+     "kind": "func",
+     "name": "getScreenWithName",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setNamedScreenPosition",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "xPos",
+       "type": "optional<double>"
+      },
+      {
+       "name": "yPos",
+       "type": "optional<double>"
+      },
+      {
+       "name": "zPos",
+       "type": "optional<double>"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "deliver": "Pixera.Screens.Screen",
+     "kind": "func",
+     "name": "getScreens",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getScreenNames",
+     "params": [],
+     "result": {
+      "name": "string[]",
+      "type": "string[]"
+     }
+    },
+    {
+     "deliver": "Pixera.Timelines.Timeline",
+     "kind": "func",
+     "name": "getFirstTimelineWithHomeScreen",
+     "params": [
+      {
+       "name": "screenName",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "deliver": "Pixera.Screens.StudioCamera",
+     "kind": "func",
+     "name": "getStudioCameras",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Screens"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getPosition",
+       "params": [],
+       "result": {
+        "name": "ProjectorPosValues",
+        "type": "ProjectorPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getRotation",
+       "params": [],
+       "result": {
+        "name": "ProjectorPosValues",
+        "type": "ProjectorPosValues"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "activateScreenMapping",
+       "params": [
+        {
+         "name": "screenId",
+         "type": "double"
+        },
+        {
+         "name": "isActive",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBlackout",
+       "params": [
+        {
+         "name": "isActive",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getBlackout",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSoftedgeVisible",
+       "params": [
+        {
+         "name": "screenName",
+         "type": "string"
+        },
+        {
+         "name": "visible",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetAllColorCorrections",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorCorrectionWithPath",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        },
+        {
+         "name": "value",
+         "type": "float"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorCorrectionWithPath",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "float",
+        "type": "float"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorCorrectionAsJsonString",
+       "params": [
+        {
+         "name": "colorCorrection",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorCorrectionAsJsonString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.LiveSystems.Output",
+       "kind": "func",
+       "name": "getOutput",
+       "params": [
+        {
+         "name": "index",
+         "type": "optional<int>"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setOutput",
+       "params": [
+        {
+         "name": "outputHandle",
+         "type": "handle"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Projectors.Projector",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Projectors.Projector",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Projector"
+    },
+    {
+     "deliver": "Pixera.Projectors.Projector",
+     "kind": "func",
+     "name": "getProjectorWithName",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "deliver": "Pixera.Projectors.Projector",
+     "kind": "func",
+     "name": "getProjectors",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getProjectorNames",
+     "params": [],
+     "result": {
+      "name": "string[]",
+      "type": "string[]"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Projectors"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "deliver": "Pixera.Resources.ResourceFolder",
+       "kind": "func",
+       "name": "ref",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.ResourceFolder",
+       "kind": "func",
+       "name": "getResourceFolders",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getResources",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getResourceAtIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "addResource",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "addResourcesFromDirectory",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        },
+        {
+         "name": "removeOthers",
+         "type": "bool"
+        },
+        {
+         "name": "checkRedundancy",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "addResourcesFromDirectoryRemoveAssets",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        },
+        {
+         "name": "removeOthers",
+         "type": "bool"
+        },
+        {
+         "name": "checkRedundancy",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addInternalResource",
+       "params": [
+        {
+         "name": "signature",
+         "type": "string"
+        },
+        {
+         "name": "resKind",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "createFoldersFrom",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "refreshResources",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveResourceToThis",
+       "params": [
+        {
+         "name": "id",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThisIncludingAssets",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeAllContents",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeAllContentsIncludingAssets",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "deleteAllContentsAssetsFromLiveSystem",
+       "params": [
+        {
+         "name": "apEntityLiveSystemHandle",
+         "type": "handle"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetDistributionTargets",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "changeDistributionTarget",
+       "params": [
+        {
+         "name": "apEntityLiveSystemHandle",
+         "type": "handle"
+        },
+        {
+         "name": "shouldDistribute",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "replaceResourcesByString",
+       "params": [
+        {
+         "name": "searchString",
+         "type": "string"
+        },
+        {
+         "name": "replaceString",
+         "type": "string"
+        },
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.ResourceFolder",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.ResourceFolder",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getDmxId",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCombinedDmxId",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setDmxId",
+       "params": [
+        {
+         "name": "id",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "ResourceFolder"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getUsedTranscodingPreset",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setUsedTranscodingPreset",
+       "params": [
+        {
+         "name": "preset",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTranscodeAutomatically",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTranscodeAutomatically",
+       "params": [
+        {
+         "name": "autoTranscode",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getUseRxCacheAsDestination",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRxCacheAsDestination",
+       "params": [
+        {
+         "name": "useRxCache",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getDestinationDirectory",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setDestinationDirectory",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "TranscodingFolder"
+    },
+    {
+     "elems": [
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "ref",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "deleteFilesOnSystems",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThisIncludingAssets",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "deleteAssetFromLiveSystem",
+       "params": [
+        {
+         "name": "apEntityLiveSystemHandle",
+         "type": "handle"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetDistributionTargets",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "changeDistributionTarget",
+       "params": [
+        {
+         "name": "apEntityLiveSystemHandle",
+         "type": "handle"
+        },
+        {
+         "name": "shouldDistribute",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFps",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getResolution",
+       "params": [],
+       "result": {
+        "name": "double[]",
+        "type": "double[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsActive",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getVideoStreamModes",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setVideoStreamMode",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getId",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getDuration",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getType",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCurrentVersion",
+       "params": [
+        {
+         "name": "version",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCurrentVersion",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getVersions",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getVersionSuffix",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "rescanVersions",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getThumbnailAsBase64",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getHasPendingTransfer",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsInUse",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLastUsageBeginTime",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLastUsageBeginTimeAsString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLastUsageEndTime",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLastUsageEndTimeAsString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFilePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setText",
+       "params": [
+        {
+         "name": "text",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getText",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setFontWithName",
+       "params": [
+        {
+         "name": "fontName",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFontName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setFontWithPath",
+       "params": [
+        {
+         "name": "fontPath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setHorizontalTextAlignment",
+       "params": [
+        {
+         "name": "textAlignment",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getHorizontalTextAlignment",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setVerticalTextAlignment",
+       "params": [
+        {
+         "name": "textAlignment",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getVerticalTextAlignment",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setLineHeight",
+       "params": [
+        {
+         "name": "lineHeight",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLineHeight",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTextMeasurementsWidthAndHeight",
+       "params": [],
+       "result": {
+        "name": "int[]",
+        "type": "int[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setUrl",
+       "params": [
+        {
+         "name": "url",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getUrl",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorTransformPath",
+       "params": [
+        {
+         "name": "colorTransformPath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorTransformPath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "clearColorTransformPath",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "refresh",
+       "params": [
+        {
+         "name": "text",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "distribute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getDmxId",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setDmxId",
+       "params": [
+        {
+         "name": "id",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeMultiresourceIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addMultiresourceItem",
+       "params": [
+        {
+         "name": "id",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getMultiresourceItems",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "replaceMultiresourceItemByIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        },
+        {
+         "name": "id",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setMultiresourceResolution",
+       "params": [
+        {
+         "name": "width",
+         "type": "int"
+        },
+        {
+         "name": "height",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setMultiresourceItemSizebyIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        },
+        {
+         "name": "width",
+         "type": "double"
+        },
+        {
+         "name": "height",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setMultiresourceItemPositionbyIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        },
+        {
+         "name": "x",
+         "type": "double"
+        },
+        {
+         "name": "y",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setUseGradient",
+       "params": [
+        {
+         "name": "useGradient",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getUseGradient",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColors",
+       "params": [
+        {
+         "name": "argbCols",
+         "type": "uint[]"
+        },
+        {
+         "name": "positions",
+         "type": "double[]"
+        },
+        {
+         "name": "colNames",
+         "type": "string[]"
+        },
+        {
+         "name": "useGradient",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorAtIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        },
+        {
+         "name": "red",
+         "type": "int"
+        },
+        {
+         "name": "green",
+         "type": "int"
+        },
+        {
+         "name": "blue",
+         "type": "int"
+        },
+        {
+         "name": "alpha",
+         "type": "int"
+        },
+        {
+         "name": "position",
+         "type": "double"
+        },
+        {
+         "name": "name",
+         "type": "string"
+        },
+        {
+         "name": "useGradient",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorAtIndex",
+       "params": [
+        {
+         "name": "colorIndex",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorPositionAtIndex",
+       "params": [
+        {
+         "name": "colorIndex",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "launchVirtualWorld",
+       "params": [
+        {
+         "name": "action",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.UnrealWorld",
+       "kind": "func",
+       "name": "getUnrealWorld",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setMultiResourceItemRestrictedServiceIps",
+       "params": [
+        {
+         "name": "itemIndex",
+         "type": "int"
+        },
+        {
+         "name": "ipAdresses",
+         "type": "string[]"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getMultiResourceItemRestrictedServiceIps",
+       "params": [
+        {
+         "name": "itemIndex",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "replace",
+       "params": [
+        {
+         "name": "path",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "transcodeWithExisitngPreset",
+       "params": [
+        {
+         "name": "presetName",
+         "type": "string"
+        },
+        {
+         "name": "useRxCache",
+         "type": "bool"
+        },
+        {
+         "name": "destinationPath",
+         "type": "string"
+        },
+        {
+         "name": "startFrame",
+         "type": "int"
+        },
+        {
+         "name": "endFrame",
+         "type": "int"
+        },
+        {
+         "name": "serviceId",
+         "type": "uint"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "transcodeWithSettings",
+       "params": [
+        {
+         "name": "settings",
+         "type": "string"
+        },
+        {
+         "name": "useRxCache",
+         "type": "bool"
+        },
+        {
+         "name": "destinationPath",
+         "type": "string"
+        },
+        {
+         "name": "startFrame",
+         "type": "int"
+        },
+        {
+         "name": "endFrame",
+         "type": "int"
+        },
+        {
+         "name": "serviceId",
+         "type": "uint"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveToTranscodingFolder",
+       "params": [
+        {
+         "name": "folderPath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Resource"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getLevelNames",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "loadLevel",
+       "params": [
+        {
+         "name": "levelName",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getEventTriggerNames",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "triggerEventByName",
+       "params": [
+        {
+         "name": "triggerName",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "createNDisplayConfig",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "runUnreal",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "killUnreal",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.UnrealWorld",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.UnrealWorld",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "UnrealWorld"
+    },
+    {
+     "deliver": "Pixera.Resources.Resource",
+     "kind": "func",
+     "name": "getResources",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "deliver": "Pixera.Resources.ResourceFolder",
+     "kind": "func",
+     "name": "getResourceFolderWithNamePath",
+     "params": [
+      {
+       "name": "namePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "deliver": "Pixera.Resources.ResourceFolder",
+     "kind": "func",
+     "name": "getResourceFolders",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "deliver": "Pixera.Resources.TranscodingFolder",
+     "kind": "func",
+     "name": "getTranscodingFolders",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getJsonDescrip",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Resources"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "ref",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "duplicateThis",
+       "params": [
+        {
+         "name": "withoutClipsCues",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "selectThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getZoomFactor",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setZoomFactor",
+       "params": [
+        {
+         "name": "zoomFactor",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getVerticalScrollOffset",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setVerticalScrollOffset",
+       "params": [
+        {
+         "name": "offset",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getHorizontalScrollOffset",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setHorizontalScrollOffset",
+       "params": [
+        {
+         "name": "offset",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveInRenderOrder",
+       "params": [
+        {
+         "name": "moveDown",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "getLayers",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLayerNames",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "getLayersSelected",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "selectLayerByIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "selectLayerByNames",
+       "params": [
+        {
+         "name": "layerNames",
+         "type": "string[]"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "getLayerAtIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "createLayer",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCueInfosAsJsonString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getCues",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCueNames",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getCueAtIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getCueFromName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getCueFromNumber",
+       "params": [
+        {
+         "name": "number",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "applyCueWithName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        },
+        {
+         "name": "blendDuration",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "applyCueWithNumber",
+       "params": [
+        {
+         "name": "number",
+         "type": "int"
+        },
+        {
+         "name": "blendDuration",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "createCue",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        },
+        {
+         "name": "timeInFrames",
+         "type": "double"
+        },
+        {
+         "name": "operation",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeCues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "createPauseCueBeforeSelectedClips",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "play",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "pause",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "stop",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "toggleTransport",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "store",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "reset",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getAttributes",
+       "params": [],
+       "result": {
+        "name": "TimelineAttributes",
+        "type": "TimelineAttributes"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCurrentFrame",
+       "params": [
+        {
+         "name": "time",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCurrentTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCurrentTime",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "scrubCurrentTime",
+       "params": [
+        {
+         "name": "frames",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "CurrentTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "int"
+        },
+        {
+         "name": "doSet",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCurrentHMSF",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransportMode",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTransportMode",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTimecodeInput",
+       "params": [
+        {
+         "name": "hour",
+         "type": "int"
+        },
+        {
+         "name": "minute",
+         "type": "int"
+        },
+        {
+         "name": "second",
+         "type": "int"
+        },
+        {
+         "name": "frame",
+         "type": "int"
+        },
+        {
+         "name": "elapsedTime",
+         "type": "double"
+        },
+        {
+         "name": "running",
+         "type": "bool"
+        },
+        {
+         "name": "freshMode",
+         "type": "int"
+        },
+        {
+         "name": "stateToken",
+         "type": "int"
+        },
+        {
+         "name": "format",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFps",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveToNextCue",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveToNextCueIgnoreProperties",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getCueNext",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveToPreviousCue",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "moveToPreviousCueIgnoreProperties",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getCuePrevious",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "ignoreNextCue",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "ignoreNextCueWithOperation",
+       "params": [
+        {
+         "name": "cueOperation",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "blendToTime",
+       "params": [
+        {
+         "name": "goalTime",
+         "type": "double"
+        },
+        {
+         "name": "blendDuration",
+         "type": "double"
+        },
+        {
+         "name": "preloadDelayInMilliseconds",
+         "type": "optional<int>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "blendToTimeWithTransportMode",
+       "params": [
+        {
+         "name": "goalTime",
+         "type": "double"
+        },
+        {
+         "name": "blendDuration",
+         "type": "double"
+        },
+        {
+         "name": "transportMode",
+         "type": "int"
+        },
+        {
+         "name": "preloadDelayInMilliseconds",
+         "type": "optional<int>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBlendToTimeMode",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSpeedFactor",
+       "params": [
+        {
+         "name": "factor",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSpeedFactor",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setOpacity",
+       "params": [
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getOpacity",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "startOpacityAnimation",
+       "params": [
+        {
+         "name": "fadeIn",
+         "type": "bool"
+        },
+        {
+         "name": "fullFadeDuration",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSmpteMode",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSmpteMode",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "storeRecordedValues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSmpteInputBehaviour",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSmpteInputBehaviour",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSmpteOffset",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSmpteOffset",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetRecordedValues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTimelineInfosAsJsonString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Timeline"
+    },
+    {
+     "elems": [
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "ref",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Node",
+       "kind": "func",
+       "name": "getNodes",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Node",
+       "kind": "func",
+       "name": "getNodeWithName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Param",
+       "kind": "func",
+       "name": "getParamWithName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSpatialParametersAtTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "double[]",
+        "type": "double[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "getTimeline",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetLayer",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLayerJsonDescrip",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setLayerJsonDescrip",
+       "params": [
+        {
+         "name": "descrip",
+         "type": "string"
+        },
+        {
+         "name": "makeAllDominant",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getJsonDescrip",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "initFromJsonDescrip",
+       "params": [
+        {
+         "name": "descrip",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setOpacity",
+       "params": [
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getOpacity",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetOpacity",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setVolume",
+       "params": [
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getVolume",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetVolume",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "muteLayer",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "unMuteLayer",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsLayerMuted",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "muteAudio",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "unMuteAudio",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsAudioMuted",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getDmxMuteState",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setDmxMuteState",
+       "params": [
+        {
+         "name": "muteState",
+         "type": "uint"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "toggleExplicitMute",
+       "params": [
+        {
+         "name": "flag",
+         "type": "uint"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransport",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        },
+        {
+         "name": "loop",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTransportMode",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetTransportMode",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTransportLoop",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "assignResource",
+       "params": [
+        {
+         "name": "id",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "assignResourceWithFade",
+       "params": [
+        {
+         "name": "id",
+         "type": "double"
+        },
+        {
+         "name": "fadeDuration",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getAssignedResource",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetAssignedResource",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getAssignedModelResource",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetAssignedModelResource",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFxNames",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setFadeDurationDominantResourceChange",
+       "params": [
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getFadeDurationDominantResourceChange",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Clip",
+       "kind": "func",
+       "name": "createClip",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Clip",
+       "kind": "func",
+       "name": "createClipAtTime",
+       "params": [
+        {
+         "name": "timeInFrames",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "controlClipBorder",
+       "params": [
+        {
+         "name": "clip",
+         "type": "handle"
+        },
+        {
+         "name": "isEnter",
+         "type": "bool"
+        },
+        {
+         "name": "isIncremental",
+         "type": "bool"
+        },
+        {
+         "name": "entryTime",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Clip",
+       "kind": "func",
+       "name": "getClipAtIndex",
+       "params": [
+        {
+         "name": "index",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Clip",
+       "kind": "func",
+       "name": "getClips",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Clip",
+       "kind": "func",
+       "name": "getClipCurrent",
+       "params": [
+        {
+         "name": "offset",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Clip",
+       "kind": "func",
+       "name": "getClipsSelected",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeClips",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setHomeScreenFromScreenName",
+       "params": [
+        {
+         "name": "screenName",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getHomeScreenName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBlendMode",
+       "params": [
+        {
+         "name": "blendMode",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getBlendMode",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addEffectById",
+       "params": [
+        {
+         "name": "id",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPreloadPermanently",
+       "params": [
+        {
+         "name": "doPreloadPermanently",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPreloadPermanently",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRestrictToServiceWithIps",
+       "params": [
+        {
+         "name": "doRestrict",
+         "type": "bool"
+        },
+        {
+         "name": "ipAdresses",
+         "type": "string[]"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getRestrictToService",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getRestrictedServiceIps",
+       "params": [],
+       "result": {
+        "name": "string[]",
+        "type": "string[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getOffsets",
+       "params": [],
+       "result": {
+        "name": "double[]",
+        "type": "double[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setOffsets",
+       "params": [
+        {
+         "name": "x",
+         "type": "optional<double>"
+        },
+        {
+         "name": "y",
+         "type": "optional<double>"
+        },
+        {
+         "name": "z",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xr",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yr",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zr",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zScale",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCurrentValuesToOffset",
+       "params": [
+        {
+         "name": "typeIndex",
+         "type": "int"
+        },
+        {
+         "name": "resetDominant",
+         "type": "optional<bool>"
+        },
+        {
+         "name": "removeKeyframesClips",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Layer",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Layer"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getId",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "getTimeline",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTime",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setDuration",
+       "params": [
+        {
+         "name": "duration",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getDuration",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setLabel",
+       "params": [
+        {
+         "name": "label",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getLabel",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getPlayMode",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPlayMode",
+       "params": [
+        {
+         "name": "playMode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSpeed",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSpeed",
+       "params": [
+        {
+         "name": "speed",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getBlendFrames",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBlendFrames",
+       "params": [
+        {
+         "name": "doFrameblending",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInpoint",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setInpoint",
+       "params": [
+        {
+         "name": "inpoint",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getOutpoint",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setOutpoint",
+       "params": [
+        {
+         "name": "inpoint",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "assignResource",
+       "params": [
+        {
+         "name": "resId",
+         "type": "double"
+        },
+        {
+         "name": "setToResourceDuration",
+         "type": "optional<bool>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Resources.Resource",
+       "kind": "func",
+       "name": "getAssignedResource",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setToResourceDuration",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "createEvent",
+       "params": [
+        {
+         "name": "namePath",
+         "type": "string"
+        },
+        {
+         "name": "time",
+         "type": "double"
+        },
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "createEventInPixelSpace",
+       "params": [
+        {
+         "name": "namePath",
+         "type": "string"
+        },
+        {
+         "name": "time",
+         "type": "double"
+        },
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "removeEvent",
+       "params": [
+        {
+         "name": "namePath",
+         "type": "string"
+        },
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Param",
+       "kind": "func",
+       "name": "createPauseCueBeforeClip",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setColorTransformPath",
+       "params": [
+        {
+         "name": "colorTransformPath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getColorTransformPath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "clearColorTransformPath",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getKeyframesAsJsonString",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Clip"
+    },
+    {
+     "elems": [
+      {
+       "deliver": "Pixera.Timelines.Param",
+       "kind": "func",
+       "name": "getParameters",
+       "params": [],
+       "result": {
+        "name": "handle[]",
+        "type": "handle[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Param",
+       "kind": "func",
+       "name": "getParamWithName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setValues",
+       "params": [
+        {
+         "name": "values",
+         "type": "double[]"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getValues",
+       "params": [],
+       "result": {
+        "name": "double[]",
+        "type": "double[]"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetValues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "storeValues",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "mute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "unMute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "toggleMute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsMuted",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "getTimeline",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Node",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Node",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Node"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsChannel",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setValue",
+       "params": [
+        {
+         "name": "value",
+         "type": "timelineParamValue"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setValueRelativ",
+       "params": [
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getValue",
+       "params": [],
+       "result": {
+        "name": "timelineParamValue",
+        "type": "timelineParamValue"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "resetValue",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "storeValue",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransportAttributes",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        },
+        {
+         "name": "speed",
+         "type": "double"
+        },
+        {
+         "name": "loop",
+         "type": "bool"
+        },
+        {
+         "name": "inpoint",
+         "type": "int"
+        },
+        {
+         "name": "outpoint",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getAttributes",
+       "params": [],
+       "result": {
+        "name": "TransportAttributes",
+        "type": "TransportAttributes"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "mute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "unMute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "toggleMute",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIsMuted",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Param",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Param",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Param"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "removeThis",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "apply",
+       "params": [
+        {
+         "name": "blendDuration",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "blendToThis",
+       "params": [
+        {
+         "name": "blendDuration",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getAttributes",
+       "params": [],
+       "result": {
+        "name": "CueAttributes",
+        "type": "CueAttributes"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Timeline",
+       "kind": "func",
+       "name": "getTimeline",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getIndex",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setName",
+       "params": [
+        {
+         "name": "name",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getNote",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setNote",
+       "params": [
+        {
+         "name": "note",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getOperation",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setOperation",
+       "params": [
+        {
+         "name": "operation",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getJumpMode",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setJumpMode",
+       "params": [
+        {
+         "name": "jumpMode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getJumpGoalTime",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setJumpGoalTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getJumpGoalLabel",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getJumpGoalCue",
+       "params": [],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setJumpGoalLabel",
+       "params": [
+        {
+         "name": "jumpGoalLabel",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getNumber",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setNumber",
+       "params": [
+        {
+         "name": "number",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getWaitDuration",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setWaitDuration",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getBlendDuration",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setBlendDuration",
+       "params": [
+        {
+         "name": "timeInFrames",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTime",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTimelineToTriggerName",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTimelineToTrigger",
+       "params": [
+        {
+         "name": "nameTimeline",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTimelineTriggerMode",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTimelineTriggerMode",
+       "params": [
+        {
+         "name": "mode",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getTimelineTriggerApplyTime",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTimelineTriggerApplyTime",
+       "params": [
+        {
+         "name": "time",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTimelineTriggerApplyCue",
+       "params": [
+        {
+         "name": "goalCueLabel",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "isActive",
+       "params": [],
+       "result": {
+        "name": "bool",
+        "type": "bool"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setActivity",
+       "params": [
+        {
+         "name": "idState",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCountdown",
+       "params": [],
+       "result": {
+        "name": "double",
+        "type": "double"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getCountdownHMSF",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setCommand",
+       "params": [
+        {
+         "name": "conveyorName",
+         "type": "string"
+        },
+        {
+         "name": "commandData",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getInst",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "deliver": "Pixera.Timelines.Cue",
+       "kind": "func",
+       "name": "getHandleFromInstancePath",
+       "params": [
+        {
+         "name": "instancePath",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "handle",
+        "type": "handle"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getInstancePath",
+       "params": [],
+       "result": {
+        "name": "string",
+        "type": "string"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Cue"
+    },
+    {
+     "deliver": "Pixera.Timelines.Timeline",
+     "kind": "func",
+     "name": "getTimelineAtIndex",
+     "params": [
+      {
+       "name": "index",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "deliver": "Pixera.Timelines.Timeline",
+     "kind": "func",
+     "name": "getTimelineFromName",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "deliver": "Pixera.Timelines.Timeline",
+     "kind": "func",
+     "name": "getTimelines",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getTimelineNames",
+     "params": [],
+     "result": {
+      "name": "string[]",
+      "type": "string[]"
+     }
+    },
+    {
+     "deliver": "Pixera.Timelines.Timeline",
+     "kind": "func",
+     "name": "getTimelinesSelected",
+     "params": [],
+     "result": {
+      "name": "handle[]",
+      "type": "handle[]"
+     }
+    },
+    {
+     "deliver": "Pixera.Timelines.Timeline",
+     "kind": "func",
+     "name": "createTimeline",
+     "params": [],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "deliver": "Pixera.Timelines.Node",
+     "kind": "func",
+     "name": "getNodeFromId",
+     "params": [
+      {
+       "name": "id",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Timelines"
+  },
+  {
+   "elems": [
+    {
+     "kind": "func",
+     "name": "setMarkerPositions",
+     "params": [
+      {
+       "name": "positions",
+       "type": "double[]"
+      },
+      {
+       "name": "markerIds",
+       "type": "int[]"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Calibration"
+  },
+  {
+   "elems": [
+    {
+     "kind": "func",
+     "name": "loadDeviceUi",
+     "params": [
+      {
+       "name": "devicePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "activatePreviousFunc",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "activateNextFunc",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getLastActivatedFunc",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "deviceActivated",
+     "params": [
+      {
+       "name": "devicePath",
+       "type": "string"
+      },
+      {
+       "name": "withSelection",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "funcActivated",
+     "params": [
+      {
+       "name": "funcPath",
+       "type": "string"
+      },
+      {
+       "name": "withSelection",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setFuncBodyState",
+     "params": [
+      {
+       "name": "funcPath",
+       "type": "string"
+      },
+      {
+       "name": "state",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getFuncBodyState",
+     "params": [
+      {
+       "name": "funcPath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setTag",
+     "params": [
+      {
+       "name": "tag",
+       "type": "string"
+      },
+      {
+       "name": "text",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setEditorIsUsingBlocks",
+     "params": [
+      {
+       "name": "useBlocks",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "WebViews"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "clear",
+       "params": [],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "addItem",
+       "params": [
+        {
+         "name": "item",
+         "type": "string"
+        },
+        {
+         "name": "id",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setSelectedId",
+       "params": [
+        {
+         "name": "id",
+         "type": "int"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "getSelectedId",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "ComboBox"
+    },
+    {
+     "deliver": "Pixera.Ui.ComboBox",
+     "kind": "func",
+     "name": "getComboBoxWithId",
+     "params": [
+      {
+       "name": "id",
+       "type": "double"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setAppMode",
+     "params": [
+      {
+       "name": "mode",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getAppMode",
+     "params": [],
+     "result": {
+      "name": "int",
+      "type": "int"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getDisplayTestpattern",
+     "params": [],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setDisplayTestpattern",
+     "params": [
+      {
+       "name": "display",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getPreviewCameraAsJsonString",
+     "params": [],
+     "result": {
+      "name": "string",
+      "type": "string"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setPreviewCameraAsJsonString",
+     "params": [
+      {
+       "name": "cameraFrustrumStateString",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setDisableContentRendering",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getIsContentRenderingDisabled",
+     "params": [],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "setDisableWorkspaceRendering",
+     "params": [
+      {
+       "name": "state",
+       "type": "bool"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "getIsWorkspaceRenderingDisabled",
+     "params": [],
+     "result": {
+      "name": "bool",
+      "type": "bool"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Ui"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "setPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosRot",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosRotAndPerspectivePos",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspXPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspYPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "perspZPos",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setPosRotScale",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zPos",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zRot",
+         "type": "optional<double>"
+        },
+        {
+         "name": "xScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "yScale",
+         "type": "optional<double>"
+        },
+        {
+         "name": "zScale",
+         "type": "optional<double>"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "enableLogging",
+       "params": [
+        {
+         "name": "enable",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Screen"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "setValue",
+       "params": [
+        {
+         "name": "value",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "enableLogging",
+       "params": [
+        {
+         "name": "enable",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Param"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "setPosition",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setRotation",
+       "params": [
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformation",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformationAndLensProps",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        },
+        {
+         "name": "nearClip",
+         "type": "double"
+        },
+        {
+         "name": "farClip",
+         "type": "double"
+        },
+        {
+         "name": "aperture",
+         "type": "double"
+        },
+        {
+         "name": "focus",
+         "type": "double"
+        },
+        {
+         "name": "iris",
+         "type": "double"
+        },
+        {
+         "name": "k1",
+         "type": "double"
+        },
+        {
+         "name": "k2",
+         "type": "double"
+        },
+        {
+         "name": "centerX",
+         "type": "double"
+        },
+        {
+         "name": "centerY",
+         "type": "double"
+        },
+        {
+         "name": "panelWidth",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformationAndLensPropsExt",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        },
+        {
+         "name": "nearClip",
+         "type": "double"
+        },
+        {
+         "name": "farClip",
+         "type": "double"
+        },
+        {
+         "name": "aperture",
+         "type": "double"
+        },
+        {
+         "name": "focus",
+         "type": "double"
+        },
+        {
+         "name": "focalDistance",
+         "type": "double"
+        },
+        {
+         "name": "zoom",
+         "type": "double"
+        },
+        {
+         "name": "iris",
+         "type": "double"
+        },
+        {
+         "name": "k1",
+         "type": "double"
+        },
+        {
+         "name": "k2",
+         "type": "double"
+        },
+        {
+         "name": "k3",
+         "type": "double"
+        },
+        {
+         "name": "p1",
+         "type": "double"
+        },
+        {
+         "name": "p2",
+         "type": "double"
+        },
+        {
+         "name": "centerX",
+         "type": "double"
+        },
+        {
+         "name": "centerY",
+         "type": "double"
+        },
+        {
+         "name": "panelWidth",
+         "type": "double"
+        },
+        {
+         "name": "overscan",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Camera"
+    },
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "setTransformation",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      },
+      {
+       "kind": "func",
+       "name": "setTransformationAndLensProps",
+       "params": [
+        {
+         "name": "xPos",
+         "type": "double"
+        },
+        {
+         "name": "yPos",
+         "type": "double"
+        },
+        {
+         "name": "zPos",
+         "type": "double"
+        },
+        {
+         "name": "xRot",
+         "type": "double"
+        },
+        {
+         "name": "yRot",
+         "type": "double"
+        },
+        {
+         "name": "zRot",
+         "type": "double"
+        },
+        {
+         "name": "fov",
+         "type": "double"
+        },
+        {
+         "name": "aspectRatio",
+         "type": "double"
+        },
+        {
+         "name": "nearClip",
+         "type": "double"
+        },
+        {
+         "name": "farClip",
+         "type": "double"
+        },
+        {
+         "name": "aperture",
+         "type": "double"
+        },
+        {
+         "name": "focus",
+         "type": "double"
+        },
+        {
+         "name": "iris",
+         "type": "double"
+        },
+        {
+         "name": "k1",
+         "type": "double"
+        },
+        {
+         "name": "k2",
+         "type": "double"
+        },
+        {
+         "name": "centerX",
+         "type": "double"
+        },
+        {
+         "name": "centerY",
+         "type": "double"
+        },
+        {
+         "name": "panelWidth",
+         "type": "double"
+        }
+       ],
+       "result": {
+        "name": "null",
+        "type": "null"
+       }
+      }
+     ],
+     "kind": "class",
+     "name": "Perspective"
+    },
+    {
+     "kind": "func",
+     "name": "setRegistered",
+     "params": [
+      {
+       "name": "hdls",
+       "type": "handle[]"
+      },
+      {
+       "name": "expectedFrequency",
+       "type": "int"
+      },
+      {
+       "name": "dampingMs",
+       "type": "int"
+      },
+      {
+       "name": "usageHints",
+       "type": "string[]"
+      }
+     ],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "reloadRegistered",
+     "params": [],
+     "result": {
+      "name": "null",
+      "type": "null"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "registerScreen",
+     "params": [
+      {
+       "name": "name",
+       "type": "string"
+      },
+      {
+       "name": "expectedFrequency",
+       "type": "int"
+      },
+      {
+       "name": "dampingMs",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "registerParam",
+     "params": [
+      {
+       "name": "instancePath",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "registerCamera",
+     "params": [
+      {
+       "name": "cameraName",
+       "type": "string"
+      },
+      {
+       "name": "expectedFrequency",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    },
+    {
+     "kind": "func",
+     "name": "registerPerspective",
+     "params": [
+      {
+       "name": "screenName",
+       "type": "string"
+      },
+      {
+       "name": "expectedFrequency",
+       "type": "int"
+      }
+     ],
+     "result": {
+      "name": "handle",
+      "type": "handle"
+     }
+    }
+   ],
+   "kind": "ns",
+   "name": "Direct"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "kind": "func",
+       "name": "getSupportedUnrealPluginVersion",
+       "params": [],
+       "result": {
+        "name": "int",
+        "type": "int"
+       }
+      }
+     ],
+     "kind": "ns",
+     "name": "Utility"
+    },
+    {
+     "elems": [],
+     "kind": "ns",
+     "name": "Network"
+    }
+   ],
+   "kind": "ns",
+   "name": "Unreal"
+  }
+ ],
+ "hostInfo": {
+  "systemType": "Pixera"
+ },
+ "license": "1GNTlyr7sewU1l3S6nhV4vWg0OKPAB1DO+c33FePl6rRcWqZhZiG19Mhavy5GJlQWzoDZ5laFjR8urjV6sv0kQ==",
+ "name": "Pixera"
+}

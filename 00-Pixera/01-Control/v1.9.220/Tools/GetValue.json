@@ -1,0 +1,43 @@
+{
+ "api": [
+  {
+   "body": "--CFv2\nlocal result = pixc.callRefs()\nif type(result) ~= 'table' or #result < 1 then\n\tpixc.warn('Module has no input!', self())\n\treturn nil\nend\nresult = result[1]\n\nif type(result) ~= 'table' or #result < 1 then\n\treturn nil\nend\nresult = result[1]\nreturn result\n",
+   "kind": "func",
+   "name": "Input",
+   "slotStyle": "leftOut;rightNone;triggerHidden"
+  },
+  {
+   "body": "--\n\n--Call output if value changed\nlocal newVal = {self.Input()}\npixc.callRefs(table.unpack(newVal));\nreturn table.unpack(newVal);\n",
+   "kind": "func",
+   "name": "action"
+  }
+ ],
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "license": "1GNTlyr7sewU1l3S6nhV4li8S3VThutdE27mfPXYLe3IhJh4wSST0ATgAsYLp/fk9lLtKsaVwV+KfGbdYe3afeRVAqVoDI6grTcqfXAXjds=",
+ "name": "GetValue",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (CF)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "Calls a function and returns its value when action gets triggered.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

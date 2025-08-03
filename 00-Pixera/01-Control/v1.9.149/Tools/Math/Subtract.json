@@ -1,0 +1,117 @@
+{
+ "api": [
+  {
+   "body": "-- slotStyle: hidden\r\nself.A(0, true)\r\nself.B(0, true)\r\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "hidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "-- attKind:standard\r\n-- slotStyle:leftIn;rightNone;triggerHidden\r\nself._A = pixcCommon.execAttribute(0, self._A, val, doSet)\r\nself.A_minus_B(0, true) -- Passed-in value is not used. \r\nreturn self._A\r\n",
+   "kind": "func",
+   "name": "A",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "body": "-- attKind:standard\r\n-- slotStyle:leftIn;rightNone;triggerHidden\r\nself._B = pixcCommon.execAttribute(0, self._B, val, doSet)\r\nself.A_minus_B(0, true) -- Passed-in value is not used. \r\nreturn self._B\r\n",
+   "kind": "func",
+   "name": "B",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind: internal\r\n-- slotStyle: leftNone;rightOut;triggerHidden\r\nif self._A == nil then\r\n\tself._A = 0\r\nend\r\nif self._B == nil then\r\n\tself._B = 0\r\nend\r\nself.res = pixcCommon.execAttribute(0, self.res, self._A - self._B, true)\r\nreturn self.res\r\n",
+   "kind": "func",
+   "name": "A_minus_B",
+   "params": [
+    {
+     "name": "val",
+     "type": "double"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 851.0,
+  "y": 815.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/Math/Subtract.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4oC93ej9485m0QjYb4o1mBUDIZ7JQv8Ou89hJx2oivTMaTzdJm1ab1J9mN164Q0wyFlUU/SUTZJLYYD+VkAue4s=",
+ "name": "Subtract",
+ "properties": [
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#Math-Subtract",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "04.03.2021",
+   "name": "Date",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

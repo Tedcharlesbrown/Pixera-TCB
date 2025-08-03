@@ -1,0 +1,122 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.CtConn(false, 0)\nself.IsOpen(false, true)\n\nself.ip = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6451\"))\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction (isOpen) self().IsOpen(isOpen, true) end,\n\tfunction (connectionCount) self().CtConn(connectionCount, true) end)\nself.network:configureTcpServer(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self.receive(data,handle)  end,\n\tfunction (handle) pixc.log(\"accept Callback: \") end,\n\tfunction (handle, error) pixc.log(\"close Callback: \"..error) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init",
+   "path": "TcpServer.init"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit",
+   "path": "TcpServer.uninit"
+  },
+  {
+   "body": "self.network:sendOverConnection(hdl, msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "hdl",
+     "type": "handle"
+    },
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "path": "TcpServer.send"
+  },
+  {
+   "body": "",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    },
+    {
+     "name": "hdl",
+     "type": "handle"
+    }
+   ],
+   "path": "TcpServer.receive"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "TcpServer.IsOpen",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.connectedCount = pixcCommon.execAttribute(0, self.connectedCount, currentCount, doSet)\n",
+   "kind": "func",
+   "name": "CtConn",
+   "params": [
+    {
+     "name": "currentCount",
+     "type": "int"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "TcpServer.CtConn",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "canHaveExternalConnections": true,
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 248.49025168380007,
+  "y": 1013.2412855961237
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Protocols/TcpServer.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4o22B+9D9fhJ1+SQcz6WUY4HRM9+dC5+WLZWwj53fzjs1zzIbkmSINSq29yLsTTK7kU0v7w349PJHMlHVSvKCIYTuE0GoBgDHu0ytw1kE3I5ied+L27Ajl1AaIVC8gPcxg==",
+ "name": "TcpServer",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "15151",
+   "name": "Port"
+  },
+  {
+   "cont": "Localhost",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries"
+  },
+  {
+   "cont": "1.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

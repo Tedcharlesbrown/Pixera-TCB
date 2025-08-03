@@ -1,0 +1,785 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nif self.network ~= nil then\n    self.uninit()\nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.connected = false\npixc.log(self.helper)\npixc.log(self.network)\nself.IsConnected(false, true)\nself.ip = self.helper:getProperty(\"IP\",\"127.0.0.1\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6451\"))\nself.ipLocal =pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.prefix = self.helper:getProperty(\"API prefix\",\"core\")\nlocal ready = false\nself.network:configureTcp(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self().receive(data) end,\n\tfunction(handle, error)\n        pixc.log(\"closeCallback: \"..error)\n        ready = true\n    end,\n\tself.ipLocal)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isConnected)\n        self().IsConnected(isConnected, true)\n        ready = true\n    end)\nself.network:start()\nif blocking then\n    while not ready do\n        Utils.Timer.sleep(100)\n    end\nend\n",
+   "kind": "func",
+   "name": "init",
+   "params": [
+    {
+     "name": "blocking",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "--pixc.log(\"got data\")\r\n--pixc.log(msg)\r\n--self.send(\"Echo: \"..msg)\r\n",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "attKind": "internal",
+   "body": "self.connected = pixcCommon.execAttribute(false, self.connected, isConnected, doSet)\n",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "isConnected",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "elems": [
+    {
+     "body": "if not self.IsConnected(nil, false) then\r\n    self.init(true)\r\nend\r\nself.network:send(self.prefix .. \"-\" .. msg)\r\n",
+     "kind": "func",
+     "name": "send",
+     "params": [
+      {
+       "name": "msg",
+       "type": "string"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "body": "if list == nil or action == nil or arg == nil then pixc.report(\"\") end\r\nself._ActionList = list\r\nself._ActionAction = action\r\nself._ActionArg = arg\r\npixc.report(list, action, arg)\r\nreturn self._ActionList, self._ActionAction, self._ActionArg\r\n",
+       "kind": "func",
+       "name": "ActionExecuteSet",
+       "params": [
+        {
+         "name": "list",
+         "type": "int"
+        },
+        {
+         "name": "action",
+         "type": "int"
+        },
+        {
+         "name": "arg",
+         "type": "string"
+        }
+       ],
+       "result": {
+        "name": "result",
+        "type": "int"
+       }
+      },
+      {
+       "body": "if self._ActionAction == nil or self._ActionList == nil or self._ActionArg == nil then return end\r\nself.Internal.send(\"al-\" .. self._ActionList .. \"-\" .. self._ActionAction .. \"-execute=\" .. self._ActionArg)\r\n",
+       "kind": "func",
+       "name": "ActionExecuteSend"
+      },
+      {
+       "attKind": "standard",
+       "body": "if val == nil or check == nil then pixc.report(\"\") end\r\nself._EnableVal = val\r\nself._EnableCheck = check\r\npixc.report(val, check)\r\nreturn self._EnableVal, self._EnableCheck\r\n",
+       "kind": "func",
+       "name": "EnableSet",
+       "params": [
+        {
+         "name": "val",
+         "type": "int"
+        },
+        {
+         "name": "check",
+         "type": "bool"
+        }
+       ],
+       "result": {
+        "name": "result",
+        "type": "int"
+       }
+      },
+      {
+       "body": "self.Internal.send(\"al-\" .. self._EnableVal .. \"-enable=\" .. self._EnableCheck)\r\n",
+       "kind": "func",
+       "name": "EnableSend"
+      }
+     ],
+     "kind": "ns",
+     "name": "Action"
+    },
+    {
+     "elems": [
+      {
+       "elems": [
+        {
+         "body": "self.Internal.send(\"tm-1-start\")\r\n",
+         "kind": "func",
+         "name": "Start"
+        },
+        {
+         "body": "self.Internal.send(\"tm-1-stop\")\r\n",
+         "kind": "func",
+         "name": "Stop"
+        },
+        {
+         "body": "self.Internal.send(\"tm-1-pause\")\r\n",
+         "kind": "func",
+         "name": "Pause"
+        },
+        {
+         "body": "self.Internal.send(\"tm-1-restart\")\r\n",
+         "kind": "func",
+         "name": "Restart"
+        },
+        {
+         "attKind": "standard",
+         "body": "self._SetTime1 = pixcCommon.execAttribute(0, self._SetTime1, val, doSet)\r\nreturn self._SetTime1\r\n",
+         "kind": "func",
+         "name": "SetTime",
+         "params": [
+          {
+           "name": "val",
+           "type": "string"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"tm-1-set=\" .. self._SetTime1)\r\n",
+         "kind": "func",
+         "name": "SendTime"
+        }
+       ],
+       "kind": "ns",
+       "name": "Timer1"
+      },
+      {
+       "elems": [
+        {
+         "body": "self.Internal.send(\"tm-2-start\")\r\n",
+         "kind": "func",
+         "name": "Start"
+        },
+        {
+         "body": "self.Internal.send(\"tm-2-stop\")\r\n",
+         "kind": "func",
+         "name": "Stop"
+        },
+        {
+         "body": "self.Internal.send(\"tm-2-pause\")\r\n",
+         "kind": "func",
+         "name": "Pause"
+        },
+        {
+         "body": "self.Internal.send(\"tm-2-restart\")\r\n",
+         "kind": "func",
+         "name": "Restart"
+        },
+        {
+         "attKind": "standard",
+         "body": "self._SetTime2 = pixcCommon.execAttribute(0, self._SetTime2, val, doSet)\r\nreturn self._SetTime2\r\n",
+         "kind": "func",
+         "name": "SetTime",
+         "params": [
+          {
+           "name": "val",
+           "type": "string"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"tm-2-set=\" .. self._SetTime2)\r\n",
+         "kind": "func",
+         "name": "SendTime"
+        }
+       ],
+       "kind": "ns",
+       "name": "Timer2"
+      },
+      {
+       "elems": [
+        {
+         "body": "self.Internal.send(\"tm-3-start\")\r\n",
+         "kind": "func",
+         "name": "Start"
+        },
+        {
+         "body": "self.Internal.send(\"tm-3-stop\")\r\n",
+         "kind": "func",
+         "name": "Stop"
+        },
+        {
+         "body": "self.Internal.send(\"tm-3-pause\")\r\n",
+         "kind": "func",
+         "name": "Pause"
+        },
+        {
+         "body": "self.Internal.send(\"tm-3-restart\")\r\n",
+         "kind": "func",
+         "name": "Restart"
+        },
+        {
+         "attKind": "standard",
+         "body": "self._SetTime3 = pixcCommon.execAttribute(0, self._SetTime3, val, doSet)\r\nreturn self._SetTime3\r\n",
+         "kind": "func",
+         "name": "SetTime",
+         "params": [
+          {
+           "name": "val",
+           "type": "string"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"tm-3-set=\" .. self._SetTime3)\r\n",
+         "kind": "func",
+         "name": "SendTime"
+        }
+       ],
+       "kind": "ns",
+       "name": "Timer3"
+      },
+      {
+       "elems": [
+        {
+         "body": "self.Internal.send(\"tm-4-start\")\r\n",
+         "kind": "func",
+         "name": "Start"
+        },
+        {
+         "body": "self.Internal.send(\"tm-4-stop\")\r\n",
+         "kind": "func",
+         "name": "Stop"
+        },
+        {
+         "body": "self.Internal.send(\"tm-4-pause\")\r\n",
+         "kind": "func",
+         "name": "Pause"
+        },
+        {
+         "body": "self.Internal.send(\"tm-4-restart\")\r\n",
+         "kind": "func",
+         "name": "Restart"
+        },
+        {
+         "attKind": "standard",
+         "body": "self._SetTime4 = pixcCommon.execAttribute(0, self._SetTime4, val, doSet)\r\nreturn self._SetTime4\r\n",
+         "kind": "func",
+         "name": "SetTime",
+         "params": [
+          {
+           "name": "val",
+           "type": "string"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"tm-4-set=\" .. self._SetTime4)\r\n",
+         "kind": "func",
+         "name": "SendTime"
+        }
+       ],
+       "kind": "ns",
+       "name": "Timer4"
+      }
+     ],
+     "kind": "ns",
+     "name": "Timer"
+    },
+    {
+     "elems": [
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar1 = pixcCommon.execAttribute(0, self._SetVar1, val, doSet)\r\nreturn self._SetVar1\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-1-set=\" .. self._SetVar1)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-1-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var1"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar2 = pixcCommon.execAttribute(0, self._SetVar2, val, doSet)\r\nreturn self._SetVar2\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-2-set=\" .. self._SetVar2)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-2-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var2"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar3 = pixcCommon.execAttribute(0, self._SetVar3, val, doSet)\r\nreturn self._SetVar3\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-3-set=\" .. self._SetVar3)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-3-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var3"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar4 = pixcCommon.execAttribute(0, self._SetVar4, val, doSet)\r\nreturn self._SetVar4\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-4-set=\" .. self._SetVar4)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-4-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var4"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar5 = pixcCommon.execAttribute(0, self._SetVar5, val, doSet)\r\nreturn self._SetVar5\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-5-set=\" .. self._SetVar5)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-5-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var5"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar6 = pixcCommon.execAttribute(0, self._SetVar6, val, doSet)\r\nreturn self._SetVar6\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-6-set=\" .. self._SetVar6)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-6-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var6"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar7 = pixcCommon.execAttribute(0, self._SetVar7, val, doSet)\r\nreturn self._SetVar7\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-7-set=\" .. self._SetVar7)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-7-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var7"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar8 = pixcCommon.execAttribute(0, self._SetVar8, val, doSet)\r\nreturn self._SetVar8\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-8-set=\" .. self._SetVar8)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-8-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var8"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar9 = pixcCommon.execAttribute(0, self._SetVar9, val, doSet)\r\nreturn self._SetVar9\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-9-set=\" .. self._SetVar9)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-9-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var9"
+      },
+      {
+       "elems": [
+        {
+         "attKind": "standard",
+         "body": "self._SetVar10 = pixcCommon.execAttribute(0, self._SetVar10, val, doSet)\r\nreturn self._SetVar10\r\n",
+         "kind": "func",
+         "name": "SetVar",
+         "params": [
+          {
+           "name": "val",
+           "type": "int"
+          },
+          {
+           "name": "doSet",
+           "type": "bool"
+          }
+         ]
+        },
+        {
+         "body": "self.Internal.send(\"va-10-set=\" .. self._SetVar10)\r\n",
+         "kind": "func",
+         "name": "SendVar"
+        },
+        {
+         "body": "self.Internal.send(\"va-10-refresh\")\r\n",
+         "kind": "func",
+         "name": "refresh"
+        }
+       ],
+       "kind": "ns",
+       "name": "Var10"
+      },
+      {
+       "body": "self.Internal.send(\"va-refresh\")\r\n",
+       "kind": "func",
+       "name": "RefreshAll"
+      }
+     ],
+     "kind": "ns",
+     "name": "Variable"
+    },
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "attReports": {
+        "0": "1"
+       },
+       "body": "self._SetScene = pixcCommon.execAttribute(0, self._SetScene, val, doSet)\r\nreturn self._SetScene\r\n",
+       "kind": "func",
+       "name": "SetScene",
+       "params": [
+        {
+         "name": "val",
+         "type": "string"
+        },
+        {
+         "name": "doSet",
+         "type": "bool"
+        }
+       ]
+      },
+      {
+       "body": "self.Internal.send(\"scene-\" .. self._SetScene)\r\n",
+       "kind": "func",
+       "name": "SendScene"
+      }
+     ],
+     "kind": "ns",
+     "name": "Scene"
+    },
+    {
+     "body": "if channel == nil or value == nil then return end\r\nself.Internal.send(\"dmx-\" .. channel .. \"=\" .. value)\r\n",
+     "kind": "func",
+     "name": "SetDMX",
+     "params": [
+      {
+       "name": "channel",
+       "type": "int"
+      },
+      {
+       "name": "value",
+       "type": "int"
+      }
+     ]
+    },
+    {
+     "body": "self.Internal.send(\"blink\")\r\n",
+     "kind": "func",
+     "name": "Blink"
+    },
+    {
+     "body": "self.Internal.send(\"hello\")\r\n",
+     "kind": "func",
+     "name": "Hello"
+    }
+   ],
+   "kind": "ns",
+   "name": "Commands"
+  }
+ ],
+ "cjv": {
+  "h": 379.0,
+  "w": 356.0,
+  "x": 293.0,
+  "y": 437.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_user/DaliCore.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4spTiZnU4gDZZwpicRstc5Ss1sxjGStVXndHZmpEdK1nz4pKuk6cZUFZKJwP8ZARdnR/9v04OTivY5ZXDtLsYoFnA4h9w4onLv9l7o6K9eWWWBeSMx7zRIXwzfuilJwFFw==",
+ "name": "DaliCore",
+ "properties": [
+  {
+   "cont": "AV Stumpfl GmbH (Benni M.)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": " ",
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.visualproductions.nl ",
+   "name": "URL",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "url"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "192.168.0.80",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "7000",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Any",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  },
+  {
+   "cont": "core",
+   "name": "API prefix",
+   "typeHint": "string"
+  },
+  {
+   "cont": "1.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "21.07.2022",
+   "name": "Date",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

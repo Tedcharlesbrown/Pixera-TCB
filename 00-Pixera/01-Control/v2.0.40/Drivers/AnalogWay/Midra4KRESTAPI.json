@@ -1,0 +1,616 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcProtocolHttp\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.json = require \"json\"\nself.helper = createPixcHelper(pixc,self())\nself.protocol = createPixcProtocolHttp()\nself.IP = self.helper:getProperty(\"IP\",\"192.168.2.140\")\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpGet(\"http://\"..self.IP..\"/api/tpp/v1/system\",perameter)\nif(success) then\n\tpixc.log(code)\n\tpixc.log(content)\nend\n",
+   "kind": "func",
+   "name": "testHttpGet"
+  },
+  {
+   "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"\"] = \"\"\nparameter[\"\"] = \"\"\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+   "kind": "func",
+   "name": "testHttpPost"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/take\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1",
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/take\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2",
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/auxiliary-screens/1/take\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Auxiliary1",
+     "slotStyle": "leftIn;rightNone"
+    }
+   ],
+   "kind": "ns",
+   "name": "TAKE"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._MPPreviewMemory = tostring(math.floor(MemoryID))\n\telse self._MPPreviewMemory = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._MPPreviewMemory\nparameter[\"target\"] = \"preview\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/load-master-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Preview",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._MPProgramMemory = tostring(math.floor(MemoryID))\n\telse self._MPProgramMemory = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._MPProgramMemory\nparameter[\"target\"] = \"program\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/load-master-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Program",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "RecallingMasterPreset"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._SPPreviewMemoryScreen1 = tostring(math.floor(MemoryID))\n\telse self._SPPreviewMemoryScreen1 = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._SPPreviewMemoryScreen1\nparameter[\"target\"] = \"preview\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/load-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._SPPreviewMemoryScreen2 = tostring(math.floor(MemoryID))\n\telse self._SPPreviewMemoryScreen2 = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._SPPreviewMemoryScreen2\nparameter[\"target\"] = \"preview\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/load-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._SPPreviewMemoryAxuiliary1 = tostring(math.floor(MemoryID))\n\telse self._SPPreviewMemoryAxuiliary1 = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._SPPreviewMemoryAxuiliary1\nparameter[\"target\"] = \"preview\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/auxiliary-screens/1/load-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Auxiliary1",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "RecallingScreenPresetToPreview"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._SPProgramMemoryScreen1 = tostring(math.floor(MemoryID))\n\telse self._SPProgramMemoryScreen1 = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._SPProgramMemoryScreen1\nparameter[\"target\"] = \"program\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/load-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._SPProgramMemoryScreen2 = tostring(math.floor(MemoryID))\n\telse self._SPProgramMemoryScreen2 = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._SPProgramMemoryScreen2\nparameter[\"target\"] = \"program\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/load-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif MemoryID == nil then return end\nif type(MemoryID) == \"number\" then\n\tself._SPProgramMemoryAxuiliary1 = tostring(math.floor(MemoryID))\n\telse self._SPProgramMemoryAxuiliary1 = MemoryID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"memoryId\"] = self._SPProgramMemoryAxuiliary1\nparameter[\"target\"] = \"program\"\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/auxiliary-screens/1/load-memory\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Auxiliary1",
+     "params": [
+      {
+       "name": "MemoryID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "RecallingScreenPresetToProgram"
+  },
+  {
+   "elems": [
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "attReports": {
+        "0": ""
+       },
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer1PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer1PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer1PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/1/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer1",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "attReports": {
+        "0": ""
+       },
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer2PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer2PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer2PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/2/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer2",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer3PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer3PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer3PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/3/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer3",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer4PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer4PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer4PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/4/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer4",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer1PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer1PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer1PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/1/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer1",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer2PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer2PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer2PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/2/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer2",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer3PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer3PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer3PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/3/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer3",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer4PreviewInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer4PreviewInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer4PreviewInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/4/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer4",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "SetToPreview"
+    },
+    {
+     "elems": [
+      {
+       "attKind": "standard",
+       "attReports": {
+        "0": ""
+       },
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer1ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer1ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer1ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/1/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer1",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "attReports": {
+        "0": ""
+       },
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer2ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer2ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer2ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/2/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer2",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer3ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer3ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer3ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/3/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer3",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen1Layer4ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen1Layer4ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen1Layer4ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/live-layers/4/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen1Layer4",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer1ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer1ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer1ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/1/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer1",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer2ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer2ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer2ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/2/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer2",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer3ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer3ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer3ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/3/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer3",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      },
+      {
+       "attKind": "standard",
+       "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif inputID == nil then return end\nif type(inputID) == \"number\" then\n\tself._Screen2Layer4ProgramInputSource = tostring(math.floor(inputID))\n\telse self._Screen2Layer4ProgramInputSource = inputID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"input\"\nparameter[\"sourceId\"] = self._Screen2Layer4ProgramInputSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/live-layers/4/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+       "kind": "func",
+       "name": "Screen2Layer4",
+       "params": [
+        {
+         "name": "inputID",
+         "type": ""
+        }
+       ],
+       "slotStyle": "leftIn;rightNone;triggerHidden"
+      }
+     ],
+     "kind": "ns",
+     "name": "SetToProgram"
+    }
+   ],
+   "kind": "ns",
+   "name": "SetLiveLayerSource"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif backgroundID == nil then return end\nif type(backgroundID) == \"number\" then\n\tself._Screen1PreviewBackgroundSource = tostring(math.floor(backgroundID))\n\telse self._Screen1PreviewBackgroundSource = backgroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"background-set\"\nparameter[\"sourceId\"] = self._Screen1PreviewBackgroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/background-layer/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1Preview",
+     "params": [
+      {
+       "name": "backgroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif backgroundID == nil then return end\nif type(backgroundID) == \"number\" then\n\tself._Screen1ProgramBackgroundSource = tostring(math.floor(backgroundID))\n\telse self._Screen1ProgramBackgroundSource = backgroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"background-set\"\nparameter[\"sourceId\"] = self._Screen1ProgramBackgroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/background-layer/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1Program",
+     "params": [
+      {
+       "name": "backgroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif backgroundID == nil then return end\nif type(backgroundID) == \"number\" then\n\tself._Screen2PreviewBackgroundSource = tostring(math.floor(backgroundID))\n\telse self._Screen2PreviewBackgroundSource = backgroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"background-set\"\nparameter[\"sourceId\"] = self._Screen2PreviewBackgroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/background-layer/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2Preview",
+     "params": [
+      {
+       "name": "backgroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif backgroundID == nil then return end\nif type(backgroundID) == \"number\" then\n\tself._Screen2ProgramBackgroundSource = tostring(math.floor(backgroundID))\n\telse self._Screen2ProgramBackgroundSource = backgroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"background-set\"\nparameter[\"sourceId\"] = self._Screen2ProgramBackgroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/background-layer/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2Program",
+     "params": [
+      {
+       "name": "backgroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "SetBackgroundLayerSource"
+  },
+  {
+   "elems": [
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif foregroundID == nil then return end\nif type(foregroundID) == \"number\" then\n\tself._Screen1PreviewForegroundSource = tostring(math.floor(foregroundID))\n\telse self._Screen1PreviewForegroundSource = foregroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"foreground-image\"\nparameter[\"sourceId\"] = self._Screen1PreviewForegroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/foreground-layer/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1Preview",
+     "params": [
+      {
+       "name": "foregroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif foregroundID == nil then return end\nif type(foregroundID) == \"number\" then\n\tself._Screen1ProgramForegroundSource = tostring(math.floor(foregroundID))\n\telse self._Screen1ProgramForegroundSource = foregroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"foreground-image\"\nparameter[\"sourceId\"] = self._Screen1ProgramForegroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/1/foreground-layer/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen1Program",
+     "params": [
+      {
+       "name": "foregroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif foregroundID == nil then return end\nif type(foregroundID) == \"number\" then\n\tself._Screen2PreviewForegroundSource = tostring(math.floor(foregroundID))\n\telse self._Screen2PreviewForegroundSource = foregroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"foreground-image\"\nparameter[\"sourceId\"] = self._Screen2PreviewForegroundSource\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/foreground-layer/presets/preview/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2Preview",
+     "params": [
+      {
+       "name": "foregroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attKind": "standard",
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nif foregroundID == nil then return end\nif type(foregroundID) == \"number\" then\n\tself._Screen2ProgramForegroundSource = tostring(math.floor(foregroundID))\n\telse self._Screen2ProgramForegroundSource = foregroundID\nend\n\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nparameter[\"sourceType\"] = \"foreground-image\"\nparameter[\"sourceId\"] = Source\n\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/screens/2/foreground-layer/presets/program/source\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Screen2Program",
+     "params": [
+      {
+       "name": "foregroundID",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "SetForegroundLayerSource"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/system/reboot\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Reboot",
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/system/shutdown\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Shutdown",
+     "slotStyle": "leftIn;rightNone"
+    },
+    {
+     "body": "if self.protocol == nil then pixc.log(\"not initialized\") return end\nlocal customHeader={\"Content-Type=text/json\"}\nlocal parameter = {}\nlocal success, code, headerDict, content = self.protocol:httpPost(\"http://\"..self.IP..\"/api/tpp/v1/system/wakeup\",nil,parameter,customHeader)\nif(success) then\n\tpixc.log(code)\nend\n",
+     "kind": "func",
+     "name": "Wakeup",
+     "slotStyle": "leftIn;rightNone"
+    }
+   ],
+   "kind": "ns",
+   "name": "System"
+  }
+ ],
+ "cjv": {
+  "h": 556.0,
+  "w": 380.0,
+  "x": 298.0,
+  "y": 18.196969696969745
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/AnalogWayMidra4KRESTAPI.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4joFwNExMd7kP9VF+NAR7FdaBPZuuzW7dfbQrAIBzehUAHFpw5Pdi4mC3uRtIWSer79kmQ2pKsU31ZB7pxv67G/OPQJlLksIlY0UzeN/KHEQQK/Cd4GSDYiRKm9UrXKlCS3tuHsQdzpUsAGWBAdXf9A=",
+ "name": "AnalogWayMidra4KRESTAPI",
+ "properties": [
+  {
+   "cont": "192.168.2.140",
+   "name": "IP"
+  },
+  {
+   "cont": "Yosuke Kikukawa",
+   "name": "Creator Name"
+  },
+  {
+   "cont": "1.1.0",
+   "name": "Version"
+  },
+  {
+   "cont": "21 December. 2022",
+   "name": "Date"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

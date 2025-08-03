@@ -1,0 +1,322 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref",
+   "slotStyle": "leftIn;rightOut;triggerHidden"
+  },
+  {
+   "body": "\nrequire \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then -- already init called\n\treturn \nend\n\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.connected = false\n\nself.IsConnected(false)\n\nself.ip = self.helper:getProperty(\"IP\",\"127.0.0.1\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"51234\"))\n\nself.network:configureTcp(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self().receive(data) end,\n\tfunction(handle, error) pixc.log(\"closeCallback: \"..error) end)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction(isConnected) self().IsConnected(isConnected, true) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "\r\nif self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\nself.IsConnected(false)\r\n",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nif result == true then\npixc.report(\"connected\")\nelse\npixc.report(\"disconnected\")\nself.receive(\"\")\nend\n",
+   "kind": "func",
+   "name": "IsConnected",
+   "params": [
+    {
+     "name": "result",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "pixc.report(msg)\npixc.callRefs(msg)",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "attReports": {
+      "0": "g,true,true,true,true,true"
+     },
+     "body": "if self.network == nil then return end\nif deviceID == nil then return end\nif Page == nil then return end\n\nlocal page = math.floor(tonumber(Page))\n\nself.network:send(\"PAGE-SET \" .. page .. \" \" .. deviceID .. \"\\r\\n\")\n",
+     "kind": "func",
+     "name": "PageSet",
+     "params": [
+      {
+       "name": "deviceID",
+       "type": "string"
+      },
+      {
+       "name": "Page",
+       "type": "int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.network == nil then return end\r\nif deviceID == nil then return end\r\n\r\nself.network:send(\"PAGE-UP \" .. deviceID .. \"\\r\\n\")\r\n",
+     "kind": "func",
+     "name": "PageUp",
+     "params": [
+      {
+       "name": "deviceID",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.network == nil then return end\r\nif deviceID == nil then return end\r\n\r\nself.network:send(\"PAGE-DOWN \" .. deviceID .. \"\\r\\n\")\r\n",
+     "kind": "func",
+     "name": "PageDown",
+     "params": [
+      {
+       "name": "deviceID",
+       "type": "string"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Page"
+  },
+  {
+   "elems": [
+    {
+     "body": "if self.network == nil then return end\nif Page == nil or Bank == nil then return end\n\nlocal page = math.floor(math.abs(tonumber(Page)))\nlocal bank = math.floor(math.abs(tonumber(Bank)))\n\nself.network:send(\"BANK-PRESS \" .. page .. \" \" .. bank .. \"\\r\\n\")",
+     "kind": "func",
+     "name": "Press",
+     "params": [
+      {
+       "name": "Page",
+       "type": "Int"
+      },
+      {
+       "name": "Bank",
+       "type": "Int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.network == nil then return end\nif Page == nil or Bank == nil then return end\n\nlocal page = math.floor(math.abs(tonumber(Page)))\nlocal bank = math.floor(math.abs(tonumber(Bank)))\n\nself.network:send(\"BANK-DOWN \" .. page .. \" \" .. bank .. \"\\r\\n\")\n",
+     "kind": "func",
+     "name": "PressDown",
+     "params": [
+      {
+       "name": "Page",
+       "type": "Int"
+      },
+      {
+       "name": "Bank",
+       "type": "Int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.network == nil then return end\nif Page == nil or Bank == nil then return end\n\nlocal page = math.floor(math.abs(tonumber(Page)))\nlocal bank = math.floor(math.abs(tonumber(Bank)))\n\nself.network:send(\"BANK-UP \" .. page .. \" \" .. bank .. \"\\r\\n\")\n",
+     "kind": "func",
+     "name": "PressUp",
+     "params": [
+      {
+       "name": "Page",
+       "type": "Int"
+      },
+      {
+       "name": "Bank",
+       "type": "Int"
+      }
+     ],
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Bank"
+  },
+  {
+   "elems": [
+    {
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.network == nil then return end\r\nif Page == nil or Bank == nil or text == nil then\r\n\treturn\r\nend\r\n\r\nlocal page = math.floor(math.abs(tonumber(Page)))\r\nlocal bank = math.floor(math.abs(tonumber(Bank)))\r\n\r\nself.network:send(\"STYLE BANK \" .. page .. \" \" .. bank .. \" TEXT \" .. text ..\"\\r\\n\")",
+     "kind": "func",
+     "name": "SetText",
+     "params": [
+      {
+       "name": "Page",
+       "type": "Int"
+      },
+      {
+       "name": "Bank",
+       "type": "Int"
+      },
+      {
+       "name": "text",
+       "type": "String"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "string"
+     },
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "attReports": {
+      "0": ""
+     },
+     "body": "if self.network == nil then return end\r\nif Page == nil or Bank == nil or hex == nil then \r\n\treturn\r\nend\r\n\r\nlocal page = math.floor(math.abs(tonumber(Page)))\r\nlocal bank = math.floor(math.abs(tonumber(Bank)))\r\n\r\nself.network:send(\"STYLE BANK \" .. page .. \" \" .. bank .. \" COLOR \" .. hex ..\"\\r\\n\")",
+     "kind": "func",
+     "name": "SetTextColor",
+     "params": [
+      {
+       "name": "Page",
+       "type": "Int"
+      },
+      {
+       "name": "Bank",
+       "type": "Int"
+      },
+      {
+       "name": "hex",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "string"
+     },
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    },
+    {
+     "body": "if self.network == nil then return end\r\nif Page == nil or Bank == nil or hex == nil then\r\n\treturn\r\nend\r\n\r\nlocal page = math.floor(math.abs(tonumber(Page)))\r\nlocal bank = math.floor(math.abs(tonumber(Bank)))\r\n\r\nself.network:send(\"STYLE BANK \" .. page .. \" \" .. bank .. \" BGCOLOR \" .. hex ..\"\\r\\n\")",
+     "kind": "func",
+     "name": "SetBGColor",
+     "params": [
+      {
+       "name": "Page",
+       "type": "Int"
+      },
+      {
+       "name": "Bank",
+       "type": "Int"
+      },
+      {
+       "name": "hex",
+       "type": "string"
+      }
+     ],
+     "result": {
+      "name": "result",
+      "type": "string"
+     },
+     "slotStyle": "leftIn;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Style"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nif name == nil then\treturn end\r\nif value == nil then value = \"\" end\r\n\r\nself.network:send(\"CUSTOM-VARIABLE \" .. name .. \"SET-VALUE \" .. value .. \"\\r\\n\")",
+   "kind": "func",
+   "name": "setCustomVariable",
+   "params": [
+    {
+     "name": "name",
+     "type": "string"
+    },
+    {
+     "name": "value",
+     "type": ""
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "body": "if self.network == nil then return end\r\n\r\nself.network:send(\"RESCAN\\r\\n\")",
+   "kind": "func",
+   "name": "rescan",
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 443.6363636363636,
+  "w": 363.6363636363636,
+  "x": 69.72727272727269,
+  "y": 261.8181818181819
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/nui/data/control_library_standard/Drivers/Bitfocus/Companion.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4hOhZw1hOqb0g0YwB8BSQYIHEGSJuGi/Dtjk+Ybk4CcB/Yr/ysQUa4nC2pxfSo4t6qMKArMdyO50mCT/XCC1xwN37xLBTSk9ExXmIvid7gNQZmPqAeFx0shfB6fkTY3GDw==",
+ "name": "Companion",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "127.0.0.1",
+   "name": "IP",
+   "typeHint": "string"
+  },
+  {
+   "cont": "51234",
+   "name": "Port",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#Bitfocus-Companion",
+   "name": "Documantation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.12",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

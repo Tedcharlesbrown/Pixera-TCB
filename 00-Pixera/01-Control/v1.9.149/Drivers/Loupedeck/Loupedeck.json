@@ -1,0 +1,1254 @@
+{
+ "api": [
+  {
+   "body": "local json = require \"json\"\r\n\r\nif self.pixcHelper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.pixcHelper = createPixcHelper(pixc,self())\r\nend\r\n\r\nlocal res, message = pcall(Utils.Loupedeck.checkLicense)\r\n\r\nif res == false then\r\n\treturn\r\nend\r\n\r\npixc.log(message)\r\n\r\nlocal modules = {}\r\n\r\nfor i,_ in pairs(pixc.callRefs()) do\r\n\tif type(_) == \"table\" then\r\n\t\tfor c,d in pairs(_) do\r\n\t\t\tlocal _name = nil\r\n\t\t\tlocal _functions = {}\r\n\t\t\tlocal _number = 1\r\n\r\n\t\t\tlocal res, message = pcall(Utils.Loupedeck.getCommands,d.pixcGetDescription())\r\n\r\n\t\t\tif message ~= nil and message ~= \"\" then\r\n\t\t\t\tif res then\r\n\t\t\t\t\tlocal _json = json.decode(message)\r\n\t\t\t\t\t_functions = _json.functions\r\n\t\t\t\t\t_name = _json.name\r\n\t\t\t\tend\r\n\r\n\t\t\t\tif _name ~= nil then\r\n\t\t\t\t\tmodules[_name] = _functions\r\n\t\t\t\tend\r\n\t\t\tend\r\n\t\tend\r\n\tend\r\nend\r\n\r\nreturn modules\r\n",
+   "documentation": "Connect this Action to other ref Actions  or return self().  This is only available in Core or Enterprise License",
+   "kind": "func",
+   "name": "toModules",
+   "slotStyle": "leftNone;rightOut"
+  },
+  {
+   "body": "return pixc.callRefs()",
+   "kind": "func",
+   "name": "toPixeraModules",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nif self.json == nil then\n\tself.json = require \"json\"\nend\nself.PixeraName()\nself.pixeraNodes = self.toPixeraModules()\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.CtConn(false, 0)\nself.IsOpen(false, true)\nself.ip = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6451\"))\nself.sync = self.helper:getProperty(\"Sync\",\"false\")\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction (isOpen) self().IsOpen(isOpen, true) end,\n\tfunction (connectionCount) self().CtConn(connectionCount, true) end)\nself.network:configureTcpServer(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self.receive(data,handle)  end,\n\tfunction (handle) pixc.log(\"accept Callback: \") end,\n\tfunction (handle, error) pixc.log(\"close Callback: \"..error) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.network ~= nil then\r\n\tself.network:close()\r\nend\r\nUtils.Timer.sleep(1000)\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "if self.open == false then\r\n\treturn\r\nend\r\nself.sync = self.helper:getProperty(\"Sync\",\"false\")\r\nself.RefreshActionsOnLoupedeck(self.sync)\r\nself.pixeraNodes = self.toPixeraModules()\r\n",
+   "documentation": "Reload the Actions on Loupedeck Device",
+   "kind": "func",
+   "name": "reload"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "Pixera"
+   },
+   "body": "if self.helper == nil then\r\n\trequire \"pixcHelper\"\r\n\tself.helper = createPixcHelper(pixc,self())\r\nend\r\n\r\nif (val == nil or val == \"\") and\r\n\t(self._PixeraName == nil or self._PixeraName == \"\") then\r\n\tval = self.helper:getProperty(\"Pixera Module Name\",\"Pixera\")\r\n\tdoSet = true\r\nend\r\n\r\nself._PixeraName = pixcCommon.execAttribute(\"\", self._PixeraName, val, doSet)\r\nif val ~= \"\" and val ~= nil then\r\n\tself.helper:setProperty(\"Pixera Module Name\",val)\r\nend\r\nreturn self._PixeraName\r\n",
+   "kind": "func",
+   "name": "PixeraName",
+   "params": [
+    {
+     "name": "val",
+     "type": "string"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "result": {
+    "name": "result",
+    "type": "string"
+   },
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "body": "self.network:sendOverConnection(hdl, msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "hdl",
+     "type": "handle"
+    },
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "body": "--pixc.log(\"got data\")\r\nif self.helper == nil then return end\r\nlocal msgDecoded = self.json.decode(msg)\r\nif self.json == nil then self.json = require \"json\" end\r\nlocal iter = function(table, number, input, fn)\r\n\r\n\tif input[1] == \"Pixera\" then\r\n\t\tlocal maxVal = 0\r\n\t\tlocal data = Pixera\r\n\t\tfor i,_ in pairs(input) do\r\n\t\t\tif i>1then\r\n\t\t\t\tdata = data[_]\r\n\t\t\tend\r\n\t\tend\r\n\t\treturn data\r\n\telse\r\n\t\tif type(table) == \"table\" and\r\n\t\ttype(input) == \"table\" and\r\n\t\t(type(table[input[number]]) == \"table\" or type(table[input[number]]) == \"userdata\") then \r\n\t\t\treturn fn(table[input[number]],number+1,input,fn)\r\n\t\telse\r\n\t\t\treturn table[input[number]]\r\n\t\tend\r\n\tend\r\nend\r\n\r\nif msgDecoded.command ~= nil and msgDecoded.command == \"getActions\" then\r\n\tself.RefreshActionsOnLoupedeck()\r\nelseif msgDecoded.syncValues ~= nil then\r\n\tlocal syncRes = {}\r\n\tsyncRes.status = \"ok\"\r\n\tsyncRes.sync = tostring(self.sync)\r\n\tlocal repArray = {}\t\r\n\r\n\tfor i,_ in pairs(msgDecoded.syncValues) do\r\n\t\tlocal inputMsgArgs = self.helper.stringSplit(_.action,\",\")\r\n\t\tlocal inputMsg = self.helper.stringSplit(inputMsgArgs[1],\".\")\r\n\r\n\t\tlocal res, msg, name = pcall(self()[inputMsg[1]][inputMsg[2]],inputMsg[3],msgDecoded)\r\n\r\n\t\tif msg ~= nil then\r\n\t\t\tlocal _rep = {}\r\n\t\t\t_rep.reply = _.action\r\n\t\t\t_rep.value = tostring(msg)\r\n\t\t\tif name ~= nil then\r\n\t\t\t\t_rep.name = name\r\n\t\t\tend\r\n\t\t\ttable.insert(repArray,_rep)\r\n\t\tend\r\n\tend\r\n\tsyncRes.replySync = repArray\r\n\tself.send(hdl,self.json.encode(syncRes) .. \"\\r\")\r\nelse\r\n\tif msgDecoded.action ~= nil then\r\n\t\tlocal inputMsgArgs = self.helper.stringSplit(msgDecoded.action,\",\")\r\n\r\n\t\tlocal inputMsg = self.helper.stringSplit(inputMsgArgs[1],\".\")\r\n\t\tlocal res, msg, name\r\n\t\tif inputMsg[1] == \"Timeline\" or inputMsg[1] == \"Layer\" or inputMsg[1] == \"Control\" then\r\n\t\t\tlocal pixeraInstances = {}\r\n\t\t\tif #self.pixeraNodes > 0 then\r\n\t\t\t\tfor indexI,instances in pairs(self.pixeraNodes) do\r\n\t\t\t\t\tfor indexP,pixeraInstance in pairs(instances) do\r\n\t\t\t\t\t\tif pixeraInstance ~= pixc.getRoot()[self._PixeraName] then\r\n\t\t\t\t\t\t\ttable.insert(pixeraInstances,pixeraInstance)\r\n\t\t\t\t\t\tend\r\n\t\t\t\t\tend\r\n\t\t\t\tend\r\n\t\t\tend\r\n\t\t\ttable.insert(pixeraInstances,pixc.getRoot()[self._PixeraName])\r\n\t\t\tfor i,n in pairs(pixeraInstances) do\r\n\t\t\t\tif self[inputMsg[1]] ~= nil and self[inputMsg[1]][inputMsg[2]] ~= nil then\r\n\t\t\t\t\tres, msg, name = pcall(self()[inputMsg[1]][inputMsg[2]],inputMsg[3],msgDecoded,n)\r\n\t\t\t\telse\r\n\t\t\t\t\tres, msg, name = pcall(self()[inputMsg[1]][\"def\"], inputMsg[2],inputMsg[3],inputMsg[4],n)\r\n\t\t\t\tend\r\n\t\t\tend\r\n\t\telse\r\n\t\t\tlocal fn = iter(_G,1,inputMsg,iter)\r\n\t\t\tif type(fn) == \"function\" or type(fn) == \"userdata\" then\r\n\t\t\t\tres, msg = pcall(fn,inputMsgArgs[2])\r\n\t\t\tend\r\n\t\tend\r\n\t\t--pixc.log(msg)\r\n\t\tif res ~= true then\r\n\t\t\tself.send(hdl, '{\"status\":\"warning\", \"sync\":\"' .. self.sync .. '\"}\\r')\r\n\t\telse\r\n\t\t\tif msg ~= nil then\r\n\t\t\t\tif name ~= nil then\r\n\t\t\t\t\tself.send(hdl, '{\"status\":\"ok\", \"sync\":\"' .. self.sync .. '\",\"reply\":\"' .. msgDecoded.action .. '\", \"value\":\"' .. msg .. '\",\"name\":\"' .. name .. '\"}\\r')\r\n\t\t\t\telse\r\n\t\t\t\t\tself.send(hdl, '{\"status\":\"ok\", \"sync\":\"' .. self.sync .. '\",\"reply\":\"' .. msgDecoded.action .. '\", \"value\":\"' .. msg .. '\"}\\r')\r\n\t\t\t\tend\r\n\t\t\telse\r\n\t\t\t\tself.send(hdl, '{\"status\":\"ok\", \"sync\":\"' .. self.sync .. '\"}\\r')\r\n\t\t\tend\r\n\t\tend\r\n\telse\r\n\t\tself.send(hdl, '{\"status\":\"ok\", \"sync\":\"' .. self.sync .. '\"}\\r')\r\n\tend\r\nend\r\n--pixc.log(msg)\r\n",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    },
+    {
+     "name": "hdl",
+     "type": "handle"
+    }
+   ],
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.connectedCount = pixcCommon.execAttribute(0, self.connectedCount, currentCount, doSet)\n",
+   "kind": "func",
+   "name": "CtConn",
+   "params": [
+    {
+     "name": "currentCount",
+     "type": "int"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "body": "local btn = function(label, group, name)\r\n\tlocal msg = {label = label, group = group, name = name}\r\n\treturn msg\r\nend\r\nlocal encoder = function(label, group, name, step, range ,value)\r\n\tlocal msg = {label = label, group = group, name = name, step = step, excludeModules = {\"button\"}, value = tostring(value)}\r\n\tif range ~= nil then\r\n\t\tmsg.range = {range[1],range[2]}\r\n\tend\r\n\treturn msg\r\nend\r\n\r\nlocal setTimelineActions = function(message, handle, name, opacity, timecode)\r\n\t\t--Nowpointer\r\n\t\ttable.insert(message, encoder(\"Nowpointer\",name,\"Timeline.SetNowpointer.\" .. name,1,nil,timecode))\r\n\t\t--Opacity\r\n\t\ttable.insert(message, encoder(\"Opacity\",name,\"Timeline.SetOpacity.\" .. name,1,{0,1},opacity))\r\n\t\t--Play\r\n\t\ttable.insert(message, btn(\"Play\",name,\"Timeline.Play.\" .. name))\r\n\t\t--Pause\r\n\t\ttable.insert(message, btn(\"Pause\",name,\"Timeline.Pause.\" .. name))\r\n\t\t--Stop\r\n\t\ttable.insert(message, btn(\"Stop\",name,\"Timeline.Stop.\" .. name))\r\n\t\t--ToggleState\r\n\t\ttable.insert(message, btn(\"ToggleState\",name,\"Timeline.ToggleState.\" .. name))\r\n\t\t--NextCue\r\n\t\ttable.insert(message, btn(\"NextCue\",name,\"Timeline.NextCue.\" .. name))\r\n\t\t--NextCueIgnoreProps\r\n\t\ttable.insert(message, btn(\"NextCueIgnoreProps\",name,\"Timeline.NextCueIgnoreProps.\" .. name))\r\n\t\t--PrevCue\r\n\t\ttable.insert(message, btn(\"PrevCue\",name,\"Timeline.PrevCue.\" .. name))\r\n\t\t--PrevCueIgnoreProps\r\n\t\ttable.insert(message, btn(\"PrevCueIgnoreProps\",name,\"Timeline.PrevCueIgnoreProps.\" .. name))\r\n\t\t--IgnoreNextCue\r\n\t\ttable.insert(message, btn(\"IgnoreNextCue\",name,\"Timeline.IgnoreNextCue.\" .. name))\r\n\t\t--Store\r\n\t\ttable.insert(message, btn(\"Store\",name,\"Timeline.Store.\" .. name))\r\n\t\t--CreateLayer\r\n\t\ttable.insert(message, btn(\"CreateLayer\",name,\"Timeline.CreateLayer.\" .. name))\r\n\t\t--SetSMPTENone\r\n\t\ttable.insert(message, btn(\"SetSMPTENone\",name,\"Timeline.SetSMPTENone.\" .. name))\r\n\t\t--SetSMPTEReceive\r\n\t\ttable.insert(message, btn(\"SetSMPTEReceive\",name,\"Timeline.SetSMPTEReceive.\" .. name))\r\n\t\t--SetSMPTESend\r\n\t\ttable.insert(message, btn(\"SetSMPTESend\",name,\"Timeline.SetSMPTESend.\" .. name))\r\n\t\t--selectThis\r\n\t\tif handle ~= nil then\r\n\t\t\ttable.insert(message, btn(\"SelectThis\",name,\"Timeline.SelectThis.\" .. name))\r\n\t\t--GotoCue\r\n\t\t\tfor i,cueHandle in pairs(handle.getCues()) do\r\n\t\t\t\ttable.insert(message, btn(\"GotoCue: \" .. tostring(math.floor(cueHandle.getNumber())) .. \". \" .. cueHandle.getName(), handle.getName(),\"Timeline.GotoCue.\" .. handle.getName() .. \".\" .. tostring(math.floor(cueHandle.getNumber())) .. \"|\" .. cueHandle.getName()))\r\n\t\t\tend\r\n\t\tend\r\n\treturn message\r\nend\r\n\r\n\r\nfor _ in pairs(self.network.acceptedSocketsTable) do\r\n\tlocal sendJson = {sync = tostring(self.sync), status = \"ok\"}\r\n\tlocal message = {}\r\n\r\n\t--Timeline Actions\r\n\tlocal pix = pixc.getRoot()[self._PixeraName]\r\n\tfor n,handle in pairs(pix.Timelines.getTimelines()) do\r\n\t\tmessage = setTimelineActions(message, handle, handle.getName(), handle.getOpacity(), handle.getCurrentHMSF())\r\n\tend\r\n\r\n\t--selected Timeline\r\n\tmessage = setTimelineActions(message, nil, \"Selected Timeline\", pix.Timelines.getTimelinesSelected()[1].getOpacity(), pix.Timelines.getTimelinesSelected()[1].getCurrentHMSF())\r\n\ttable.insert(message, encoder(\"Zoom\", \"Selected Timeline\", \"Timeline.SelectedZoom.Selected Timeline\",1,nil,self.Timeline.SelectedZoom(nil,nil,pix)))\r\n\t\r\n\t--selected Layer\r\n\ttable.insert(message, encoder(\"Opacity\",\"Selected Layer\", \"Layer.Opacity.Selected Layer\",1,{0,1},self.Layer.Opacity(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Volume\",\"Selected Layer\", \"Layer.Volume.Selected Layer\",1,{0,1},self.Layer.Volume(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Position X\",\"Selected Layer\", \"Layer.PositionX.Selected Layer\",1,nil,self.Layer.PositionX(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Position Y\",\"Selected Layer\", \"Layer.PositionY.Selected Layer\",1,nil,self.Layer.PositionY(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Position Z\",\"Selected Layer\", \"Layer.PositionZ.Selected Layer\",1,nil,self.Layer.PositionZ(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Rotation X\",\"Selected Layer\", \"Layer.RotationX.Selected Layer\",1,nil,self.Layer.RotationX(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Rotation Y\",\"Selected Layer\", \"Layer.RotationY.Selected Layer\",1,nil,self.Layer.RotationY(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Rotation Z\",\"Selected Layer\", \"Layer.RotationZ.Selected Layer\",1,nil,self.Layer.RotationZ(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Size W\",\"Selected Layer\", \"Layer.SizeW.Selected Layer\",1,nil,self.Layer.SizeW(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Size H\",\"Selected Layer\", \"Layer.SizeH.Selected Layer\",1,nil,self.Layer.SizeH(nil,nil,pix)))\r\n\ttable.insert(message, encoder(\"Size D\",\"Selected Layer\", \"Layer.SizeD.Selected Layer\",1,nil,self.Layer.SizeD(nil,nil,pix)))\r\n\ttable.insert(message, btn(\"Reset\",\"Selected Layer\" ,\"Layer.Reset.Selected Layer\"))\r\n\ttable.insert(message, btn(\"Mute Layer\",\"Selected Layer\" ,\"Layer.MuteLayer.Selected Layer\"))\r\n\ttable.insert(message, btn(\"Mute Audio\",\"Selected Layer\" ,\"Layer.MuteAudio.Selected Layer\"))\r\n\r\n\t--external Modules\r\n\t\r\n\tlocal modules = self.toModules()\r\n\r\n\tfor n,fnTable in pairs(modules) do\r\n\r\n\r\n\t\tfor i,fn in pairs(fnTable) do\r\n\t\t\t--Button\r\n\t\t\ttable.insert(message, btn(fn,n,n .. '.' .. fn))\r\n\t\tend\r\n\tend\r\n\r\n\t--Control\r\n\tfor i = 1, 12, 1 do\r\n\t\t--Encoder\r\n\t\ttable.insert(message, encoder(\"Control Encoder\" .. i,\"Control\",\"Control.Encoder\" .. i,1,nil,self.Control[\"Encoder\" .. i]()))\r\n\t\t--Button\r\n\t\ttable.insert(message, btn(\"Control Button\" .. i,\"Control\",\"Control.Button\" .. i))\r\n\tend\r\n\r\n\tsendJson.commands = message\r\n\t--pixc.log(self.json.encode(sendJson))\r\n\tself.network:sendOverConnection(self.network.acceptedSocketsTable[_], self.json.encode(sendJson) .. \"\\r\")\r\nend\r\n",
+   "kind": "func",
+   "name": "RefreshActionsOnLoupedeck",
+   "params": [
+    {
+     "name": "sync",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightNone;triggerHidden"
+  },
+  {
+   "elems": [
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\nif handle == nil then pixc.warning(self() .. \" Handle was nil in set action\") return end\r\n\r\nif json.reset == true then\r\n\thandle.setCurrentTime(0)\r\nelseif json.tick ~= nil then\r\n\thandle.scrubCurrentTime(json.tick)\r\nend\r\nreturn handle.getCurrentHMSF(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "SetNowpointer",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\nif handle == nil then pixc.warning(self() .. \" Handle was nil in set action\") return end\r\nif json.reset == true then\r\n\thandle.setOpacity(1)\r\nelse\r\n\tif json.tick ~= nil then\r\n\t\tlocal opacity = handle.getOpacity() + (json.tick/100)\r\n\t\thandle.setOpacity(opacity)\r\n\tend\r\nend\r\nreturn handle.getOpacity(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "SetOpacity",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\nif handle == nil then pixc.warning(self() .. \" Handle was nil in set action\") return end\r\n\r\nif handle.getTransportMode() == 1 then\r\n\thandle.pause()\r\nelse\r\n\thandle.play()\r\nend\r\n",
+     "kind": "func",
+     "name": "ToggleState",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.play()\r\n",
+     "kind": "func",
+     "name": "Play",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.pause()\r\n",
+     "kind": "func",
+     "name": "Pause",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.stop()\r\n",
+     "kind": "func",
+     "name": "Stop",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.store()\r\n",
+     "kind": "func",
+     "name": "Store",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.createLayer()\r\n",
+     "kind": "func",
+     "name": "CreateLayer",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.ignoreNextCue()\r\n",
+     "kind": "func",
+     "name": "IgnoreNextCue",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.setSmpteMode(0)\r\n",
+     "kind": "func",
+     "name": "SetSMPTENone",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.setSmpteMode(1)\r\n",
+     "kind": "func",
+     "name": "SetSMPTEReceive",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.setSmpteMode(2)\r\n",
+     "kind": "func",
+     "name": "SetSMPTESend",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.moveToNextCue()\r\n",
+     "kind": "func",
+     "name": "NextCue",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.moveToPreviousCue()\r\n",
+     "kind": "func",
+     "name": "PrevCue",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nhandle = pix.Timelines.Timeline.getInst(timeline)\r\n\r\nlocal inputMsgArgs = self.helper.stringSplit(json.action,\".\")\r\n\r\nfor i,cueHandle in pairs(handle.getCues()) do\r\n\tif inputMsgArgs[4] == tostring(math.floor(cueHandle.getNumber())) .. \"|\" .. cueHandle.getName() then\r\n\t\tcueHandle.apply()\r\n\tend\r\nend\r\n",
+     "kind": "func",
+     "name": "GotoCue",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nhandle = pix.Timelines.Timeline.getInst(timeline)\r\n\r\nhandle.selectThis()\r\n\r\n",
+     "kind": "func",
+     "name": "SelectThis",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle = pix.Timelines.getTimelinesSelected()[1]\r\n\r\nif json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.setOpacity(1)\r\n\telse\r\n\t\tif json.tick ~= nil then\r\n\t\t\tlocal diff = 1\r\n\t\t\tlocal check = json.tick\r\n\t\t\tif check < 0 then check = -check end\r\n\t\t\tif handle.getZoomFactor() - (check/diff) < 1 then\r\n\t\t\t\tdiff = 10\r\n\t\t\tend\r\n\t\t\tlocal zoom = handle.getZoomFactor() + (json.tick/diff)\r\n\t\t\thandle.setZoomFactor(zoom)\r\n\t\tend\r\n\tend\r\nend\r\nreturn math.floor(handle.getZoomFactor()*100)/100, handle.getName()\r\n",
+     "kind": "func",
+     "name": "SelectedZoom",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nhandle = pix.Timelines.Timeline.getInst(timeline)\r\nif handle == nil and command ~= nil then\r\n\treturn\r\nend\r\n\r\nhandle[command]()\r\n",
+     "kind": "func",
+     "name": "def",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "command",
+       "type": "string"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.moveToNextCueIgnoreProperties()\r\n",
+     "kind": "func",
+     "name": "NextCueIgnoreProps",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\n\r\nif timeline == \"Selected Timeline\" then\r\n\thandle = pix.Timelines.getTimelinesSelected()[1]\r\nelse\r\n\thandle = pix.Timelines.Timeline.getInst(timeline)\r\nend\r\n\r\nhandle.moveToPreviousCueIgnoreProperties()\r\n",
+     "kind": "func",
+     "name": "PrevCueIgnoreProps",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Timeline"
+  },
+  {
+   "elems": [
+    {
+     "body": "local handle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetOpacity()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setOpacity(handle.getOpacity() + (json.tick/100))\r\n\tend\r\nend\r\nreturn handle.getOpacity(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "Opacity",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetVolume()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setVolume(handle.getVolume() + (json.tick/100))\r\n\tend\r\nend\r\nreturn handle.getVolume(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "Volume",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Position.X\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "PositionX",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Position.Y\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "PositionY",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Position.Z\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "PositionZ",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Rotation.X\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "RotationX",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Rotation.Y\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "RotationY",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Rotation.Z\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "RotationZ",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Size.W\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "SizeW",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Size.H\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "SizeH",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nhandle = pix.Timelines.Param.getInst(pixHandle.getTimeline().getName() .. \".\" .. pixHandle.getName() .. \".Size.D\")\r\nif handle == nil then\r\n\treturn 0\r\nend\r\nif layer ~= nil and json ~= nil then\r\n\tif json.reset == true then\r\n\t\thandle.resetValue()\r\n\telseif json.tick ~= nil then\r\n\t\thandle.setValue(handle.getValue() + (json.tick))\r\n\tend\r\nend\r\nreturn handle.getValue(), handle.getName()\r\n",
+     "kind": "func",
+     "name": "SizeD",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\n\r\npixHandle.resetLayer()\r\n",
+     "kind": "func",
+     "name": "Reset",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local handle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif handle == nil then\r\n\treturn 0\r\nend\r\n\r\nif handle.getIsLayerMuted() then\r\n\thandle.unMuteLayer()\r\nelse\r\n\thandle.muteLayer()\r\nend\r\n",
+     "kind": "func",
+     "name": "MuteLayer",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "local pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\n\r\nif pixHandle.getIsAudioMuted() then\r\n\tpixHandle.unMuteAudio()\r\nelse\r\n\tpixHandle.muteAudio()\r\nend\r\n",
+     "kind": "func",
+     "name": "MuteAudio",
+     "params": [
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "json",
+       "type": "table"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    },
+    {
+     "body": "\r\nlocal pixHandle = pix.Timelines.getTimelinesSelected()[1].getLayersSelected()[1]\r\nif pixHandle == nil then\r\n\treturn 0\r\nend\r\nif pixHandle == nil and command ~= nil then\r\n\treturn\r\nend\r\n\r\npixHandle[command]()\r\n",
+     "kind": "func",
+     "name": "def",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "layer",
+       "type": "string"
+      },
+      {
+       "name": "command",
+       "type": "string"
+      },
+      {
+       "name": "pix",
+       "type": ""
+      }
+     ],
+     "slotStyle": "leftNone;rightNone;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Layer"
+  },
+  {
+   "elems": [
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button1",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button2",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button3",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button4",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button5",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button6",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button7",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button8",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button9",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button10",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button11",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "body": "",
+     "kind": "func",
+     "name": "Button12",
+     "slotStyle": "leftNone;rightOut"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder1\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\n\r\nself._Encoder1 = pixcCommon.execAttribute(0, self._Encoder1, inputVal, doSet)\r\n\r\nreturn self._Encoder1\r\n",
+     "kind": "func",
+     "name": "Encoder1",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder2\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\n\r\nself._Encoder2 = pixcCommon.execAttribute(0, self._Encoder2, inputVal, doSet)\r\nreturn self._Encoder2\r\n",
+     "kind": "func",
+     "name": "Encoder2",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder3\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder3 = pixcCommon.execAttribute(0, self._Encoder3, inputVal, doSet)\r\nreturn self._Encoder3\r\n",
+     "kind": "func",
+     "name": "Encoder3",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder4\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder4 = pixcCommon.execAttribute(0, self._Encoder4, inputVal, doSet)\r\nreturn self._Encoder4\r\n",
+     "kind": "func",
+     "name": "Encoder4",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder5\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder5 = pixcCommon.execAttribute(0, self._Encoder5, inputVal, doSet)\r\nreturn self._Encoder5\r\n",
+     "kind": "func",
+     "name": "Encoder5",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder6\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder6 = pixcCommon.execAttribute(0, self._Encoder6, inputVal, doSet)\r\nreturn self._Encoder6\r\n",
+     "kind": "func",
+     "name": "Encoder6",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder7\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder7 = pixcCommon.execAttribute(0, self._Encoder7, inputVal, doSet)\r\nreturn self._Encoder7\r\n",
+     "kind": "func",
+     "name": "Encoder7",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder8\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder8 = pixcCommon.execAttribute(0, self._Encoder8, inputVal, doSet)\r\nreturn self._Encoder8\r\n",
+     "kind": "func",
+     "name": "Encoder8",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder9\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder9 = pixcCommon.execAttribute(0, self._Encoder9, inputVal, doSet)\r\nreturn self._Encoder9\r\n",
+     "kind": "func",
+     "name": "Encoder9",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder10\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder10 = pixcCommon.execAttribute(0, self._Encoder10, inputVal, doSet)\r\nreturn self._Encoder10\r\n",
+     "kind": "func",
+     "name": "Encoder10",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder11\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder11 = pixcCommon.execAttribute(0, self._Encoder11, inputVal, doSet)\r\nreturn self._Encoder11\r\n",
+     "kind": "func",
+     "name": "Encoder11",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    },
+    {
+     "attKind": "internal",
+     "body": "local inputVal = self._Encoder12\r\nif val ~= nil and val.tick ~= nil then\r\n\tinputVal = inputVal + val.tick\r\nend\r\n\r\nif val ~= nil and val.reset ~= nil and val.reset == true then\r\n\tinputVal = 0\r\nend\r\nself._Encoder12 = pixcCommon.execAttribute(0, self._Encoder12, inputVal, doSet)\r\nreturn self._Encoder12\r\n",
+     "kind": "func",
+     "name": "Encoder12",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "string"
+      },
+      {
+       "name": "val",
+       "type": ""
+      },
+      {
+       "name": "doSet",
+       "type": "bool"
+      }
+     ],
+     "slotStyle": "leftNone;rightOut;triggerHidden"
+    }
+   ],
+   "kind": "ns",
+   "name": "Control"
+  }
+ ],
+ "cjv": {
+  "h": 536.2982456140351,
+  "w": 384.83208020050125,
+  "x": 0.0,
+  "y": 0.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Drivers/Loupedeck/Loupedeck.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4si5wyZSW4jTjSfJ4pT/+3b41h2+fx1QN+zaSldU0sMun2CzXTkYQLZBacz9Q5mi02c9RxE9AtGkF8Juf2RFBrO9VSDfHMG8u9wH0JehVfE+zORG/vO2UJ/sfE917qGb0Zw59HTjss8Wb4riMROUeGw=",
+ "name": "Loupedeck",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "Pixera",
+   "name": "Pixera Module Name",
+   "optionsAction": "self.PixeraName",
+   "typeHint": "string"
+  },
+  {
+   "cont": "AVStumpfl GmbH (Benni M.)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "https://loupedeck.com/",
+   "name": "URL",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "url"
+  },
+  {
+   "cont": "3343",
+   "name": "Port",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "Localhost",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "false",
+   "name": "Sync",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "2.0",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

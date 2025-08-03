@@ -1,0 +1,90 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcProtocolHttp\"\nself.xml2lua = require(\"xml2lua\")\nself.treehandler = require(\"xmlhandler.tree\")\nself.avCall = require(\"pixcCall\")\nif self.helper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.protocol = createPixcProtocolHttp()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\nself.updateInterval = self.helper:getProperty(\"Updateinterval\",\"10s\")\nself.location = self.helper:getProperty(\"Location\",\"Wien\")\nself.celsius = self.helper:getProperty(\"Celsius\",\"true\")\nself.url = \"http://rss.accuweather.com/rss/liveweather_rss.asp?locCode=\"..string.lower(self.location);\nlocal success, instance = self.avCall.call(pixc.getRoot().Utils.Timer.setInterval(function() self.getRss() end, self.updateInterval))\nif success then\n\tself.intervalHandle = instance\nend\nself.getRss()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if(self.intervalHandle) then\r\n\tlocal success = pcall(function() return pixc.getRoot().Utils.Timer.clearInterval(self.intervalHandle) end)\r\nend\r\n\r\nif self.protocol == nil then return end\r\nself.helper = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\nself.xml2lua = nil;\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "--\nlocal success, code, headerDict, content = self.protocol:httpGet(self.url, parameter)\nif(success) then\n\tpixc.log(\"Get Rss feed Httpcode: \"..code)\n\n\tself.Weather(value, true)\n\tself.Temperature(value, true)\n\tlocal handler = self.treehandler:new()\n\tlocal parser = self.xml2lua.parser(handler)\n\tparser:parse(content)\n\tfor i, p in pairs(handler.root.rss.channel.item) do\n\t\tlocal s = p.title;\n\t\tlocal fields = self.helper.stringSplit(s,':')\n\t\tif fields[1] == 'Currently' then\n\t\t\tif fields[2] ~= nil then\n\t\t\t\tlocal text = fields[2];\n\t\t\t\tif(string.sub(text,-1) == ' ') then\n\t\t\t\t\ttext = text:sub(1, -2)\n\t\t\t\tend\n\t\t\t\tself.Weather(self.helper.trim(text), true)\n\t\t\tend\n\t\t\tif fields[3] ~= nil then\n\t\t\t\tlocal tmp =  fields[3];\n\t\t\t\tlocal nbtmp = 0;\n\t\t\t\tlocal strtmp = \"\"\n\t\t\t\tif(string.sub(tmp,-1) == 'F') then\n\t\t\t\t\tlocal tmp = tmp:sub(1, -2)\n\t\t\t\t\tnbtmp = tonumber(tmp);\n\t\t\t\t\tif self.celsius == \"true\" then\n\t\t\t\t\t\tnbtmp = (nbtmp -32) * 5/9\n\t\t\t\t\t\tstrtmp = string.format(\"%.2f\",nbtmp)..\" °C\"\n\t\t\t\t\telse\n\t\t\t\t\t\tstrtmp = string.format(\"%.2f\",nbtmp)..\" °F\"\n\t\t\t\t\tend\n\t\t\t\telse\n\t\t\t\t\tnbtmp = tonumber(tmp);\n\t\t\t\t\tif self.celsius == \"true\" then\n\t\t\t\t\t\tstrtmp = string.format(\"%.2f\",nbtmp)..\" °C\"\n\t\t\t\t\telse\n\t\t\t\t\t\tnbtmp = (nbtmp * 9/5) + 32\n\t\t\t\t\t\tstrtmp = string.format(\"%.2f\",nbtmp)..\" °F\"\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\t\tself.Temperature(strtmp, true)\n\t\t\tend\n\t\tend\n\tend\n\txml2lua = nil\n\thandler = nil\n\tparser = nil\n\tcontent = nil\nend\n",
+   "kind": "func",
+   "name": "getRss"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\r\n-- slotStyle:leftNone;rightOut;triggerHidden\r\n\tself.weather = pixcCommon.execAttribute(false, self.weather, value, doSet)\r\n",
+   "kind": "func",
+   "name": "Weather",
+   "params": [
+    {
+     "name": "value",
+     "type": "object"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\r\n-- slotStyle:leftNone;rightOut;triggerHidden\r\n\tself.temperature = pixcCommon.execAttribute(false, self.temperature, value, doSet)\r\n",
+   "kind": "func",
+   "name": "Temperature",
+   "params": [
+    {
+     "name": "value",
+     "type": "object"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 137.0,
+  "y": 220.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Protocols/RssAccuweather.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4uhgN3IvOIB3QykmvqH4Hq+6/hE6D4MRLCFBld/gYMlTGohUPjXmEvPogmi7F5WTWJ4ttyzM+VRUZrmZQTwghWM=",
+ "name": "RssAccuweather",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "30s",
+   "name": "Updateinterval",
+   "typeHint": "number"
+  },
+  {
+   "cont": "Wien",
+   "name": "Location",
+   "typeHint": "string"
+  },
+  {
+   "cont": "true",
+   "name": "Celsius",
+   "typeHint": "bool"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

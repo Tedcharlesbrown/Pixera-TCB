@@ -1,0 +1,83 @@
+[
+  {
+    "id": "med_001_029a4f1c-4f7f-4899-9b19-9ef6330ae31e",
+    "type": "mediaSelector",
+    "refer": "",
+    "toolTip": "Tooltip",
+    "indented": false,
+    "validation": "Joi.string().allow('').optional()",
+    "displayName": "Media 001",
+    "isReferParent": false,
+    "mediaListTags": [],
+    "showThumbnail": true,
+    "ignoreDuration": false,
+    "mediaListTagsExclude": []
+  },
+  {
+    "id": "lis_001_9c1f2f08-915d-4e32-9d8b-650600cbdba5",
+    "type": "combo",
+    "options": [
+      "none",
+      "input 1",
+      "input 2",
+      "input 3",
+      "input 4"
+    ],
+    "toolTip": "Tooltip",
+    "indented": false,
+    "validation": "Joi.string()",
+    "displayName": "Live Input",
+    "defaultValue": ""
+  },
+  {
+    "id": "lid_001_edfc5b0b-d742-4b92-a77e-a4a93cde3fc0",
+    "type": "duration",
+    "toolTip": "Tooltip",
+    "indented": false,
+    "validation": "Joi.number().min(10000).max(100000)",
+    "displayName": "Duration Field",
+    "defaultValue": 50000,
+    "ignoreDuration": true
+  },
+  {
+    "id": "tri_001_3f75eac4-c6ba-4f93-8a5b-b53bbc07777b",
+    "type": "mediaSelector",
+    "refer": "",
+    "toolTip": "Tooltip",
+    "indented": false,
+    "validation": "Joi.string().allow('').optional()",
+    "displayName": "Transition 001 IN",
+    "isReferParent": false,
+    "mediaListTags": [],
+    "showThumbnail": true,
+    "ignoreDuration": true,
+    "mediaListTagsExclude": []
+  },
+  {
+    "id": "tro_001_0cdacf71-220a-4244-914c-f53940124eb5",
+    "type": "mediaSelector",
+    "refer": "",
+    "toolTip": "Tooltip",
+    "indented": false,
+    "validation": "Joi.string().allow('').optional()",
+    "displayName": "Transition 001 OUT",
+    "isReferParent": false,
+    "mediaListTags": [],
+    "showThumbnail": true,
+    "ignoreDuration": true,
+    "mediaListTagsExclude": []
+  },
+  {
+    "id": "trc_001_ac111bc5-665b-4f93-81cf-8ce98a3eb7ef",
+    "type": "combo",
+    "options": [
+      "Force In",
+      "Force Out"
+    ],
+    "toolTip": "Tooltip",
+    "indented": false,
+    "validation": "Joi.string()",
+    "displayName": "Transition 001 Conflict Behavior",
+    "defaultValue": ""
+  }
+]

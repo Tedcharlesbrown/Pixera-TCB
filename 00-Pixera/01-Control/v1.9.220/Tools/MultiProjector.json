@@ -1,0 +1,129 @@
+{
+ "api": [
+  {
+   "body": "return self()",
+   "kind": "func",
+   "name": "ref"
+  },
+  {
+   "body": "return pixc.callRefs(action, val)\r\n",
+   "kind": "func",
+   "name": "toProjectors",
+   "params": [
+    {
+     "name": "action",
+     "type": "string"
+    },
+    {
+     "name": "val",
+     "type": "int"
+    }
+   ]
+  },
+  {
+   "body": "self.toProjectors(\"init\")\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "self.toProjectors(\"uninit\")\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.powerOn\")\r\n",
+   "kind": "func",
+   "name": "powerOn"
+  },
+  {
+   "body": "local res = self.toProjectors(\"State.PowerIsOn\", false, false)\r\nlocal ret = true\r\nlocal foundOne = false\r\nfor _, v in ipairs(res) do\r\n\tfor __, k in ipairs(v) do\r\n\t\tfoundOne = true\r\n\t\tif k ~= true then\r\n\t\t\tret = false\r\n\t\t\tbreak\r\n\t\tend\r\n\tend\r\nend\r\nreturn foundOne and ret\r\n",
+   "kind": "func",
+   "name": "getAllPowerIsOn"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.powerOff\")\r\n",
+   "kind": "func",
+   "name": "powerOff"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.shutterOpen\")\r\n",
+   "kind": "func",
+   "name": "shutterOpen"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.shutterClose\")\r\n",
+   "kind": "func",
+   "name": "shutterClose"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.freeze\")\r\n",
+   "kind": "func",
+   "name": "freeze"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.unfreeze\")\r\n",
+   "kind": "func",
+   "name": "unfreeze"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputRgb1\")\r\n",
+   "kind": "func",
+   "name": "inputRgb1"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputRgb2\")\r\n",
+   "kind": "func",
+   "name": "inputRgb2"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputDviD\")\r\n",
+   "kind": "func",
+   "name": "inputDviD"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputHdmi\")\r\n",
+   "kind": "func",
+   "name": "inputHdmi"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputDigitalLink\")\r\n",
+   "kind": "func",
+   "name": "inputDigitalLink"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputSdi1\")\r\n",
+   "kind": "func",
+   "name": "inputSdi1"
+  },
+  {
+   "body": "self.toProjectors(\"Commands.inputSdi2\")\r\n",
+   "kind": "func",
+   "name": "inputSdi2"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 316.0,
+  "y": 346.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/Program Files/AV Stumpfl/Pixera/build_1-9-133/data/control_library_standard/Tools/MultiProjector.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4u3fqCdpOZzr6OHa7u7t0t/cIknQNJv8EUVcYAV/xt5g717gfzzuz1IqStwamCFoH0dDZPGG6kLcENiwEpuydxcvQ4FNzqA+LJPDuTyX8I0UOEGIItzlEa0UuzfgukvW5PZww6uE4EdToXp6ObtEsWQ=",
+ "name": "MultiProjector",
+ "properties": [
+  {
+   "cont": "127.0.0.1",
+   "name": "IP"
+  },
+  {
+   "cont": "4352",
+   "name": "Port"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

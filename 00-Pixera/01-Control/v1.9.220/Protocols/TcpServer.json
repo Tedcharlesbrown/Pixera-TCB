@@ -1,0 +1,109 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nif self.helper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.CtConn(false, 0)\nself.IsOpen(false, true)\npixc.log(self.helper)\npixc.log(self.network)\nself.ip = pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6451\"))\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction (isOpen) self().IsOpen(isOpen, true) end,\n\tfunction (connectionCount) self().CtConn(connectionCount, true) end)\nself.network:configureTcpServer(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self.receive(data,handle)  end,\n\tfunction (handle) pixc.log(\"accept Callback: \") end,\n\tfunction (handle, error) pixc.log(\"close Callback: \"..error) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "body": "self.network:sendOverConnection(hdl, msg)\r\n",
+   "kind": "func",
+   "name": "send",
+   "params": [
+    {
+     "name": "hdl",
+     "type": "handle"
+    },
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "pixc.log(\"got data\")\r\npixc.log(msg)\r\nself.send(hdl, \"Echoing \" .. msg)\r\n",
+   "kind": "func",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    },
+    {
+     "name": "hdl",
+     "type": "handle"
+    }
+   ]
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\n-- slotStyle:leftNone;rightOut;triggerHidden\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\n-- slotStyle:leftNone;rightOut;triggerHidden\nself.connectedCount = pixcCommon.execAttribute(0, self.connectedCount, currentCount, doSet)\n",
+   "kind": "func",
+   "name": "CtConn",
+   "params": [
+    {
+     "name": "currentCount",
+     "type": "int"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 534.0,
+  "y": 456.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "D:/REPOS/nui/data/control_library_standard/Protocols/PlainTcpServer.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4iG+GKQgjXwPZAj7sBujcm19qMvpiZQIY10DxwLxes04bMHwOb/1wMGcwHPgzq2PhT3CJuGJkoviHHfT0kJVqKA=",
+ "name": "PlainTcpServer",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "15151",
+   "name": "Port"
+  },
+  {
+   "cont": "Default",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

@@ -1,0 +1,259 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nif self.pixcHelper ~= nil then\r\n\tself.uninit()\r\n\tUtils.Timer.sleep(1000)\r\nend\r\nself.pixcHelper = createPixcHelper(pixc,self())\r\n\r\nself._format = self.pixcHelper:getProperty(\"Time Format 24\")\r\nself._dateFormat = self.pixcHelper:getProperty(\"Use 09/16/98 for Date\")\r\nself._onChange = self.pixcHelper:getProperty(\"Execute Only on change\")\r\nself._onInit = self.pixcHelper:getProperty(\"Execute Only on init\")\r\n\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\n\r\nif self._onInit == \"true\" then\r\n\tself._hms = nil\r\n\tself._date = nil\r\n\tself._day = nil\r\n\tself._month = nil\r\n\tself._year = nil\r\n\tself._hour = nil\r\n\tself._minute = nil\r\n\tself._second = nil\r\n\tself._ampm = nil\r\n\tself._dayName = nil\r\n\tself._monthName = nil\r\n\tself._fullDateTime = nil\r\n\tself._timezone = nil\r\n\tself._dst = nil\r\nend\r\n\r\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\r\n\tfunction()\r\n\t\tself.HMS()\r\n\t\tself.Date()\r\n\t\tself.Day()\r\n\t\tself.Month()\r\n\t\tself.Year()\r\n\t\tself.Hour()\r\n\t\tself.Minute()\r\n\t\tself.Second()\r\n\t\tself.DayName()\r\n\t\tself.MonthName()\r\n\t\tself.am_pm()\r\n\t\tself.FullDateTime()\r\n\t\tself.Timezone()\r\n\t\tself.DST()\r\n\t  end, 950)\r\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "\r\nif self.interval ~= nil then\r\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\r\n\tself.interval = nil\r\nend\r\n\r\nself.pixcHelper = nil",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%X\")\npixc.report(res)\nif self._hms == nil then\n\tself._hms = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._hms ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._hms = res\nreturn res",
+   "kind": "func",
+   "name": "HMS",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res\nif self._dateFormat == \"false\" then\n\tres = os.date (\"%d.%m.%Y\")\nelse\n\tres = os.date (\"%x\")\nend\n\npixc.report(res)\nif self._date == nil then\n\tself._date = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._date ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._date = res\nreturn res",
+   "kind": "func",
+   "name": "Date",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%d\")\npixc.report(res)\nif self._day == nil then\n\tself._day = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._day ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._day = res\nreturn res",
+   "kind": "func",
+   "name": "Day",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%m\")\npixc.report(res)\nif self._month == nil then\n\tself._month = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._month ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._month = res\nreturn res",
+   "kind": "func",
+   "name": "Month",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%Y\")\npixc.report(res)\nif self._year == nil then\n\tself._year = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._year ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._year = res\nreturn res",
+   "kind": "func",
+   "name": "Year",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "local res = \"\"\nif self._format == \"true\" then\n\tres = os.date (\"%H\")\nelse\n\tres = os.date (\"%I\")\nend\n\npixc.report(res)\nif self._hour == nil then\n\tself._hour = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._hour ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._hour = res\nreturn res",
+   "kind": "func",
+   "name": "Hour",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%M\")\npixc.report(res)\nif self._minute == nil then\n\tself._minute = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._minute ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._minute = res\nreturn res",
+   "kind": "func",
+   "name": "Minute",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%S\")\npixc.report(res)\nif self._second == nil then\n\tself._second = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._second ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._second = res\nreturn res",
+   "kind": "func",
+   "name": "Second",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%p\")\npixc.report(res)\nif self._ampm == nil then\n\tself._ampm = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._ampm ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._ampm = res\nreturn res",
+   "kind": "func",
+   "name": "am_pm",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%A\")\npixc.report(res)\nif self._dayName == nil then\n\tself._dayName = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._dayName ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._dayName = res\nreturn res",
+   "kind": "func",
+   "name": "DayName",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%B\")\npixc.report(res)\nif self._monthName == nil then\n\tself._monthName = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._monthName ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._monthName = res\nreturn res",
+   "kind": "func",
+   "name": "MonthName",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\nlocal res = os.date (\"%c\")\npixc.report(res)\nif self._fullDateTime == nil then\n\tself._fullDateTime = res\n\tif self._onInit == \"true\" then\n\t\tpixc.callRefs(res)\n\t\treturn res\n\tend\nend\nif self._onChange == \"false\" then\n\tpixc.callRefs(res)\nelseif self._fullDateTime ~= res then\n\tpixc.callRefs(res)\nelse\n\tpixc.suppressCallRefs()\nend\nself._fullDateTime = res\nreturn res",
+   "kind": "func",
+   "name": "FullDateTime",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "\r\nlocal res = os.date (\"%Z\")\r\npixc.report(res)\r\nif self._timezone == nil then\r\n\tself._timezone = res\r\n\tif self._onInit == \"true\" then\r\n\t\tpixc.callRefs(res)\r\n\t\treturn res\r\n\tend\r\nend\r\nif self._onChange == \"false\" then\r\n\tpixc.callRefs(res)\r\nelseif self._timezone ~= res then\r\n\tpixc.callRefs(res)\r\nelse\r\n\tpixc.suppressCallRefs()\r\nend\r\nself._timezone = res\r\nreturn res",
+   "kind": "func",
+   "name": "Timezone",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "local now = os.time()\r\nlocal t = os.date(\"*t\", now)\r\nlocal res = t.isdst\r\npixc.report(res)\r\nif self._dst == nil then\r\n\tself._dst = res\r\n\tif self._onInit == \"true\" then\r\n\t\tpixc.callRefs(res)\r\n\t\treturn res\r\n\tend\r\nend\r\nif self._onChange == \"false\" then\r\n\tpixc.callRefs(res)\r\nelseif self._dst ~= res then\r\n\tpixc.callRefs(res)\r\nelse\r\n\tpixc.suppressCallRefs()\r\nend\r\nself._dst = res\r\nreturn res",
+   "kind": "func",
+   "name": "DST",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._onChange = pixcCommon.execAttribute(0, self._onChange, val, doSet)\r\n\r\nreturn self._onChange",
+   "kind": "func",
+   "name": "executeOnChange",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._onInit = pixcCommon.execAttribute(0, self._onInit, val, doSet)\r\n\r\nreturn self._onInit",
+   "kind": "func",
+   "name": "executeOnInit",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._dateFormat = pixcCommon.execAttribute(0, self._dateFormat, val, doSet)\r\n\r\nreturn self._dateFormat",
+   "kind": "func",
+   "name": "changeDate",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "self._format = pixcCommon.execAttribute(0, self._format, val, doSet)\r\nreturn self._format",
+   "kind": "func",
+   "name": "changeTimeFormat",
+   "params": [
+    {
+     "name": "val",
+     "type": ""
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "slotStyle": "hidden"
+  }
+ ],
+ "cjv": {
+  "h": 444.1666666666667,
+  "w": 289.1666666666667,
+  "x": 668.3333333333334,
+  "y": 579.9444444444445
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Tools/Generator/Time.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4lINsUHGIFt/uMhm1ljZLU01+s07kKEh7LEYRHJYW1AXKqbBYKtk0WTom6jWSS5f2vIW35TldY3lG/LF6hCxeA5EZkp1ES0tIKs7OgomK3m+0oLPy2HejRZpuVQeCywnSg==",
+ "name": "Time",
+ "properties": [
+  {
+   "cont": "true",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "true",
+   "name": "Time Format 24",
+   "optionsAction": "self.changeTimeFormat",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Use 09/16/98 for Date",
+   "optionsAction": "self.changeDate",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Execute Only on change",
+   "optionsAction": "self.executeOnChange",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Execute Only on init",
+   "optionsAction": "self.executeOnInit",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

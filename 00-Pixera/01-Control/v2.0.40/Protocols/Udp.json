@@ -1,0 +1,133 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\r\nrequire \"pixcNetwork\"\r\nif self.helper ~= nil then\r\n\treturn \r\nend\r\nif self.network ~= nil then\r\n    self.uninit()\r\nend\r\nself.helper = createPixcHelper(pixc,self())\r\nself.network = createPixcNetwork()\r\nself.open = false\r\nself.ip = self.helper:getProperty(\"IP\",\"127.0.0.1\")\r\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6452\"))\r\nself.ipLocal =pixc.getRoot().Utils.Network.convertLocalAdapterEntry(self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\"))\r\nself.portLocal= tonumber(self.helper:getProperty(\"Port Receive\",\"6451\"))\r\nself.IsOpen(false, true)\r\nlocal ready = false\r\nself.network:configureUdp(\r\n\tself.ip,\r\n\tself.port,\r\n\tself.ipLocal,\r\n\tself.portLocal,\r\n\tfunction (handle, data) self().receive(data) end,\r\n\tfunction(handle, error)\r\n        pixc.log(\"closeCallback: \"..error)\r\n        ready = true\r\n    end)\r\nself.network:setStatusCallbacks(\r\n\tfunction (...) pixc.log(...) end,\r\n\tfunction(isOpen)\r\n        self().IsOpen(isOpen, true)\r\n        ready = true\r\n    end)\r\nself.network:start()\r\n\r\nif blocking then\r\n    while not ready do\r\n        Utils.Timer.sleep(100)\r\n    end\r\nend\r\n",
+   "functionName": "init(bool blocking)",
+   "kind": "fn",
+   "name": "init",
+   "params": [
+    {
+     "name": "blocking",
+     "type": "bool"
+    }
+   ],
+   "path": "Udp.init",
+   "signiture": "init(bool blocking)"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.network:close()\r\nself.network = nil\r\nself.helper = nil\r\n",
+   "functionName": "uninit()",
+   "kind": "fn",
+   "name": "uninit",
+   "path": "Udp.uninit",
+   "signiture": "uninit()"
+  },
+  {
+   "body": "if not self.IsOpen(nil, false) then\r\n    self.init(true)\r\nend\r\nself.network:send(msg)\r\n",
+   "functionName": "send(string msg)",
+   "kind": "fn",
+   "name": "send",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "path": "Udp.send",
+   "signiture": "send(string msg)"
+  },
+  {
+   "body": "--pixc.log(\"got data\")\r\n--pixc.log(msg)\r\n--self.send(\"Echo: \"..msg)\r\n",
+   "functionName": "receive(string msg)",
+   "kind": "fn",
+   "name": "receive",
+   "params": [
+    {
+     "name": "msg",
+     "type": "string"
+    }
+   ],
+   "path": "Udp.receive",
+   "signiture": "receive(string msg)"
+  },
+  {
+   "attKind": "internal",
+   "body": "self.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "functionName": "IsOpen(bool isOpen,bool doSet)",
+   "kind": "fn",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ],
+   "path": "Udp.IsOpen",
+   "signiture": "IsOpen(bool isOpen,bool doSet)",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "canHaveExternalConnections": true,
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 158.0,
+  "y": 576.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Protocols/Udp.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4pJTDOUZ2DyI27YsI7plD4YKqyjPkTQXaSM28S6wM7xxci1ManxE/1GemlWDJ8z1Z1ritjJbiJB+/7fmYVamPTcjnwm0lQPjUmr3qDN7XONK8VquEbWZzUsav7rti2n3v5qO11eDeT/EkI4yL0V9KVg=",
+ "name": "Udp",
+ "properties": [
+  {
+   "cont": "UDP Module for receiving and sending UDP datagrams.",
+   "name": "Description",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "2",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl GmbH (ME)",
+   "name": "Author",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "typeHint": "bool"
+  },
+  {
+   "cont": "127.0.0.1",
+   "name": "IP"
+  },
+  {
+   "cont": "6452",
+   "name": "Port"
+  },
+  {
+   "cont": "6451",
+   "name": "Port Receive"
+  },
+  {
+   "cont": "Default",
+   "name": "Adapter IP",
+   "optionsSourceFunc": "Utils.Network.getLocalAdapterEntries",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

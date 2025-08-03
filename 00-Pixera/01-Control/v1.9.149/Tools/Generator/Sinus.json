@@ -1,0 +1,174 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nself.pixcHelper = createPixcHelper(pixc,self())\n\nself._invert = self.pixcHelper:getProperty(\"Invert\")\nlocal _reset = self.pixcHelper:getProperty(\"Auto Reset\")\n\nif _reset == \"true\" then\n\tself.reset()\nend\n\nif self.interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\n\tself.interval = nil\nend\n\nself.interval = pixc.getRoot().Utils.Timer.setInterval(\n\tfunction()\n\t\tself.Result()\n\t  end, 20)\n",
+   "kind": "func",
+   "name": "init",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "\nif self.interval ~= nil then\n\tpixc.getRoot().Utils.Timer.clearInterval(self.interval);\n\tself.interval = nil\nend\n\n",
+   "kind": "func",
+   "name": "uninit",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "body": "self._res = 0\nself._timer = 0\nself.Result()\n",
+   "kind": "func",
+   "name": "reset",
+   "slotStyle": "leftIn;rightOut"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "100.00"
+   },
+   "body": "if value == nil then\n\tself._x = 100\nelse\n\tself._x = value\nend\npixc.report(self._x)\n",
+   "kind": "func",
+   "name": "X",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "if value == nil then\n\tself._offset = 0\nelse\n\tself._offset = value\nend\npixc.report(self._offset)",
+   "kind": "func",
+   "name": "Offset_Y",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "0.00"
+   },
+   "body": "if value == nil then\n\tself._phase = 0\nelse\n\tself._phase = (value - 0)/360 * (2 - 0) + 0\nend\npixc.report(value)",
+   "kind": "func",
+   "name": "Phase_Degrees",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "standard",
+   "attReports": {
+    "0": "10.00"
+   },
+   "body": "self._speed = value\nif self._speed == nil then\n\tself._speed = 0.1\nend\nif self._speed < 0.001 then\n\tself._speed = 0.001\nend\npixc.report(self._speed)\n",
+   "kind": "func",
+   "name": "Speed_Sec",
+   "params": [
+    {
+     "name": "value",
+     "type": "double"
+    }
+   ],
+   "slotStyle": "leftIn;rightNone;triggerHidden"
+  },
+  {
+   "attKind": "internal",
+   "body": "if self._timer == nil then\n\tself._timer = 0\nend\nif self._invert == \"true\" then\n\tself._res = self._offset + -(self._x * math.sin(1.0*(self._timer/1) + (math.pi * self._phase)))\nelse\n\tself._res = self._offset + (self._x * math.sin(1.0*(self._timer/1) + (math.pi * self._phase)))\nend\nself._timer = self._timer + (0.08 / self._speed)\n\npixc.report(self._res)\npixc.callRefs(self._res)",
+   "kind": "func",
+   "name": "Result",
+   "slotStyle": "leftNone;rightOut;triggerHidden"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 342.0,
+  "y": 391.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/ProgramData/AV Stumpfl/Pixera/control_library_user/Generator/Sinus.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4ueTt3TX760VsCPUQ0rqaa1lP69iNvaYgEpFwqrAMWdQl4b5OMQoDsHR15gsxbdfp3UuK3xft3kzvXgaKMJ7AwK71WFSPxvQLAVRBDiPl4P7Bo0/L6s4yF8DtcvySTTy9x7yYhA/GEErzOtX5+xfHlE=",
+ "name": "Sinus",
+ "properties": [
+  {
+   "cont": "false",
+   "name": "Auto Init",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Auto Reset",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "false",
+   "name": "Invert",
+   "readOnly": true,
+   "typeHint": "bool"
+  },
+  {
+   "cont": "",
+   "imageBase64": "iVBORw0KGgoAAAANSUhEUgAAAEYAAAAoCAYAAABD0IyuAAADHUlEQVRoge2aXWiOYRjHf69tEpOvbBR2gBEtpXxMrcgRB75SWiuHlFJOlAPRJNmBkpwoceSzHGmNA7VEzUpsJmoRUwwRBzYf46/nea53u7F33u/3ed7eq+7e9T7PfV3/6/c893Xf732PkpWsZCUrWf4tJim9oLHYOGAzsBOoB6qBD0AHcBG4ijQU2WfqgUm5wQrBfXndE7cewdq0/IegpSYCygRHBT8NyHPBXsFcuz5bsEvwxK7/EpwUVBQvGJguaLOEfwhaBBMS3FshOCj4avffEcwqPjAwR/DYknwraEiy33JBn/V7JlhQPGBgseCFJdclqEkpCFQJ7lr/fh9W5MHAEntD4sNhalqBYKKg1fx88ot3ZMH8CeWmn1wmwWC84IoDZ2X0wARQ+i2JNj+pbAQMZrVLUXhzRhM/X/DKeVNGn3kyg3PZ/L8X1IUfTDD79JroWxkPn7HhXLM4b8I4W7liZwoemdgOQWVOgwc154bF6xteJIYKDEwRdJrIbsG0vAgIZqvbFrc3TIvAuLh2R1x1XkX8+1BmhAVMfH3hFdx5BRESDONu03HPhxUCMN7HO0FtQcUEP0Djhb89Z4U/OS2LsPXKskI/IRNU4ywVWrO2fkpNg/cDuNP7Y1IooIwIq7U3WLZSLstz/GZ/IIUKyoi4OsFHg3NWttOYh7irBUNeCyeYQOQqwWeDcyoP8SqdGnc8vGACsesEX0xsS45jnbE4D7zaFm4wgeCNgm8m+nCOYmwy/4OCpUp5z7dwcLbb2PckH8qyb28m/GC+98W/jwaYIIEmB05zlnxWOLuL190iHx0wQSKNDpyWjGcrOG2+Xvqb/c61aIEJktlhpxTxqTy9dQ7sNh9e/ar/+3r0wGi4WA46QyC1LRLYIvhu515No90TTTBBcg1O0ezxTzOS6+fOcscS3RddMEGSCwUPLckBwQFBeYJ7Y4L9To06MZbvaIPR8GbXeecM/algj3NsPFmw1Tlr94bPkf/5jT6YEUDrndPSRO21YEMy/tL/N5AwWixWDmwDGoE1QBUwAHQBF4BzSIPFk3DJShZuA34DjmEDPEPx2nEAAAAASUVORK5CYII=",
+   "name": "Sinus",
+   "readOnly": true,
+   "typeHint": "image"
+  },
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "",
+   "imageBase64": "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",
+   "name": "Logo",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "image"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "www.benni-m.de/pixera/control#Generator-Sinus",
+   "name": "Documentation",
+   "readOnly": true,
+   "typeHint": "url"
+  },
+  {
+   "cont": "1.1",
+   "name": "Version",
+   "readOnly": true,
+   "typeHint": "string"
+  },
+  {
+   "cont": "05.02.2022",
+   "name": "Date",
+   "readOnly": true,
+   "showName": false,
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

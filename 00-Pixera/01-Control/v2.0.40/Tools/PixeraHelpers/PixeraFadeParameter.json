@@ -1,0 +1,207 @@
+{
+ "api": [
+  {
+   "elems": [
+    {
+     "body": "Utils.Timer.setTimeout(\r\n\tfunction()\r\n\t\tlocal root = pixc.getRoot()\r\n\t\tlocal fps = 1000.0 / root.Pixera.Timelines.Timeline.getInst(Timeline).getFps()\r\n\t\tlocal oldValue = root.Pixera.Timelines.Timeline.getInst(Timeline).getOpacity()\r\n\t\tlocal times = timeMs / fps\r\n\t\tlocal add_value = (Value - oldValue) / times\r\n\t\tfor i = 0.0, times-1, 1 do\r\n\t\t\toldValue = oldValue + add_value\r\n\t\t\troot.Pixera.Timelines.Timeline.getInst(Timeline).setOpacity(oldValue)\r\n\t\t\troot.Utils.Timer.sleep(fps)\r\n\t\tend\r\n\t\troot.Pixera.Timelines.Timeline.getInst(Timeline).setOpacity(Value)\r\n\r\n\tend, 0\r\n)",
+     "functionName": "FadeTimelineOpacity(string Timeline,Int Value,Int timeMs)",
+     "kind": "func",
+     "name": "FadeTimelineOpacity",
+     "params": [
+      {
+       "name": "Timeline",
+       "type": "string"
+      },
+      {
+       "name": "Value",
+       "type": "Int"
+      },
+      {
+       "name": "timeMs",
+       "type": "Int"
+      }
+     ],
+     "path": "PixeraFadeParameter.Timeline.FadeTimelineOpacity"
+    }
+   ],
+   "kind": "ns",
+   "name": "Timeline"
+  },
+  {
+   "elems": [
+    {
+     "body": "Utils.Timer.setTimeout(\r\n\tfunction()\r\n\t\tlocal root = pixc.getRoot()\r\n\t\tlocal fpsMS = 1000.0 / root.Pixera.Timelines.Timeline.getInst(Timeline).getFps()\r\n\t\tlocal oldValue = root.Pixera.Timelines.Layer.getInst(Timeline .. \".\" .. Layer).getOpacity()\r\n\t\tlocal times = timeMs / fpsMS\r\n\t\tlocal add_value = (Value - oldValue) / times\r\n\t\tfor i = 0.0, times-1, 1 do\r\n\t\t\toldValue = oldValue + add_value\r\n\t\t\troot.Pixera.Timelines.Layer.getInst(Timeline .. \".\" .. Layer).setOpacity(oldValue)\r\n\t\t\troot.Utils.Timer.sleep(fpsMS)\r\n\t\tend\r\n\t\troot.Pixera.Timelines.Layer.getInst(Timeline .. \".\" .. Layer).setOpacity(Value)\r\n\tend, 0 \r\n)",
+     "functionName": "FadeLayerOpacity(string Timeline,string Layer,Int Value,Int timeMs)",
+     "kind": "func",
+     "name": "FadeLayerOpacity",
+     "params": [
+      {
+       "name": "Timeline",
+       "type": "string"
+      },
+      {
+       "name": "Layer",
+       "type": "string"
+      },
+      {
+       "name": "Value",
+       "type": "Int"
+      },
+      {
+       "name": "timeMs",
+       "type": "Int"
+      }
+     ],
+     "path": "PixeraFadeParameter.Layer.FadeLayerOpacity"
+    },
+    {
+     "body": "Utils.Timer.setTimeout(\n\tfunction()\n\tlocal root = pixc.getRoot()\n\tlocal fpsMS = 1000.0 / root.Pixera.Timelines.Timeline.getInst(Timeline).getFps()\n\tlocal oldValue = root.Pixera.Timelines.Param.getInst(Timeline .. \".\" .. LayerPath).getValue()\n\tlocal times = timeMs / fpsMS\n\tlocal add_value = (Value - oldValue) / times\n\tfor i = 0.0, times-1, 1 do\n\t\toldValue = oldValue + add_value\n\t\troot.Pixera.Timelines.Param.getInst(Timeline .. \".\" .. LayerPath).setValue(oldValue)\n\t\troot.Utils.Timer.sleep(fpsMS)\n\tend\n\troot.Pixera.Timelines.Param.getInst(Timeline .. \".\" .. LayerPath).setValue(Value)\nend,0\n)",
+     "functionName": "FadeLayerParameter(string Timeline,string LayerPath,Int Value,Int timeMs)",
+     "kind": "func",
+     "name": "FadeLayerParameter",
+     "params": [
+      {
+       "name": "Timeline",
+       "type": "string"
+      },
+      {
+       "name": "LayerPath",
+       "type": "string"
+      },
+      {
+       "name": "Value",
+       "type": "Int"
+      },
+      {
+       "name": "timeMs",
+       "type": "Int"
+      }
+     ],
+     "path": "PixeraFadeParameter.Layer.FadeLayerParameter"
+    }
+   ],
+   "kind": "ns",
+   "name": "Layer"
+  },
+  {
+   "elems": [
+    {
+     "body": "Utils.Timer.setTimeout(\n\tfunction()\n\t\tlocal root = pixc.getRoot()\n\t\tlocal fpsMS = 1000.0 / 60.0\n\t\tlocal positionOld = {oldX,oldY,oldZ}\n\t\tlocal positionNew = {newX,newY,newZ}\n\t\tlocal times = timeMs / fpsMS\n\t\tlocal add_valueX = (positionNew[1] - positionOld[1]) / times\n\t\tlocal add_valueY = (positionNew[2] - positionOld[2]) / times\n\t\tlocal add_valueZ = (positionNew[3] - positionOld[3]) / times\n\t\tfor i = 0.0, times-1, 1 do\n\t\t\tpositionOld[1] = positionOld[1] + add_valueX\n\t\t\tpositionOld[2] = positionOld[2] + add_valueY\n\t\t\tpositionOld[3] = positionOld[3] + add_valueZ\n\t\t\troot.Pixera.Screens.Screen.getInst(ScreenName).setPosition(positionOld[1],positionOld[2],positionOld[3])\n\t\t\troot.Utils.Timer.sleep(fpsMS)\n\t\tend\n\t\troot.Pixera.Screens.Screen.getInst(ScreenName).setPosition(positionNew[1],positionNew[2],positionNew[3])\nend,0\n)",
+     "functionName": "FadeScreenPosition(string ScreenName,double oldX,double oldY,double oldZ,double newX,double newY,double newZ,double timeMs)",
+     "kind": "func",
+     "name": "FadeScreenPosition",
+     "params": [
+      {
+       "name": "ScreenName",
+       "type": "string"
+      },
+      {
+       "name": "oldX",
+       "type": "double"
+      },
+      {
+       "name": "oldY",
+       "type": "double"
+      },
+      {
+       "name": "oldZ",
+       "type": "double"
+      },
+      {
+       "name": "newX",
+       "type": "double"
+      },
+      {
+       "name": "newY",
+       "type": "double"
+      },
+      {
+       "name": "newZ",
+       "type": "double"
+      },
+      {
+       "name": "timeMs",
+       "type": "double"
+      }
+     ],
+     "path": "PixeraFadeParameter.Screen.FadeScreenPosition"
+    }
+   ],
+   "kind": "ns",
+   "name": "Screen"
+  },
+  {
+   "elems": [
+    {
+     "body": "Utils.Timer.setTimeout(\n\tfunction()\n\t\tlocal root = pixc.getRoot()\n\t\tlocal fpsMS = 1000.0 / 60.0\n\t\tlocal positionOld = {oldX,oldY,oldZ}\n\t\tlocal positionNew = {newX,newY,newZ}\n\t\tlocal times = timeMs / fpsMS\n\t\tlocal add_valueX = (positionNew[1] - positionOld[1]) / times\n\t\tlocal add_valueY = (positionNew[2] - positionOld[2]) / times\n\t\tlocal add_valueZ = (positionNew[3] - positionOld[3]) / times\n\t\tfor i = 0.0, times-1, 1 do\n\t\t\tpositionOld[1] = positionOld[1] + add_valueX\n\t\t\tpositionOld[2] = positionOld[2] + add_valueY\n\t\t\tpositionOld[3] = positionOld[3] + add_valueZ\n\t\t\troot.Pixera.Screens.Screen.getInst(ScreenName).setCameraPosition(positionOld[1],positionOld[2],positionOld[3])\n\t\t\troot.Utils.Timer.sleep(fpsMS)\n\t\tend\n\t\troot.Pixera.Screens.Screen.getInst(ScreenName).setCameraPosition(positionNew[1],positionNew[2],positionNew[3])\n\tend,0\n)",
+     "functionName": "FadeEyePosition(string ScreenName,double oldX,double oldY,double oldZ,double newX,double newY,double newZ,double timeMs)",
+     "kind": "func",
+     "name": "FadeEyePosition",
+     "params": [
+      {
+       "name": "ScreenName",
+       "type": "string"
+      },
+      {
+       "name": "oldX",
+       "type": "double"
+      },
+      {
+       "name": "oldY",
+       "type": "double"
+      },
+      {
+       "name": "oldZ",
+       "type": "double"
+      },
+      {
+       "name": "newX",
+       "type": "double"
+      },
+      {
+       "name": "newY",
+       "type": "double"
+      },
+      {
+       "name": "newZ",
+       "type": "double"
+      },
+      {
+       "name": "timeMs",
+       "type": "double"
+      }
+     ],
+     "path": "PixeraFadeParameter.Eye.FadeEyePosition"
+    }
+   ],
+   "kind": "ns",
+   "name": "Eye"
+  }
+ ],
+ "canHaveExternalConnections": false,
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 221.0,
+  "y": 632.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/PixeraCode/control-modules/control_library_standard/Tools/PixeraHelpers/PixeraFadeParameter.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4sBl9IpR0CEF/PfaV3LShOPPnS40pvIGHCZq5w0FxY37UwqoAuaH0cP6+1CbZ6DPUfmyMvb66LV3BWqHF8kekWOAVHCF5cLi4KfXHwV+l8aGIvc9I+aCAejm1ymUq9c9Ngaoxj2ojRU0v6t0usU8V0M=",
+ "name": "PixeraFadeParameter",
+ "properties": [
+  {
+   "cont": "Benni M.",
+   "name": "Creator Name"
+  },
+  {
+   "cont": "www.benni-m.de",
+   "name": "Creator URL"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

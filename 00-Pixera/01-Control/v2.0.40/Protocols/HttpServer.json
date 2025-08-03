@@ -1,0 +1,86 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nrequire \"pixcNetwork\"\nrequire \"pixcProtocolHttp\"\nif self.pixcHelper ~= nil then\n\treturn \nend\nself.helper = createPixcHelper(pixc,self())\nself.network = createPixcNetwork()\nself.protocol = createPixcProtocolHttp()\nself.protocol:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end)\npixc.log(self.helper)\npixc.log(self.network)\npixc.log(self.protocol)\nself.CtConn(0, true)\nself.IsOpen(false, true)\nself.ip = self.helper:getProperty(\"Adapter IP\",\"0.0.0.0\")\nself.port = tonumber(self.helper:getProperty(\"Port\",\"6451\"))\nself.protocol:configureServer()\nself.protocol:create()\nself.protocol:setHttpCallback(function(handle, data) self.httpCallback(handle,data) end)\nself.network:setDestinationFunction(self.protocol:getInstance(),\"addInputData\")\nself.network:configureTcpServer(\n\tself.ip,\n\tself.port,\n\tfunction (handle, data) self().receive(data,handle) end,\n\tfunction (handle) pixc.log(\"accept Callback: \") end,\n\tfunction (handle, error) self.protocol:clearQueue(handle); pixc.log(\"close Callback: \"..error) end)\nself.network:setStatusCallbacks(\n\tfunction (...) pixc.log(...) end,\n\tfunction (isOpen,acceptetCount) self().IsOpen(isOpen, true) end,\n\tfunction (connectionCount) self().CtConn(false, connectionCount) end)\nself.network:start()\n",
+   "kind": "func",
+   "name": "init"
+  },
+  {
+   "body": "if self.network == nil then return end\r\nself.helper = nil\r\nself.network:close()\r\nself.network = nil\r\nself.protocol:close()\r\nself.protocol = nil\r\n",
+   "kind": "func",
+   "name": "uninit"
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\nself.open = pixcCommon.execAttribute(false, self.open, isOpen, doSet)\n",
+   "kind": "func",
+   "name": "IsOpen",
+   "params": [
+    {
+     "name": "isOpen",
+     "type": "bool"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "attKind": "internal",
+   "body": "-- attKind:internal\nself.connectedCount = pixcCommon.execAttribute(0, self.connectedCount, currentCount, doSet)\n",
+   "kind": "func",
+   "name": "CtConn",
+   "params": [
+    {
+     "name": "currentCount",
+     "type": "int"
+    },
+    {
+     "name": "doSet",
+     "type": "bool"
+    }
+   ]
+  },
+  {
+   "body": "local uri = resultDict[\"uri\"];\nlocal method = resultDict[\"method\"];\nlocal content = resultDict[\"content\"];\nlocal handle = self.network:getSocket(hdl.getHandleInt())\nlocal result = self.protocol:buildHttpResponse(200,\"text/plain\",\"Was: \"..method..\" from: \"..uri,false);\nself.network:sendOverConnection(handle,result)\r\n",
+   "kind": "func",
+   "name": "httpCallback",
+   "params": [
+    {
+     "name": "hdl",
+     "type": "handle"
+    },
+    {
+     "name": "resultDict",
+     "type": "dict"
+    }
+   ]
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 800.0,
+  "y": 248.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "O:\\Repos\\nui\\data\\control_library_standard\\Protocols\\SimpleHttpServer.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4jDhGDTv7dcZdIwOmLytXZ86uwjbSLwH/vhTWkZIG3hdih7PoWYdyzYJ6AjGFGj/HcAijBSxUuWlhfXA6q/Pz84=",
+ "name": "SimpleHttpServer",
+ "properties": [
+  {
+   "cont": "15152",
+   "name": "Port"
+  },
+  {
+   "cont": "0.0.0.0",
+   "name": "Adapter IP"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

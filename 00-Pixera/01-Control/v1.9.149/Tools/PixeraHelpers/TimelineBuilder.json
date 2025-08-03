@@ -1,0 +1,108 @@
+{
+ "api": [
+  {
+   "body": "require \"pixcHelper\"\nself.pixcHelper = createPixcHelper(pixc, self())\nlocal tl = self.Internal.getFirstReffedTimeline()\nif tl == nil then\n\ttl = pixc.getRoot().Pixera.Timelines.getTimelineAtIndex(0)\n\tif tl == nil then\n\t\treturn\n\tend\nend\n\nlocal layer = Pixera.Timelines.Layer.getInst(tl.getName() .. \".\" .. self.pixcHelper:getProperty(\"Layer Name\", \"Layer 1\"))\nif layer == nil or layer.getHandleInt() == 0 then\n\treturn\nend\nself.Internal.fillLayer(tl, layer, self.Internal.getResources())\n",
+   "kind": "func",
+   "name": "buildTimeline"
+  },
+  {
+   "body": "if action == nil then\n\treturn pixc.callRefs()\nend\nreturn pixc.callRefs(action)\n",
+   "kind": "func",
+   "name": "toTimeline",
+   "params": [
+    {
+     "name": "action",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "if action == nil then\r\n\treturn pixc.callRefs()\r\nend\r\nreturn pixc.callRefs(action)\r\n",
+   "kind": "func",
+   "name": "toFolderResource",
+   "params": [
+    {
+     "name": "action",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "body": "--\r\n",
+   "kind": "func",
+   "name": "timelineBuilt"
+  },
+  {
+   "elems": [
+    {
+     "body": "local res = self.toTimeline()\nfor _, v in ipairs(res) do\n\tfor __, k in ipairs(v) do\n\t\tif k ~= nil then\n\t\t\treturn k\n\t\tend\n\tend\nend\n",
+     "kind": "func",
+     "name": "getFirstReffedTimeline"
+    },
+    {
+     "body": "if true then\n\tlocal crRes = self.toFolderResource(\"getResources\")\n\tfor _, v in ipairs(crRes) do\n\t\tfor __, k in ipairs(v) do\n\t\t\tif k ~= nil then\n\t\t\t\treturn k\n\t\t\tend\n\t\tend\n\tend\nend\nif true then return end\nlocal folder = pixc.getRoot().Pixera.Resources.getResourceFolderWithNamePath(\"Media/Standard Content\")\nif folder == nil then\n\treturn {}\nend\nlocal resources = folder.getResources()\nif resources == nil then\n\treturn {}\nend\nreturn resources\n",
+     "kind": "func",
+     "name": "getResources"
+    },
+    {
+     "body": "if timeline == nil or layer == nil or resources == nil then\n\tpixc.log(\"nil parameters\")\n\treturn\nend\npixc.log(\"timeline \" .. timeline.getName())\npixc.log(\"will fill layer: \" .. layer.getName())\nlocal fps = timeline.getFps()\ntimeline.removeCues()\nlayer.removeClips()\nlocal time = 0\nlocal endTime = 0\nlocal pictureDuration = tonumber(self.pixcHelper:getProperty(\"Default Seconds for Pictures\", \"5\"))\nfor _, res in ipairs(resources) do\n\tlocal duration = res.getDuration()\n\tif duration == 0 then duration = pictureDuration end\n\tif duration > 0 then\n\t\tif duration < 2 then\n\t\t\tduration = 10\n\t\tend\n\t\tlocal clip = layer.createClip()\n\t\tif clip ~= nil then\n\t\t\tclip.setDuration(duration * fps)\n\t\t\tclip.setTime(time * fps)\n\t\t\tclip.assignResource(res.getId())\n\t\t\tendTime = time + duration\n\t\t\ttime = endTime\n\t\t\tif duration > 2 then\n\t\t\t\ttime = time - 1\n\t\t\tend\n\t\tend\n\tend\nend\nif endTime > 1 then\n\tlocal cue = timeline.createCue(\"ToBeginning\", endTime * fps - 1, 4)\n\tif cue ~= nil then\n\t\tcue.setJumpGoalTime(0)\n\tend\nend\nself.timelineBuilt()\n",
+     "kind": "func",
+     "name": "fillLayer",
+     "params": [
+      {
+       "name": "timeline",
+       "type": "handle"
+      },
+      {
+       "name": "layer",
+       "type": "handle"
+      },
+      {
+       "name": "resources",
+       "type": "handle[]"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "Internal"
+  }
+ ],
+ "cjv": {
+  "h": 200.0,
+  "w": 200.0,
+  "x": 487.0,
+  "y": 607.0
+ },
+ "definedExternally": false,
+ "hostInfo": {
+  "systemType": ""
+ },
+ "libraryExportPath": "C:/Program Files/AV Stumpfl/Pixera/build_1-9-144/data/control_library_standard/Tools/PixeraHelpers/TimelineBuilder.json",
+ "license": "1GNTlyr7sewU1l3S6nhV4tOJ+UEIEt+UUaB8iErlAAPh4hPAtlQPyfMrux0B1bP+On9/vtXZF4lFbcqLcuIkXB00dIioSoHiH2CpotphucyGyIP9l8pKE8QiJRZlJywKHsTgiSGgBvNvM43SU05BjnFFuDg+WR96yGDcLGvS/ps=",
+ "name": "TimelineBuilder",
+ "properties": [
+  {
+   "cont": "Layer 3",
+   "name": "Layer Name",
+   "typeHint": "string"
+  },
+  {
+   "cont": "5",
+   "name": "Default Seconds for Pictures",
+   "typeHint": "number"
+  },
+  {
+   "cont": "AV Stumpfl",
+   "name": "Creator Name",
+   "typeHint": "string"
+  },
+  {
+   "cont": "www.avstumpfl.com",
+   "name": "Creator URL",
+   "typeHint": "string"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": ""
+}

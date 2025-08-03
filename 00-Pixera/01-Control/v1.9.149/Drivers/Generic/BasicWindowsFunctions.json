@@ -1,0 +1,110 @@
+{
+ "api": [
+  {
+   "elems": [
+    {
+     "body": "return os.date(\"%X\")",
+     "kind": "func",
+     "name": "Time"
+    },
+    {
+     "body": "return os.date(\"%m.%d.%Y\")",
+     "kind": "func",
+     "name": "Date"
+    },
+    {
+     "body": "return os.date(\"%B\")",
+     "kind": "func",
+     "name": "DateMonth"
+    },
+    {
+     "body": "return os.date(\"%A\")",
+     "kind": "func",
+     "name": "DateWeek"
+    },
+    {
+     "body": "return os.date(\"%d\")",
+     "kind": "func",
+     "name": "DayOfMonth"
+    },
+    {
+     "body": "return os.date(\"%S\")",
+     "kind": "func",
+     "name": "Second"
+    },
+    {
+     "body": "return os.date(\"%M\")",
+     "kind": "func",
+     "name": "Minute"
+    },
+    {
+     "body": "return os.date(\"%H\")\n",
+     "kind": "func",
+     "name": "Hour"
+    }
+   ],
+   "kind": "ns",
+   "name": "Time"
+  },
+  {
+   "elems": [
+    {
+     "body": "os.execute(Filename)",
+     "kind": "func",
+     "name": "ExecuteFile",
+     "params": [
+      {
+       "name": "Filename",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "body": "pixc.log(os.rename(oldname, newname))",
+     "kind": "func",
+     "name": "Rename",
+     "params": [
+      {
+       "name": "oldname",
+       "type": "string"
+      },
+      {
+       "name": "newname",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "body": "pixc.log(os.remove(Filename))",
+     "kind": "func",
+     "name": "Remove",
+     "params": [
+      {
+       "name": "Filename",
+       "type": "string"
+      }
+     ]
+    }
+   ],
+   "kind": "ns",
+   "name": "FileSystem"
+  }
+ ],
+ "cjv": {
+  "h": 228.0,
+  "w": 202.0,
+  "x": 163.0,
+  "y": 408.0
+ },
+ "definedExternally": false,
+ "license": "1GNTlyr7sewU1l3S6nhV4lofVVbB2vtomFFx1qzshgdOOHmpf8Wc90QwdPCvAH/2qMfKWadGJJAEnvlraKcsMqMesqyOdA53aE2Udt5bc3E=",
+ "name": "BasicWindowsFunctions",
+ "properties": [
+  {
+   "cont": "",
+   "name": "© Benni M.:"
+  }
+ ],
+ "separateCode": false,
+ "uiUrl": "/static/ui_builder/ui_builder.html"
+}
