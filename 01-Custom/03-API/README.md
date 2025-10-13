@@ -6,6 +6,10 @@ Made by Ted Charles Brown<br>
 `pip install PixeraPy`
 
 ### Usage
+
+#### API Access point PIXERA setup
+JSON/TCP is used by PixeraPy and must also be set as an API access point in PIXERA.
+
 #### Via PyPi (Recommended)
 ```
 from PixeraPy import Pixera, API
@@ -15,6 +19,8 @@ port = 1400  # Replace with your Pixera system's port if different
 pixera = Pixera(ip, port)
 api = API()
 ```
+
+
 #### Manual Downlaod
 - [Download PixeraPy](01-Custom/03-API/PixeraPy) directly and place into your working directory
 
