@@ -7,15 +7,17 @@ Pixera has a large amount of shaders, and that seems like it is only going to gr
 
 ## Shaders
 ### Pixera Built In Effects Overview
-[v1.9.220](00-Pixera/02-Shaders/v1.9.220/_effect_overview.md)
+[v2.0.40](00-Pixera/02-Shaders/v2.0.40/_effect_overview.md)
 
 [v1.9.149](00-Pixera/02-Shaders/v1.9.149/_effect_overview.md)
 
-[v2.0.40](00-Pixera/02-Shaders/v2.0.40/_effect_overview.md)
+[v1.9.220](00-Pixera/02-Shaders/v1.9.220/_effect_overview.md)
 
 ## API
 ### Pixera API Overview
-[API 461](00-Pixera/03-API/_api_overview.md)
+[API 461 - Auto Generated](00-Pixera/03-API/_api_overview.md)
+
+[Official Pixera Overview](https://help.pixera.one/en_US/api-commands)
 
 [Python API](01-Custom/03-API)
 
